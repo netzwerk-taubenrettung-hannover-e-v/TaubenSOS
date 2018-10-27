@@ -1,0 +1,57 @@
+swagger: "2.0"
+info:
+  description: Welcome to the documentation of our RESTful API!
+  version: "1.0.0"
+  title: RESTful API for the 'Tauben2' Android application
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /people:
+    get:
+      operationId: "swagger.people.read"
+      tags:
+        - "People"
+      summary: "The people data structure supported by the server application"
+      description: "Read the list of people"
+      responses:
+        200:
+          description: "Successful read people list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                fname:
+                  type: "string"
+                lname:
+                  type: "string"
+                timestamp:
+                  type: "string"
+
+  /upload:
+    post:
+      operationId: swagger.upload.create
+      tags:
+        - Upload
+      summary: Uploads a file.
+      description: Uploads a file.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: upfile
+          in: formData
+          description: The file to be uploaded.
+          required: true
+          type: file
+      responses:
+        200:
+          description: OK
+        201:
+          description: File uploaded successfully.
+        500:
+          description: It couldn't be worse!
