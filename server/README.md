@@ -1,3 +1,7 @@
 # Readme
 
 This folder contains resources pertaining to the development of the server's back-end, including the RESTful API. The playground folder serves prototyping purposes and already contains a little demo project, which utilizes [Zalando's Connexion framework](https://github.com/zalando/connexion) for building a RESTful web service. Connexion is a Swagger/OpenAPI First framework for Python that runs on top of Flask and provides automatic endpoint validation & OAuth 2.0 support. For an introductory tutorial, take a look at [this](https://realpython.com/flask-connexion-rest-api/). In order to understand OAuth 2.0, [Medium](https://medium.com/google-cloud/understanding-oauth2-and-building-a-basic-authorization-server-of-your-own-a-beginners-guide-cf7451a16f66) provides a brief and intelligible summary. The Resource Owner Password Credentials authorization flow is discussed [here](https://medium.com/@ratrosy/building-a-basic-authorization-server-using-resource-owner-password-credentials-flow-a666d06900fb). The flask_connexion project uses a Python virtual environment (venv), which may be activated by running `source env/bin/activate`.
+
+### Other helpful stuff:
+
+* [OpenAPI Specification ver. 2 (fka Swagger)](https://swagger.io/docs/specification/2-0/basic-structure/)
