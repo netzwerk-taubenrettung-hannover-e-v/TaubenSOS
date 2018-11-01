@@ -1,7 +1,8 @@
-package de.unihannover.se.tauben2
+package de.unihannover.se.tauben2.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import de.unihannover.se.tauben2.R
 
 class MainActivity : AppCompatActivity() {
 
