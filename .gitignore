@@ -4,4 +4,4 @@ __pycache__
 *.pyc
 env
 .vscode
-android/application/.idea
+/android/application/.idea/*
