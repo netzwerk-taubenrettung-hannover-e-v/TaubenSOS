@@ -1,5 +1,10 @@
 package de.unihannover.se.tauben2.viewmodel
 
 import android.arch.lifecycle.ViewModel
+import android.content.Context
+import de.unihannover.se.tauben2.repository.Repository
 
-class BaseViewModel : ViewModel(){}
+class BaseViewModel(context: Context) : ViewModel(){
+
+    protected val repository: Repository = Repository()
+}
