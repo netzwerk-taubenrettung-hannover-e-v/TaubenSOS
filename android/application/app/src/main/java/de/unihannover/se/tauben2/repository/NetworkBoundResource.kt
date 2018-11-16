@@ -12,6 +12,7 @@ import de.unihannover.se.tauben2.model.network.Resource
  *
  * @param ResultType Type for the Resource data.
  * @param RequestType Type for the API response.
+ *
  */
 abstract class NetworkBoundResource<ResultType, RequestType>
 @MainThread constructor(private val appExecutors: AppExecutors){
@@ -75,29 +76,49 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.value = newValue
     }
 
-    // Called to save the result of the API response into the database.
+    /**
+     * Called to save the result of the API response into the database.
+     *
+     * @param item The parsed result item form server
+     */
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)
 
-    // Called with the data in the database to decide whether to fetch
-    // potentially updated data from the network.
+    /**
+     * Called with the data in the database to decide whether to fetch potentially updated data from the network.
+     *
+     * @param data data from database
+     * @return true if data should be updated from the network, otherwise false
+     */
     @MainThread
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
-    // Called to get the cached data from the database.
+    /**
+     * Called to get the cached data from the database.
+     *
+     * @return LiveData from database
+     */
     @MainThread
     protected abstract fun loadFromDb(): LiveData<ResultType>
 
-    // Called to create the API call.
+    /**
+     * Called to create the API call.
+     *
+     * @return answer from API call
+     */
     @MainThread
     protected abstract fun createCall(): LiveData<Resource<RequestType>>
 
-    // Called when the fetch fails. The child class may want to reset components
-    // like rate limiter.
+    /**
+     * Called when the fetch fails. The child class may want to reset components like rate limiter.
+     */
     @MainThread
     protected fun onFetchFailed(){}
 
-    // Returns a LiveData object that represents the resource that's implemented
-    // in the base class.
+    /**
+     * Returns a LiveData object that represents the resource that's implemented in the base class.
+     *
+     * @return result as LiveData object
+     */
     fun getAsLiveData(): LiveData<Resource<ResultType>> = result
 }
