@@ -5,3 +5,4 @@ __pycache__
 env
 .vscode
 /android/application/.idea/*
+/android/application/.idea/misc.xml
