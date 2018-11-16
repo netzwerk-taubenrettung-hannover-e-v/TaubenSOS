@@ -1,2 +1,4 @@
 Flask==1.0.2
 pylint==2.1.1
+Flask-SQLAlchemy==2.3.2
+psycopg2-binary==2.7.6.1
