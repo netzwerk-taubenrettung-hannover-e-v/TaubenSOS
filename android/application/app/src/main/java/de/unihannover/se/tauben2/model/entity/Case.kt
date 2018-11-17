@@ -21,5 +21,5 @@ data class Case(@PrimaryKey(autoGenerate = true) val id: Int,
                 var picture3Path: String?,
                 var weddingPigeon: Boolean,
                 var carrierPigeon: Boolean,
-                @ColumnInfo(name = "injury_id") var injury: String
+                @ColumnInfo(name = "injury_id") var injury: Int
 )
