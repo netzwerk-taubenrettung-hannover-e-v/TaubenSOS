@@ -8,10 +8,10 @@ import android.arch.persistence.room.PrimaryKey
 /**
  * represents the case of an injured pigeon
  */
-@Entity(tableName = "case", foreignKeys = [ForeignKey(
-        entity = Injury::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("injury_id"))])
+@Entity(tableName = "case",
+        foreignKeys = [
+            ForeignKey(entity = Injury::class, parentColumns = ["id"], childColumns = ["injury_id"])
+        ])
 data class Case(@PrimaryKey(autoGenerate = true) val id: Int,
                 var coordinates: String, // TODO Coordinate class and converter?
                 var status: String, // TODO Status Enum + converter
