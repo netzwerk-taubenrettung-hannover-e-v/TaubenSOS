@@ -1,3 +1,4 @@
+/*
 package de.unihannover.se.tauben2.model
 
 <<<<<<< HEAD
@@ -31,3 +32,4 @@ abstract class LocalDatabase : RoomDatabase() {
         ).build()
     }
 }
+*/

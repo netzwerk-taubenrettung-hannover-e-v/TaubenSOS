@@ -1,6 +1,6 @@
 package de.unihannover.se.tauben2.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.content.Context
 import de.unihannover.se.tauben2.repository.Repository
 
