@@ -17,4 +17,7 @@ def create_app(config_name):
     from api.routes import test
     app.register_blueprint(test.bp)
 
+    from api.routes import case
+    app.register_blueprint(case.bp)
+
     return app
