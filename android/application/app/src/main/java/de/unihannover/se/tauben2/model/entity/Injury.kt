@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 
 /**
- * checklist for what injuries a pigeon has
+ * Entity for storing a checklist of injuries that a pigeon of a certain case has
  */
 @Entity(tableName = "injury")
-data class Injury(@PrimaryKey val id: Int,
+data class Injury(@PrimaryKey(autoGenerate = true) val id: Int,
                   var footOrLeg: Boolean,
                   var wing: Boolean,
                   var head: Boolean,
