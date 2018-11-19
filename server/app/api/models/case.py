@@ -2,7 +2,7 @@ from api import db, ma
 
 class Case(db.Model):
     __tablename__ = "case"
-    caseID = db.Column(db.Integer, primary_key=True)
+    caseID = db.Column(db.String(9), primary_key=True)
     timestamp = db.Column(db.DateTime)
     priority = db.Column(db.Integer)
     media1 = db.Column(db.String(255))
@@ -15,8 +15,10 @@ class Case(db.Model):
     phone = db.Column(db.String(255))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    wasFoundDead = db.Column(db.Boolean)
+    isClosed = db.Column(db.Boolean)
 
-    def __init__(self, timestamp, priority, media1, media2, media3, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude):
+    def __init__(self, timestamp, priority, media1, media2, media3, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed):
         self.timestamp = timestamp
         self.priority = priority
         self.media1 = media1
@@ -29,6 +31,8 @@ class Case(db.Model):
         self.phone = phone
         self.latitude = latitude
         self.longitude = longitude
+        self.wasFoundDead = wasFoundDead
+        self.isClosed = isClosed
 
     def save(self):
         db.session.add(self)
