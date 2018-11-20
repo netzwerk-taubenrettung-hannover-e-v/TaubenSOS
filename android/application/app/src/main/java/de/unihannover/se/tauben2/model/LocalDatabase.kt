@@ -12,7 +12,7 @@ import de.unihannover.se.tauben2.model.entity.User
  * class with capability to create and retrieve a RoomDatabase singleton object which represents
  * the local SQLite Database
  */
-@Database(entities = [Case::class, Injury::class, User::class], version = 1)
+@Database(entities = [Case::class, Injury::class, User::class, PigeonCounter::class], version = 1)
 abstract class LocalDatabase : RoomDatabase() {
 
     companion object {
