@@ -17,12 +17,22 @@ class MainActivity : AppCompatActivity() {
                 R.id.item_news -> {
                     val fragment = NewsFragment.newInstance()
                     replaceFragment(fragment)
-                    // true
                 }
                 R.id.item_counter -> {
                     val fragment = CounterFragment.newInstance()
                     replaceFragment(fragment)
-                    // true
+                }
+                R.id.item_cases -> {
+                    val fragment = CasesFragment.newInstance()
+                    replaceFragment(fragment)
+                }
+                R.id.item_graphs -> {
+                    val fragment = GraphsFragment.newInstance()
+                    replaceFragment(fragment)
+                }
+                R.id.item_more -> {
+                    val fragment = MoreFragment.newInstance()
+                    replaceFragment(fragment)
                 }
             }
             return@setOnNavigationItemSelectedListener true
