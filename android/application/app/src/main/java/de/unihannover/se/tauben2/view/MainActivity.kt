@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,33 +15,30 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.item_news -> {
-                    val fragment = NewsFragment.newInstance()
-                    replaceFragment(fragment)
+                    replaceFragment(NewsFragment.newInstance())
                 }
                 R.id.item_counter -> {
-                    val fragment = CounterFragment.newInstance()
-                    replaceFragment(fragment)
+                    replaceFragment(CounterFragment.newInstance())
                 }
                 R.id.item_cases -> {
-                    val fragment = CasesFragment.newInstance()
-                    replaceFragment(fragment)
+                    replaceFragment(CasesFragment.newInstance())
                 }
                 R.id.item_graphs -> {
-                    val fragment = GraphsFragment.newInstance()
-                    replaceFragment(fragment)
+                    replaceFragment(GraphsFragment.newInstance())
                 }
                 R.id.item_more -> {
-                    val fragment = MoreFragment.newInstance()
-                    replaceFragment(fragment)
+                    replaceFragment(MoreFragment.newInstance())
                 }
             }
             return@setOnNavigationItemSelectedListener true
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_fragment, fragment)
+    override fun replaceFragment(fragment:Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_fragment, fragment, fragment.toString())
+        fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
     }
 }

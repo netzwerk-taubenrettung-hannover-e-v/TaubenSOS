@@ -7,11 +7,11 @@
     android:id="@+id/linearLayout"
     android:background="#FFFFFF">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/more_navigation"
+    <TextView android:text="Contact"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start|left"
-        app:menu="@menu/more" />
+        android:layout_height="wrap_content" android:id="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" android:textStyle="bold" android:textSize="100sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
