@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 
-class CounterFragment : Fragment() {
+class ContactFragment : Fragment() {
 
     companion object {
-        fun newInstance(): CounterFragment {
-            return CounterFragment()
+        fun newInstance(): ContactFragment {
+            return ContactFragment()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_counter, container, false)
+        return inflater.inflate(R.layout.fragment_contact, container, false)
     }
 }
