@@ -2,7 +2,7 @@ from api import db, ma
 
 class Case(db.Model):
     __tablename__ = "case"
-    caseID = db.Column(db.String(9), primary_key=True)
+    caseID = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
     priority = db.Column(db.Integer)
     media1 = db.Column(db.String(255))
