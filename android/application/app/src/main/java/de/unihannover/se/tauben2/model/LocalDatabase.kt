@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import de.unihannover.se.tauben2.model.dao.CaseDao
+import de.unihannover.se.tauben2.model.dao.InjuryDao
+import de.unihannover.se.tauben2.model.dao.UserDao
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.entity.Injury
 import de.unihannover.se.tauben2.model.entity.PigeonCounter
@@ -30,4 +33,10 @@ abstract class LocalDatabase : RoomDatabase() {
                 "local-database"
         ).build()
     }
+
+    abstract fun caseDao(): CaseDao
+
+    abstract fun injuryDao(): InjuryDao
+
+    abstract fun userDao(): UserDao
 }

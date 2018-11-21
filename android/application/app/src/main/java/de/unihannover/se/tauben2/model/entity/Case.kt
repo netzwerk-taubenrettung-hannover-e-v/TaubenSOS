@@ -12,14 +12,22 @@ import androidx.room.PrimaryKey
         foreignKeys = [
             ForeignKey(entity = Injury::class, parentColumns = ["id"], childColumns = ["injury_id"])
         ])
-data class Case(@PrimaryKey(autoGenerate = true) val id: Int,
-                var coordinates: String, // TODO Coordinate class and converter?
-                var status: String, // TODO Status Enum + converter
-                var priority: Int, // TODO Priority Enum
-                var picture1Path: String?,
-                var picture2Path: String?,
-                var picture3Path: String?,
-                var weddingPigeon: Boolean,
-                var carrierPigeon: Boolean,
+data class Case(@PrimaryKey val caseID: Int,
+                var additionalInfo: String?,
+
+                var isClosed: Boolean,
+                var isWeddingPigeon: Boolean,
+                var isCarrierPigeon: Boolean,
+
+                var latitude: Double,
+                var longitude: Double,
+
+                var rescuer: String?,
+                var priority: Int,
+                var timestamp: Long,
+                var phone: String,
+                var wasFoundDead: Boolean,
+                var media: List<String>,
+
                 @ColumnInfo(name = "injury_id") var injury: Int
 )
