@@ -28,7 +28,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun loadFromDb(): LiveData<List<Case>> {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            database.caseDao().
         }
 
         override fun createCall()= service.getCases()

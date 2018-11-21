@@ -12,6 +12,6 @@ import java.util.*
 data class PigeonCounter(@PrimaryKey(autoGenerate = true) val id: Int,
                          var latitude: Double,
                          var longitude: Double,
-                         var date: Date,
+//                         var date: Date,
                          var numberOfPigeons: Int
 )
