@@ -2,7 +2,7 @@ from api import db, ma
 
 class Injury(db.Model):
     __tablename__ = "injury"
-    caseID = db.Column(db.Integer, primary_Key=True, db.foreignKey('case.caseID'))
+    caseID = db.Column(db.Integer, db.ForeignKey("case.caseID"), primary_key=True)
     footOrLeg = db.Column(db.Boolean, nullable=False)
     wing = db.Column(db.Boolean, nullable=False)
     headOrEye = db.Column(db.Boolean, nullable=False)
@@ -10,7 +10,6 @@ class Injury(db.Model):
     paralyzedOrFlightless = db.Column(db.Boolean, nullable=False)
     fledgling = db.Column(db.Boolean, nullable=False)
     other = db.Column(db.Boolean, nullable=False)
-    case = db.relationship("Case", back_populates="injury")
 
     def __init__(self, footOrLeg, wing, headOrEye, openWound, paralyzedOrFlightless, fledgling, other):
         self.footOrLeg = footOrLeg

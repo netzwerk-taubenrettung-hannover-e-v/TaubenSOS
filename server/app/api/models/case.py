@@ -1,4 +1,6 @@
+from marshmallow import fields
 from api import db, ma
+from api.models import injury
 
 class Case(db.Model):
     __tablename__ = "case"
@@ -17,6 +19,7 @@ class Case(db.Model):
     longitude = db.Column(db.Float)
     wasFoundDead = db.Column(db.Boolean)
     isClosed = db.Column(db.Boolean)
+    injury = db.relationship("Injury", backref="case", lazy=True, uselist=False)
 
     def __init__(self, timestamp, priority, media1, media2, media3, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed):
         self.timestamp = timestamp
@@ -54,6 +57,7 @@ class Case(db.Model):
         return Case.query.get(caseID)
 
 class CaseSchema(ma.ModelSchema):
+    timestamp = fields.DateTime("%s")
     class Meta:
         model = Case
         sqla_session = db.session
