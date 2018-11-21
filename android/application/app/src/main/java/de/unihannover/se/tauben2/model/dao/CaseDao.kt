@@ -13,4 +13,7 @@ interface CaseDao : BaseDao<Case> {
 
     @Query("SELECT * FROM `case` WHERE caseID = :caseId")
     fun getCase(caseId: Int): LiveData<Case>
+
+    @Query("SELECT * FROM `case`")
+    fun getCases(): LiveData<List<Case>>
 }
