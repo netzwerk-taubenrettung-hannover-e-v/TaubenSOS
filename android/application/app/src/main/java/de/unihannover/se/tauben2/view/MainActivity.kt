@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
@@ -21,7 +23,9 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                     replaceFragment(CounterFragment.newInstance())
                 }
                 R.id.item_cases -> {
-                    replaceFragment(CasesFragment.newInstance())
+                    val fragment = CasesFragment.newInstance()
+                    getViewModel(CaseViewModel::class.java).cases.observe(this, fragment)
+                    replaceFragment(fragment)
                 }
                 R.id.item_graphs -> {
                     replaceFragment(GraphsFragment.newInstance())
