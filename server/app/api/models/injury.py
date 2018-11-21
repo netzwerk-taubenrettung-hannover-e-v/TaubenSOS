@@ -1,9 +1,8 @@
 from api import db, ma
-import case
 
 class Injury(db.Model):
     __tablename__ = "injury"
-    caseID = db.Column(db.integer, primary_Key=True, db.foreignKey('Case.caseID'))
+    caseID = db.Column(db.Integer, primary_Key=True, db.foreignKey('case.caseID'))
     footOrLeg = db.Column(db.Boolean, nullable=False)
     wing = db.Column(db.Boolean, nullable=False)
     headOrEye = db.Column(db.Boolean, nullable=False)
