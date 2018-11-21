@@ -37,8 +37,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    // room
 
-    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha02'
+    // Retrofit (HTTP-Library)
+    def retrofit_version = "2.4.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // Room (SQLite-Library)
+    def room_version = "2.1.0-alpha02"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
