@@ -12,13 +12,12 @@ def read_stats():
 @bp.route("population", methods=["POST"], strict_slashes=False)
 def create_stat():
 	if request.method == "POST":
-		pigeoncount = request.json["pigeoncount"]
+		pigeonCount = request.json["pigeoncount"]
 		latitude = request.json["latitude"]
 		longitude = request.json["longitude"]
 
-		population = Population(pigeoncount=pigeoncount,
+		population = Population(pigeonCount=pigeonCount,
 					latitude=latitude,
 					longitude=longitude)
 		population.save()
-		print(population)
 		return population_schema.jsonify(population), 201

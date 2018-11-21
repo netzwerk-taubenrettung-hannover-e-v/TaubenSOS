@@ -4,12 +4,12 @@ from datetime import datetime
 class Population(db.Model):
 	__tablename__ = "population"
 	timestamp = db.Column(db.DateTime, primary_key=True, default=datetime.utcnow)
-	pigeoncount = db.Column(db.Integer)
+	pigeonCount = db.Column(db.Integer)
 	latitude = db.Column(db.Float, primary_key=True)
 	longitude = db.Column(db.Float, primary_key=True)
 
-	def __init__(self, pigeoncount, latitude, longitude):
-		self.pigeoncount = pigeoncount
+	def __init__(self, pigeonCount, latitude, longitude):
+		self.pigeonCount = pigeonCount
 		self.latitude = latitude
 		self.longitude = longitude
 
