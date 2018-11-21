@@ -7,6 +7,6 @@ import de.unihannover.se.tauben2.model.entity.Injury
  * This class provides methods for accessing Injury objects in the Local Database
  */
 @Dao
-interface InjuryDao : BaseDao<Injury> {
+abstract class PigeonCounterDao : BaseDao<PigeonCounter> {
 
 }

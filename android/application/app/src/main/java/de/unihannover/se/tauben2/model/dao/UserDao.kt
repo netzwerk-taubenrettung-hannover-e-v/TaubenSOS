@@ -7,6 +7,6 @@ import de.unihannover.se.tauben2.model.entity.User
  * This class provides methods for accessing User objects in the Local Database
  */
 @Dao
-abstract class UserDao : BaseDao<User> {
+interface UserDao : BaseDao<User> {
 
 }
