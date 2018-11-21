@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.filter
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 }
                 R.id.item_cases -> {
                     val fragment = CasesFragment.newInstance()
-                    getViewModel(CaseViewModel::class.java).cases.observe(this, fragment)
+                    getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
                     replaceFragment(fragment)
                 }
                 R.id.item_graphs -> {
