@@ -1,12 +1,19 @@
 package de.unihannover.se.tauben2.model
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.entity.Injury
+import de.unihannover.se.tauben2.model.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.entity.User
 
-
-@Database(entities = [], version = 1)
+/**
+ * class with capability to create and retrieve a RoomDatabase singleton object which represents
+ * the local SQLite Database
+ */
+@Database(entities = [Case::class, Injury::class, User::class, PigeonCounter::class], version = 1)
 abstract class LocalDatabase : RoomDatabase() {
 
     companion object {

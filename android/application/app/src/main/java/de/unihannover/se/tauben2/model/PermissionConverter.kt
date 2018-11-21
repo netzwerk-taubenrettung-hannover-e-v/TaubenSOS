@@ -1,6 +1,6 @@
 package de.unihannover.se.tauben2.model
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import java.security.Permissions
 import kotlin.reflect.KClass
 
