@@ -20,4 +20,7 @@ def create_app(config_name):
     from api.routes import case
     app.register_blueprint(case.bp)
 
+    from api.routes import population
+    app.register_blueprint(population.bp)
+
     return app
