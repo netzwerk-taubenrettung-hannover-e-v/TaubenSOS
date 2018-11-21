@@ -20,16 +20,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            database.caseDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<Case>?): Boolean {
             return true
         }
 
-        override fun loadFromDb(): LiveData<List<Case>> {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        override fun loadFromDb() = database.caseDao().getCases()
 
         override fun createCall()= service.getCases()
 
@@ -37,16 +35,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getCase(id: Int) = object : NetworkBoundResource<Case, Case>(appExecutors) {
         override fun saveCallResult(item: Case) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            database.caseDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: Case?): Boolean {
             return true
         }
 
-        override fun loadFromDb(): LiveData<Case> {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        override fun loadFromDb() = database.caseDao().getCase(id)
 
         override fun createCall() = service.getCase(id)
 
