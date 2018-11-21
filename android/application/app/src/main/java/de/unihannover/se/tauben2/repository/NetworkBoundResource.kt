@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import de.unihannover.se.tauben2.AppExecutors
+import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.network.Resource
 
 /**
@@ -107,7 +108,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
      * @return answer from API call
      */
     @MainThread
-    protected abstract fun createCall(): LiveData<Resource<RequestType>>
+    protected abstract fun createCall(): LiveDataRes<RequestType>
 
     /**
      * Called when the fetch fails. The child class may want to reset components like rate limiter.
@@ -120,5 +121,5 @@ abstract class NetworkBoundResource<ResultType, RequestType>
      *
      * @return result as LiveData object
      */
-    fun getAsLiveData(): LiveData<Resource<ResultType>> = result
+    fun getAsLiveData(): LiveDataRes<ResultType> = result
 }
