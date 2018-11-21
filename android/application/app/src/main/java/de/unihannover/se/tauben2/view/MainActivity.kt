@@ -1,8 +1,10 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
 import de.unihannover.se.tauben2.getViewModel
@@ -24,9 +26,12 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                     replaceFragment(CounterFragment.newInstance())
                 }
                 R.id.item_cases -> {
-                    val fragment = CasesFragment.newInstance()
-                    getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
-                    replaceFragment(fragment)
+                    val fragment = CasesFragment.newInstance(App.CURRENT_PERMISSION)
+                    if(fragment != null){
+                        getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
+                        replaceFragment(fragment)
+                    } else
+                        Toast.makeText(this, "No access!", Toast.LENGTH_LONG).show()
                 }
                 R.id.item_graphs -> {
                     replaceFragment(GraphsFragment.newInstance())

@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2
 
 import android.app.Application
+import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.model.network.LiveDataCallAdapterFactory
 import de.unihannover.se.tauben2.model.network.NetworkService
 import retrofit2.Retrofit
@@ -13,6 +14,7 @@ class App: Application() {
 
     companion object {
         private lateinit var mNetworkService: NetworkService
+        val CURRENT_PERMISSION = Permission.GUEST
 
         fun getNetworkService() = mNetworkService
     }
