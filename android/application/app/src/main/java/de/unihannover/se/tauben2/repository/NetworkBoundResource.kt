@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.MainThread
@@ -61,7 +62,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                         }
                     }
                 } else {
-                    onFetchFailed()
+                    onFetchFailed(this?.message ?:"")
                     result.addSource(dbSource) { result.value = Resource.error (this?.message ?: "Unknown error occurred.")}
                 }
             }
@@ -114,7 +115,9 @@ abstract class NetworkBoundResource<ResultType, RequestType>
      * Called when the fetch fails. The child class may want to reset components like rate limiter.
      */
     @MainThread
-    protected fun onFetchFailed(){}
+    protected fun onFetchFailed(message: String){
+        Log.e("Error", "At NetworkBoundResource: $message")
+    }
 
     /**
      * Returns a LiveData object that represents the resource that's implemented in the base class.
