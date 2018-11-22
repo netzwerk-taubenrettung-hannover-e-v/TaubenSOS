@@ -27,7 +27,7 @@ data class Case(@PrimaryKey var caseID: Int,
 //                var timestamp: Long,
                 var phone: String,
                 var wasFoundDead: Boolean,
-//                var media: List<String>,
+                var media: List<String>,
 
                 @ColumnInfo(name = "injury_id") var injury: Int
 )
