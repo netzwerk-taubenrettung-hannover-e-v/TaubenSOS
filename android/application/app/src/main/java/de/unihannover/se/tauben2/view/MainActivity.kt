@@ -1,12 +1,15 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
@@ -14,6 +17,8 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
             when (item.itemId) {
