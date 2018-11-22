@@ -15,7 +15,9 @@
         android:adjustViewBounds="true"
         android:background="@drawable/maps" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <fragment
+        android:id="@+id/counter_fragment"
+        android:name="de.unihannover.se.tauben2.view.CounterListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/imageView2"
