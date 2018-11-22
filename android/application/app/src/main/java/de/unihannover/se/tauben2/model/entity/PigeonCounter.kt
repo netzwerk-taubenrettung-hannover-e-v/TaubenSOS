@@ -1,17 +1,17 @@
 package de.unihannover.se.tauben2.model.entity
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.util.*
 
 
 /**
  * Entity for storing count data of pigeons
+ * @param latitude latitude coordinate
+ * @param longitude longitude coordinate
+ * @param timestamp unix timestamp when the pigeons where counted
  */
-@Entity(tableName = "population")
-data class PigeonCounter(@PrimaryKey(autoGenerate = true) val id: Int,
-                         var latitude: Double,
+@Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "timestamp"])
+data class PigeonCounter(var latitude: Double,
                          var longitude: Double,
-//                         var date: Date,
-                         var numberOfPigeons: Int
+                         var timestamp: Long,
+                         var numberOfPigeons: Long
 )
