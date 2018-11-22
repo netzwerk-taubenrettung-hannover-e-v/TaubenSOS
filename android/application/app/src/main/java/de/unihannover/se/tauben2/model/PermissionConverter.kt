@@ -8,9 +8,11 @@ class PermissionConverter{
 
     companion object {
         @TypeConverter
+        @JvmStatic
         fun toInteger(enum : Permission) = enum.ordinal
 
         @TypeConverter
+        @JvmStatic
         fun toPermission(ord : Int) = when (ord ){
             0->Permission.ADMIN
             1->Permission.AUTHORISED
