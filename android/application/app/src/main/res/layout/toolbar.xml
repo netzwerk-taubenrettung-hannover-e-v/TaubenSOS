@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:elevation="4dp"
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/material_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- app_icon_size: 48dp; toolbar height: 56dp -->
+    <ImageView
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
         android:elevation="4dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="8dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="#FFFFFF"
-        android:text="@string/taube_melden" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_logo" />
 
 </androidx.appcompat.widget.Toolbar>
+
+

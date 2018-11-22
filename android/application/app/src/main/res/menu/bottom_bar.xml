@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/item_news"
         android:title="News"
-        android:icon="@drawable/ic_today_white_24dp"/>
+        android:icon="@drawable/ic_today_white_24dp" />
+
     <item android:id="@+id/item_counter"
         android:title="Counter"
-        android:icon="@drawable/ic_bubble_chart_white_24dp"/>
+        android:icon="@drawable/ic_bubble_chart_white_24dp" />
+
     <item android:id="@+id/item_cases"
         android:title="Cases"
-        android:icon="@drawable/ic_assignment_white_24dp"/>
+        android:icon="@drawable/ic_assignment_white_24dp" />
+
     <item android:id="@+id/item_graphs"
         android:title="Graphs"
-        android:icon="@drawable/ic_show_chart_white_24dp"/>
+        android:icon="@drawable/ic_show_chart_white_24dp" />
+
     <item android:id="@+id/item_more"
         android:title="More"
-        android:icon="@drawable/ic_more_horiz_white_24dp"/>
+        android:icon="@drawable/ic_more_horiz_white_24dp" />
+
 </menu>

@@ -2,8 +2,13 @@ package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.widget.Toolbar
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.ToolbarWidgetWrapper
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
@@ -18,8 +23,13 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        // Toolbar Settings
+        var toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        // toolbar.setLogo(R.drawable.ic_logo)
 
+        // Bottom Navigation Event Handler
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.item_news -> {
@@ -42,6 +52,13 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
             }
             return@setOnNavigationItemSelectedListener true
         }
+    }
+
+    // Add "Report a Dove"-Btn to the Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 
     override fun replaceFragment(fragment:Fragment) {
