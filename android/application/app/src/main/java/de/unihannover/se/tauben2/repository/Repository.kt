@@ -6,7 +6,6 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.LocalDatabase
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.network.NetworkService
-import de.unihannover.se.tauben2.model.network.Resource
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -27,9 +26,15 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return true
         }
 
-        override fun loadFromDb() = database.caseDao().getCases()
+        override fun loadFromDb(): LiveData<List<Case>> {
+            val res = database.caseDao().getCases()
+            return res
+        }
 
-        override fun createCall()= service.getCases()
+        override fun createCall(): LiveDataRes<List<Case>> {
+            val res = service.getCases()
+            return res
+        }
 
     }.getAsLiveData()
 
