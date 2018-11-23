@@ -11,7 +11,6 @@ import de.unihannover.se.tauben2.model.LimitedAccessible
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.network.Resource
-import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
 
@@ -23,12 +22,13 @@ class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
 
     override fun onChanged(cases: Resource<List<Case>>?) {
         if(cases?.status?.isSuccessful() == true) {
-            view?.textView?.text = cases.data?.get(0)?.additionalInfo ?:"Probleme beim Laden"
+            // view?.textView?.text = cases.data?.get(0)?.additionalInfo ?:"Probleme beim Laden"
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_cases, container, false)
     }
 }
