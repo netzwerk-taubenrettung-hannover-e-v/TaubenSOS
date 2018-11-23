@@ -9,7 +9,7 @@ import de.unihannover.se.tauben2.model.dao.CaseDao
 import de.unihannover.se.tauben2.model.dao.InjuryDao
 import de.unihannover.se.tauben2.model.dao.UserDao
 import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.Injury
+import de.unihannover.se.tauben2.model.entity.InjuryEntity
 import de.unihannover.se.tauben2.model.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.entity.User
 
@@ -17,7 +17,7 @@ import de.unihannover.se.tauben2.model.entity.User
  * class with capability to create and retrieve a RoomDatabase singleton object which represents
  * the local SQLite Database
  */
-@Database(entities = [Case::class, Injury::class, User::class, PigeonCounter::class], exportSchema = false, version = 1)
+@Database(entities = [Case::class, InjuryEntity::class, User::class, PigeonCounter::class], exportSchema = false, version = 1)
 @TypeConverters(StringListConverter::class, PermissionConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 

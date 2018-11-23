@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
         bottom_navigation.setStartFragmentListener { fragment ->
             when (fragment) {
-                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
+                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.observe(this, fragment)
             }
             replaceFragment(fragment)
         }
