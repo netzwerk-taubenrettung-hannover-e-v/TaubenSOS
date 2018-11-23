@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Tauben2</string>
     <string name="taube_melden">Taube melden</string>
-    <string name="title_activity_maps">Map</string>
 </resources>

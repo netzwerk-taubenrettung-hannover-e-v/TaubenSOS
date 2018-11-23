@@ -7,16 +7,16 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="de.unihannover.se.tauben2.view.MapViewFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="300dp"
-        android:visibility="visible"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".view.CasesFragment" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
