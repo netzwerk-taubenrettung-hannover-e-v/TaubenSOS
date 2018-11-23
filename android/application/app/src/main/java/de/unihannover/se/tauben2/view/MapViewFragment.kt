@@ -19,10 +19,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 
-
-
-
-
 class MapViewFragment : Fragment(), Observer<Resource<List<Case>>>, OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap?) {
