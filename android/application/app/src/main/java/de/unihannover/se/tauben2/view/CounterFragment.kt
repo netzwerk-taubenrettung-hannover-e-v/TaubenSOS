@@ -26,13 +26,6 @@ class CounterFragment : Fragment() {
 
         val view = inflater.inflate(fragment_counter, container, false)
 
-        var rv = view.findViewById(R.id.recycler_view) as RecyclerView
-        layoutManager = LinearLayoutManager(activity)
-        rv.layoutManager = layoutManager
-
-        adapter = AdapterList()
-        rv.adapter = adapter
-
         return view
     }
 
