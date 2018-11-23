@@ -10,6 +10,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Permission
+import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*

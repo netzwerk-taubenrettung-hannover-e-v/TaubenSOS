@@ -46,4 +46,6 @@ class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
 
         return view
     }
+
+
 }
