@@ -37,7 +37,7 @@ class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
         val view = inflater.inflate(R.layout.fragment_cases, container, false)
 
         var rv = view.findViewById(R.id.recycler_view) as RecyclerView
-        layoutManager = LinearLayoutManager(activity)
+        layoutManager = LinearLayoutManager(context)
         rv.layoutManager = layoutManager
 
         adapter = AdapterList()

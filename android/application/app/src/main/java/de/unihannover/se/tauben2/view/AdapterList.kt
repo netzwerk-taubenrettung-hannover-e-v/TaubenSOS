@@ -21,8 +21,8 @@ class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var itemTitle: TextView = itemView.findViewById(R.id.card_title)
-        var itemDetail: TextView = itemView.findViewById(R.id.card_subtitle)
+        //var itemTitle: TextView = itemView.findViewById(R.id.card_title)
+        //var itemDetail: TextView = itemView.findViewById(R.id.card_subtitle)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -32,8 +32,8 @@ class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = titles[i]
-        viewHolder.itemDetail.text = details[i]
+        //viewHolder.itemTitle.text = titles[i]
+        //viewHolder.itemDetail.text = details[i]
     }
 
     override fun getItemCount(): Int {
