@@ -16,11 +16,8 @@ import kotlinx.android.synthetic.main.fragment_cases.view.*
 class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
 
     companion object: LimitedAccessible {
-        fun newInstance(permission: Permission): CasesFragment? {
-            return if(hasPermission(permission))
-                CasesFragment()
-            else
-                null
+        fun newInstance(): CasesFragment {
+            return CasesFragment()
         }
 
         override fun hasPermission(permission: Permission) = permission == Permission.ADMIN

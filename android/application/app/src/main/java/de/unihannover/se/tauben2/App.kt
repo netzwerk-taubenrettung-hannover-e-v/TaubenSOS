@@ -14,7 +14,7 @@ class App: Application() {
 
     companion object {
         private lateinit var mNetworkService: NetworkService
-        val CURRENT_PERMISSION = Permission.GUEST
+        val CURRENT_PERMISSION = Permission.ADMIN
 
         fun getNetworkService() = mNetworkService
     }

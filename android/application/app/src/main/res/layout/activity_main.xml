@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <de.unihannover.se.tauben2.view.navigation.DynamicBottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +26,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_bar"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+
         />
+        <!--app:menu="@menu/bottom_bar"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
