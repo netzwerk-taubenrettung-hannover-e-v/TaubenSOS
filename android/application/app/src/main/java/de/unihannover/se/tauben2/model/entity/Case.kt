@@ -24,10 +24,12 @@ data class Case(@PrimaryKey var caseID: Int,
 
                 var rescuer: String?,
                 var priority: Int,
-//                var timestamp: Long,
+                var timestamp: Long,
                 var phone: String,
-                var wasFoundDead: Boolean,
-                var media: List<String>,
 
-                @ColumnInfo(name = "injury_id") var injury: Int
+                var wasFoundDead: Boolean
+//                var media: List<String>,
+
+
+//                @ColumnInfo(name = "injury_id") var injury: Int
 )

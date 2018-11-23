@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.R.layout.fragment_counter
 
 class CounterFragment : Fragment() {
 
@@ -17,6 +17,8 @@ class CounterFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_counter, container, false)
+
+        return inflater.inflate(fragment_counter, container, false)
     }
+
 }
