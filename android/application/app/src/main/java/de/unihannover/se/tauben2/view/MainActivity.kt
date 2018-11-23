@@ -1,7 +1,10 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
@@ -16,6 +19,12 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Toolbar Settings
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         initBottomNavigation()
     }
 
@@ -32,14 +41,21 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         )
 
         bottom_navigation.setStartFragmentListener { fragment ->
-            when(fragment) {
+            when (fragment) {
                 is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
-                else -> replaceFragment(fragment)
             }
+            replaceFragment(fragment)
         }
     }
 
-    override fun replaceFragment(fragment: Fragment) {
+    // Add "Report a Dove"-Btn to the Toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun replaceFragment(fragment:Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.main_fragment, fragment, fragment.toString())

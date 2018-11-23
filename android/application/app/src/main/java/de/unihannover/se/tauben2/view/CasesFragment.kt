@@ -15,12 +15,10 @@ import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
 
-    companion object: LimitedAccessible {
+    companion object {
         fun newInstance(): CasesFragment {
             return CasesFragment()
         }
-
-        override fun hasPermission(permission: Permission) = permission == Permission.ADMIN
     }
 
     override fun onChanged(cases: Resource<List<Case>>?) {
