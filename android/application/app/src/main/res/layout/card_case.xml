@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@{c.sinceString}"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_text_card_title"
                 app:layout_constraintStart_toEndOf="@+id/elapsed_time_text_card_title"
                 app:layout_constraintTop_toTopOf="@+id/elapsed_time_text_card_title" />
@@ -71,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{``+ c.priority}"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/priority_text_card_title" />
@@ -89,6 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="x km"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/distance_text_card_title" />
@@ -151,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="#2018012345"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/case_id_card_title"
                     app:layout_constraintStart_toEndOf="@+id/case_id_card_title"
                     app:layout_constraintTop_toTopOf="@+id/case_id_card_title" />
@@ -171,6 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="28.06 14:12 Uhr"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/date_time_card_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/date_time_card_title" />
@@ -235,6 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="- headless"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/injury_card_title"
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_title" />
 
@@ -275,6 +281,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="no user assigned"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/user_card_title"
                     app:layout_constraintStart_toEndOf="@+id/user_card_title"
                     app:layout_constraintTop_toTopOf="@+id/user_card_title" />

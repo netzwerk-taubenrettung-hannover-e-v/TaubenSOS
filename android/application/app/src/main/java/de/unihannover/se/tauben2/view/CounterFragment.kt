@@ -28,6 +28,7 @@ class CounterFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(fragment_counter, container, false)
 
         view.findViewById<View>(R.id.changedate_button).setOnClickListener(this)
+        view.findViewById<View>(R.id.resetdate_button).setOnClickListener(this)
         view.findViewById<View>(R.id.plus_button).setOnClickListener(this)
         view.findViewById<View>(R.id.minus_button).setOnClickListener(this)
         view.findViewById<View>(R.id.send_count_button).setOnClickListener(this)
@@ -41,6 +42,9 @@ class CounterFragment : Fragment(), View.OnClickListener {
 
             changedate_button -> {
                 // change Date and Time fragment or popup
+            }
+            resetdate_button -> {
+                // reset Date and Time to the actual timestamp
             }
             plus_button -> {
                 val value = if (counter_value.text.isNullOrEmpty()) { 0 } else { Integer.parseInt(counter_value.text.toString()) }
