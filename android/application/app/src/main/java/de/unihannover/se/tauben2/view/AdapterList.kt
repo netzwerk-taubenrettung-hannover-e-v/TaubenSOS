@@ -3,16 +3,19 @@ package de.unihannover.se.tauben2.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import de.unihannover.se.tauben2.R
-import androidx.core.view.ViewCompat.setActivated
-import de.unihannover.se.tauben2.R.id.image_card
-import kotlinx.android.synthetic.main.card_counter.view.*
+import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.network.Resource
+import kotlinx.android.synthetic.main.card_case.view.*
 
+@Deprecated("Replaced by CasesRecyclerFragment")
+class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>(), Observer<Resource<List<Case>>> {
 
-class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>() {
+    override fun onChanged(t: Resource<List<Case>>?) {
+
+    }
 
     private var mExpandedPosition = -1
     // private val recyclerView: RecyclerView? = null
@@ -35,7 +38,7 @@ class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.card_counter, viewGroup, false)
+                .inflate(R.layout.card_case, viewGroup, false)
         return ViewHolder(v)
     }
 
@@ -51,7 +54,7 @@ class AdapterList : RecyclerView.Adapter<AdapterList.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         //super.onBindViewHolder(holder, position, payloads)
 
-        val isExpanded = position === mExpandedPosition
+        val isExpanded = position == mExpandedPosition
 
         holder.itemView.expand_card.visibility = if (isExpanded) View.VISIBLE else View.GONE
         holder.itemView.isActivated = isExpanded

@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 
 class CounterFragment : Fragment() {
@@ -25,7 +23,6 @@ class CounterFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(fragment_counter, container, false)
-
         return view
     }
 

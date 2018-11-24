@@ -1,9 +1,12 @@
 package de.unihannover.se.tauben2.model.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.model.MapMarkable
+import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 
 /**
  * represents the case of an injured pigeon
@@ -30,4 +33,16 @@ data class Case(@PrimaryKey var caseID: Int,
 //                var media: List<String>,
 
 //                @ColumnInfo(name = "injury_id") var injury: Int
-)
+) : RecyclerItem, MapMarkable {
+
+    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title("Priorität: $priority").snippet(additionalInfo)
+
+    override fun getType() = RecyclerItem.Type.ITEM
+
+    fun getSinceString(): String {
+        val diff = (System.currentTimeMillis()/1000 - timestamp).toDouble() / 60 //in minutes
+        if(diff > 1440)
+            return "${(diff/1440).toInt()}  " + if(diff < 2880) "Tag" else "Tagen"
+        return "${(diff/60).toInt()} h ${ diff % 60 } min"
+    }
+}

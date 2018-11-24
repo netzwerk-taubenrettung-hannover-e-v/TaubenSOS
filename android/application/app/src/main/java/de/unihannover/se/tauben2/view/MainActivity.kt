@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+
+
         initBottomNavigation()
     }
 
@@ -42,9 +44,9 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         )
 
         bottom_navigation.setStartFragmentListener { fragment ->
-            when (fragment) {
-                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
-            }
+//            when (fragment) {
+//                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
+//            }
             replaceFragment(fragment)
         }
     }

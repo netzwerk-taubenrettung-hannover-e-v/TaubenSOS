@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -23,7 +24,15 @@ fun <ResultType> Response<ResultType>.toResource(): Resource<ResultType> {
     }
 }
 
-fun <T: BaseViewModel> FragmentActivity.getViewModel(modelClass: Class<T>): T  = ViewModelProviders.of(this, ViewModelFactory(this)).get(modelClass)
+fun <T: ViewModel> FragmentActivity.getViewModel(modelClass: Class<T>): T  = ViewModelProviders.of(this, ViewModelFactory(this)).get(modelClass)
+
+fun <T: ViewModel> Fragment.getViewModel(modelClass: Class<T>): T? {
+    this.context?.let {
+        return ViewModelProviders.of(this, ViewModelFactory(it)).get(modelClass)
+    }
+    return null
+}
+
 
 fun <X> LiveDataRes<List<X>>.filter(func: (X) -> Boolean): LiveDataRes<List<X>> = Transformations.map(this) {
     var result: Resource<List<X>>? = null

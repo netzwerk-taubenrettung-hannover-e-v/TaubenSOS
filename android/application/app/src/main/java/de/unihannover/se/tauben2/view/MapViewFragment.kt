@@ -7,38 +7,58 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.network.Resource
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.model.MapMarkable
+import de.unihannover.se.tauben2.model.network.Resource
+import kotlinx.android.synthetic.main.fragment_map.view.*
 
-class MapViewFragment : Fragment(), Observer<Resource<List<Case>>>, OnMapReadyCallback {
+class MapViewFragment : Fragment(), Observer<Resource<List<MapMarkable>>> {
 
-    override fun onMapReady(p0: GoogleMap?) {
+    private var mMap: GoogleMap? = null
 
-    }
+    private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
 
-    override fun onChanged(t: Resource<List<Case>>?) {
+    override fun onChanged(data: Resource<List<MapMarkable>>?) {
+        if(data?.data == null) return
 
+        if(data.status.isSuccessful()) {
+
+            if(mMarkers.isEmpty()) {
+                data.data.forEach { mMarkers[it] = null }
+                setCaseMarkers(data.data)
+                return
+            }
+
+            val cases = data.data.toMutableList()
+            loop@ for((oldCase, oldMarker) in mMarkers) {
+                for(newCase in cases) {
+                    if(oldCase == newCase) {
+                        cases.remove(oldCase)
+                        continue@loop
+                    }
+                }
+                oldMarker?.remove()
+                mMarkers.remove(oldCase)
+            }
+            setCaseMarkers(cases)
+        }
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
     @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.fragment_map, container, false)
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
 
-        var mMapView = view.findViewById(R.id.mapView) as MapView
-        mMapView.onCreate(savedInstanceState)
+        view.mapView.onCreate(savedInstanceState)
 
-        mMapView.onResume() // needed to get the map to display immediately
+        view.mapView.onResume() // needed to get the map to display immediately
 
         try {
             MapsInitializer.initialize(activity!!.applicationContext)
@@ -46,22 +66,33 @@ class MapViewFragment : Fragment(), Observer<Resource<List<Case>>>, OnMapReadyCa
             e.printStackTrace()
         }
 
-        mMapView.getMapAsync { mMap ->
-            var googleMap = mMap
+        view.mapView.getMapAsync { map ->
+            mMap = map
 
             // For showing a move to my location button
-            googleMap.isMyLocationEnabled = true
+            map.isMyLocationEnabled = true
 
-            // For dropping a marker at a point on the Map
-            val sydney = LatLng(-34.0, 151.0)
-            googleMap.addMarker(MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"))
+            // TODO Find best bound coordinates
+            val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
+            map.setLatLngBoundsForCameraTarget(bounds)
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
 
-            // For zooming automatically to the location of the marker
-            val cameraPosition = CameraPosition.Builder().target(sydney).zoom(12f).build()
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            setCaseMarkers(mMarkers.keys)
+
         }
 
         return view
     }
+
+    private fun setCaseMarkers(markers: Collection<MapMarkable>) {
+        mMap?.let { map ->
+            markers.forEach { marker ->
+                if(mMarkers[marker] == null)
+                    mMarkers[marker] = map.addMarker(marker.getMarker())
+            }
+        }
+    }
+
+
 
 }
