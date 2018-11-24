@@ -23,4 +23,7 @@ def create_app(config_name):
     from api.routes import population
     app.register_blueprint(population.bp)
 
+    from api.routes import user
+    app.register_blueprint(user.bp)
+
     return app
