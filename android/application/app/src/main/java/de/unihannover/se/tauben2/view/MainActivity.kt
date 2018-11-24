@@ -3,8 +3,10 @@ package de.unihannover.se.tauben2.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.filter
@@ -19,14 +21,13 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        backGroundColor()
         setContentView(R.layout.activity_main)
 
         // Toolbar Settings
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-
 
         initBottomNavigation()
     }
@@ -65,5 +66,15 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         fragmentTransaction.addToBackStack(fragment.toString())
         fragmentTransaction.commit()
     }
+
+    // sets the gradient for the status bar
+    fun backGroundColor() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        // looks weird!
+        // window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        window.setBackgroundDrawableResource(R.drawable.gradient)
+    }
+
 }
 
