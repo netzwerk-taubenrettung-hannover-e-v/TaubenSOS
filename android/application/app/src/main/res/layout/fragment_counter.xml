@@ -49,6 +49,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/counter_value"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -56,6 +57,7 @@
             android:maxLength="4"
             android:lines="1"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
