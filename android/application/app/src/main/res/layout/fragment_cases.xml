@@ -4,14 +4,13 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#e6e5e6">
 
     <fragment
         android:id="@+id/map_fragment"
         android:name="de.unihannover.se.tauben2.view.MapViewFragment"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@id/recycler_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
+        android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
