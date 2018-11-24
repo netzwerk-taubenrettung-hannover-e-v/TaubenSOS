@@ -90,7 +90,7 @@
                 android:id="@+id/distance_text_card_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="x km"
+                android:text="no GPS available"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
