@@ -1,6 +1,7 @@
 from flask import (Blueprint, request)
 
 from api.models.case import (Case, case_schema, cases_schema)
+from api.models.injury import (Injury)
 
 bp = Blueprint("case", __name__, url_prefix="/api")
 
@@ -13,14 +14,30 @@ def read_cases():
 @bp.route("/case", methods=["POST"], strict_slashes=False)
 def create_case():
 	if request.method == "POST":
-		timestamp = request.json["timestamp"]
-		priority = request.json["priority"]
-		isCarrierPigeon = request.json["isCarrierPigeon"]
-		isWeddingPigeon = request.json["isWeddingPigeon"]
-		additionalInfo = request.json["additionalInfo"]
-		phone = request.json["phone"]
-		latitude = request.json["latitude"]
-		longitude = request.json["longitude"]
+		timestamp = request.json.get("timestamp")
+		priority = request.json.get("priority")
+		isCarrierPigeon = request.json.get("isCarrierPigeon")
+		isWeddingPigeon = request.json.get("isWeddingPigeon")
+		additionalInfo = request.json.get("additionalInfo")
+		phone = request.json.get("phone")
+		latitude = request.json.get("latitude")
+		longitude = request.json.get("longitude")
+
+		footOrLeg = request.json.get("injury").get("footOrLeg")
+		wing = request.json.get("injury").get("wing")
+		headOrEye = request.json.get("injury").get("headOrEye")
+		openWound = request.json.get("injury").get("openWound")
+		paralyzedOrFlightless = request.json.get("injury").get("paralyzedOrFlightless")
+		fledgling = request.json.get("injury").get("fledgling")
+		other = request.json.get("injury").get("other")
+
+		injury = Injury(footOrLeg=footOrLeg,
+						wing=wing,
+						headOrEye=headOrEye,
+						openWound=openWound,
+						paralyzedOrFlightless=paralyzedOrFlightless,
+						fledgling=fledgling,
+						other=other)
 
 		case = Case(timestamp=timestamp,
 					priority=priority,
@@ -30,10 +47,8 @@ def create_case():
 					phone=phone,
 					latitude=latitude,
 					longitude=longitude,
-					isClosed=False,
-					media1=None,
-					media2=None,
-					media3=None,
+					injury=injury,
+					isClosed=None,
 					rescuer=None,
 					wasFoundDead=None)
 		case.save()

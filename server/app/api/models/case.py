@@ -1,24 +1,25 @@
 from api import db, ma
 from api.models import injury, medium
+from datetime import datetime
 
 class Case(db.Model):
     __tablename__ = "case"
     caseID = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime)
-    priority = db.Column(db.Integer)
-    rescuer = db.Column(db.String(255))
-    isCarrierPigeon = db.Column(db.Boolean)
-    isWeddingPigeon = db.Column(db.Boolean)
-    additionalInfo = db.Column(db.String)
-    phone = db.Column(db.String(255))
-    latitude = db.Column(db.Float)
-    longitude = db.Column(db.Float)
-    wasFoundDead = db.Column(db.Boolean)
-    isClosed = db.Column(db.Boolean)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    priority = db.Column(db.Integer, nullable=False)
+    rescuer = db.Column(db.String(255), nullable=True)
+    isCarrierPigeon = db.Column(db.Boolean, nullable=False)
+    isWeddingPigeon = db.Column(db.Boolean, nullable=False)
+    additionalInfo = db.Column(db.String, nullable=True)
+    phone = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    wasFoundDead = db.Column(db.Boolean, nullable=True)
+    isClosed = db.Column(db.Boolean, nullable=False, default=False)
     injury = db.relationship("Injury", backref="case", lazy=True, uselist=False)
-    media = db.relationship("Medium", backref="case", lazy=True)
+    media = db.relationship("Medium", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed):
+    def __init__(self, timestamp, priority, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed, injury):
         self.timestamp = timestamp
         self.priority = priority
         self.rescuer = rescuer
@@ -30,6 +31,7 @@ class Case(db.Model):
         self.longitude = longitude
         self.wasFoundDead = wasFoundDead
         self.isClosed = isClosed
+        self.injury = injury
 
     def save(self):
         db.session.add(self)
