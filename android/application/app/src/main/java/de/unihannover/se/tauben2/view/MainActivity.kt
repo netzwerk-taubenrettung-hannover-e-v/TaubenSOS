@@ -1,26 +1,24 @@
 package de.unihannover.se.tauben2.view
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.filter
-import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
-import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import android.app.Activity
 
 
 
@@ -32,11 +30,12 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         backGroundColor()
         setContentView(R.layout.activity_main)
 
+        setupPermissions()
+
         // Toolbar Settings
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
         initBottomNavigation()
     }
 
@@ -82,6 +81,29 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         // looks weird!
         // window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         window.setBackgroundDrawableResource(R.drawable.gradient)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i("Permissioon2", "Permission has been denied by user")
+                } else {
+                    Log.i("Permissioon2", "Permission has been granted by user")
+                }
+            }
+        }
+    }
+
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i("Permissioon2", "Permission to record denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        }
     }
 
     //below doesnt work
