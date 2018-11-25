@@ -1,9 +1,13 @@
 package de.unihannover.se.tauben2.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -16,6 +20,9 @@ import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import android.app.Activity
+
+
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
@@ -76,6 +83,16 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         // window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         window.setBackgroundDrawableResource(R.drawable.gradient)
     }
+
+    //below doesnt work
+    //var button2= findViewById(R.id.button2) as Button
+
+    fun openFacebook(){
+        val uri = Uri.parse("http://www.google.com")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
+    }
+
 
 }
 
