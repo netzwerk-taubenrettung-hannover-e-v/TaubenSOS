@@ -7,11 +7,20 @@
     android:id="@+id/linearLayout"
     android:background="#FFFFFF">
 
-    <TextView android:text="Contact"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:id="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent" android:textStyle="bold" android:textSize="100sp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="taubenrettung_hannover@yahoo.de"
+        android:textSize="20dp"
+        android:linksClickable="true"
+        android:autoLink="email"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
