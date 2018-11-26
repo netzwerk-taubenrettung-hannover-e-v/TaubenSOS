@@ -69,14 +69,14 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
         setOnNavigationItemSelectedListener {
             if(mMoreMenuItem?.itemId == it.itemId) {
                 mMoreMenuItem?.let { moreItem ->
-                    mStartFragmentListener?.onStartFragment(moreItem.getStartFragment())
+                    mStartFragmentListener?.onStartFragment(moreItem.getFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
             }
             for(i in 0 until permissibleItems.size) {
                 val item = permissibleItems[i]
                 if (item.itemId == it.itemId) {
-                    mStartFragmentListener?.onStartFragment(item.getStartFragment())
+                    mStartFragmentListener?.onStartFragment(item.getFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
             }

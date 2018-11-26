@@ -19,15 +19,25 @@ import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import com.google.android.gms.maps.MapView
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        backGroundColor()
+
+        // Fixing Later Map loading Delay
+        Thread {
+            try {
+                val mv = MapView(applicationContext)
+                mv.onCreate(null)
+                mv.onPause()
+                mv.onDestroy()
+            } catch (ignored: Exception) {}
+        }.start()
+
+        backgroundColor()
         setContentView(R.layout.activity_main)
 
         setupPermissions()
@@ -40,14 +50,15 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     }
 
     private fun initBottomNavigation() {
+
         bottom_navigation.setMenuItems(
                 FragmentMenuItem(0, "News", R.drawable.ic_today_white_24dp) { NewsFragment.newInstance() },
-                FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) {CounterFragment.newInstance() },
-                FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) { CasesFragment.newInstance() },
-                FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) {GraphsFragment.newInstance() },
+                FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) { CounterFragment.newInstance() },
+                FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) {CasesFragment.newInstance() },
+                FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) { GraphsFragment.newInstance() },
                 FragmentMenuItem(4, "Report a Dove", R.drawable.ic_report_white_24dp) { ReportFragment.newInstance() },
                 FragmentMenuItem(5, "Emergency Call", R.drawable.ic_call_white_24dp) { EmergencyCallFragment.newInstance() },
-                FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance()},
+                FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance() },
                 FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() }
         )
 
@@ -68,14 +79,30 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
     override fun replaceFragment(fragment:Fragment) {
         val fragmentManager = supportFragmentManager
+        val fragmentTag = fragment.javaClass.name
+
+
+
+        val popped = fragmentManager.popBackStackImmediate(fragmentTag, 0)
+
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_fragment, fragment, fragment.toString())
-        fragmentTransaction.addToBackStack(fragment.toString())
+        fragmentTransaction.replace(R.id.main_fragment, fragment, fragmentTag)
+        if (!popped && fragmentManager.findFragmentByTag(fragmentTag) == null) {
+            fragmentTransaction.addToBackStack(fragment.toString())
+        }
         fragmentTransaction.commit()
+
+    }
+
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount == 1)
+            finish()
+        else
+            super.onBackPressed()
     }
 
     // sets the gradient for the status bar
-    fun backGroundColor() {
+    private fun backgroundColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         // looks weird!

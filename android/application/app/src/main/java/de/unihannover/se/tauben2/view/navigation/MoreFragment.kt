@@ -30,7 +30,7 @@ class MoreFragment : Fragment() {
             for(i in 0 until menuItems.size) {
                 val item = menuItems[i]
                 if (item.itemId == it.itemId) {
-                    (activity as FragmentChangeListener).replaceFragment(item.getStartFragment())
+                    (activity as FragmentChangeListener).replaceFragment(item.getFragment())
                     return@setNavigationItemSelectedListener true
                 }
             }

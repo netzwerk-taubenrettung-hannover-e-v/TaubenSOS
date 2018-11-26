@@ -5,20 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
-import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.network.Resource
-import kotlinx.android.synthetic.main.fragment_map.view.*
 
-class MapViewFragment : Fragment(), Observer<Resource<List<MapMarkable>>> {
+class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable>>> {
 
     private var mMap: GoogleMap? = null
 
@@ -54,31 +51,36 @@ class MapViewFragment : Fragment(), Observer<Resource<List<MapMarkable>>> {
     @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_map, container, false)
+//        val view = inflater.inflate(R.layout.fragment_map, container, false)
 
-        view.mapView.onCreate(savedInstanceState)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        view.mapView.onResume() // needed to get the map to display immediately
 
-        try {
-            MapsInitializer.initialize(activity!!.applicationContext)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        view.mapView.onCreate(savedInstanceState)
+//
+//        view.mapView.onResume() // needed to get the map to display immediately
+//
+//        try {
+//            MapsInitializer.initialize(activity!!.applicationContext)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
 
-        view.mapView.getMapAsync { map ->
-            mMap = map
+//        view.mapView.
+        if (mMap == null) {
+            getMapAsync { map ->
+                mMap = map
 
-            // For showing a move to my location button
-            map.isMyLocationEnabled = true
+                // For showing a move to my location button
+                map.isMyLocationEnabled = true
 
-            // TODO Find best bound coordinates
-            val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
-            map.setLatLngBoundsForCameraTarget(bounds)
-            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
+                // TODO Find best bound coordinates
+                val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
+                map.setLatLngBoundsForCameraTarget(bounds)
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
 
-            setCaseMarkers(mMarkers.keys)
-
+                setCaseMarkers(mMarkers.keys)
+            }
         }
 
         return view
