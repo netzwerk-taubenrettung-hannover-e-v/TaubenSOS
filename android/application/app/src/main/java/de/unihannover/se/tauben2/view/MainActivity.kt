@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -15,12 +16,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-
-
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
         initBottomNavigation()
     }
 
@@ -64,6 +65,16 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
         return true
+    }
+
+    // Toolbar Event Listener
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item?.itemId == toolbar_report_button) {
+            replaceFragment(Report00Fragment.newInstance())
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun replaceFragment(fragment:Fragment) {
@@ -114,7 +125,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
     }
-
 
 }
 

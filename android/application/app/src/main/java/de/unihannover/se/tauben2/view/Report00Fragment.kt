@@ -9,7 +9,6 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import kotlinx.android.synthetic.main.fragment_report00.*
 
-
 class Report00Fragment : Fragment(), View.OnClickListener {
 
     companion object {
