@@ -50,11 +50,12 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 FragmentMenuItem(5, "Emergency Call", R.drawable.ic_call_white_24dp) { EmergencyCallFragment.newInstance() },
                 FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance() },
                 FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() },
-                FragmentMenuItem(8, "Login", R.drawable.common_google_signin_btn_icon_dark, Permission.GUEST) { LoginFragment.newInstance() }
+                FragmentMenuItem(8, "Login", R.drawable.ic_person_black_24dp) { LoginFragment.newInstance() },
+                FragmentMenuItem(9, "Register", R.drawable.ic_person_add_black_24dp) { RegisterFragment.newInstance() }
         )
 
         bottom_navigation.setStartFragmentListener { fragment ->
-//            when (fragment) {
+            //            when (fragment) {
 //                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
 //            }
             replaceFragment(fragment)

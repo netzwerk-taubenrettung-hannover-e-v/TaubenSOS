@@ -3,7 +3,7 @@
     <string name="taube_melden">Taube melden</string>
     <string name="fb_link"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="e_mail">E-mail:</string>
-    <string name="password">Password:</string>
+    <string name="password">Passwort:</string>
     <string name="login">Login</string>
     <string name="login_title">Login für Mitglieder</string>
 </resources>
