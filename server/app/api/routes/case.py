@@ -1,7 +1,7 @@
 from flask import (Blueprint, request)
 
 from api.models.case import (Case, case_schema, cases_schema)
-from api.models.injury import (Injury)
+from api.models.injury import (Injury, injury_schema)
 
 bp = Blueprint("case", __name__, url_prefix="/api")
 
@@ -23,22 +23,6 @@ def create_case():
 		latitude = request.json.get("latitude")
 		longitude = request.json.get("longitude")
 
-		footOrLeg = request.json.get("injury").get("footOrLeg")
-		wing = request.json.get("injury").get("wing")
-		headOrEye = request.json.get("injury").get("headOrEye")
-		openWound = request.json.get("injury").get("openWound")
-		paralyzedOrFlightless = request.json.get("injury").get("paralyzedOrFlightless")
-		fledgling = request.json.get("injury").get("fledgling")
-		other = request.json.get("injury").get("other")
-
-		injury = Injury(footOrLeg=footOrLeg,
-						wing=wing,
-						headOrEye=headOrEye,
-						openWound=openWound,
-						paralyzedOrFlightless=paralyzedOrFlightless,
-						fledgling=fledgling,
-						other=other)
-
 		case = Case(timestamp=timestamp,
 					priority=priority,
 					isCarrierPigeon=isCarrierPigeon,
@@ -47,7 +31,7 @@ def create_case():
 					phone=phone,
 					latitude=latitude,
 					longitude=longitude,
-					injury=injury,
+					injury=injury_schema.load(request.get_json().get("injury")).data,
 					isClosed=None,
 					rescuer=None,
 					wasFoundDead=None)

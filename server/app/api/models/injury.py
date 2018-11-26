@@ -39,10 +39,24 @@ class Injury(db.Model):
     def get(caseID):
         return Injury.query.get(caseID)
 
-class InjurySchema(ma.ModelSchema):
+class InjurySchema(ma.Schema):
+    '''
     class Meta:
         model = Injury
         sqla_session = db.session
+    '''
+    caseID = ma.Integer(dump_only=True)
+    footOrLeg = ma.Boolean()
+    wing = ma.Boolean()
+    headOrEye = ma.Boolean()
+    openWound = ma.Boolean()
+    paralyzedOrFlightless = ma.Boolean()
+    fledgling = ma.Boolean()
+    other = ma.Boolean()
+    from marshmallow import post_load
+    @post_load
+    def make_injury(self, data):
+        return Injury(**data)
 
 injury_schema = InjurySchema()
 injuries_schema = InjurySchema(many=True)
