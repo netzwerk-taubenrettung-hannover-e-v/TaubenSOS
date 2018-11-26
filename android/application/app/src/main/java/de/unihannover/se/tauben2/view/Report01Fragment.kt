@@ -6,18 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import kotlinx.android.synthetic.main.fragment_report00.*
 
-class ReportFragment : Fragment() {
 
+class Report01Fragment : Fragment(), View.OnClickListener {
 
     companion object {
-        fun newInstance(): NewsFragment {
-            return NewsFragment()
+        fun newInstance(): Report01Fragment {
+            return Report01Fragment()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_news, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_report01, container, false)
+
+        return view
+    }
+
+    override fun onClick(view: View?) {
+
     }
 }

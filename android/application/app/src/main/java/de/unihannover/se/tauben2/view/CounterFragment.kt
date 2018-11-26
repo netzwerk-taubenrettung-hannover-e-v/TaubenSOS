@@ -93,7 +93,8 @@ class CounterFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setTime(view: View?, day : Int, month : Int, year : Int, hour : Int, minute : Int) {
-        view?.findViewById<TextView>(R.id.current_timestamp_value)?.text = String.format("%2d.%2d.%4d %2d:%2d Uhr", day, month, year, hour, minute)
+        view?.findViewById<TextView>(R.id.current_timestamp_value)?.text = String.format("%02d.%02d.%04d %02d:%02d Uhr", day, month, year, hour, minute)
     }
 
 }
+
