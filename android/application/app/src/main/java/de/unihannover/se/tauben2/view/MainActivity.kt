@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
         initBottomNavigation()
     }
 
@@ -54,16 +57,18 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         bottom_navigation.setMenuItems(
                 FragmentMenuItem(0, "News", R.drawable.ic_today_white_24dp) { NewsFragment.newInstance() },
                 FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) { CounterFragment.newInstance() },
-                FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) {CasesFragment.newInstance() },
+                FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) { CasesFragment.newInstance() },
                 FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) { GraphsFragment.newInstance() },
-                FragmentMenuItem(4, "Report a Dove", R.drawable.ic_report_white_24dp) { ReportFragment.newInstance() },
+                FragmentMenuItem(4, "Report a Dove", R.drawable.ic_report_white_24dp) { Report00Fragment.newInstance() },
                 FragmentMenuItem(5, "Emergency Call", R.drawable.ic_call_white_24dp) { EmergencyCallFragment.newInstance() },
                 FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance() },
-                FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() }
+                FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() },
+                FragmentMenuItem(8, "Login", R.drawable.ic_person_black_24dp) { LoginFragment.newInstance() },
+                FragmentMenuItem(9, "Register", R.drawable.ic_person_add_black_24dp) { RegisterFragment.newInstance() }
         )
 
         bottom_navigation.setStartFragmentListener { fragment ->
-//            when (fragment) {
+            //            when (fragment) {
 //                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
 //            }
             replaceFragment(fragment)
@@ -77,7 +82,17 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         return true
     }
 
-    override fun replaceFragment(fragment:Fragment) {
+    // Toolbar Event Listener
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item?.itemId == toolbar_report_button) {
+            replaceFragment(Report00Fragment.newInstance())
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTag = fragment.javaClass.name
 
@@ -136,12 +151,11 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     //below doesnt work
     //var button2= findViewById(R.id.button2) as Button
 
-    fun openFacebook(){
+    fun openFacebook() {
         val uri = Uri.parse("http://www.google.com")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
     }
-
 
 }
 

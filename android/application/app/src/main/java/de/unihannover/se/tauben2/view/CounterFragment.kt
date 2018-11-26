@@ -44,8 +44,8 @@ class CounterFragment : Fragment() {
             val value = (counter_value.text.toString().toIntOrNull() ?:0) - 1
             counter_value.setText(value.toString())
         }
-
         return view
     }
 
 }
+

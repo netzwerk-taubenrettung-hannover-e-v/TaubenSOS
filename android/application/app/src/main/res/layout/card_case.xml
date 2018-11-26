@@ -239,7 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="- headless"
+                    android:text="- exampleInjury"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/injury_card_title"
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_title" />

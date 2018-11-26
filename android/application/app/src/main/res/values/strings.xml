@@ -2,4 +2,12 @@
     <string name="app_name">Tauben2</string>
     <string name="taube_melden">Taube melden</string>
     <string name="fb_link"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
+    <string name="nutzername">Nutzername:</string>
+    <string name="passwort">Passwort:</string>
+    <string name="login">Login</string>
+    <string name="login_titel">Login für Mitglieder</string>
+    <string name="passwort_wiederholen">Passwort wiederholen:</string>
+    <string name="offizielle_registrierung_beantragen">Offizielle Registrierung beantragen</string>
+    <string name="registrierung_beantragen">Registrierung beantragen</string>
+    <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem Verein möglich und muss von einem Vereinsmitglied bestätigt werden.</string>
 </resources>

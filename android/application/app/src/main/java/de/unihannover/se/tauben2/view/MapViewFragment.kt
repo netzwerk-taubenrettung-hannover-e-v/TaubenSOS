@@ -83,6 +83,8 @@ class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable
             }
         }
 
+
+
         return view
     }
 

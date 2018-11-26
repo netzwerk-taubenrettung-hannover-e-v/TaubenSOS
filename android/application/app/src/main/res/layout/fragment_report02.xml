@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+    <TextView
+        android:id="@+id/report_special_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="Handelt es sich um eine Brief- oder Ziertaube?"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/report_special_help"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Eine Brieftaube erkennst du an einem farbigen Plastikring um eines ihrer Beine. Eine Ziertaube ist z.B. eine vollständig weiße Taube."
+        app:layout_constraintEnd_toEndOf="@+id/report_special_title"
+        app:layout_constraintStart_toStartOf="@+id/report_special_title"
+        app:layout_constraintTop_toBottomOf="@+id/report_special_title" />
+
+    <CheckBox
+        android:id="@+id/report_special_checkbox_00"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:buttonTint="@color/colorPrimaryDark"
+        android:text="Brieftaube"
+        app:layout_constraintEnd_toEndOf="@+id/report_special_help"
+        app:layout_constraintStart_toStartOf="@+id/report_special_help"
+        app:layout_constraintTop_toBottomOf="@+id/report_special_help" />
+
+    <CheckBox
+        android:id="@+id/report_special_checkbox_01"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:buttonTint="@color/colorPrimaryDark"
+        android:text="Ziertaube"
+        app:layout_constraintEnd_toEndOf="@+id/report_special_checkbox_00"
+        app:layout_constraintStart_toStartOf="@+id/report_special_checkbox_00"
+        app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_00" />
+
+    <TextView
+        android:id="@+id/report_additional_information_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Zusätliche Angaben"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_01" />
+
+    <TextView
+        android:id="@+id/report_additional_information_help"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Hast du noch zusätliche Informationen zu dem genauen Standort oder dem Zustand der Taube?"
+        app:layout_constraintEnd_toEndOf="@+id/report_additional_information_title"
+        app:layout_constraintStart_toStartOf="@+id/report_additional_information_title"
+        app:layout_constraintTop_toBottomOf="@+id/report_additional_information_title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/report_additional_information_textfield"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:hint="additional Informations"
+        app:hintEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/report_send_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_additional_information_help">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="..." />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/report_send_button"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="taube melden"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/report_prev_step_button"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
