@@ -43,13 +43,14 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     private fun initBottomNavigation() {
         bottom_navigation.setMenuItems(
                 FragmentMenuItem(0, "News", R.drawable.ic_today_white_24dp) { NewsFragment.newInstance() },
-                FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) {CounterFragment.newInstance() },
+                FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) { CounterFragment.newInstance() },
                 FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) { CasesFragment.newInstance() },
-                FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) {GraphsFragment.newInstance() },
+                FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) { GraphsFragment.newInstance() },
                 FragmentMenuItem(4, "Report a Dove", R.drawable.ic_report_white_24dp) { Report00Fragment.newInstance() },
                 FragmentMenuItem(5, "Emergency Call", R.drawable.ic_call_white_24dp) { EmergencyCallFragment.newInstance() },
-                FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance()},
-                FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() }
+                FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance() },
+                FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() },
+                FragmentMenuItem(8, "Login", R.drawable.common_google_signin_btn_icon_dark, Permission.GUEST) { LoginFragment.newInstance() }
         )
 
         bottom_navigation.setStartFragmentListener { fragment ->
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun replaceFragment(fragment:Fragment) {
+    override fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.main_fragment, fragment, fragment.toString())
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     //below doesnt work
     //var button2= findViewById(R.id.button2) as Button
 
-    fun openFacebook(){
+    fun openFacebook() {
         val uri = Uri.parse("http://www.google.com")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
