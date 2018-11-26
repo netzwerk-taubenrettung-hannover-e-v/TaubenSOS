@@ -33,8 +33,7 @@ class Report00Fragment : Fragment(), View.OnClickListener {
         when (view) {
 
             report_next_step_button -> {
-                // this isn't working ._.'
-                (view as FragmentChangeListener).replaceFragment(Report01Fragment.newInstance())
+                (activity as FragmentChangeListener).replaceFragment(Report01Fragment.newInstance())
             }
         }
     }
