@@ -14,6 +14,7 @@ def read_cases():
 @bp.route("/case", methods=["POST"], strict_slashes=False)
 def create_case():
 	if request.method == "POST":
+		'''
 		timestamp = request.json.get("timestamp")
 		priority = request.json.get("priority")
 		isCarrierPigeon = request.json.get("isCarrierPigeon")
@@ -35,6 +36,8 @@ def create_case():
 					isClosed=None,
 					rescuer=None,
 					wasFoundDead=None)
+		'''
+		case = case_schema.load(request.get_json()).data
 		case.save()
 		return case_schema.jsonify(case), 201
 

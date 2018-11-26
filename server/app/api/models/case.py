@@ -52,13 +52,30 @@ class Case(db.Model):
     def get(caseID):
         return Case.query.get(caseID)
 
-class CaseSchema(ma.ModelSchema):
-    timestamp = ma.DateTime("%s")
+class CaseSchema(ma.Schema):
+    caseID = ma.Integer(dump_only=True)
+    timestamp = ma.DateTime("%s", missing=None)
+    priority = ma.Integer()
+    rescuer = ma.String(missing=None)
+    isCarrierPigeon = ma.Boolean()
+    isWeddingPigeon = ma.Boolean()
+    additionalInfo = ma.String(missing=None)
+    phone = ma.String()
+    latitude = ma.Float()
+    longitude = ma.Float()
+    wasFoundDead = ma.Boolean(missing=None)
+    isClosed = ma.Boolean(missing=None)
     injury = ma.Nested(injury.InjurySchema)
-    media = ma.Nested(medium.MediumSchema, many=True)
+    #media = ma.Nested(medium.MediumSchema, many=True)
+    from marshmallow import post_load
+    @post_load
+    def make_case(self, data):
+        return Case(**data)
+    '''
     class Meta:
         model = Case
         sqla_session = db.session
+    '''
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
