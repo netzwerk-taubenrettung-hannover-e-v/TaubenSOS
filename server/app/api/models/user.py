@@ -3,11 +3,13 @@ from api import db, ma
 class User(db.Model):
     __tablename__="user"
     username = db.Column(db.String(20), primary_key=True)
+    password = db.Column(db.String(255), nullable=False)
     phone = db.Column(db.String(30))
     isAdmin = db.Column(db.Boolean)
 
-    def __init__(self, username, phone, isAdmin):
+    def __init__(self, username, password, phone, isAdmin):
         self.username = username
+        self.password = password
         self.phone = phone
         self.isAdmin = isAdmin
 

@@ -14,10 +14,11 @@ def read_users():
 def create_or_change_user():
 	if request.method == "POST":
 		username = request.json["username"]
+		password = request.json["password"]
 		phone = request.json["phone"]
 		isAdmin = request.json["isAdmin"]
 
-		user = User(username=username, phone=phone, isAdmin=isAdmin)
+		user = User(username=username, password=password, phone=phone, isAdmin=isAdmin)
 		user.save()
 
 		return user_schema.jsonify(user), 201
