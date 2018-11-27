@@ -11,19 +11,25 @@ def read_users():
         return users_schema.jsonify(users)
 
 @bp.route("/user", methods=["POST"], strict_slashes=False)
-def create_user():
-    if request.method == "POST":
-        username = request.json["username"]
-        phone = request.json["phone"]
-        isAdmin = request.json["isAdmin"]
+def create_or_change_user():
+	if request.method == "POST":
+		username = request.json["username"]
+		phone = request.json["phone"]
+		isAdmin = request.json["isAdmin"]
 
-        user = User(username=username, phone=phone, isAdmin=isAdmin)
-        user.save()
-        
-        return user_schema.jsonify(user), 201
+		user = User(username=username, phone=phone, isAdmin=isAdmin)
+		user.save()
 
-@bp.route("/user/<username>", methods=["GET"], strict_slashes=False)
-def read_user(username):
-    if request.method == "GET":
-        user = User.get(username)
-        return user_schema.jsonify(user)
+		return user_schema.jsonify(user), 201
+
+@bp.route("/user/<username>", methods=["GET", "PUT"], strict_slashes=False)
+def read_or_update_user(username):
+	if request.method == "GET":
+		user = User.get(username)
+		return user_schema.jsonify(user)
+	if request.method == "PUT":
+		user = User.get(username)
+		user.isAdmin = request.json["isAdmin"]
+		user.save()
+		
+		return user_schema.jsonify(user), 201
