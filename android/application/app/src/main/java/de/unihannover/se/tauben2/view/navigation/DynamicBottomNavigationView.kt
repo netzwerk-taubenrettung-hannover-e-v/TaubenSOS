@@ -1,13 +1,24 @@
 package de.unihannover.se.tauben2.view.navigation
 
+import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_more.*
+import kotlinx.android.synthetic.main.fragment_more.view.*
+import java.util.*
 
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): BottomNavigationView(context, attrs) {
 
@@ -19,7 +30,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 
     private var mMoreMenuItem: FragmentMenuItem? = null
 
-    private val MORE_MENU_ITEM = 99
+    private val MORE_MENU_ITEM = R.id.moreFragment
 
     private var menuSize: Int = menu.size()
 
@@ -34,6 +45,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 
             tarr.recycle()
         }
+
 
 //        if (hasOverflowMenu()) {
 //            val overflowItems = mutableListOf<MenuItem>()
@@ -60,36 +72,44 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 
         permissibleItems.slice(0 until mSize-1).forEach {
             if(it.hasPermission(App.CURRENT_PERMISSION)){
-                addMenuItem(it)
+                addMenuItem(item = it)
             }
         }
         if(permissibleItems.size > mSize) {
             createOverflowMenu(permissibleItems.slice(mSize-1 until permissibleItems.size))
         }
-        setOnNavigationItemSelectedListener {
-            if(mMoreMenuItem?.itemId == it.itemId) {
-                mMoreMenuItem?.let { moreItem ->
-                    mStartFragmentListener?.onStartFragment(moreItem.getStartFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            for(i in 0 until permissibleItems.size) {
-                val item = permissibleItems[i]
-                if (item.itemId == it.itemId) {
-                    mStartFragmentListener?.onStartFragment(item.getStartFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            return@setOnNavigationItemSelectedListener false
-        }
+//        setOnNavigationItemSelectedListener {
+//            if(mMoreMenuItem?.itemId == it.itemId) {
+//                mMoreMenuItem?.let { moreItem ->
+//                    mStartFragmentListener?.onStartFragment(moreItem.getFragment())
+//                    return@setOnNavigationItemSelectedListener true
+//                }
+//            }
+//            for(i in 0 until permissibleItems.size) {
+//                val item = permissibleItems[i]
+//                if (item.itemId == it.itemId) {
+//                    mStartFragmentListener?.onStartFragment(item.getFragment())
+//                    return@setOnNavigationItemSelectedListener true
+//                }
+//            }
+//            return@setOnNavigationItemSelectedListener false
+//        }
     }
+
+    private val moreFragmentBundle = Bundle()
 
     private fun createOverflowMenu(items: List<FragmentMenuItem>) {
-        mMoreMenuItem = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp) { MoreFragment.newInstance(items) }
-        mMoreMenuItem?.let { addMenuItem(it) }
+        mMoreMenuItem = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp)
+
+        moreFragmentBundle.putParcelableArrayList("items", ArrayList(items))
+        Navigation.findNavController(context as Activity, R.id.nav_host).addOnNavigatedListener { _, destination ->
+            if(destination.id == MORE_MENU_ITEM)
+                destination.addDefaultArguments(moreFragmentBundle)
+        }
+        mMoreMenuItem?.let { addMenuItem(item = it) }
     }
 
-    private fun addMenuItem(item: FragmentMenuItem) {
+    private fun addMenuItem(menu: Menu = getMenu(), item: FragmentMenuItem) {
         menu.add(Menu.NONE, item.itemId, Menu.NONE, item.title).setIcon(item.iconId)
     }
 

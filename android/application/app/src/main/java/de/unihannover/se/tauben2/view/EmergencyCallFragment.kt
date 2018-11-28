@@ -9,10 +9,8 @@ import de.unihannover.se.tauben2.R
 
 class EmergencyCallFragment : Fragment() {
 
-    companion object {
-        fun newInstance(): EmergencyCallFragment {
-            return EmergencyCallFragment()
-        }
+    companion object: Singleton<EmergencyCallFragment>() {
+        override fun newInstance() = EmergencyCallFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

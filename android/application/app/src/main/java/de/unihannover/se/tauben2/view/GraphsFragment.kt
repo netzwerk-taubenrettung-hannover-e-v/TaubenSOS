@@ -10,10 +10,8 @@ import de.unihannover.se.tauben2.R
 class GraphsFragment : Fragment() {
 
 
-    companion object {
-        fun newInstance(): GraphsFragment {
-            return GraphsFragment()
-        }
+    companion object: Singleton<GraphsFragment>() {
+        override fun newInstance() = GraphsFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

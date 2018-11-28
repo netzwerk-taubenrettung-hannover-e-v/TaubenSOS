@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/newsFragment">
+
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="de.unihannover.se.tauben2.view.NewsFragment"
+        android:label="NewsFragment" />
+    <fragment
+        android:id="@+id/counterFragment"
+        android:name="de.unihannover.se.tauben2.view.CounterFragment"
+        android:label="CounterFragment" />
+    <fragment
+        android:id="@+id/casesFragment"
+        android:name="de.unihannover.se.tauben2.view.CasesFragment"
+        android:label="CasesFragment" />
+    <fragment
+        android:id="@+id/graphsFragment"
+        android:name="de.unihannover.se.tauben2.view.GraphsFragment"
+        android:label="GraphsFragment" />
+    <fragment
+        android:id="@+id/report00Fragment"
+        android:name="de.unihannover.se.tauben2.view.report.Report00Fragment"
+        android:label="Report00Fragment" >
+        <action
+            android:id="@+id/action_report00Fragment_to_report01Fragment"
+            app:destination="@+id/report01Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/report01Fragment"
+        android:name="de.unihannover.se.tauben2.view.report.Report01Fragment"
+        android:label="Report01Fragment" >
+        <action
+            android:id="@+id/action_report01Fragment_to_report02Fragment2"
+            app:destination="@id/report02Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/report02Fragment"
+        android:name="de.unihannover.se.tauben2.view.report.Report02Fragment"
+        android:label="Report02Fragment" />
+    <fragment
+        android:id="@+id/emergencyCallFragment"
+        android:name="de.unihannover.se.tauben2.view.EmergencyCallFragment"
+        android:label="EmergencyCallFragment" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="de.unihannover.se.tauben2.view.ContactFragment"
+        android:label="ContactFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="de.unihannover.se.tauben2.view.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="de.unihannover.se.tauben2.view.RegisterFragment"
+        android:label="RegisterFragment" />
+</navigation>

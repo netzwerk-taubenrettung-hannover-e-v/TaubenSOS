@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linearLayout"
-    android:background="#FFFFFF">
+    android:background="#e6e5e6">
 
-    <TextView android:text="02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:id="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent" android:textStyle="bold" android:textSize="100sp"/>
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="de.unihannover.se.tauben2.view.MapViewFragment"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <fragment
+        android:id="@+id/recycler_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_fragment"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

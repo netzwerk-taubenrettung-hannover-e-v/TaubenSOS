@@ -4,31 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.model.LimitedAccessible
-import de.unihannover.se.tauben2.model.Permission
-import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.network.Resource
-import kotlinx.android.synthetic.main.fragment_cases.view.*
+import de.unihannover.se.tauben2.filter
+import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 
-class CasesFragment : Fragment(), Observer<Resource<List<Case>>> {
+class CasesFragment : Fragment() {
 
-    companion object {
-        fun newInstance(): CasesFragment {
-            return CasesFragment()
-        }
-    }
-
-    override fun onChanged(cases: Resource<List<Case>>?) {
-        if(cases?.status?.isSuccessful() == true) {
-            view?.textView?.text = cases.data?.get(0)?.additionalInfo ?:"Probleme beim Laden"
-        }
+    companion object : Singleton<CasesFragment>() {
+        override fun newInstance()= CasesFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_cases, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_cases, container, false)
+
+
+        val recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment) as CasesRecyclerFragment
+        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
+
+        getViewModel(CaseViewModel::class.java)?.cases?.let {
+            val notClosed = it.filter { case -> !case.isClosed }
+            notClosed.observe(this, LoadingObserver(recyclerFragment){ message ->
+                Toast.makeText(this.context, "Couldn't load events: $message", Toast.LENGTH_LONG).show()
+            })
+
+            notClosed.observe(this, mapsFragment)
+        }
+//
+//        val rv = view.recycler_view
+//        layoutManager = LinearLayoutManager(context)
+//        rv.layoutManager = layoutManager
+//
+//        adapter = AdapterList()
+//        rv.adapter = adapter
+
+        return view
     }
+
+
 }
