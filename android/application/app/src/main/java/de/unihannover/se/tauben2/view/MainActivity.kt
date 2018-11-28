@@ -6,10 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -151,8 +148,8 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     //below doesnt work
     //var button2= findViewById(R.id.button2) as Button
 
-    fun openFacebook() {
-        val uri = Uri.parse("http://www.google.com")
+    fun openFacebook(view: View) {
+        val uri = Uri.parse("https://www.facebook.com/netzwerk.taubenrettung")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
     }
