@@ -17,5 +17,5 @@ class ContactFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_contact, container, false)
     }
-    
+
 }
