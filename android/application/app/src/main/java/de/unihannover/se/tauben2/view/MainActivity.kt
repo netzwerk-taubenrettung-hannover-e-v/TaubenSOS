@@ -1,7 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -22,8 +22,10 @@ import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
-import de.unihannover.se.tauben2.view.report.Report00Fragment
 import kotlinx.android.synthetic.main.activity_main.*
+import android.content.pm.ApplicationInfo
+
+
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
@@ -153,13 +155,30 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         }
     }
 
-    //below doesnt work
-    //var button2= findViewById(R.id.button2) as Button
+
+
 
     fun openFacebook(view: View) {
-        val uri = Uri.parse("https://www.facebook.com/netzwerk.taubenrettung")
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
+
+        try {
+            val info = packageManager.getApplicationInfo("com.facebook.katana", 0)
+            Log.i("App", "installed")
+
+            //start facebook app
+            val uri = Uri.parse("fb://page/141319162866697")
+            val facebookIntent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(facebookIntent)
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.i("App", "not installed")
+
+            //start browser
+            val uri = Uri.parse("https://www.facebook.com/netzwerk.taubenrettung")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+
+        }
+
     }
 
 }
