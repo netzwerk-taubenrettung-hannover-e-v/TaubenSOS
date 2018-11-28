@@ -1,10 +1,7 @@
 package de.unihannover.se.tauben2.view.recycler
 
 import android.location.Location
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.R
@@ -21,15 +18,13 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     private var mLocation: Location? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val res = super.onCreateView(inflater, container, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         val viewModel = getViewModel(LocationViewModel::class.java)
-        viewModel?.currentLocation?.observe(this, Observer {
+        viewModel?.observeCurrentLocation(this, Observer {
             mLocation = it
             notifyDataSetChanged()
         })
-
-        return res
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {
@@ -39,7 +34,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
                 val caseLoc = Location("")
                 caseLoc.latitude = data.latitude
                 caseLoc.longitude = data.longitude
-                val res = ((Math.round(location.distanceTo(caseLoc)/10)).toDouble()/100.0).toString() + " km"
+                val res = ((Math.round(location.distanceTo(caseLoc)/10))/100.0).toString() + " km"
                 binding.root.distance_text_card_value.text = res
             }
         }

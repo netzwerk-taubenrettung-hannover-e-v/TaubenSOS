@@ -12,4 +12,13 @@
         android:layout_gravity="start"
         />
 
+    <!--<fragment-->
+        <!--android:id="@+id/nav_host"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:navGraph= "@navigation/main_navigation"-->
+        <!--android:name="androidx.navigation.fragment.NavHostFragment"-->
+        <!--app:defaultNavHost= "true"-->
+        <!--/>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

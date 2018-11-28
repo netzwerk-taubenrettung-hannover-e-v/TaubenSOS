@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -15,19 +16,24 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
+import de.unihannover.se.tauben2.view.report.Report00Fragment
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.android.gms.maps.MapView
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         // Fixing Later Map loading Delay
         Thread {
@@ -40,7 +46,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         }.start()
 
         backgroundColor()
-        setContentView(R.layout.activity_main)
 
         setupPermissions()
 
@@ -55,24 +60,28 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     private fun initBottomNavigation() {
 
         bottom_navigation.setMenuItems(
-                FragmentMenuItem(0, "News", R.drawable.ic_today_white_24dp) { NewsFragment.newInstance() },
-                FragmentMenuItem(1, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED) { CounterFragment.newInstance() },
-                FragmentMenuItem(2, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED) { CasesFragment.newInstance() },
-                FragmentMenuItem(3, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED) { GraphsFragment.newInstance() },
-                FragmentMenuItem(4, "Report a Dove", R.drawable.ic_report_white_24dp) { Report00Fragment.newInstance() },
-                FragmentMenuItem(5, "Emergency Call", R.drawable.ic_call_white_24dp) { EmergencyCallFragment.newInstance() },
-                FragmentMenuItem(6, "Contact", R.drawable.ic_contact_mail_white_24dp) { ContactFragment.newInstance() },
-                FragmentMenuItem(7, "Logout", R.drawable.ic_exit_to_app_white_24dp) { NewsFragment.newInstance() },
-                FragmentMenuItem(8, "Login", R.drawable.ic_person_black_24dp) { LoginFragment.newInstance() },
-                FragmentMenuItem(9, "Register", R.drawable.ic_person_add_black_24dp) { RegisterFragment.newInstance() }
+                FragmentMenuItem(R.id.newsFragment, "News", R.drawable.ic_today_white_24dp),
+                FragmentMenuItem(R.id.counterFragment, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.casesFragment, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.graphsFragment, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.report00Fragment, "Report a Dove", R.drawable.ic_report_white_24dp),
+                FragmentMenuItem(R.id.emergencyCallFragment, "Emergency Call", R.drawable.ic_call_white_24dp),
+                FragmentMenuItem(R.id.contactFragment, "Contact", R.drawable.ic_contact_mail_white_24dp),
+                FragmentMenuItem(0, "Logout", R.drawable.ic_exit_to_app_white_24dp),
+                FragmentMenuItem(R.id.loginFragment, "Login", R.drawable.ic_person_black_24dp),
+                FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
         )
 
-        bottom_navigation.setStartFragmentListener { fragment ->
-            //            when (fragment) {
-//                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
-//            }
-            replaceFragment(fragment)
-        }
+        NavigationUI.setupWithNavController(bottom_navigation, (nav_host as NavHostFragment).navController)
+//
+//
+//
+//        bottom_navigation.setStartFragmentListener { fragment ->
+//            //            when (fragment) {
+////                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
+////            }
+//            replaceFragment(fragment)
+//        }
     }
 
     // Add "Report a Dove"-Btn to the Toolbar
@@ -86,27 +95,26 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         if (item?.itemId == toolbar_report_button) {
-            replaceFragment(Report00Fragment.newInstance())
+            Navigation.findNavController(this, R.id.nav_host).navigate(R.id.report00Fragment)
         }
 
         return super.onOptionsItemSelected(item)
     }
 
     override fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTag = fragment.javaClass.name
-
-
-
-        val popped = fragmentManager.popBackStackImmediate(fragmentTag, 0)
-
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_fragment, fragment, fragmentTag)
-        if (!popped && fragmentManager.findFragmentByTag(fragmentTag) == null) {
-            fragmentTransaction.addToBackStack(fragment.toString())
-        }
-        fragmentTransaction.commit()
-
+//        val fragmentManager = supportFragmentManager
+//        val fragmentTag = fragment.javaClass.name
+//
+//        val popped = fragmentManager.popBackStackImmediate(fragmentTag, 0)
+//
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//
+//        fragmentTransaction.replace(R.id.main_fragment, fragment, fragmentTag)
+//        if (!popped && fragmentManager.findFragmentByTag(fragmentTag) == null) {
+//            fragmentTransaction.addToBackStack(fragment.toString())
+//        }
+//        fragmentTransaction.commit()
+//
     }
 
     override fun onBackPressed() {

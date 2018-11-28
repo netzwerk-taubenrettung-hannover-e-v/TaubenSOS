@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R.layout.fragment_register
 
 class RegisterFragment : Fragment() {
-    companion object {
-        fun newInstance(): RegisterFragment {
-            return RegisterFragment()
-        }
+
+    companion object: Singleton<RegisterFragment>() {
+        override fun newInstance() = RegisterFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

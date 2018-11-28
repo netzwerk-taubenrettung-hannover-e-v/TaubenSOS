@@ -1,20 +1,21 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.report
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
+import de.unihannover.se.tauben2.view.Singleton
 import kotlinx.android.synthetic.main.fragment_report00.*
+import kotlinx.android.synthetic.main.fragment_report00.view.*
 
 class Report00Fragment : Fragment(), View.OnClickListener {
 
-    companion object {
-        fun newInstance(): Report00Fragment {
-            return Report00Fragment()
-        }
+    companion object: Singleton<Report00Fragment>() {
+        override fun newInstance() = Report00Fragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -22,7 +23,7 @@ class Report00Fragment : Fragment(), View.OnClickListener {
 
         val view = inflater.inflate(R.layout.fragment_report00, container, false)
 
-        view.findViewById<View>(R.id.report_next_step_button).setOnClickListener(this)
+        view.report_next_step_button.setOnClickListener(this)
 
         return view
     }
@@ -32,7 +33,7 @@ class Report00Fragment : Fragment(), View.OnClickListener {
         when (view) {
 
             report_next_step_button -> {
-                (activity as FragmentChangeListener).replaceFragment(Report01Fragment.newInstance())
+                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
             }
         }
     }

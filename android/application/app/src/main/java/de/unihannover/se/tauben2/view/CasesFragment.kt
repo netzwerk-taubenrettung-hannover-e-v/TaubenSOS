@@ -14,10 +14,8 @@ import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 
 class CasesFragment : Fragment() {
 
-    companion object {
-        fun newInstance(): CasesFragment {
-            return CasesFragment()
-        }
+    companion object : Singleton<CasesFragment>() {
+        override fun newInstance()= CasesFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

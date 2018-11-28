@@ -9,10 +9,8 @@ import de.unihannover.se.tauben2.R
 
 class ContactFragment : Fragment() {
 
-    companion object {
-        fun newInstance(): ContactFragment {
-            return ContactFragment()
-        }
+    companion object: Singleton<ContactFragment>() {
+        override fun newInstance() = ContactFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

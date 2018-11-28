@@ -15,10 +15,8 @@ import java.util.*
 
 class CounterFragment : Fragment() {
 
-    companion object {
-        fun newInstance(): CounterFragment {
-            return CounterFragment()
-        }
+    companion object : Singleton<CounterFragment>() {
+        override fun newInstance() = CounterFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -26,13 +24,11 @@ class CounterFragment : Fragment() {
 
         val view = inflater.inflate(fragment_counter, container, false)
 
-        view.current_timestamp_value.text =
-                SimpleDateFormat("dd.MM.yyyy – HH:mm", Locale.GERMANY).format(System.currentTimeMillis())
+        setCurrentTimestamp()
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
 
 //        view.findViewById<View>(R.id.changedate_button).setOnClickListener(this)
-//        view.findViewById<View>(R.id.resetdate_button).setOnClickListener(this)
 //        view.findViewById<View>(R.id.send_count_button).setOnClickListener(this)
 
         view.plus_button.setOnClickListener {
@@ -44,7 +40,17 @@ class CounterFragment : Fragment() {
             val value = (counter_value.text.toString().toIntOrNull() ?:0) - 1
             counter_value.setText(value.toString())
         }
+
+        view.resetdate_button.setOnClickListener {
+            setCurrentTimestamp()
+        }
+
         return view
+    }
+
+    private fun setCurrentTimestamp() {
+        view?.current_timestamp_value?.text =
+                SimpleDateFormat("dd.MM.yyyy – HH:mm", Locale.GERMANY).format(System.currentTimeMillis())
     }
 
 }

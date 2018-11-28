@@ -10,10 +10,8 @@ import de.unihannover.se.tauben2.R
 class NewsFragment : Fragment() {
 
 
-    companion object {
-        fun newInstance(): NewsFragment {
-            return NewsFragment()
-        }
+    companion object: Singleton<NewsFragment>() {
+        override fun newInstance() = NewsFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
