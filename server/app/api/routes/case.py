@@ -14,32 +14,12 @@ def read_cases():
 @bp.route("/case", methods=["POST"], strict_slashes=False)
 def create_case():
 	if request.method == "POST":
-		'''
-		timestamp = request.json.get("timestamp")
-		priority = request.json.get("priority")
-		isCarrierPigeon = request.json.get("isCarrierPigeon")
-		isWeddingPigeon = request.json.get("isWeddingPigeon")
-		additionalInfo = request.json.get("additionalInfo")
-		phone = request.json.get("phone")
-		latitude = request.json.get("latitude")
-		longitude = request.json.get("longitude")
-
-		case = Case(timestamp=timestamp,
-					priority=priority,
-					isCarrierPigeon=isCarrierPigeon,
-					isWeddingPigeon=isWeddingPigeon,
-					additionalInfo=additionalInfo,
-					phone=phone,
-					latitude=latitude,
-					longitude=longitude,
-					injury=injury_schema.load(request.get_json().get("injury")).data,
-					isClosed=None,
-					rescuer=None,
-					wasFoundDead=None)
-		'''
-		case = case_schema.load(request.get_json()).data
-		case.save()
-		return case_schema.jsonify(case), 201
+		case, errors = case_schema.load(request.get_json())
+		if errors:
+			return str(errors), 500
+		else:
+			case.save()
+			return case_schema.jsonify(case), 201
 
 @bp.route("/case/<caseID>", methods=["GET"], strict_slashes=False)
 def read_case(caseID):
