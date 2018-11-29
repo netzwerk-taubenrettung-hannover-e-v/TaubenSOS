@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -23,11 +22,13 @@ import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.pm.ApplicationInfo
+import kotlinx.android.synthetic.main.fragment_report01.*
 
 
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
+
+    private val CALL_NUMBER = "0175 8266832"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -71,8 +72,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
         )
 
-        NavigationUI.setupWithNavController(bottom_navigation, (nav_host as NavHostFragment).navController)
-//
+        NavigationUI.setupWithNavController(bottom_navigation , (nav_host as NavHostFragment).navController)
 //
 //
 //        bottom_navigation.setStartFragmentListener { fragment ->
@@ -137,9 +137,17 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
             1 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i("Permissioon2", "Permission has been denied by user")
+                    Log.i("Permissioon", "Permission has been denied by user")
                 } else {
-                    Log.i("Permissioon2", "Permission has been granted by user")
+                    Log.i("Permissioon", "Permission has been granted by user")
+                }
+            }
+            2 -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i("Permissioon", "Permission has been denied by user")
+                } else {
+                    Log.i("Permissioon", "Permission has been granted by user")
                 }
             }
         }
@@ -150,13 +158,77 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Permissioon2", "Permission to record denied")
+            Log.i("Error", "Permission to record denied")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }
 
+    fun checkSelected() {
+        if(report_injury_checkBox_00.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_01.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_02.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_03.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_04.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_05.isChecked) { goFoward(true) }
+        else if(report_injury_checkBox_06.isChecked) { goFoward(true) }
+        else { goFoward(false) }
+    }
 
+    fun goFoward(permission: Boolean) {
+        /*if(!permission) {
+            //Todo ALertDialog
+            report_injury_title.setTextColor(Color.RED)
+            val builder = AlertDialog.Builder(this@MainActivity)
 
+            // Set the alert dialog title
+            builder.setTitle("Fehler")
+
+            // Display a message on alert dialog
+            builder.setMessage("Bitte füllen Sie alle Pflichfelder aus")
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES"){dialog, which ->
+                // Do something when user press the positive button
+                Toast.makeText(applicationContext,"Ok, we change the app background.",Toast.LENGTH_SHORT).show()
+
+                // Change the app background color
+                root_layout.setBackgroundColor(Color.RED)
+            }
+        }*/
+    }
+
+    fun openPhone() {
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i("Error", "Permission to call denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)
+        }
+        try {
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("05751 918602"))
+            startActivity(intent)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.i("Error", "Something is wrong")
+        }
+    }
+
+    fun openMail() {
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i("Error", "Permission to call denied")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 3)
+        }
+        try {
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:developer@example.com"))
+            startActivity(intent)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.i("Error", "Something is wrong")
+        }
+    }
+
+    //below doesnt work
+    //var button2= findViewById(R.id.button2) as Button
 
     fun openFacebook(view: View) {
 
