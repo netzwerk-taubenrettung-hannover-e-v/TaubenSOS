@@ -97,6 +97,9 @@ class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable
         }
     }
 
-
+    fun MarkerExists(): Boolean {
+        //Todo check if a DoveLocation is set
+        return false
+    }
 
 }

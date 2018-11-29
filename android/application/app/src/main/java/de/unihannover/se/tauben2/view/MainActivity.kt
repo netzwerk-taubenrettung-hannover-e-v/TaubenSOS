@@ -22,7 +22,6 @@ import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_report01.*
 
 
 
@@ -161,40 +160,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
             Log.i("Error", "Permission to record denied")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
-    }
-
-    fun checkSelected() {
-        if(report_injury_checkBox_00.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_01.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_02.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_03.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_04.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_05.isChecked) { goFoward(true) }
-        else if(report_injury_checkBox_06.isChecked) { goFoward(true) }
-        else { goFoward(false) }
-    }
-
-    fun goFoward(permission: Boolean) {
-        /*if(!permission) {
-            //Todo ALertDialog
-            report_injury_title.setTextColor(Color.RED)
-            val builder = AlertDialog.Builder(this@MainActivity)
-
-            // Set the alert dialog title
-            builder.setTitle("Fehler")
-
-            // Display a message on alert dialog
-            builder.setMessage("Bitte füllen Sie alle Pflichfelder aus")
-
-            // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES"){dialog, which ->
-                // Do something when user press the positive button
-                Toast.makeText(applicationContext,"Ok, we change the app background.",Toast.LENGTH_SHORT).show()
-
-                // Change the app background color
-                root_layout.setBackgroundColor(Color.RED)
-            }
-        }*/
     }
 
     fun openPhone() {
