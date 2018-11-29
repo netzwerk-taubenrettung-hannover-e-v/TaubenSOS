@@ -213,12 +213,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     }
 
     fun openMail() {
-        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Error", "Permission to call denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 3)
-        }
         try {
             val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:developer@example.com"))
             startActivity(intent)
