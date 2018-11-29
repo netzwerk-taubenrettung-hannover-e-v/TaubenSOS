@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.model.entity
+package de.unihannover.se.tauben2.model
 
 data class Injury (var fledgling: Boolean,
                    var footOrLeg: Boolean,
