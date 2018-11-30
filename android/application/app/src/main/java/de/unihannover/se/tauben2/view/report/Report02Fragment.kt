@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.view.Singleton
-import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
+import kotlinx.android.synthetic.main.fragment_report01.*
+import kotlinx.android.synthetic.main.fragment_report02.*
 import kotlinx.android.synthetic.main.fragment_report02.view.*
 
 
@@ -31,11 +33,18 @@ class Report02Fragment : Fragment() {
 
         view.report_send_button.setOnClickListener {
             // send informations
-            Report00Fragment.removeInstance()
-            Report01Fragment.removeInstance()
-            Report02Fragment.removeInstance()
+            if(report_injury_checkBox_06.isChecked && report_additional_information_textfield.toString().length == 0) {
+                report_additional_information_title.setTextColor(Color.RED)
+                report_additional_information_textfield.setBackgroundResource(R.drawable.border_layout)
+            } else {
+                Report00Fragment.removeInstance()
+                Report01Fragment.removeInstance()
+                Report02Fragment.removeInstance()
+            }
+
         }
 
         return view
     }
+
 }
