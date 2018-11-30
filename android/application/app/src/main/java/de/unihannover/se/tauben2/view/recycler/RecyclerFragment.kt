@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
-import java.text.FieldPosition
 
 abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = false): Fragment(), Observer<List<Data>> {
 
