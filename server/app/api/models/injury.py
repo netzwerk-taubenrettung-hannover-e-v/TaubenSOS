@@ -1,4 +1,5 @@
 from api import db, ma
+from marshmallow import post_load
 
 class Injury(db.Model):
     __tablename__ = "injury"
@@ -40,12 +41,6 @@ class Injury(db.Model):
         return Injury.query.get(caseID)
 
 class InjurySchema(ma.Schema):
-    '''
-    class Meta:
-        model = Injury
-        sqla_session = db.session
-    '''
-    caseID = ma.Integer(dump_only=True)
     footOrLeg = ma.Boolean()
     wing = ma.Boolean()
     headOrEye = ma.Boolean()
@@ -53,7 +48,7 @@ class InjurySchema(ma.Schema):
     paralyzedOrFlightless = ma.Boolean()
     fledgling = ma.Boolean()
     other = ma.Boolean()
-    from marshmallow import post_load
+
     @post_load
     def make_injury(self, data):
         return Injury(**data)

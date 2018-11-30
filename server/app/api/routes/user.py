@@ -1,6 +1,7 @@
 from flask import (Blueprint, request)
 
 from api.models.user import (User, user_schema, users_schema)
+import hashlib
 
 bp = Blueprint("user", __name__, url_prefix="/api")
 
@@ -11,19 +12,20 @@ def read_users():
         return users_schema.jsonify(users)
 
 @bp.route("/user", methods=["POST"], strict_slashes=False)
-def create_or_change_user():
+def registrate():
 	if request.method == "POST":
 		username = request.json["username"]
 		password = request.json["password"]
 		phone = request.json["phone"]
-		isAdmin = request.json["isAdmin"]
 
-		user = User(username=username, password=password, phone=phone, isAdmin=isAdmin)
+		passwordHashed = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+		user = User(username=username, password=passwordHashed, phone=phone, isAdmin=False, isActivated=False)
 		user.save()
 
 		return user_schema.jsonify(user), 201
 
-@bp.route("/user/<username>", methods=["GET", "PUT"], strict_slashes=False)
+@bp.route("/user/<username>", methods=["GET", "PUT", "DELETE"], strict_slashes=False)
 def read_or_update_user(username):
 	if request.method == "GET":
 		user = User.get(username)
@@ -31,6 +33,10 @@ def read_or_update_user(username):
 	if request.method == "PUT":
 		user = User.get(username)
 		user.isAdmin = request.json["isAdmin"]
+		user.isActivated = request.json["isActivated"]
 		user.save()
-		
-		return user_schema.jsonify(user), 201
+		return user_schema.jsonify(user), 200
+	if request.method == "DELETE":
+		user = User.get(username)
+		user.delete()
+		return 200

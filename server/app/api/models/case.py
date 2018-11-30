@@ -1,6 +1,7 @@
 from api import db, ma
 from api.models import injury, medium
 from datetime import datetime
+from marshmallow import post_dump, pre_load, post_load, utils
 
 class Case(db.Model):
     __tablename__ = "case"
@@ -54,7 +55,7 @@ class Case(db.Model):
 
 class CaseSchema(ma.Schema):
     caseID = ma.Integer(dump_only=True)
-    timestamp = ma.DateTime("%s", missing=None)
+    timestamp = ma.DateTime("rfc", missing=None)
     priority = ma.Integer()
     rescuer = ma.String(missing=None)
     isCarrierPigeon = ma.Boolean()
@@ -66,16 +67,23 @@ class CaseSchema(ma.Schema):
     wasFoundDead = ma.Boolean(missing=None)
     isClosed = ma.Boolean(missing=None)
     injury = ma.Nested(injury.InjurySchema)
-    #media = ma.Nested(medium.MediumSchema, many=True)
-    from marshmallow import post_load
+    media = ma.Nested(medium.MediumSchema, many=True)
+
+    @post_dump
+    def wrap(self, data):
+        d = utils.from_rfc(data["timestamp"])
+        data["timestamp"] = d.strftime("%s")
+        return data
+
+    @pre_load
+    def process_input(self, data):
+        d = datetime.fromtimestamp(int(data["timestamp"]))
+        data["timestamp"] = utils.rfcformat(d)
+        return data
+
     @post_load
     def make_case(self, data):
         return Case(**data)
-    '''
-    class Meta:
-        model = Case
-        sqla_session = db.session
-    '''
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)

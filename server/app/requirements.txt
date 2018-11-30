@@ -6,3 +6,4 @@ flask-marshmallow==0.9.0
 marshmallow-sqlalchemy==0.15.0
 gunicorn==19.9.0
 pyjwt==1.6.4
+boto3==1.9.52
