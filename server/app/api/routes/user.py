@@ -12,7 +12,7 @@ def read_users():
         return users_schema.jsonify(users)
 
 @bp.route("/user", methods=["POST"], strict_slashes=False)
-def registrate():
+def sign_up():
 	if request.method == "POST":
 		username = request.json["username"]
 		password = request.json["password"]

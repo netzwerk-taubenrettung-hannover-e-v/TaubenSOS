@@ -1,6 +1,6 @@
 # API Documentation for the User Routes 🛣
 
-## Registrate
+## Sign up
 
 A new user can registrate
 
@@ -13,14 +13,15 @@ A new user can registrate
 * **URL Params**  
     None
 
-* **Data Params**  
+* **Data Params**
+
     Name | Description | Optional | Type | Example
     --- | --- | :---: | --- | ---:
     username | Name of the user (must be unique). | NO | String | "Pigeonator"
     password | password of the user(will be stored as a hash). | NO | String | "securepassword"
     phone | The phone number of the user | NO | String | "0123456789"
 
-* **Success Response**  
+* **Success Response**
   * Code: `201 CREATED`
     ```json
     {
@@ -32,7 +33,7 @@ A new user can registrate
     }
     ```
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
@@ -53,11 +54,12 @@ Returns a list of all registrated users
 * **URL Params**  
     None
 
-* **Data Params**  
+* **Data Params**
+
     Name | Description | Optional | Type | Example
     --- | --- | :---: | --- | ---:
 
-* **Success Response**  
+* **Success Response**
   * Code: `200 OK`
     ```json
     {
@@ -69,7 +71,7 @@ Returns a list of all registrated users
     }
     ```
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
@@ -90,13 +92,14 @@ Activate a user or make user an admin or revoke admin status. Only admins should
 * **URL Params**  
     username=[String]
 
-* **Data Params**  
+* **Data Params**
+
     Name | Description | Optional | Type | Example
     --- | --- | :---: | --- | ---:
     isActivated | Is false until the user is activated by an Admin | NO | Boolean | true
     isAdmin | Is false until the user gets admin permissions by an admin | NO | Boolean | false
 
-* **Success Response**  
+* **Success Response**
   * Code: `200 OK`
     ```json
     {
@@ -108,7 +111,7 @@ Activate a user or make user an admin or revoke admin status. Only admins should
     }
     ```
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
@@ -129,11 +132,12 @@ get user
 * **URL Params**  
     username=[String]
 
-* **Data Params**  
+* **Data Params**
+
     Name | Description | Optional | Type | Example
     --- | --- | :---: | --- | ---:
 
-* **Success Response**  
+* **Success Response**
   * Code: `200 OK`
     ```json
     {
@@ -145,7 +149,7 @@ get user
     }
     ```
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
@@ -166,14 +170,15 @@ delete user. Only admins should be able to do this.
 * **URL Params**  
     username=[String]
 
-* **Data Params**  
+* **Data Params**
+
     Name | Description | Optional | Type | Example
     --- | --- | :---: | --- | ---:
 
-* **Success Response**  
+* **Success Response**
   * Code: `200 OK`
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
