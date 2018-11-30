@@ -29,9 +29,7 @@ class Report00Fragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-
         when (view) {
-
             report_next_step_button -> {
                 Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
             }
