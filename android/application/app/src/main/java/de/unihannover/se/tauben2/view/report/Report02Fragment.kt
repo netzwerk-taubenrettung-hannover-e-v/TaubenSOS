@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.SendableCase
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,21 +55,12 @@ class Report02Fragment : Fragment() {
     private fun sendCaseToServer() {
         val service = App.getNetworkService()
         // TODO replace with actual data
-        val myNewCase = SendableCase("T a u b e  V e r l e t z t", false, false,
-                52.379, 9.74170, "110", 1, 1543527726,
-                Injury(true, false, true, false, true, true, true))
-
-        val call = service.sendCase(myNewCase)
-        call.enqueue(object : Callback<Case> {
-            override fun onFailure(call: Call<Case>, t: Throwable) {
-                Log.d(LOG_TAG, "Creating Case Request Failed")
-            }
-
-            override fun onResponse(call: Call<Case>, response: Response<Case>) {
-                val responseObjStr = response.body().toString()
-                Log.d(LOG_TAG, "case created: $responseObjStr")
-            }
-
-        })
+        val myNewCase = Case(null, "Test 4321", null,
+                false, false, 52.379, 9.74170,
+                null, 1, 1543527726, "110", null,
+                Injury(true, false, true, false, true,
+                        true, true))
+        val caseViewModel = getViewModel(CaseViewModel::class.java)
+        caseViewModel?.sendCase(myNewCase)
     }
 }
