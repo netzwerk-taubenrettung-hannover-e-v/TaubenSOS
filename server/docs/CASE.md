@@ -14,6 +14,7 @@ Creates a new case.
     None
 
 * **Data Params**
+
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
