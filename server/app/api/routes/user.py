@@ -25,7 +25,7 @@ def registrate():
 
 		return user_schema.jsonify(user), 201
 
-@bp.route("/user/<username>", methods=["GET", "PUT"], strict_slashes=False)
+@bp.route("/user/<username>", methods=["GET", "PUT", "DELETE"], strict_slashes=False)
 def read_or_update_user(username):
 	if request.method == "GET":
 		user = User.get(username)
@@ -35,5 +35,8 @@ def read_or_update_user(username):
 		user.isAdmin = request.json["isAdmin"]
 		user.isActivated = request.json["isActivated"]
 		user.save()
-		
-		return user_schema.jsonify(user), 201
+		return user_schema.jsonify(user), 200
+	if request.method == "DELETE":
+		user = User.get(username)
+		user.delete()
+		return 200

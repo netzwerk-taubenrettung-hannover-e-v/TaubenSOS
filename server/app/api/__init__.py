@@ -26,4 +26,7 @@ def create_app(config_name):
     from api.routes import user
     app.register_blueprint(user.bp)
 
+    from api.routes import auth
+    app.register_blueprint(auth.bp)
+
     return app
