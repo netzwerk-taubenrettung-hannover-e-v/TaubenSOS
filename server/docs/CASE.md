@@ -4,44 +4,44 @@
 
 Creates a new case.
 
-* ### URL
+* **URL**  
     /case
 
-* ### Method
+* **Method**  
     `POST`
 
-* ### URL Params
+* **URL Params**  
     None
 
-* ### Data Params
-    Name | Description | Optional | Type | Example
-    --- | --- | :---: | --- | ---:
-    timestamp | A UNIX timestamp. | YES | String | "1543397014"
-    priority | An integer (1-5) representing the case's severity. | NO | Integer | 5
-    rescuer | The pigeon rescuer's username. | YES | String | "Taubenretter"
-    isCarrierPigeon | Is the bird a carrier pigeon? | NO | Boolean | true
-    isWeddingPigeon | Is the bird a wedding pigeon? | NO | Boolean | false
-    additionalInfo | Additional info on the pigeon's condition/location. | YES | String | "Taube liegt unter der Brücke."
-    phone | The rescuer's mobile number. | NO | String | "015237342956"
-    latitude | The latitude of the pigeon's location. | NO | Float | 52.3744
-    longitude | The longitude of the pigeon's location. | NO | Float | 9.73886
-    wasFoundDead | Was the pigeon found dead? | YES | Boolean | false
-    isClosed | Is the case closed? | YES | Boolean | true
-    injury | The pigeon's injuries. | NO | JSON Object | See table below.
+* **Data Params**  
+    Name | Description | Optional | Type | Default | Example
+    --- | --- | :---: | --- | :---: | ---:
+    timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
+    priority | An integer (1-5) representing the case's severity. | NO | Integer | — | 5
+    rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenretter"
+    isCarrierPigeon | Is the bird a carrier pigeon? | NO | Boolean | — | true
+    isWeddingPigeon | Is the bird a wedding pigeon? | NO | Boolean | — | false
+    additionalInfo | Additional info on the pigeon's condition/location. | YES | String | null | "Taube liegt unter der Brücke."
+    phone | The rescuer's mobile number. | NO | String | — | "015237342956"
+    latitude | The latitude of the pigeon's location. | NO | Float | — | 52.3744
+    longitude | The longitude of the pigeon's location. | NO | Float | — | 9.73886
+    wasFoundDead | Was the pigeon found dead? | YES | Boolean | null | false
+    isClosed | Is the case closed? | YES | Boolean | false | true
+    injury | The pigeon's injuries. | NO | JSON Object | — | See table below.
 
     An 'injury' object has the following fields:
 
-    Name | Description | Optional | Type | Example
-    --- | --- | :---: | --- | ---:
-    footOrLeg | Is the pigeon's foot or leg injured? | NO | Boolean | true
-    wing | Is the pigeon's wing injured? | NO | Boolean | false
-    headOrEye | Is the pigeon's head or eye injured? | NO | Boolean | false
-    openWound | Has the pigeon an open wound? | NO | Boolean | false
-    paralyzedOrFlightless | Is the pigeon paralyzed or flightless? | NO | Boolean | false
-    fledgling | Is the pigeon a fledgling? | NO | Boolean | false
-    other | Has the pigeon other injuries? | NO | Boolean | false
+    Name | Description | Optional | Type | Default | Example
+    --- | --- | :---: | --- | :---: | ---:
+    footOrLeg | Is the pigeon's foot or leg injured? | NO | Boolean | — | true
+    wing | Is the pigeon's wing injured? | NO | Boolean | — | false
+    headOrEye | Is the pigeon's head or eye injured? | NO | Boolean | — | false
+    openWound | Has the pigeon an open wound? | NO | Boolean | — | false
+    paralyzedOrFlightless | Is the pigeon paralyzed or flightless? | NO | Boolean | — | false
+    fledgling | Is the pigeon a fledgling? | NO | Boolean | — | false
+    other | Has the pigeon other injuries? | NO | Boolean | — | false
 
-* ### Success Response
+* **Success Response**  
   * Code: `201 CREATED`
     ```json
     {
@@ -70,7 +70,7 @@ Creates a new case.
     }
     ```
 
-* ### Error Response
+* **Error Response**  
   * Code: `400 BAD REQUEST`
     ```json
     {
