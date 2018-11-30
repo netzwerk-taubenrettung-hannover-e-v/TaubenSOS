@@ -46,8 +46,6 @@ def only(scope):
 			token_data = decode_access_token(access_token)
 
 			values = list(kwargs.values())
-			print("VALUEEEESSSS")
-			print(values)
 
 			if not kwargs:
 				f = func()
