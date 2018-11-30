@@ -13,7 +13,7 @@ Creates a new case.
 * **URL Params**  
     None
 
-* **Data Params**  
+* **Data Params**
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
@@ -41,7 +41,7 @@ Creates a new case.
     fledgling | Is the pigeon a fledgling? | NO | Boolean | — | false
     other | Has the pigeon other injuries? | NO | Boolean | — | false
 
-* **Success Response**  
+* **Success Response**
   * Code: `201 CREATED`
     ```json
     {
@@ -70,7 +70,7 @@ Creates a new case.
     }
     ```
 
-* **Error Response**  
+* **Error Response**
   * Code: `400 BAD REQUEST`
     ```json
     {
