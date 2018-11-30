@@ -1,9 +1,7 @@
 package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.model.SendableCase
 import de.unihannover.se.tauben2.model.entity.Case
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,5 +16,5 @@ interface NetworkService {
     fun getCase(@Path("id") id: Int): LiveDataRes<Case>
 
     @POST("case")
-    fun sendCase(@Body case: SendableCase): Call<Case>
+    fun sendCase(@Body case: Case): LiveDataRes<Case>
 }
