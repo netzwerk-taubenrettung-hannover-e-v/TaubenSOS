@@ -46,11 +46,10 @@
                 android:id="@+id/priority_text_card_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="65dp"
                 android:text="@{``+ c.priority}"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_title"
-                app:layout_constraintStart_toEndOf="@+id/priority_text_card_title"
+                app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/priority_text_card_title"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -95,7 +94,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Timestamp:"
-                app:layout_constraintEnd_toStartOf="@+id/date_time_card_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/case_id_card_title" />
 
@@ -153,11 +151,10 @@
                 android:id="@+id/case_id_card_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="#2018012345"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/case_id_card_title"
-                app:layout_constraintStart_toEndOf="@+id/case_id_card_title"
+                app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/case_id_card_title" />
 
             <TextView
@@ -240,12 +237,11 @@
                 android:id="@+id/date_time_card_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="28.06 14:12 Uhr"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/date_time_card_title"
-                app:layout_constraintStart_toEndOf="@+id/date_time_card_title"
+                app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/date_time_card_title"
                 app:layout_constraintVertical_bias="1.0" />
 
