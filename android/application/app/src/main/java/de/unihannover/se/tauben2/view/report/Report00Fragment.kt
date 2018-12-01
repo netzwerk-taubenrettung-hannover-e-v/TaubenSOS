@@ -1,31 +1,58 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.Injury
+import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.*
 import kotlinx.android.synthetic.main.fragment_report00.view.*
 
 class Report00Fragment : Fragment(), View.OnClickListener {
 
-    companion object: Singleton<Report00Fragment>() {
+    private var mUserLocation: Location? = null
+    private var mCreatedCase: Case? = null
+    private var mCaseBundle: Bundle = Bundle()
+
+    companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mCreatedCase = mCreatedCase ?: Case(null, null, null, false,
+                false, 0.0, 0.0, null, 1, 0,
+                "", null, Injury(false, false, false,
+                false, false, false, false))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.fragment_report00, container, false)
-
         view.report_next_step_button.setOnClickListener(this)
 
         return view
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        val locationViewModel = getViewModel(LocationViewModel::class.java)
+        locationViewModel?.observeCurrentLocation(this, Observer {
+            mUserLocation = it
+        })
     }
 
     override fun onClick(view: View?) {
@@ -33,9 +60,26 @@ class Report00Fragment : Fragment(), View.OnClickListener {
         when (view) {
 
             report_next_step_button -> {
-                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
+                if (saveLocation()) {
+                    Navigation.findNavController(context as Activity, R.id.nav_host)
+                            .navigate(R.id.report01Fragment)
+                } else {
+                    Toast.makeText(activity, "NO GPS AVAILABLE", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
+
+    /**
+     * saves location to created case
+     * @return true if successful
+     */
+    private fun saveLocation(): Boolean {
+        mUserLocation?.let {
+            mCreatedCase?.longitude = it.longitude
+            return true
+        }
+        return false
     }
 
 }
