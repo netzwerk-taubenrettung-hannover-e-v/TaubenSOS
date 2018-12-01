@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.view.recycler.RecyclerFragment
-import kotlinx.android.synthetic.main.fragment_report00.view.*
 
 class CasesInfoFragment: Fragment() {
 
@@ -22,7 +20,7 @@ class CasesInfoFragment: Fragment() {
                               savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentCasesinfoBinding>(inflater, R.layout.fragment_casesinfo, container, false)
         arguments?.getParcelable<Case>("case")?.let {
-            binding.currentCase = it
+            binding.c = it
         }
         return binding.root
 
