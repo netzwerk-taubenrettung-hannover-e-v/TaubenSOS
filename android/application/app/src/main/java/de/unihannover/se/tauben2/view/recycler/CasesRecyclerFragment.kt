@@ -13,10 +13,10 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.entity.Injury
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-import kotlinx.android.synthetic.main.card_case.injury_card_value
+
 import android.widget.ArrayAdapter
 import androidx.navigation.Navigation
-import de.unihannover.se.tauben2.view.CasesInfoFragment
+
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
     override fun getRecylcerItemLayoutId(viewType: Int) = R.layout.card_case
