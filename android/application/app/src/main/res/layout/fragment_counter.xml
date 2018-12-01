@@ -44,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="28.01 14:12 Uhr"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/current_timestamp_title"
             app:layout_constraintStart_toEndOf="@+id/current_timestamp_title"

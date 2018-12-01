@@ -24,12 +24,7 @@ class CounterFragment : Fragment() {
 
         val view = inflater.inflate(fragment_counter, container, false)
 
-        setCurrentTimestamp()
-
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
-
-//        view.findViewById<View>(R.id.changedate_button).setOnClickListener(this)
-//        view.findViewById<View>(R.id.send_count_button).setOnClickListener(this)
 
         view.plus_button.setOnClickListener {
             val value = (counter_value.text.toString().toIntOrNull() ?:0) + 1
@@ -46,6 +41,11 @@ class CounterFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setCurrentTimestamp()
     }
 
     private fun setCurrentTimestamp() {
