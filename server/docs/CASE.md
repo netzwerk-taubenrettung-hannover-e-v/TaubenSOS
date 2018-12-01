@@ -19,7 +19,7 @@ Creates a new case.
     --- | --- | :---: | --- | :---: | ---:
     timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
     priority | An integer (1-5) representing the case's severity. | NO | Integer | — | 5
-    rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenretter"
+    rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenfreund24"
     isCarrierPigeon | Is the bird a carrier pigeon? | NO | Boolean | — | true
     isWeddingPigeon | Is the bird a wedding pigeon? | NO | Boolean | — | false
     additionalInfo | Additional info on the pigeon's condition/location. | YES | String | null | "Taube liegt unter der Brücke."
@@ -29,6 +29,7 @@ Creates a new case.
     wasFoundDead | Was the pigeon found dead? | YES | Boolean | null | false
     isClosed | Is the case closed? | YES | Boolean | false | true
     injury | The pigeon's injuries. | NO | JSON Object | — | See table below.
+    media | An array of the names of the files to be uploaded. | YES | JSON Array of Strings | [] | ["photo1.png", "photo2.png"]
 
     An 'injury' object has the following fields:
 
@@ -43,6 +44,8 @@ Creates a new case.
     other | Has the pigeon other injuries? | NO | Boolean | — | false
 
 * **Success Response**
+  * In case that the names of the files to be uploaded were specified, the response's 'media' field contains an array of pre-signed URLs for uploading to AWS S3. Note that the HTTP `PUT` method has to be used for the file upload, e.g.  
+  `curl --request PUT --upload-file path/to/file "https://tauben2.s3.amazonaws.com/photos/..."`.
   * Code: `201 CREATED`
     ```json
     {
@@ -57,9 +60,9 @@ Creates a new case.
             "paralyzedOrFlightless": false,
             "wing": false
         },
-        "isCarrierPigeon": false,
+        "isCarrierPigeon": true,
         "isClosed": false,
-        "isWeddingPigeon": true,
+        "isWeddingPigeon": false,
         "latitude": 52.3744,
         "longitude": 9.73886,
         "media": [],

@@ -41,13 +41,13 @@ class Injury(db.Model):
         return Injury.query.get(caseID)
 
 class InjurySchema(ma.Schema):
-    footOrLeg = ma.Boolean()
-    wing = ma.Boolean()
-    headOrEye = ma.Boolean()
-    openWound = ma.Boolean()
-    paralyzedOrFlightless = ma.Boolean()
-    fledgling = ma.Boolean()
-    other = ma.Boolean()
+    footOrLeg = ma.Boolean(required=True)
+    wing = ma.Boolean(required=True)
+    headOrEye = ma.Boolean(required=True)
+    openWound = ma.Boolean(required=True)
+    paralyzedOrFlightless = ma.Boolean(required=True)
+    fledgling = ma.Boolean(required=True)
+    other = ma.Boolean(required=True)
 
     @post_load
     def make_injury(self, data):

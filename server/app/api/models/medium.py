@@ -1,6 +1,5 @@
 from api import db, ma
 from marshmallow import post_dump, post_load
-import boto3
 
 class Medium(db.Model):
     __tablename__ = "medium"
@@ -31,12 +30,6 @@ class Medium(db.Model):
 
 class MediumSchema(ma.Schema):
     uri = ma.String()
-
-    @post_dump
-    def wrap(self, data):
-        s3 = boto3.client('s3')
-        url = s3.generate_presigned_url('get_object', Params={'Bucket': 'tauben2', 'Key': data.get("uri")}, ExpiresIn=604800)
-        return url
 
     @post_load
     def make_medium(self, data):

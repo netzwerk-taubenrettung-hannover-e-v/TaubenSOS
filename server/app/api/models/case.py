@@ -20,7 +20,7 @@ class Case(db.Model):
     injury = db.relationship("Injury", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed, injury):
+    def __init__(self, timestamp, priority, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed, injury, media):
         self.timestamp = timestamp
         self.priority = priority
         self.rescuer = rescuer
@@ -33,6 +33,7 @@ class Case(db.Model):
         self.wasFoundDead = wasFoundDead
         self.isClosed = isClosed
         self.injury = injury
+        self.media = media
 
     def save(self):
         db.session.add(self)
@@ -56,18 +57,18 @@ class Case(db.Model):
 class CaseSchema(ma.Schema):
     caseID = ma.Integer(dump_only=True)
     timestamp = ma.DateTime("rfc", missing=None)
-    priority = ma.Integer()
+    priority = ma.Integer(required=True)
     rescuer = ma.String(missing=None)
-    isCarrierPigeon = ma.Boolean()
-    isWeddingPigeon = ma.Boolean()
+    isCarrierPigeon = ma.Boolean(required=True)
+    isWeddingPigeon = ma.Boolean(required=True)
     additionalInfo = ma.String(missing=None)
-    phone = ma.String()
-    latitude = ma.Float()
-    longitude = ma.Float()
+    phone = ma.String(required=True)
+    latitude = ma.Float(required=True)
+    longitude = ma.Float(required=True)
     wasFoundDead = ma.Boolean(missing=None)
     isClosed = ma.Boolean(missing=None)
-    injury = ma.Nested(injury.InjurySchema)
-    media = ma.Nested(medium.MediumSchema, many=True)
+    injury = ma.Nested(injury.InjurySchema, required=True)
+    media = ma.Nested(medium.MediumSchema, missing=[], many=True)
 
     @post_dump
     def wrap(self, data):
