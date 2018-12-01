@@ -2,22 +2,30 @@ package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
-import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
-import kotlinx.android.synthetic.main.fragment_report01.*
 import kotlinx.android.synthetic.main.fragment_report01.view.*
 
 
 class Report01Fragment : Fragment() {
 
-    companion object: Singleton<Report01Fragment>() {
+    private var mCreatedCase: Case? = null
+
+    companion object : Singleton<Report01Fragment>() {
         override fun newInstance() = Report01Fragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val args = arguments
+        mCreatedCase = args?.getParcelable("createdCase")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +41,7 @@ class Report01Fragment : Fragment() {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment)
         }
 
-
         return view
     }
+
 }

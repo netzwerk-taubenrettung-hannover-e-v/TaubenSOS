@@ -23,7 +23,6 @@ class Report00Fragment : Fragment(), View.OnClickListener {
 
     private var mUserLocation: Location? = null
     private var mCreatedCase: Case? = null
-    private var mCaseBundle: Bundle = Bundle()
 
     companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()
@@ -46,7 +45,6 @@ class Report00Fragment : Fragment(), View.OnClickListener {
         return view
     }
 
-
     override fun onResume() {
         super.onResume()
         val locationViewModel = getViewModel(LocationViewModel::class.java)
@@ -61,8 +59,10 @@ class Report00Fragment : Fragment(), View.OnClickListener {
 
             report_next_step_button -> {
                 if (saveLocation()) {
+                    val caseBundle = Bundle()
+                    caseBundle.putParcelable("createdCase", mCreatedCase)
                     Navigation.findNavController(context as Activity, R.id.nav_host)
-                            .navigate(R.id.report01Fragment)
+                            .navigate(R.id.report01Fragment, caseBundle)
                 } else {
                     Toast.makeText(activity, "NO GPS AVAILABLE", Toast.LENGTH_SHORT).show()
                 }
@@ -75,11 +75,13 @@ class Report00Fragment : Fragment(), View.OnClickListener {
      * @return true if successful
      */
     private fun saveLocation(): Boolean {
-        mUserLocation?.let {
-            mCreatedCase?.longitude = it.longitude
-            return true
+        return if (mUserLocation != null) {
+            mCreatedCase?.longitude = mUserLocation!!.longitude
+            mCreatedCase?.latitude = mUserLocation!!.latitude
+            true
+        } else {
+            false
         }
-        return false
     }
 
 }
