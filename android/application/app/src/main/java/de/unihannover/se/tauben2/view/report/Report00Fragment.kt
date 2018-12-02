@@ -53,8 +53,10 @@ class Report00Fragment : Fragment(), View.OnClickListener {
 
             report_next_step_button -> {
                 if (saveLocation()) {
+
                     val caseBundle = Bundle()
                     caseBundle.putParcelable("createdCase", mCreatedCase)
+
                     Navigation.findNavController(context as Activity, R.id.nav_host)
                             .navigate(R.id.report01Fragment, caseBundle)
                 } else {

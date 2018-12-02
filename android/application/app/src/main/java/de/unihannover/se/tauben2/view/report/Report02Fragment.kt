@@ -40,7 +40,6 @@ class Report02Fragment : Fragment() {
             binding.createdCase = it
         }
 
-        // this will reset the frame - no gud. change plox
         binding.root.report_prev_step_button.setOnClickListener {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
         }
@@ -57,7 +56,6 @@ class Report02Fragment : Fragment() {
 
     private fun sendCaseToServer() {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
-        // TODO uncomment when done with testing
         mCreatedCase?.let { case ->
             caseViewModel?.let {
                 it.sendCase(case)

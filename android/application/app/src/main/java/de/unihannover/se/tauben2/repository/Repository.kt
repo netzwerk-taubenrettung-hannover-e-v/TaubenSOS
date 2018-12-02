@@ -59,6 +59,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     }.getAsLiveData()
 
     /**
+     * Sends case to server and inserts the answer from the server into the local database
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
      * the api doesn't accept are set to null
      */
