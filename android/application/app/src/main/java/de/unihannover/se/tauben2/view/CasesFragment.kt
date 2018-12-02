@@ -33,30 +33,30 @@ class CasesFragment : Fragment() {
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
         getViewModel(CaseViewModel::class.java)?.cases?.let {
-            val notClosed = it.filter { case -> !case.isClosed }
-            notClosed.observe(this, LoadingObserver(recyclerFragment){ message ->
+            val allCases = it//.filter { case -> !case.isClosed }
+            allCases.observe(this, LoadingObserver(recyclerFragment){ message ->
                 Toast.makeText(this.context, "Couldn't load events: $message", Toast.LENGTH_LONG).show()
             })
 
-            notClosed.observe(this, mapsFragment)
+            allCases.observe(this, mapsFragment)
         }
 
-        initFab(view)
+        initFab(view, recyclerFragment, mapsFragment)
 
         return view
     }
 
     // Filter - Floating Action Button
-    private fun initFab (view : View) {
+    private fun initFab (view : View, recyclerFragment : CasesRecyclerFragment, mapsFragment : MapViewFragment) {
 
         val speedDialView = view.speedDial
 
-        // add Filter Buttons
+        // Add Filter Buttons
         // my cases
         speedDialView.addActionItem(
                 SpeedDialActionItem.Builder(R.id.cases_filter_my, R.drawable.ic_assignment_ind_white_24dp)
                         .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
-                        // y u no work...
+                        // TODO: y u no work...
                         //.setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
                         .setLabel("My Cases")
                         .create()
