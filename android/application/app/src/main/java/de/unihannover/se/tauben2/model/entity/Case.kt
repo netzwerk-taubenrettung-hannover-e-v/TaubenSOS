@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem

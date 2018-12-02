@@ -6,4 +6,6 @@
     <color name="Green">#2c8926</color>
     <color name="White">#FFFFFF</color>
     <color name="Gray">#AAAAAA</color>
+    <color name="errorColor">#b00020</color>
+
 </resources>

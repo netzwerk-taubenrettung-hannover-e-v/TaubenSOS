@@ -1,5 +1,7 @@
 package de.unihannover.se.tauben2
 
+import android.content.res.Resources
+import android.os.Build
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Transformations
