@@ -43,7 +43,8 @@
             android:text="Fuß-/Beinverletzung"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <CheckBox
             android:id="@+id/report_injury_checkBox_01"
@@ -163,7 +164,7 @@
         android:thumbTint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/report_state_max"
         app:layout_constraintStart_toEndOf="@+id/report_state_min"
-        app:layout_constraintTop_toBottomOf="@+id/report_state_help" />
+        app:layout_constraintTop_toBottomOf="@+id/report_state_help"/>
 
     <TextView
         android:id="@+id/report_state_min"

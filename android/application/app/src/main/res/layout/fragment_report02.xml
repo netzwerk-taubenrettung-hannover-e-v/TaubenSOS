@@ -94,12 +94,15 @@
         app:layout_constraintBottom_toTopOf="@+id/report_send_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/report_additional_information_help">
+        app:layout_constraintTop_toBottomOf="@+id/report_additional_information_help"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="..." />
+            android:text="..."
+
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
