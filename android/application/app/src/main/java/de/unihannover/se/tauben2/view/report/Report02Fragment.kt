@@ -6,9 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.databinding.FragmentReport02Binding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
@@ -26,36 +29,42 @@ class Report02Fragment : Fragment() {
         override fun newInstance() = Report02Fragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val args = arguments
-        mCreatedCase = args?.getParcelable("createdCase")
-        Log.d(LOG_TAG, "Current Case object: ${mCreatedCase.toString()}")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_report02, container, false)
+        val binding = DataBindingUtil.inflate<FragmentReport02Binding>(inflater, R.layout.fragment_report02, container, false)
+
+        mCreatedCase = arguments?.getParcelable("createdCase")
+        mCreatedCase?.let {
+            binding.createdCase = it
+        }
 
         // this will reset the frame - no gud. change plox
-        view.report_prev_step_button.setOnClickListener {
+        binding.root.report_prev_step_button.setOnClickListener {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
         }
 
-        view.report_send_button.setOnClickListener {
+        binding.root.report_send_button.setOnClickListener {
             sendCaseToServer()
             Report00Fragment.removeInstance()
             Report01Fragment.removeInstance()
             Report02Fragment.removeInstance()
         }
 
-        return view
+        return binding.root
     }
 
     private fun sendCaseToServer() {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
         // TODO uncomment when done with testing
-        //caseViewModel?.sendCase(myNewCase)
+        mCreatedCase?.let { case ->
+            caseViewModel?.let {
+                it.sendCase(case)
+                Log.d(LOG_TAG, "Sent case: $case")
+                Toast.makeText(context, "Case Sent!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 }
