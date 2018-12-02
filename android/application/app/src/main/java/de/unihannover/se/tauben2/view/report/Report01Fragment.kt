@@ -19,6 +19,7 @@ class Report01Fragment : Fragment() {
 
     private var mCreatedCase: Case? = null
 
+
     companion object : Singleton<Report01Fragment>() {
         override fun newInstance() = Report01Fragment()
     }

@@ -173,7 +173,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:max="4"
-            android:progress="1"
+            android:progress="@={createdCase.priority}"
             android:progressTint="@color/colorPrimaryDark"
             android:thumbTint="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@+id/report_state_max"
