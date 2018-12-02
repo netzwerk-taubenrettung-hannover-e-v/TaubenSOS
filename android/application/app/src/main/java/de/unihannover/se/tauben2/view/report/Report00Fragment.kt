@@ -22,19 +22,13 @@ import kotlinx.android.synthetic.main.fragment_report00.view.*
 class Report00Fragment : Fragment(), View.OnClickListener {
 
     private var mUserLocation: Location? = null
-    private var mCreatedCase: Case? = null
+    private var mCreatedCase: Case = Case(null, null, null, false,
+            false, 0.0, 0.0, null, 1, 0,
+            "", null, Injury(false, false, false,
+            false, false, false, false))
 
     companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        mCreatedCase = mCreatedCase ?: Case(null, null, null, false,
-                false, 0.0, 0.0, null, 1, 0,
-                "", null, Injury(false, false, false,
-                false, false, false, false))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +58,7 @@ class Report00Fragment : Fragment(), View.OnClickListener {
                     Navigation.findNavController(context as Activity, R.id.nav_host)
                             .navigate(R.id.report01Fragment, caseBundle)
                 } else {
-                    Toast.makeText(activity, "NO GPS AVAILABLE", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "No GPS Available", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -75,13 +69,11 @@ class Report00Fragment : Fragment(), View.OnClickListener {
      * @return true if successful
      */
     private fun saveLocation(): Boolean {
-        return if (mUserLocation != null) {
-            mCreatedCase?.longitude = mUserLocation!!.longitude
-            mCreatedCase?.latitude = mUserLocation!!.latitude
-            true
-        } else {
-            false
+        mUserLocation?.let {
+            mCreatedCase.longitude = it.longitude
+            mCreatedCase.latitude = it.latitude
+            return true
         }
+        return false
     }
-
 }
