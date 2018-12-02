@@ -7,6 +7,7 @@
 
         <variable name="c" type="de.unihannover.se.tauben2.model.entity.Case" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Verletzung:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/media_card_layout" />
@@ -143,11 +144,11 @@
             android:id="@+id/user_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="processed by:"
+            android:text="Angenommen von:"
             app:layout_constraintBottom_toBottomOf="@+id/accept_card_button"
             app:layout_constraintStart_toStartOf="@+id/additional_information_card_textfield"
             app:layout_constraintTop_toTopOf="@+id/accept_card_button"
-            app:layout_constraintVertical_bias="0.758" />
+            />
 
         <TextView
             android:id="@+id/media_card_title"
@@ -233,6 +234,7 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:text="accept"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             app:backgroundTint="@color/colorPrimaryDark"
