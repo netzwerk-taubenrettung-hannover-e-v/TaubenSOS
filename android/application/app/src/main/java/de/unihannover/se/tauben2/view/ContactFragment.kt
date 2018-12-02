@@ -24,7 +24,7 @@ class ContactFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
-        view.call_button.setOnClickListener {
+        view.button_call.setOnClickListener {
 
             val permission = ContextCompat.checkSelfPermission(context as MainActivity, Manifest.permission.CALL_PHONE)
 
@@ -40,7 +40,7 @@ class ContactFragment : Fragment() {
                 Log.i("Error", "Something is wrong")
             }
         }
-        view.mail_button.setOnClickListener {
+        view.button_mail.setOnClickListener {
             try {
                 val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:taubenrettung_hannover@yahoo.de"))
                 startActivity(intent)
@@ -48,7 +48,7 @@ class ContactFragment : Fragment() {
                 Log.i("Error", "Something is wrong")
             }
         }
-        view.facebook_button.setOnClickListener {
+        view.button_facebook.setOnClickListener {
             try {
                 Log.i("App", "installed")
 
