@@ -64,13 +64,13 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     override fun onDataLoaded(itemView: View, position: Int) {
         val isExpanded = position == mExpandedPosition
 
-      // itemView.expand_card.visibility = if (isExpanded) View.VISIBLE else View.GONE
+        // itemView.expand_card.visibility = if (isExpanded) View.VISIBLE else View.GONE
         //itemView.isActivated = isExpanded
         itemView.setOnClickListener {
-           // mExpandedPosition = if (isExpanded) -1 else position
+            // mExpandedPosition = if (isExpanded) -1 else position
             // TransitionManager.beginDelayedTransition(recyclerView);
-           // Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment)
-          //  notifyDataSetChanged()
+            // Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment)
+            //  notifyDataSetChanged()
             val bundle = Bundle()
             bundle.putParcelable("case", case)
             Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)

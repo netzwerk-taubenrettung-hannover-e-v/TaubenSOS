@@ -10,12 +10,11 @@
         android:id="@+id/map_fragment"
         android:name="de.unihannover.se.tauben2.view.MapViewFragment"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         app:layout_constraintBottom_toTopOf="@id/recycler_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/recycler_fragment"
@@ -27,6 +26,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_fragment"
+        />
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/speedDial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:sdMainFabClosedSrc="@drawable/ic_filter_list_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
+        app:sdMainFabOpenedBackgroundColor="@color/colorPrimaryDark"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
