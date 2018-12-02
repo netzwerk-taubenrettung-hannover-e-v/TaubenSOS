@@ -27,17 +27,13 @@ android:background="#FFFFFF">
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0175 8266832"
-        android:textSize="16dp"
-        android:textStyle="bold"
+        android:text="+0175 8266832"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/call_button"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638" />
+        app:layout_constraintVertical_bias="0.637" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/facebook_button"
