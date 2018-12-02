@@ -18,26 +18,35 @@
 
     <fragment
         android:id="@+id/recycler_fragment"
+        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
         android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_fragment"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/map_fragment" />
+
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:clickable_overlay="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="#66000000"/>
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/speedDial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        app:sdMainFabClosedSrc="@drawable/ic_filter_list_white_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
-        app:sdMainFabOpenedBackgroundColor="@color/colorPrimaryDark"
-        />
+        app:sdMainFabClosedSrc="@drawable/ic_filter_list_white_24dp"
+        app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
+        app:sdMainFabOpenedSrc="@drawable/ic_arrow_drop_down_white_24dp"
+        app:sdMainFabAnimationRotateAngle="360"
+        app:sdOverlayLayout="@id/overlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

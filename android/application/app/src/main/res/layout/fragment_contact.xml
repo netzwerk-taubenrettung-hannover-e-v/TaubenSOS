@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/linearLayout"
@@ -8,21 +9,25 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_mail"
-        style="@style/Card">
+        style="@style/Card"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_mail_outline_24px"
-                />
+                android:src="@drawable/ic_baseline_mail_outline_24px" />
 
             <TextView
                 android:id="@+id/text_mail"
@@ -30,8 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Contact us by mail"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_mail"
@@ -41,8 +45,7 @@
                 android:autoLink="email"
                 android:clickable="true"
                 android:onClick="openMail"
-                android:text="Write us a mail"
-                />
+                android:text="Write us a mail" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -105,24 +108,23 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_facebook"
         style="@style/Card"
-        app:layout_constraintTop_toBottomOf="@id/card_phone"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_phone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_facebook"
-                />
+                android:src="@drawable/ic_facebook" />
 
             <TextView
                 android:id="@+id/text_facebook"
@@ -130,8 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Be up to date"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_facebook"
@@ -139,8 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="Follow us on Facebook"
-                />
+                android:text="Follow us on Facebook" />
 
         </LinearLayout>
 

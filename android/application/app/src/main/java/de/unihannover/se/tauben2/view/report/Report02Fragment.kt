@@ -41,7 +41,6 @@ class Report02Fragment : Fragment() {
                 Report01Fragment.removeInstance()
                 Report02Fragment.removeInstance()
             }
-
         }
 
         return view

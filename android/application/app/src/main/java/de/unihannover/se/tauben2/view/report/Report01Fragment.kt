@@ -29,7 +29,6 @@ class Report01Fragment : Fragment() {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
         }
 
-
         view.report_next_step_button.setOnClickListener {
             if (canGoForward())
                 Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment)
@@ -40,8 +39,6 @@ class Report01Fragment : Fragment() {
             }
 
         }
-
-
 
         return view
     }
