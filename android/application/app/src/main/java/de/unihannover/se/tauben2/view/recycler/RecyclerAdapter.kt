@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class RecyclerAdapter<Data : RecyclerItem>(var data: List<Data> = listOf()) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-
     class ViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root)
 
 

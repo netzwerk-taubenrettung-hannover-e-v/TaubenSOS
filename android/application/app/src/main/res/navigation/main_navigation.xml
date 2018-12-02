@@ -14,7 +14,15 @@
     <fragment
         android:id="@+id/casesFragment"
         android:name="de.unihannover.se.tauben2.view.CasesFragment"
-        android:label="CasesFragment" />
+        android:label="CasesFragment" >
+        <action
+            android:id="@+id/action_casesFragment_to_casesInfoFragment"
+            app:destination="@id/casesInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/casesInfoFragment"
+        android:name="de.unihannover.se.tauben2.view.CasesInfoFragment"
+        android:label="CasesInfoFragment" />
     <fragment
         android:id="@+id/graphsFragment"
         android:name="de.unihannover.se.tauben2.view.GraphsFragment"

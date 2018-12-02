@@ -12,14 +12,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.network.Resource
 
 class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable>>> {
 
     private var mMap: GoogleMap? = null
-
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
+    private var selectedPosition : Marker? = null
 
     override fun onChanged(data: Resource<List<MapMarkable>>?) {
         if(data?.data == null) return
@@ -83,9 +84,24 @@ class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable
             }
         }
 
-
-
         return view
+    }
+
+    // add a marker at the middle of the map and save it in 'selectedPosition'
+    fun selectPosition () {
+
+        // remove the old position if exists
+        selectedPosition?.remove()
+
+        // add marker
+        val mo = MarkerOptions()
+        mo.position(mMap!!.cameraPosition.target)
+        mo.title("your selected position")
+        selectedPosition = mMap?.addMarker(mo)
+    }
+
+    fun getSelectedPosition () : LatLng? {
+        return selectedPosition?.position
     }
 
     private fun setCaseMarkers(markers: Collection<MapMarkable>) {

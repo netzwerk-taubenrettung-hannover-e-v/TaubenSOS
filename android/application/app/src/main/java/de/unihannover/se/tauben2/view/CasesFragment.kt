@@ -23,7 +23,6 @@ class CasesFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_cases, container, false)
 
-
         val recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment) as CasesRecyclerFragment
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 

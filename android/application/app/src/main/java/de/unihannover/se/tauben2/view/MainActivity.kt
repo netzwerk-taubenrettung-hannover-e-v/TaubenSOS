@@ -1,12 +1,13 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -26,8 +27,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), FragmentChangeListener {
-
-    private val CALL_NUMBER = "0175 8266832"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -162,34 +161,10 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         }
     }
 
-    fun openPhone() {
-        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Error", "Permission to call denied")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)
-        }
-        try {
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("05751 918602"))
-            startActivity(intent)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.i("Error", "Something is wrong")
-        }
-    }
-
-    fun openMail() {
-        try {
-            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:developer@example.com"))
-            startActivity(intent)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.i("Error", "Something is wrong")
-        }
-    }
-
     //below doesnt work
     //var button2= findViewById(R.id.button2) as Button
 
-    fun openFacebook(view: View) {
+    /*fun openFacebook(view: View) {
 
         try {
             val info = packageManager.getApplicationInfo("com.facebook.katana", 0)
@@ -210,7 +185,7 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
 
         }
 
-    }
+    }*/
 
 }
 
