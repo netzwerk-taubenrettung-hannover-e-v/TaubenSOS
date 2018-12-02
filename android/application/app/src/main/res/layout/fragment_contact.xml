@@ -4,16 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/linearLayout"
-    android:background="#eee" >
+    android:background="#eee"
+    >
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_mail"
-        style="@style/Card">
+        style="@style/Card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="12dp"
             android:orientation="vertical"
             android:gravity="center"
             >
@@ -22,7 +28,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_mail_outline_24px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/round_background"
+                android:padding="6dp"
                 />
+
 
             <TextView
                 android:id="@+id/text_mail"
@@ -58,7 +68,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="12dp"
             android:orientation="vertical"
             android:gravity="center"
             >
@@ -67,6 +77,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_phone_24px"
+                android:background="@drawable/round_background"
+                android:padding="6dp"
                 />
 
             <TextView
@@ -113,7 +125,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="12dp"
             android:orientation="vertical"
             android:gravity="center"
             >
