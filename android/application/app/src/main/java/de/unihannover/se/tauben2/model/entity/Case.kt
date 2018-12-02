@@ -55,4 +55,8 @@ data class Case(@PrimaryKey var caseID: Int?,
         }
         return res + " ${Math.round(diff % 60)} min"
     }
+
+    fun setToCurrentTime() {
+        timestamp = System.currentTimeMillis() / 1000
+    }
 }

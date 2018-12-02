@@ -35,7 +35,6 @@ class Report00Fragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_report00, container, false)
         view.report_next_step_button.setOnClickListener(this)
-
         return view
     }
 

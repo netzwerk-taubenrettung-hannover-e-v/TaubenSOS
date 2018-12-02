@@ -45,6 +45,7 @@ class Report02Fragment : Fragment() {
         }
 
         binding.root.report_send_button.setOnClickListener {
+            mCreatedCase?.setToCurrentTime()
             sendCaseToServer()
             Report00Fragment.removeInstance()
             Report01Fragment.removeInstance()
