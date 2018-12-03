@@ -18,7 +18,8 @@ Creates a new case.
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
-    priority | An integer (1-5) representing the case's severity. | NO | Integer | — | 5
+    priority | An integer between 1 and 5 representing the case's severity. | NO | Integer | — | 5
+    reporter | The pigeon reporter's username. | YES | String | null | "Pigeonator"
     rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenfreund24"
     isCarrierPigeon | Is the bird a carrier pigeon? | NO | Boolean | — | true
     isWeddingPigeon | Is the bird a wedding pigeon? | NO | Boolean | — | false
@@ -68,6 +69,7 @@ Creates a new case.
         "media": [],
         "phone": "015237342956",
         "priority": 5,
+        "reporter": null,
         "rescuer": null,
         "timestamp": "1543397014",
         "wasFoundDead": null
@@ -78,6 +80,6 @@ Creates a new case.
   * Code: `400 BAD REQUEST`
     ```json
     {
-        "isCarrierPigeon": "Not a valid boolean."
+        "priority": "Must be between 1 and 5."
     }
     ```
