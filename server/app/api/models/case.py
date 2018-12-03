@@ -6,7 +6,7 @@ from marshmallow import post_dump, pre_load, post_load, utils, validate
 class Case(db.Model):
     __tablename__ = "case"
     caseID = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     priority = db.Column(db.Integer, nullable=False)
     reporter = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
     rescuer = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
@@ -58,7 +58,7 @@ class Case(db.Model):
 
 class CaseSchema(ma.Schema):
     caseID = ma.Integer(dump_only=True)
-    timestamp = ma.DateTime("rfc", missing=utils.rfcformat(datetime.utcnow()))
+    timestamp = ma.DateTime("rfc", missing=None)
     priority = ma.Integer(required=True, validate=validate.Range(min=1, max=5))
     reporter = ma.String(missing=None)
     rescuer = ma.String(missing=None)
