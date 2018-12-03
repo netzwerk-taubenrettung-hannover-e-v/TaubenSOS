@@ -14,7 +14,7 @@
         android:background="@color/design_default_color_background">
 
         <ImageView
-            android:id="@+id/status_card_image"
+            android:id="@+id/status_card_image3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -22,58 +22,138 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_status" />
 
-        <TextView
-            android:id="@+id/distance_text_card_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="no GPS available"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
-            app:layout_constraintStart_toStartOf="@+id/case_id_card_value"
-            app:layout_constraintTop_toTopOf="@+id/distance_text_card_title"
-            />
-
-        <TextView
-            android:id="@+id/distance_text_card_title"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/report_next_step_button3"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Entfernung:"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="mir zuweisen"
+            app:layout_constraintBottom_toBottomOf="@+id/accept_card_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priority_text_card_title" />
+            app:layout_constraintTop_toTopOf="@+id/accept_card_button" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/report_state_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/state"
+            app:layout_constraintTop_toTopOf="@+id/state">
+
+            <CheckBox
+                android:id="@+id/report_state_checkBox_00"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Fall offen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/report_state_checkBox_01"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Fall in Bearbeitung"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/report_state_checkBox_00" />
+
+            <CheckBox
+                android:id="@+id/report_state_checkBox_02"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Fall erfolgreich abgeschlossen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/report_state_checkBox_01" />
+
+            <CheckBox
+                android:id="@+id/report_state_checkBox_03"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Tier verstorben"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/report_state_checkBox_02" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/priority_text_card_value"
+            android:id="@+id/report_state_min3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{``+ c.priority}"
+            android:layout_marginStart="8dp"
+            android:text="     gut"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_value"
+            app:layout_constraintStart_toEndOf="@+id/priority_text_card_title"
+            app:layout_constraintTop_toTopOf="@+id/priority_text_card_value" />
+
+        <TextView
+            android:id="@+id/report_state_max3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="schlecht"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/priority_text_card_value" />
+
+        <SeekBar
+            android:id="@+id/priority_text_card_value"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:max="4"
+            android:progress="1"
+            android:progressTint="@color/colorPrimaryDark"
+            android:thumbTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_title"
-            app:layout_constraintStart_toStartOf="@+id/case_id_card_value"
-            app:layout_constraintTop_toTopOf="@+id/priority_text_card_title"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/report_state_max3"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/report_state_min3"
+            app:layout_constraintTop_toTopOf="@+id/priority_text_card_title" />
 
         <TextView
             android:id="@+id/priority_text_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="Priorität:"
-            app:layout_constraintBottom_toTopOf="@+id/distance_text_card_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/elapsed_time_text_card_title" />
+            app:layout_constraintStart_toStartOf="@+id/case_id_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/user_card_title" />
 
         <TextView
             android:id="@+id/elapsed_time_text_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Eingereicht vor:"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/case_id_card_title"
             app:layout_constraintTop_toBottomOf="@+id/case_id_card_title" />
 
         <TextView
@@ -91,51 +171,10 @@
             android:id="@+id/injury_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Verletzung:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/media_card_layout" />
-
-        <LinearLayout
-            android:id="@+id/media_card_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/media_card_title">
-
-            <ImageView
-                android:id="@+id/media_00_card"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="8dp"
-                android:background="@color/common_google_signin_btn_text_light_default"
-                android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-            <ImageView
-                android:id="@+id/media_01_card"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="8dp"
-                android:background="@color/common_google_signin_btn_text_light_default"
-                android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-            <ImageView
-                android:id="@+id/media_02_card"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="8dp"
-                android:background="@color/common_google_signin_btn_text_light_default"
-                android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
-        </LinearLayout>
+            app:layout_constraintStart_toStartOf="@+id/case_id_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/report_state_layout" />
 
         <TextView
             android:id="@+id/case_id_card_value"
@@ -153,21 +192,10 @@
             android:id="@+id/user_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Angenommen von:"
-            app:layout_constraintBottom_toBottomOf="@+id/accept_card_button"
-            app:layout_constraintStart_toStartOf="@+id/additional_information_card_textfield"
-            app:layout_constraintTop_toTopOf="@+id/accept_card_button"
-            />
-
-        <TextView
-            android:id="@+id/media_card_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Medien:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/distance_text_card_title" />
+            android:text="Angenommen von:"
+            app:layout_constraintStart_toStartOf="@+id/case_id_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/elapsed_time_text_card_title" />
 
         <TextView
             android:id="@+id/user_card_value"
@@ -242,14 +270,15 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="übernehmen"
+            android:text="speichern"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
+            app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView5"
@@ -261,6 +290,15 @@
             app:layout_constraintStart_toEndOf="@+id/elapsed_time_text_card_value"
             app:layout_constraintTop_toTopOf="@+id/elapsed_time_text_card_value"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Status:"
+            app:layout_constraintStart_toStartOf="@+id/case_id_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/priority_text_card_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

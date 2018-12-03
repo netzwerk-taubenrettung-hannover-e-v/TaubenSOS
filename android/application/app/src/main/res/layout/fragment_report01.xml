@@ -153,7 +153,7 @@
         android:id="@+id/report_state_seekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -165,7 +165,7 @@
         app:layout_constraintBottom_toTopOf="@+id/report_next_step_button"
         app:layout_constraintEnd_toStartOf="@+id/report_state_max"
         app:layout_constraintStart_toEndOf="@+id/report_state_min"
-        app:layout_constraintTop_toBottomOf="@+id/report_state_help"/>
+        app:layout_constraintTop_toBottomOf="@+id/report_state_help" />
 
     <TextView
         android:id="@+id/report_state_min"
