@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -48,6 +49,9 @@ class CasesInfoFragment: Fragment() {
         binding.root.let{v->
             val injuryList = convertInjuryToStringList(injury)
             val adapter = ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, injuryList)
+            /*val params = v.injury_card_value.layoutParams
+            params.height = injuryList.size*50
+            v.injury_card_value.layoutParams = params*/
             v.injury_card_value.adapter=adapter
 
         }
