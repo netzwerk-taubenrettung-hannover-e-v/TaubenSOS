@@ -17,21 +17,21 @@ import kotlinx.android.parcel.Parcelize
         foreignKeys = [
             ForeignKey(entity = Injury::class, parentColumns = ["id"], childColumns = ["injury_id"])
         ]*/)
-data class Case(@PrimaryKey var caseID: Int,
-                var additionalInfo: String?,
+data class Case(@PrimaryKey var caseID: Int?,
+                var additionalInfo: String? = null,
 
-                var isClosed: Boolean,
-                var isWeddingPigeon: Boolean,
-                var isCarrierPigeon: Boolean,
+                var isClosed: Boolean = false,
+                var isWeddingPigeon: Boolean = false,
+                var isCarrierPigeon: Boolean = false,
 
-                var latitude: Double,
-                var longitude: Double,
+                var latitude: Double = -1.0,
+                var longitude: Double = -1.0,
 
-                var rescuer: String?,
-                var priority: Int,
-                var timestamp: Long,
-                var phone: String,
-                var wasFoundDead: Boolean
+                var rescuer: String? = null,
+                var priority: Int = -1,
+                var timestamp: Long = -1,
+                var phone: String = "",
+                var wasFoundDead: Boolean = false
 //                var media: List<String>,
 
 //                @ColumnInfo(name = "injury_id") var injury: Int

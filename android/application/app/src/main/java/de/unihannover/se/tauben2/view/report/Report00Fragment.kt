@@ -7,15 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.view.Singleton
-import de.unihannover.se.tauben2.viewmodel.ReportViewModel
 import kotlinx.android.synthetic.main.fragment_report00.*
 import kotlinx.android.synthetic.main.fragment_report00.view.*
-import kotlinx.android.synthetic.main.fragment_report01.*
 
 class Report00Fragment : Fragment() {
 
@@ -27,15 +25,21 @@ class Report00Fragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_report00, container, false)
-        val model = activity?.run { ViewModelProviders.of(this).get(ReportViewModel::class.java) }
+
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-
+        val case = Case(null)
 
         // OnClickListeners
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition()
-            model?.setPosition(mapsFragment.getSelectedPosition()!!)
+
+            val pos = mapsFragment.getSelectedPosition()
+
+            pos?.let { latlng ->
+                case.latitude = latlng.latitude
+                case.longitude = latlng.longitude
+            }
         }
         view.report_next_step_button.setOnClickListener {
 
@@ -44,7 +48,9 @@ class Report00Fragment : Fragment() {
                     report_map_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
                 }
             } else {
-                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
+                val bundle = Bundle()
+                bundle.putParcelable("case", case)
+                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment, bundle)
             }
         }
 
