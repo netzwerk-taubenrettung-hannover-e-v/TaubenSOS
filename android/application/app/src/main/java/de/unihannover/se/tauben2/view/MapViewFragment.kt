@@ -16,36 +16,34 @@ import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.network.Resource
 
-class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable>>> {
+class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
     private var mMap: GoogleMap? = null
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
     private var selectedPosition : Marker? = null
 
-    override fun onChanged(data: Resource<List<MapMarkable>>?) {
-        if(data?.data == null) return
-
-        if(data.status.isSuccessful()) {
-
-            if(mMarkers.isEmpty()) {
-                data.data.forEach { mMarkers[it] = null }
-                setCaseMarkers(data.data)
-                return
-            }
-
-            val cases = data.data.toMutableList()
-            loop@ for((oldCase, oldMarker) in mMarkers) {
-                for(newCase in cases) {
-                    if(oldCase == newCase) {
-                        cases.remove(oldCase)
-                        continue@loop
-                    }
-                }
-                oldMarker?.remove()
-                mMarkers.remove(oldCase)
-            }
-            setCaseMarkers(cases)
+    override fun onChanged(data: List<MapMarkable>) {
+        if(mMarkers.isEmpty()) {
+            data.forEach { mMarkers[it] = null }
+            setCaseMarkers(data)
+            return
         }
+        val casesToRemove: MutableMap<MapMarkable, Marker?> = mutableMapOf()
+
+        loop@ for((oldCase, oldMarker) in mMarkers) {
+            for(newCase in data) {
+                if(newCase == oldCase)
+                    continue@loop
+            }
+            casesToRemove[oldCase] = oldMarker
+        }
+
+        for((oldCase, oldMarker) in casesToRemove) {
+            oldMarker?.remove()
+            mMarkers.remove(oldCase)
+        }
+
+        setCaseMarkers(data)
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
@@ -111,11 +109,6 @@ class MapViewFragment : SupportMapFragment(), Observer<Resource<List<MapMarkable
                     mMarkers[marker] = map.addMarker(marker.getMarker())
             }
         }
-    }
-
-    fun MarkerExists(): Boolean {
-        //Todo check if a DoveLocation is set
-        return false
     }
 
 }
