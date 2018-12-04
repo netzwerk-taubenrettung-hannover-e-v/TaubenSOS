@@ -191,34 +191,12 @@
                     app:layout_constraintTop_toTopOf="@+id/user_card_title"
                     app:layout_constraintVertical_bias="0.0" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/additional_information_card_textfield"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="50dp"
-                    android:hint="additional Informations"
-                    app:hintEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@+id/accept_card_button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toEndOf="@+id/injury_card_value">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top"
-                        android:text="..." />
-
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <ListView
                     android:id="@+id/injury_card_value"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="8dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -261,8 +239,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
 
+
+                <!--Necessary to make date display at report date work, needs to be implemented programmatically in the future for less spaghetti-->
                 <TextView
-                    <!--Necessary to make date display at report date work-->
+
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
