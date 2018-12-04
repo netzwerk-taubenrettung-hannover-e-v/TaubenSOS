@@ -10,4 +10,9 @@
     <string name="offizielle_registrierung_beantragen">Offizielle Registrierung beantragen</string>
     <string name="registrierung_beantragen">Registrierung beantragen</string>
     <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem Verein möglich und muss von einem Vereinsmitglied bestätigt werden.</string>
+    <string name="emergency_phone_text">
+        Erreicht ihr mal niemanden unter der angegebenen Nummer, haben wir noch
+            eine alternative Nummer unter der +49 157 80641268. In Hannover gibt es außerdem die
+            Möglichkeit im Notfall zur Klinik der TiHo <a href="http://www.google.com">Google</a> zu fahren und Stadttauben abzugeben. Wer
+            nicht mobil ist, kann auch über die Feuerwehr (112) die Tierrettung rufen.</string>
 </resources>
