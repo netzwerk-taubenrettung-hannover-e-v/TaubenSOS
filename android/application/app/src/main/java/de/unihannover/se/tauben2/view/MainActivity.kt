@@ -1,13 +1,13 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -22,17 +22,18 @@ import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
-import de.unihannover.se.tauben2.view.report.Report00Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), FragmentChangeListener {
+
+
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Fixing Later Map loading Delay
+        // Fixing later map loading delay
         Thread {
             try {
                 val mv = MapView(applicationContext)
@@ -68,16 +69,8 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 FragmentMenuItem(R.id.loginFragment, "Login", R.drawable.ic_person_black_24dp),
                 FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
         )
+
         NavigationUI.setupWithNavController(bottom_navigation, (nav_host as NavHostFragment).navController)
-//
-//
-//
-//        bottom_navigation.setStartFragmentListener { fragment ->
-//            //            when (fragment) {
-////                is CasesFragment -> getViewModel(CaseViewModel::class.java).cases.filter { it.isClosed }.observe(this, fragment)
-////            }
-//            replaceFragment(fragment)
-//        }
     }
 
     // Add "Report a Dove"-Btn to the Toolbar
@@ -97,22 +90,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun replaceFragment(fragment: Fragment) {
-//        val fragmentManager = supportFragmentManager
-//        val fragmentTag = fragment.javaClass.name
-//
-//        val popped = fragmentManager.popBackStackImmediate(fragmentTag, 0)
-//
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//
-//        fragmentTransaction.replace(R.id.main_fragment, fragment, fragmentTag)
-//        if (!popped && fragmentManager.findFragmentByTag(fragmentTag) == null) {
-//            fragmentTransaction.addToBackStack(fragment.toString())
-//        }
-//        fragmentTransaction.commit()
-//
-    }
-
     override fun onBackPressed() {
         if(supportFragmentManager.backStackEntryCount == 1)
             finish()
@@ -124,8 +101,6 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
     private fun backgroundColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        // looks weird!
-        // window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         window.setBackgroundDrawableResource(R.drawable.gradient)
     }
 
@@ -134,9 +109,17 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
             1 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i("Permissioon2", "Permission has been denied by user")
+                    Log.i("Permissioon", "Permission has been denied by user")
                 } else {
-                    Log.i("Permissioon2", "Permission has been granted by user")
+                    Log.i("Permissioon", "Permission has been granted by user")
+                }
+            }
+            2 -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i("Permissioon", "Permission has been denied by user")
+                } else {
+                    Log.i("Permissioon", "Permission has been granted by user")
                 }
             }
         }
@@ -147,18 +130,9 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Permissioon2", "Permission to record denied")
+            Log.i("Error", "Permission to record denied")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
-    }
-
-    //below doesnt work
-    //var button2= findViewById(R.id.button2) as Button
-
-    fun openFacebook(view: View) {
-        val uri = Uri.parse("https://www.facebook.com/netzwerk.taubenrettung")
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
     }
 
 }

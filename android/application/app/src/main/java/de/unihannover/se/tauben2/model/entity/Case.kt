@@ -21,7 +21,6 @@ import kotlinx.android.parcel.Parcelize
         ]*/)
 data class Case(@PrimaryKey var caseID: Int?,
                 var additionalInfo: String?,
-
                 var isClosed: Boolean?,
                 var isWeddingPigeon: Boolean,
                 var isCarrierPigeon: Boolean,
@@ -33,7 +32,6 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var priority: Int,
                 var timestamp: Long,
                 var phone: String,
-
                 var wasFoundDead: Boolean?,
 
                 @Embedded

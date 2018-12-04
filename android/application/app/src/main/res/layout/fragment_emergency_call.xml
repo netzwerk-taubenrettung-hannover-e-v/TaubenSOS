@@ -10,33 +10,83 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="0175 8266832"
-        android:autoLink="phone"
-        android:linksClickable="true"
-        android:textSize="50sp"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
+        android:linksClickable="false"
+        android:text="Erklärung zum Notruftelefon:"
+        android:textColorLink="@color/colorPrimary"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="358dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        android:text="In case of emergency, please call:"
-        android:textSize="20sp"
+        android:text="Bitte melden sie verletzte Tiere über das Meldeformular. \nWenn Sie uns telefonisch kontaktieren möchten rufen \nSie uns direkt an."
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintVertical_bias="0.043" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/callbutton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Direkt anrufen"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:backgroundTint="@color/Green"
+        app:icon="@drawable/ic_baseline_phone_24px"
+        app:iconTint="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toStartOf="@+id/melden"
+        app:layout_constraintTop_toBottomOf="@+id/melden" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/melden"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Zum Meldeformular"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:icon="@drawable/ic_report_white_24dp"
+        app:iconTint="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:text="+0175 8266832"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/callbutton"
+        app:layout_constraintTop_toBottomOf="@+id/callbutton" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="335dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Wir sind ein komplett ehrenamtlicher, junger Verein und auch die Helferinnen, die das Notfalltelefon bei sich tragen,\nkönnen Arbeit, Uni, Kinder und Pflegetiere nicht vernachlässigen. \nHabt etwas Verständnis, dass nicht rund um die Uhr jemand ans Telefon gehen kann.\n\nErreicht ihr mal niemanden unter der angegebenen Nummer, \nhaben wir noch eine alternative Nummer \nunter der +49 157 80641268. \nRuft gern dort an oder schreibt eine WhatsApp-Nachricht. \nWir kommen schnellstmöglich auf Euch zurück. \n\nIn Hannover gibt es außerdem die Möglichkeit im Notfall zur Klinik der TiHo zu fahren und Stadttauben oder Wildtiere direkt abzugeben. Während der Öffnungszeiten kann man auch vorher anrufen und sich anmelden. Wer nicht mobil ist, kann auch über die Feuerwehr (112) \ndie Tierrettung rufen. \nDie holen das Tier ab und bringen es zum Tierarzt. \nDazu sollte man aber zumindest bei der Taube bleiben oder sie bestenfalls selbst sichern. Ihr könnt auch gerne eine SMS schreiben, eine Mail oder eine Facebook-Nachricht. Braucht ihr eine Beratung oder habt Interesse am Netzwerk dann nutzt auch gerne diesen Weg oder kommt einfach vorbei, wenn ein Treffen angekündigt ist." />
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

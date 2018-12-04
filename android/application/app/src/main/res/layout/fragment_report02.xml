@@ -4,10 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="createdCase"
-            type="de.unihannover.se.tauben2.model.entity.Case" />
+        <variable name="createdCase" type="de.unihannover.se.tauben2.model.entity.Case" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF">
-
 
         <TextView
             android:id="@+id/report_special_title"
@@ -108,6 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/report_additional_information_help">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/report_additional_information_textfield_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={createdCase.additionalInfo}" />

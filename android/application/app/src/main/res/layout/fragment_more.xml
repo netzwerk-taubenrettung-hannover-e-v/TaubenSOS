@@ -7,10 +7,9 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/more_navigation"
-        android:layout_width="wrap_content"
+        android:layout_width="385dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        />
+        android:layout_gravity="start" />
 
     <!--<fragment-->
         <!--android:id="@+id/nav_host"-->

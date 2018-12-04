@@ -6,22 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.*
 import kotlinx.android.synthetic.main.fragment_report00.view.*
 
-class Report00Fragment : Fragment(), View.OnClickListener, Observer<Location?> {
+class Report00Fragment : Fragment(), Observer<Location?> {
 
-    private var mUserLocation: Location? = null
+    private var mLocation: LatLng? = null
     private var mCreatedCase: Case = Case(null, null, null, false,
             false, 0.0, 0.0, null, 1, 0,
             "", null, Injury(false, false, false,
@@ -31,41 +33,42 @@ class Report00Fragment : Fragment(), View.OnClickListener, Observer<Location?> {
         override fun newInstance() = Report00Fragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_report00, container, false)
-        view.report_next_step_button.setOnClickListener(this)
-        return view
-    }
-
     override fun onResume() {
         super.onResume()
         val locationViewModel = getViewModel(LocationViewModel::class.java)
         locationViewModel?.observeCurrentLocation(this, this)
     }
 
-    override fun onClick(view: View?) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_report00, container, false)
 
-        when (view) {
+        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-            report_next_step_button -> {
-                if (saveLocation()) {
+        view.set_position_button.setOnClickListener {
+            mapsFragment.selectPosition()
+            mLocation = mapsFragment.getSelectedPosition()
+        }
 
-                    val caseBundle = Bundle()
-                    caseBundle.putParcelable("createdCase", mCreatedCase)
+        view.report_next_step_button.setOnClickListener {
 
-                    Navigation.findNavController(context as Activity, R.id.nav_host)
-                            .navigate(R.id.report01Fragment, caseBundle)
-                    getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
-                } else {
-                    Toast.makeText(context, "No GPS Available", Toast.LENGTH_SHORT).show()
+            if (!saveLocation()) {
+                context?.let { c ->
+                    report_map_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
                 }
+            } else {
+                val bundle = Bundle()
+                bundle.putParcelable("createdCase", mCreatedCase)
+                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment, bundle)
             }
         }
+
+        return view
     }
 
     override fun onChanged(loc: Location?) {
-        mUserLocation = loc
+        loc ?: return
+        mLocation = LatLng(loc.latitude, loc.longitude)
     }
 
     /**
@@ -73,7 +76,7 @@ class Report00Fragment : Fragment(), View.OnClickListener, Observer<Location?> {
      * @return true if successful
      */
     private fun saveLocation(): Boolean {
-        mUserLocation?.let {
+        mLocation?.let {
             mCreatedCase.longitude = it.longitude
             mCreatedCase.latitude = it.latitude
             return true
