@@ -5,9 +5,9 @@ import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.model.network.Resource
 
 //TODO implement loading indicator
-class LoadingObserver<T>(val onSuccess: (T)->Any, val onLoading: ()->Any = {}, val onError: (message: String?)->Any = {}): Observer<Resource<T>> {
+class LoadingObserver<T>(val onSuccess: (T)-> Unit, val onLoading: ()->Unit = {}, val onError: (message: String?)->Unit = {}): Observer<Resource<T>> {
 
-    constructor(successObserver: Observer<in T>, onLoading: ()->Any = {}, onError: (message: String?)->Any = {} ) : this({ data -> successObserver.onChanged(data)}, onLoading, onError)
+    constructor(successObserver: Observer<in T>, onLoading: ()->Unit = {}, onError: (message: String?)->Unit = {} ) : this({ data -> successObserver.onChanged(data) }, onLoading, onError)
 
     override fun onChanged(res: Resource<T>?) {
         when {
