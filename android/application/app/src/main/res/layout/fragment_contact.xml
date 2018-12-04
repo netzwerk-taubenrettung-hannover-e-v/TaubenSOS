@@ -30,21 +30,12 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/round_background"
-                        android:padding="6dp"
-                        android:src="@drawable/ic_baseline_mail_outline_24px" />
-
-
                     <TextView
                         android:id="@+id/text_mail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Contact us by mail"
+                        android:text="Contact us by mail:"
                         android:textSize="20sp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -55,7 +46,8 @@
                         android:autoLink="email"
                         android:clickable="true"
                         android:onClick="openMail"
-                        android:text="Write us a mail" />
+                        android:text="E-Mail"
+                        app:icon="@drawable/ic_baseline_mail_outline_24px" />
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -75,19 +67,13 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/round_background"
-                        android:padding="6dp"
-                        android:src="@drawable/ic_baseline_phone_24px" />
 
                     <TextView
                         android:id="@+id/text_call"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Call our emergency phone"
+                        android:text="Contact us by phone"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -106,7 +92,8 @@
                         style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Emergency Call" />
+                        android:text="Call"
+                        app:icon="@drawable/ic_baseline_phone_24px" />
 
                 </LinearLayout>
 
@@ -129,11 +116,6 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_facebook" />
-
                     <TextView
                         android:id="@+id/text_facebook"
                         android:layout_width="wrap_content"
@@ -148,7 +130,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:text="Follow us on Facebook" />
+                        android:text="Facebook"
+                        app:icon="@drawable/ic_facebook" />
 
                 </LinearLayout>
 
