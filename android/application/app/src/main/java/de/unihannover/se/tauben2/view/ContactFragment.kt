@@ -1,17 +1,27 @@
 package de.unihannover.se.tauben2.view
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.view.list.ContactItem
+import de.unihannover.se.tauben2.view.list.ContactItemAdapter
 import kotlinx.android.synthetic.main.fragment_contact.view.*
 
 class ContactFragment : Fragment() {
+
+    private val contactItems = arrayListOf(
+            ContactItem("Contact us by mail:", "E-Mail",
+                    R.drawable.ic_baseline_mail_outline_24px, R.id.contact_button_mail),
+            ContactItem("Contact us by phone:", "Call",
+                    R.drawable.ic_baseline_phone_24px, R.id.contact_button_call),
+            ContactItem("Stay up to date:", "Facebook",
+                    R.drawable.ic_facebook, R.id.contact_button_facebook),
+            ContactItem("Visit our website", "Website",
+                    R.drawable.ic_public_white_24dp, R.id.contact_button_website))
+
 
     companion object : Singleton<ContactFragment>() {
         override fun newInstance() = ContactFragment()
@@ -21,35 +31,8 @@ class ContactFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
 
-        view.button_call.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:05751 918602")))
-        }
-
-        view.button_mail.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:taubenrettung_hannover@yahoo.de"))
-            startActivity(intent)
-        }
-
-        view.button_facebook.setOnClickListener {
-            try {
-                //start facebook app
-                val uri = Uri.parse("fb://page/141319162866697")
-                val facebookIntent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(facebookIntent)
-            } catch (e: PackageManager.NameNotFoundException) {
-                //start browser
-                val uri = Uri.parse("https://www.facebook.com/netzwerk.taubenrettung")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
-            }
-        }
-
-        view.website_button.setOnClickListener {
-            val uri = Uri.parse("http://taubenrettung-hannover.de/")
-            val websiteIntent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(websiteIntent)
-        }
-
+        val contactListAdapter = ContactItemAdapter(view.context, contactItems)
+        view.contact_listview.adapter = contactListAdapter
         return view
     }
 }

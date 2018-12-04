@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="contact_button_call" type="id" />
+    <item name="contact_button_mail" type="id" />
+    <item name="contact_button_facebook" type="id" />
+    <item name="contact_button_website" type="id" />
+</resources>
