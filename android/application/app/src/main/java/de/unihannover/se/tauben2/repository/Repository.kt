@@ -7,6 +7,7 @@ import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.LocalDatabase
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.entity.Media
 import de.unihannover.se.tauben2.model.network.NetworkService
 import de.unihannover.se.tauben2.model.network.Resource
 
