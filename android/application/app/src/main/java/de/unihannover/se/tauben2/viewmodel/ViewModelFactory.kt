@@ -12,6 +12,7 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
         return when {
             modelClass.isAssignableFrom(CaseViewModel::class.java) -> CaseViewModel(context) as T
             modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(context) as T
+            modelClass.isAssignableFrom(MediaViewModel::class.java) -> MediaViewModel(context) as T
             else -> throw IllegalArgumentException(this::class.java.simpleName + " Unknown ViewModelClass to handle")
         }
     }
