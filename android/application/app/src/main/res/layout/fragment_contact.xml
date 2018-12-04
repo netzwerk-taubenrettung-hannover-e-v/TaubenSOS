@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:text="Facebook"
-                        app:icon="@drawable/ic_facebook" />
+                        app:icon="@drawable/ic_share_black_24dp" />
 
                 </LinearLayout>
 
