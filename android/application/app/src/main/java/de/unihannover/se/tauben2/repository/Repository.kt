@@ -59,27 +59,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun getMedia(case: Case) {
-        object : NetworkBoundResource<Media, Media>(appExecutors) {
-            override fun saveCallResult(item: Media) {
-
-            }
-
-            override fun shouldFetch(data: Media?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun loadFromDb(): LiveData<Media> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun createCall(): LiveDataRes<Media> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        }
-    }
-
     /**
      * Sends case to server and inserts the answer from the server into the local database
      * @param case Case which is sent to the server for creating it. Make sure that all attributes

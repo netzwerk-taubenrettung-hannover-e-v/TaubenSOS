@@ -17,8 +17,11 @@ import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
 
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.card_case.*
 
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
@@ -69,6 +72,10 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
                     binding.root.status_card_image.setColorFilter(ContextCompat.getColor(context!!, R.color.Red))
                 }
             }
+
+            Picasso.get().load(if(data.media.isEmpty()) null else data.media[0])
+                    .placeholder(R.drawable.ic_logo_48dp)
+                    .into(binding.root.findViewById<ImageView>(R.id.image_card))
 
             binding.root.setOnClickListener {
                 val bundle = Bundle()
