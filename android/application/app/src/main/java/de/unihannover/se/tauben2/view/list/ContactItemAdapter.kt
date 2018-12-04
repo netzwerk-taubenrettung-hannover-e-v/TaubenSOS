@@ -11,19 +11,38 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.view.list.ContactItem
 import kotlinx.android.synthetic.main.card_contact.view.*
 
 class ContactItemAdapter(private val context: Context,
                          private val contactItems: ArrayList<ContactItem>) : BaseAdapter() {
 
+    private class ViewHolder {
+        lateinit var descriptionTextView: TextView
+        lateinit var contactButton: MaterialButton
+    }
+
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val cardView = inflater.inflate(R.layout.card_contact, parent, false)
+        val cardView: View
+        val holder: ViewHolder
 
-        val descriptionTextView: TextView = cardView.text_description
-        val contactButton: MaterialButton = cardView.button_contact
+        if (convertView == null) {
+            cardView = inflater.inflate(R.layout.card_contact, parent, false)
+
+            holder = ViewHolder()
+
+            holder.descriptionTextView = cardView.text_description
+            holder.contactButton = cardView.button_contact
+
+            cardView.tag = holder
+        } else {
+            cardView = convertView
+            holder = convertView.tag as ViewHolder
+        }
+
+        val descriptionTextView = holder.descriptionTextView
+        val contactButton = holder.contactButton
 
         val curItem = getItem(position) as ContactItem
 
