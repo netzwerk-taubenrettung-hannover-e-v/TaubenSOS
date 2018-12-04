@@ -15,6 +15,7 @@ import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.entity.Case
 import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
+import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 
 
 class CasesInfoFragment: Fragment() {
@@ -39,13 +40,16 @@ class CasesInfoFragment: Fragment() {
             }
         }
         binding.root.let{v->
+            //convert injury into string list and pass it to the list view
             val injuryList = binding.c?.injury?.toStringList() ?: listOf()
             val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, injuryList)
+            v.injury_card_value.adapter=adapter
+
+            v.additional_information_card_textfield.text = binding.c?.additionalInfo
+            //TODO: Automatically scale height of injury_card_value and additional_information_card_textfield based on number of injuries/text length
             /*val params = v.injury_card_value.layoutParams
             params.height = injuryList.size*50
             v.injury_card_value.layoutParams = params*/
-            v.injury_card_value.adapter=adapter
-
         }
 
         return binding.root
