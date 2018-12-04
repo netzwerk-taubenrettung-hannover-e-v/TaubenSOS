@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="c"
-            type="de.unihannover.se.tauben2.model.entity.Case" />
+        <variable name="c" type="de.unihannover.se.tauben2.model.entity.Case" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

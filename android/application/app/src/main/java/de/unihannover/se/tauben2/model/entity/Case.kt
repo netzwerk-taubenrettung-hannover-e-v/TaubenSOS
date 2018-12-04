@@ -35,9 +35,10 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var wasFoundDead: Boolean?,
 
                 @Embedded
-                var injury: Injury?
-//                var media: List<String>,
-//                @ColumnInfo(name = "injury_id") var injury: Int
+                var injury: Injury?,
+
+                var media: List<String>
+
 ) : RecyclerItem, MapMarkable, Parcelable {
 
     override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title("Priorität: $priority").snippet(additionalInfo)

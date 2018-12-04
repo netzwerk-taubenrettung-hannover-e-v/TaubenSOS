@@ -1,29 +1,17 @@
 package de.unihannover.se.tauben2.model
 
 import androidx.room.TypeConverter
-
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class StringListConverter {
-    companion object {
-        /**
-         * Converts a list of Strings into a String object so it can be stored in the database
-         * @param list List of Strings to be converted
-         */
-        @TypeConverter
-        @JvmStatic
-        fun fromStringList(list: List<String>): String {
-            return list.toString().trim('[', ']')
-        }
 
-        /**
-         * Converts a String object representing a list of strings from the database to an actual
-         * list of strings
-         * @param str String to be converted into List
-         */
-        @TypeConverter
-        @JvmStatic
-        fun fromString(str: String): List<String> {
-            return str.split(", ")
-        }
+    @TypeConverter
+    fun fromString(value: String): List<String> {
+        val listType = object : TypeToken<ArrayList<String>>() {}.type
+        return Gson().fromJson(value, listType)
     }
+
+    @TypeConverter
+    fun fromArrayList(list: List<String>): String = Gson().toJson(list)
 }
