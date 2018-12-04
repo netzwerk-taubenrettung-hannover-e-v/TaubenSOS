@@ -1,5 +1,6 @@
 from api import db, ma
 from datetime import datetime
+from sqlalchemy import func
 
 class Population(db.Model):
 	__tablename__ = "population"
@@ -31,7 +32,7 @@ class Population(db.Model):
 	#Returns a list of population data which matches the time and coordinates
 	@staticmethod
 	def get_pigeon_count(startTime, untilTime, latTopLeft, lonTopLeft, latBotRight, lonBotRight):
-		return Population.query.filter(db.and_(db.between(Population.timestamp, startTime, untilTime), db.between(Population.latitude, latBotRight, latTopLeft), db.between(Population.longitude, lonTopLeft, lonBotRight))).all()
+		return db.session.query(Population).filter(db.and_(db.between(Population.timestamp, startTime, untilTime), db.between(Population.latitude, latBotRight, latTopLeft), db.between(Population.longitude, lonTopLeft, lonBotRight))).all()
 
 class PopulationSchema(ma.ModelSchema):
 	class Meta:

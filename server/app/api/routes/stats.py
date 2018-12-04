@@ -11,7 +11,7 @@ def read_stats_pigeons_saved():
         untilTime = request.json["untilTime"]
 
         pigeonsSavedStat = Case.get_pigeons_saved_stat(startTime, untilTime)
-        return cases_schema.jsonify(pigeonsSavedStat)
+        return str(pigeonsSavedStat)
 
 @bp.route("/stats/pigeonsNotFound", methods=["GET"], strict_slashes=False)
 def read_stats_pigeons_not_found():
@@ -20,7 +20,7 @@ def read_stats_pigeons_not_found():
         untilTime = request.json["untilTime"]
 
         pigeonsNotFoundStat = Case.get_pigeons_not_found_stat(startTime, untilTime)
-        return cases_schema.jsonify(pigeonsNotFoundStat)
+        return str(pigeonsNotFoundStat)
 
 @bp.route("/stats/pigeonsFoundDead", methods=["GET"], strict_slashes=False)
 def read_stats_pigeons_found_dead():
@@ -29,7 +29,7 @@ def read_stats_pigeons_found_dead():
         untilTime = request.json["untilTime"]
 
         pigeonsFoundDeadStat = Case.get_pigeons_found_dead_stat(startTime, untilTime)
-        return cases_schema.jsonify(pigeonsFoundDeadStat)
+        return str(pigeonsFoundDeadStat)
 
 @bp.route("/stats/population", methods=["GET"], strict_slashes=False)
 def calculate_population():

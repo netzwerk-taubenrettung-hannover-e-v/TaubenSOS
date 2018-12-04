@@ -60,15 +60,15 @@ class Case(db.Model):
 
     @staticmethod
     def get_pigeons_saved_stat(startTime, untilTime):
-        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == False))
+        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == False)).count()
 
     @staticmethod
     def get_pigeons_not_found_stat(startTime, untilTime):
-        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == True))
+        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == True)).count()
 
     @staticmethod
     def get_pigeons_found_dead_stat(startTime, untilTime):
-        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == True, Case.wasNotFound == False))
+        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == True, Case.wasNotFound == False)).count()
 
 
 class CaseSchema(ma.Schema):
