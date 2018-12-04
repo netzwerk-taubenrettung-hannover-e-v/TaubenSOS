@@ -17,11 +17,12 @@ class Case(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     wasFoundDead = db.Column(db.Boolean, nullable=True)
+    wasNotFound = db.Column(db.Boolean, nullable=True)
     isClosed = db.Column(db.Boolean, nullable=False)
     injury = db.relationship("Injury", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, reporter, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, isClosed, injury, media):
+    def __init__(self, timestamp, priority, reporter, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media):
         self.timestamp = timestamp
         self.priority = priority
         self.reporter = reporter
@@ -33,6 +34,7 @@ class Case(db.Model):
         self.latitude = latitude
         self.longitude = longitude
         self.wasFoundDead = wasFoundDead
+        self.wasNotFound = wasNotFound
         self.isClosed = isClosed
         self.injury = injury
         self.media = media
@@ -56,6 +58,19 @@ class Case(db.Model):
     def get(caseID):
         return Case.query.get(caseID)
 
+    @staticmethod
+    def get_pigeons_saved_stat(startTime, untilTime):
+        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == False))
+
+    @staticmethod
+    def get_pigeons_not_found_stat(startTime, untilTime):
+        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == True))
+
+    @staticmethod
+    def get_pigeons_found_dead_stat(startTime, untilTime):
+        return Case.query.filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == True, Case.wasNotFound == False))
+
+
 class CaseSchema(ma.Schema):
     caseID = ma.Integer(dump_only=True)
     timestamp = ma.DateTime("rfc", missing=None)
@@ -69,6 +84,7 @@ class CaseSchema(ma.Schema):
     latitude = ma.Float(required=True)
     longitude = ma.Float(required=True)
     wasFoundDead = ma.Boolean(missing=None)
+    wasNotFound = ma.Boolean(missing=None)
     isClosed = ma.Boolean(missing=False)
     injury = ma.Nested(injury.InjurySchema, required=True)
     media = ma.Nested(medium.MediumSchema, missing=[], many=True)

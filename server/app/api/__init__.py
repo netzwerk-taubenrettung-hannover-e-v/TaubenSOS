@@ -29,4 +29,7 @@ def create_app(config_name):
     from api.routes import auth
     app.register_blueprint(auth.bp)
 
+    from api.routes import stats
+    app.register_blueprint(stats.bp)
+
     return app

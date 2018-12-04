@@ -28,6 +28,11 @@ class Population(db.Model):
 	def all():
 		return Population.query.all()
 
+	#Returns a list of population data which matches the time and coordinates
+	@staticmethod
+	def get_pigeon_count(startTime, untilTime, latTopLeft, lonTopLeft, latBotRight, lonBotRight):
+		return Population.query.filter(db.and_(db.between(Population.timestamp, startTime, untilTime), db.between(Population.latitude, latBotRight, latTopLeft), db.between(Population.longitude, lonTopLeft, lonBotRight))).all()
+
 class PopulationSchema(ma.ModelSchema):
 	class Meta:
 		model = Population
