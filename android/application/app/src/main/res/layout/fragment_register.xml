@@ -99,12 +99,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/registrierung_beantragen"
         app:layout_constraintStart_toStartOf="@+id/registerConfirmPwField"
         app:layout_constraintTop_toBottomOf="@+id/registerConfirmPwField" />
