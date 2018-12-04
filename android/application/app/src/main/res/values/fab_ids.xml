@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="cases_filter_all" type="id" />
+    <item name="cases_filter_open" type="id" />
+    <item name="cases_filter_closed" type="id" />
+    <item name="cases_filter_my" type="id" />
+</resources>

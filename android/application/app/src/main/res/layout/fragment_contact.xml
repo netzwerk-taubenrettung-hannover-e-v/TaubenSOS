@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/linearLayout"
     android:background="#eee"
     >
-
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_mail"
         style="@style/Card"
@@ -40,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Contact us by mail"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_mail"
@@ -51,8 +49,7 @@
                 android:autoLink="email"
                 android:clickable="true"
                 android:onClick="openMail"
-                android:text="Write us a mail"
-                />
+                android:text="Write us a mail" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -60,18 +57,17 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_phone"
         style="@style/Card"
-        app:layout_constraintTop_toBottomOf="@id/card_mail"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_mail">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="12dp"
             android:orientation="vertical"
-            android:gravity="center"
-            >
+            android:gravity="center">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -88,27 +84,24 @@
                 android:layout_margin="8dp"
                 android:text="Call our emergency phone"
                 android:textAlignment="center"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <!--<TextView-->
-                <!--android:id="@+id/text_phone"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:text="0175 8266832"-->
-                <!--android:textSize="16dp"-->
-                <!--android:textStyle="bold"-->
-                <!--/>-->
-
+            <!--android:id="@+id/text_phone"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="16dp"-->
+            <!--android:text="0175 8266832"-->
+            <!--android:textSize="16dp"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_call"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Emergency Call"
-                />
+                android:text="Emergency Call" />
 
         </LinearLayout>
 
@@ -117,9 +110,12 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_facebook"
         style="@style/Card"
-        app:layout_constraintTop_toBottomOf="@id/card_phone"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_phone"
         >
 
         <LinearLayout
@@ -133,8 +129,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_facebook"
-                />
+                android:src="@drawable/ic_facebook" />
 
             <TextView
                 android:id="@+id/text_facebook"
@@ -142,8 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Be up to date"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_facebook"
@@ -151,13 +145,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="Follow us on Facebook"
-                />
+                android:text="Follow us on Facebook" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
