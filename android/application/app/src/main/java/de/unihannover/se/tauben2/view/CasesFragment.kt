@@ -28,7 +28,9 @@ class CasesFragment : Fragment() {
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
         getViewModel(CaseViewModel::class.java)?.cases?.let {
-            val notClosed = it.filter { case -> !case.isClosed }
+            // TODO check if this is ok: added !! assertion to isClosed, because it needs to be nullable
+            // for sending cases to api
+            val notClosed = it.filter { case -> !case.isClosed!! }
             notClosed.observe(this, LoadingObserver(recyclerFragment){ message ->
                 Toast.makeText(this.context, "Couldn't load events: $message", Toast.LENGTH_LONG).show()
             })

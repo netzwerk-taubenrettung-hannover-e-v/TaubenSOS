@@ -23,3 +23,4 @@ The Connexion framework doesn't serve our purposes as it lacks in terms of OAuth
 
 * [OpenAPI Specification ver. 2 (fka Swagger)](https://swagger.io/docs/specification/2-0/basic-structure/)
 * For more information on Python virtual environments check [this](https://docs.python.org/3/library/venv.html) out
+* For a nice and comprehensive tutorial on Flask, check [this](http://flask.pocoo.org/docs/1.0/tutorial/) out
