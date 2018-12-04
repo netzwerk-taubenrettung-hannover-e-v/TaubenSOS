@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_contact.view.*
 
 class ContactFragment : Fragment() {
 
-    companion object: Singleton<ContactFragment>() {
+    companion object : Singleton<ContactFragment>() {
         override fun newInstance() = ContactFragment()
     }
 
@@ -42,6 +42,12 @@ class ContactFragment : Fragment() {
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
+        }
+
+        view.website_button.setOnClickListener {
+            val uri = Uri.parse("http://taubenrettung-hannover.de/")
+            val websiteIntent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(websiteIntent)
         }
 
         return view
