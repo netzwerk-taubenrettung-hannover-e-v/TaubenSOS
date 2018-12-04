@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_emergency_call.view.*
 
 class EmergencyCallFragment : Fragment() {
 
-    companion object: Singleton<EmergencyCallFragment>() {
+    companion object : Singleton<EmergencyCallFragment>() {
         override fun newInstance() = EmergencyCallFragment()
     }
 
@@ -32,12 +33,6 @@ class EmergencyCallFragment : Fragment() {
                 Log.i("Error", "Something is wrong")
             }
         }
-
-        view.melden.setOnClickListener {
-
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report00Fragment)
-        }
-
         return view
     }
 }
