@@ -196,7 +196,7 @@
                 <ListView
                     android:id="@+id/injury_card_value"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="150dp"
                     android:layout_marginTop="8dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -237,7 +237,7 @@
                     app:backgroundTint="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
+                    app:layout_constraintTop_toBottomOf="@+id/injury_card_value" />
 
 
                 <!--Necessary to make date display at report date work, needs to be implemented programmatically in the future for less spaghetti-->
