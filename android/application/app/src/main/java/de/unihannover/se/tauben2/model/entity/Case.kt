@@ -1,15 +1,22 @@
 package de.unihannover.se.tauben2.model.entity
 
+import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Parcelable
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
 
 /**
  * represents the case of an injured pigeon
@@ -57,5 +64,12 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     fun setToCurrentTime() {
         timestamp = System.currentTimeMillis() / 1000
+    }
+
+    fun getStatusColor(): Int {
+        var color = Color.GREEN
+        if (isClosed == false)
+            color = if (rescuer != null) Color.YELLOW else Color.RED
+        return color
     }
 }
