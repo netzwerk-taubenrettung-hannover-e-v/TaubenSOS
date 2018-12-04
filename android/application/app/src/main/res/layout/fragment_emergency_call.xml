@@ -5,75 +5,60 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#eee">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginTop="16dp"
-        android:linksClickable="false"
-        android:text="Erklärung zum Notruftelefon:"
-        android:textColorLink="@color/colorPrimary"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="358dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="Bitte melden sie verletzte Tiere über das Meldeformular. \nWenn Sie uns telefonisch kontaktieren möchten rufen \nSie uns direkt an."
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.043" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/callbutton"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:text="Direkt anrufen"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        app:backgroundTint="@color/Green"
-        app:icon="@drawable/ic_baseline_phone_24px"
-        app:iconTint="@color/common_google_signin_btn_text_dark_default"
-        app:layout_constraintStart_toStartOf="@+id/melden"
-        app:layout_constraintTop_toBottomOf="@+id/melden" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:text="+0175 8266832"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/callbutton"
-        app:layout_constraintTop_toBottomOf="@+id/callbutton" />
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="335dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_facebook"
+        style="@style/Card"
+        android:layout_height="306dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView11"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:text="@string/emergency_phone_text" />
-    </ScrollView>
+            android:layout_height="299dp"
+            android:orientation="vertical">
 
+
+            <com.google.android.material.button.MaterialButton
+
+                android:id="@+id/callbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Direkt anrufen"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:icon="@drawable/ic_baseline_phone_24px"
+                app:iconTint="@color/common_google_signin_btn_text_dark_default"
+                app:layout_constraintBottom_toTopOf="@+id/textView11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="271dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="52dp"
+                android:autoLink="web"
+                android:text="@string/emergency_phone_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
