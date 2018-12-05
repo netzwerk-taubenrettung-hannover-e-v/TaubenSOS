@@ -168,9 +168,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Angenommen von:"
-                    app:layout_constraintBottom_toBottomOf="@+id/accept_card_button"
+                    app:layout_constraintTop_toBottomOf="@id/additional_information_card_textfield"
                     app:layout_constraintStart_toStartOf="@+id/additional_information_card_textfield"
-                    app:layout_constraintTop_toTopOf="@+id/accept_card_button"
                     />
 
                 <TextView
@@ -190,10 +189,9 @@
                     android:layout_marginStart="8dp"
                     android:text="no user assigned"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/user_card_title"
+                    app:layout_constraintTop_toBottomOf="@id/additional_information_card_textfield"
                     app:layout_constraintStart_toEndOf="@+id/user_card_title"
-                    app:layout_constraintTop_toTopOf="@+id/user_card_title"
-                   app:layout_constraintVertical_bias="0.0" />
+                   />
 
                 <TextView
                     android:id="@+id/additional_information_card_textfield"
@@ -213,13 +211,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_value"
                     app:layout_constraintVertical_bias="0.0"/>
 
-
-
-
                 <ListView
                     android:id="@+id/injury_card_value"
                     android:layout_width="wrap_content"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -253,15 +248,13 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="übernehmen"
+                    android:layout_margin="16dp"
+                    android:text="Übernehmen"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     app:backgroundTint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_card_title" />
 
 
 
