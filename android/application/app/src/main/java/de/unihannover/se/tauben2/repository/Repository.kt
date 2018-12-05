@@ -1,15 +1,11 @@
 package de.unihannover.se.tauben2.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.LocalDatabase
 import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.Media
 import de.unihannover.se.tauben2.model.network.NetworkService
-import de.unihannover.se.tauben2.model.network.Resource
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -21,7 +17,6 @@ import de.unihannover.se.tauben2.model.network.Resource
  */
 class Repository(private val database: LocalDatabase, private val service: NetworkService, private val appExecutors: AppExecutors = AppExecutors.INSTANCE) {
 
-    private val LOG_TAG = this::class.java.simpleName
 
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
@@ -64,31 +59,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
      * the api doesn't accept are set to null
      */
-    fun sendCase(case: Case) {
-        /* NOTE: NetworkBoundResource doesn't really fit as abstraction for sending cases
-        (e.g. no loadFromDb needed or LiveData for the ViewModel returned)
-        So I pretty much copied this part from NetworkBoundResource. Maybe replace this function by another
-        abstract class for sending api POST requests? */
-        val apiResponseCase = service.sendCase(case)
-        // add observer to LiveData resource
-        apiResponseCase.observeForever(object : Observer<Resource<Case>> {
-            override fun onChanged(response: Resource<Case>?) {
-                if (response?.status?.isSuccessful() == true) {
-                    appExecutors.diskIO().execute {
-                        val responseCase = response.data
-                        responseCase?.let {
-                            database.caseDao().insertOrUpdate(it)
-                            Log.d(LOG_TAG, "inserted received case")
+    fun sendCase(case: Case) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+        override fun saveCallResult(resultData: Case) {
+            database.caseDao().insertOrUpdate(resultData)
+        }
 
-                            // case successfully added to database, can remove observer
-                            appExecutors.mainThread().execute {
-                                apiResponseCase.removeObserver(this)
-                            }
-                        }
-                    }
-                }
-            }
-        })
+        override fun createCall(requestData: Case): LiveDataRes<Case> {
+            return service.sendCase(requestData)
+        }
 
-    }
+    }.send(case)
 }
