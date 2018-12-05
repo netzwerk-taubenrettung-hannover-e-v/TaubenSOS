@@ -48,6 +48,7 @@ class Report01Fragment : Fragment() {
             } else {
                 context?.let { c ->
                     report_injury_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
+                    report_injury_title.setError("")
                 }
             }
         }

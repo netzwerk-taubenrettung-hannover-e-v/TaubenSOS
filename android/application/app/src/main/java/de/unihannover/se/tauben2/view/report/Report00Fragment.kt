@@ -55,6 +55,7 @@ class Report00Fragment : Fragment(), Observer<Location?> {
             if (!saveLocation()) {
                 context?.let { c ->
                     report_map_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
+                    report_map_title.setError("")
                 }
             } else {
                 val bundle = Bundle()
