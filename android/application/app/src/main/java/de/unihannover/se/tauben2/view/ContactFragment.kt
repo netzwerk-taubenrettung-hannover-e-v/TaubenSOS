@@ -18,7 +18,7 @@ class ContactFragment : Fragment() {
             ContactItem("Contact us by phone:", "Call",
                     R.drawable.ic_baseline_phone_24px, R.id.contact_button_call),
             ContactItem("Stay up to date:", "Facebook",
-                    R.drawable.ic_facebook_f_black, R.id.contact_button_facebook),
+                    R.drawable.ic_share_black_24dp, R.id.contact_button_facebook),
             ContactItem("Visit our website", "Website",
                     R.drawable.ic_public_white_24dp, R.id.contact_button_website))
 

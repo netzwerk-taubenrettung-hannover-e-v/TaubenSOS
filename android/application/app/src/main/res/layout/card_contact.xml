@@ -6,11 +6,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_contact"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        style="@style/Card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text=""
                 android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -38,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="" />
+                />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
