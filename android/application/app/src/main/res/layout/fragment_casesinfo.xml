@@ -90,17 +90,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/case_id_card_title" />
 
                 <TextView
-                    android:id="@+id/elapsed_time_text_card_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{c.sinceString}"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/date_time_card_value"
-                    app:layout_constraintStart_toEndOf="@+id/date_time_card_value"
-                    app:layout_constraintTop_toTopOf="@+id/date_time_card_value"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
                     android:id="@+id/injury_card_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -262,20 +251,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
-
-
-
-                <!--Necessary to make date display at report date work, needs to be implemented programmatically in the future for less spaghetti-->
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=")"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_text_card_value"
-                    app:layout_constraintStart_toEndOf="@+id/elapsed_time_text_card_value"
-                    app:layout_constraintTop_toTopOf="@+id/elapsed_time_text_card_value"
-                    app:layout_constraintVertical_bias="0.0" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

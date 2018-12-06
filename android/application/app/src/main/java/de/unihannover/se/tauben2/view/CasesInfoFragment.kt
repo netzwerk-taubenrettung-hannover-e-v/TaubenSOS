@@ -16,6 +16,8 @@ import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.entity.Case
 import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
 import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CasesInfoFragment: Fragment() {
@@ -46,6 +48,18 @@ class CasesInfoFragment: Fragment() {
             v.injury_card_value.adapter=adapter
 
             v.additional_information_card_textfield.text = binding.c?.additionalInfo
+
+            //set date string
+            val timestamp = binding.c?.timestamp
+            if(timestamp!=null){
+                val sdf = SimpleDateFormat("dd.MM.yyyy' 'HH:mm")
+                val netDate = Date(timestamp*1000)
+                var formattedDate = sdf.format(netDate)
+                val sinceString = binding.c?.getSinceString()
+                v.date_time_card_value.text = "$formattedDate$sinceString"
+
+            }
+
             //TODO: Automatically scale height of injury_card_value and additional_information_card_textfield based on number of injuries/text length
             /*val params = v.injury_card_value.layoutParams
             params.height = injuryList.size*50
