@@ -37,7 +37,7 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         var timePickerDialog = TimePickerDialog(context, this, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE),true)
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
-        
+
         // OnClickListeners:
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition()

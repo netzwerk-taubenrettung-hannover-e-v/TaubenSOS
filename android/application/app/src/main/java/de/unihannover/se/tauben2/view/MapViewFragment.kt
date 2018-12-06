@@ -9,12 +9,13 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.google.maps.android.heatmaps.WeightedLatLng
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.network.Resource
+import org.json.JSONException
+import java.util.*
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
@@ -77,7 +78,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
                 map.setLatLngBoundsForCameraTarget(bounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
-
+                //addHeatMap()
                 setCaseMarkers(mMarkers.keys)
             }
         }
@@ -111,4 +112,27 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
     }
 
+    private fun addHeatMap() {
+
+        // Bounds
+        // LatLng(52.3050934, 9.4635117)
+        // LatLng(52.5386801, 9.9908932)
+
+        var testlist : MutableList<WeightedLatLng> = mutableListOf()
+
+        for (i in 1..1000) {
+            var r1 = Random().nextDouble()
+            testlist.add(WeightedLatLng(
+                    LatLng(52.3050934 + (52.5386801 - 52.3050934) * Random().nextDouble(), 9.4635117 + (9.9908932 - 9.4635117) * Random().nextDouble()), 10 * Random().nextDouble()))
+        }
+
+        // Create a heat map tile provider, passing it the latlngs of the police stations.
+        var mProvider = HeatmapTileProvider.Builder()
+                .weightedData(testlist)
+                .build()
+        // Add a tile overlay to the map, using the heat map tile provider.
+        var mOverlay = mMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+
+        // mOverlay?.remove()
+    }
 }

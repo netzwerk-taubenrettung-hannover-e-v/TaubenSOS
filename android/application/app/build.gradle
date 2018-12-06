@@ -68,4 +68,7 @@ dependencies {
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // Google Maps Utility
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
+
 }

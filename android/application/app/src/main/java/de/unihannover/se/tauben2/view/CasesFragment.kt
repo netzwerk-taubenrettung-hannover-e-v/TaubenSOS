@@ -15,6 +15,7 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_cases.view.*
+import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
 
 class CasesFragment : Fragment(){
 
