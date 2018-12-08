@@ -245,15 +245,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
 
-                <ImageView
-                    android:id="@+id/expanded_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="invisible" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+        <ImageView
+            android:id="@+id/expanded_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
     </FrameLayout>
 
 </layout>

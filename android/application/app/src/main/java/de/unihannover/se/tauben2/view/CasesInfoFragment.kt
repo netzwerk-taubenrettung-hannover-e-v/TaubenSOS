@@ -157,21 +157,13 @@ class CasesInfoFragment: Fragment() {
         expandedImageView.pivotX = 0f
         expandedImageView.pivotY = 0f
 
-
-        context?.let { c ->
-            c_layout.setBackgroundColor(ContextCompat.getColor(c, R.color.common_google_signin_btn_text_dark_focused))
-            c_layout2.setBackgroundColor(ContextCompat.getColor(c, R.color.common_google_signin_btn_text_dark_focused))
-        }
-
-        media_card_layout.visibility = View.GONE
-        accept_card_button.visibility = View.GONE
-        status_card_image_info.visibility = View.GONE
+        c_layout2.visibility = View.GONE
 
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
         mCurrentAnimator = AnimatorSet().apply {
             play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left)).apply {
-                with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.centerY(), finalBounds.centerY() - imageRes.intrinsicHeight/2))
+                with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f))
             }
@@ -196,22 +188,13 @@ class CasesInfoFragment: Fragment() {
         expandedImageView.setOnClickListener {
             mCurrentAnimator?.cancel()
 
-            context?.let { c ->
-                c_layout.setBackgroundColor(ContextCompat.getColor(c, R.color.design_default_color_background))
-                c_layout2.setBackgroundColor(ContextCompat.getColor(c, R.color.design_default_color_background))
-            }
-
-            media_card_layout.visibility = View.VISIBLE
-            accept_card_button.visibility = View.VISIBLE
-            status_card_image_info.visibility = View.VISIBLE
-
-            //expanded_image_background.visibility = View.GONE
+            c_layout2.visibility = View.VISIBLE
 
             // Animate the four positioning/sizing properties in parallel,
             // back to their original values.
             mCurrentAnimator = AnimatorSet().apply {
                 play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left)).apply {
-                    with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.centerY()))
+                    with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
                     with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale))
                     with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale))
                 }
