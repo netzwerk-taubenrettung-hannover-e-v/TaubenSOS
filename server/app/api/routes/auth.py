@@ -1,5 +1,7 @@
 import os
 import jwt
+import uuid
+from datetime import datetime
 from flask import (Blueprint, request)
 from flask import jsonify, abort
 from api.models.user import (User)
@@ -31,9 +33,9 @@ def generate_access_token(user):
 
 	payload = {
 		"username": user.username,
-		"isAdmin": user.isAdmin
+		"iat": datetime.utcnow(),
+		"jit": uuid.uuid4().hex
 	}
-
 	access_token = jwt.encode(payload, private_key, algorithm='RS256')
 	return access_token.decode()
 
@@ -44,6 +46,7 @@ def only(scope):
 			if access_token is None:
 				return abort(401)
 			token_data = decode_access_token(access_token)
+			user = User.get(token_data['username'])
 
 			values = list(kwargs.values())
 
@@ -56,7 +59,7 @@ def only(scope):
 				return f
 
 			if 'admin' in scope:
-				if token_data['isAdmin']:
+				if user.isAdmin:
 					return f
 
 			if 'me' in scope:
