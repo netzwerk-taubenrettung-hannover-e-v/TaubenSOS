@@ -17,12 +17,12 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.c_layout
-import de.unihannover.se.tauben2.R.id.expanded_image_background
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.entity.Case
 import kotlinx.android.synthetic.main.design_bottom_sheet_dialog.*
@@ -157,7 +157,15 @@ class CasesInfoFragment: Fragment() {
         expandedImageView.pivotX = 0f
         expandedImageView.pivotY = 0f
 
-        expanded_image_background.visibility = View.VISIBLE
+
+        context?.let { c ->
+            c_layout.setBackgroundColor(ContextCompat.getColor(c, R.color.common_google_signin_btn_text_dark_focused))
+            c_layout2.setBackgroundColor(ContextCompat.getColor(c, R.color.common_google_signin_btn_text_dark_focused))
+        }
+
+        media_card_layout.visibility = View.GONE
+        accept_card_button.visibility = View.GONE
+        status_card_image_info.visibility = View.GONE
 
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
@@ -187,6 +195,15 @@ class CasesInfoFragment: Fragment() {
         // the expanded image.
         expandedImageView.setOnClickListener {
             mCurrentAnimator?.cancel()
+
+            context?.let { c ->
+                c_layout.setBackgroundColor(ContextCompat.getColor(c, R.color.design_default_color_background))
+                c_layout2.setBackgroundColor(ContextCompat.getColor(c, R.color.design_default_color_background))
+            }
+
+            media_card_layout.visibility = View.VISIBLE
+            accept_card_button.visibility = View.VISIBLE
+            status_card_image_info.visibility = View.VISIBLE
 
             //expanded_image_background.visibility = View.GONE
 
