@@ -92,7 +92,7 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     private fun setCurrentTimestamp() {
         view?.current_timestamp_value?.text =
-                SimpleDateFormat("dd.MM.yy, HH:mm", Locale.GERMANY).format(System.currentTimeMillis())
+                SimpleDateFormat("dd.MM.yyyy – HH:mm", Locale.GERMANY).format(System.currentTimeMillis())
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
