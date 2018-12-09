@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -17,6 +18,18 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_report02.*
+import androidx.core.content.ContextCompat
+import android.widget.TextView
+import android.accounts.AccountManager.KEY_ERROR_MESSAGE
+import kotlinx.android.synthetic.main.fragment_news.view.*
+import android.view.Gravity
+import android.os.Build
+
+
+
 
 class Report02Fragment : Fragment() {
 
@@ -60,7 +73,15 @@ class Report02Fragment : Fragment() {
             caseViewModel?.let {
                 it.sendCase(case)
                 Log.d(LOG_TAG, "Sent case: $case")
-                Toast.makeText(context, "Case Sent!", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, "Case Sent!", Toast.LENGTH_SHORT).show()
+                var snack = Snackbar.make(myCoordinatorLayout, "Case Sent", Snackbar.LENGTH_SHORT)
+                val mainTextView = snack.view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    mainTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                else
+                    mainTextView.gravity = Gravity.CENTER_HORIZONTAL
+                mainTextView.gravity = Gravity.CENTER_HORIZONTAL
+                snack.show()
             }
         }
 

@@ -268,15 +268,15 @@
                     app:layout_constraintTop_toBottomOf="@id/accepted_by"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <ImageView
-                    android:id="@+id/expanded_image"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="invisible" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+        <ImageView
+            android:id="@+id/expanded_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
     </FrameLayout>
 
 </layout>
