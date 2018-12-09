@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
@@ -15,20 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.R.id.c_layout
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.entity.Case
-import kotlinx.android.synthetic.main.design_bottom_sheet_dialog.*
 import kotlinx.android.synthetic.main.fragment_casesinfo.*
 import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
-import kotlinx.android.synthetic.main.fragment_report01.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,9 +58,9 @@ class CasesInfoFragment: Fragment() {
 
         binding.root.let{v->
             //convert injury into string list and pass it to the list view
-            val injuryList = binding.c?.injury?.toStringList() ?: listOf()
+            /*val injuryList = binding.c?.injury?.toStringList() ?: listOf()
             val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, injuryList)
-            v.injury_card_value.adapter=adapter
+            v.injury_card_value.adapter=adapter*/
 
             v.additional_information_card_textfield.text = binding.c?.additionalInfo
 
@@ -76,7 +71,8 @@ class CasesInfoFragment: Fragment() {
                 val netDate = Date(timestamp*1000)
                 var formattedDate = sdf.format(netDate)
                 val sinceString = binding.c?.getSinceString()
-                v.date_time_card_value.text = "$formattedDate$sinceString"
+                v.submission_time.text = formattedDate
+                v.time_elapsed.text = "Vor $sinceString)"
 
             }
 
@@ -164,8 +160,8 @@ class CasesInfoFragment: Fragment() {
         }
 
         media_card_layout.visibility = View.GONE
-        accept_card_button.visibility = View.GONE
-        status_card_image_info.visibility = View.GONE
+        accept_button.visibility = View.GONE
+        //status_card_image_info.visibility = View.GONE
 
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
@@ -202,8 +198,8 @@ class CasesInfoFragment: Fragment() {
             }
 
             media_card_layout.visibility = View.VISIBLE
-            accept_card_button.visibility = View.VISIBLE
-            status_card_image_info.visibility = View.VISIBLE
+            accept_button.visibility = View.VISIBLE
+            //status_card_image_info.visibility = View.VISIBLE
 
             //expanded_image_background.visibility = View.GONE
 

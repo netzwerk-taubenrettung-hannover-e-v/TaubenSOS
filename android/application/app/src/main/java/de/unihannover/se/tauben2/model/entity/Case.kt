@@ -54,12 +54,12 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     fun getSinceString(): String {
         val diff = (System.currentTimeMillis() / 1000 - timestamp).toDouble() / 60 //in minutes
-        var res = " (vor "
+        var res = ""
         when {
-            diff > 1440 -> return "$res${(diff / 1440).toInt()} " + if (diff < 2880) "Tag)" else "Tagen)"
+            diff > 1440 -> return "$res${(diff / 1440).toInt()} " + if (diff < 2880) "Tag)" else "Tagen"
             diff >= 60 -> res = "${(diff / 60).toInt()} Std"
         }
-        return res + " ${Math.round(diff % 60)} Min)"
+        return res + " ${Math.round(diff % 60)} Min"
     }
 
     fun setToCurrentTime() {

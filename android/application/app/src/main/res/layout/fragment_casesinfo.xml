@@ -21,70 +21,157 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/c_layout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/design_default_color_background">
 
                 <ImageView
-                    android:id="@+id/status_card_image_info"
+                    android:id="@+id/status_card_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    android:tint="@{c.statusColor}"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_status" />
+                    app:srcCompat="@drawable/ic_status"
+                    android:tint="@{c.statusColor}"
+                    />
+
+
+
+                <LinearLayout
+                    android:id="@+id/media_card_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/distance_marker">
+
+                    <de.unihannover.se.tauben2.view.SquareImageView
+                        android:id="@+id/media_00_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:background="@color/common_google_signin_btn_text_light_default"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_logo_48dp" />
+
+                    <de.unihannover.se.tauben2.view.SquareImageView
+                        android:id="@+id/media_01_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/common_google_signin_btn_text_light_default"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_logo_48dp" />
+
+                    <de.unihannover.se.tauben2.view.SquareImageView
+                        android:id="@+id/media_02_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/common_google_signin_btn_text_light_default"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_logo_48dp" />
+
+                </LinearLayout>
+
 
                 <TextView
-                    android:id="@+id/distance_text_card_value"
+                    android:id="@+id/case_id_card"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="no GPS available"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
-                    app:layout_constraintStart_toStartOf="@+id/case_id_card_value"
-                    app:layout_constraintTop_toTopOf="@+id/distance_text_card_title" />
-
-                <TextView
-                    android:id="@+id/distance_text_card_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="19dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Entfernung:"
+                    android:text="ID: 20180101010"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/priority_text_card_title" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/priority_text_card_value"
+                    android:id="@+id/submission_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{``+ c.priority}"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_title"
-                    app:layout_constraintStart_toStartOf="@+id/case_id_card_value"
-                    app:layout_constraintTop_toTopOf="@+id/priority_text_card_title" />
-
-                <TextView
-                    android:id="@+id/priority_text_card_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Priorität:"
-                    app:layout_constraintBottom_toTopOf="@+id/distance_text_card_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/elapsed_time_text_card_title" />
+                    android:layout_marginEnd="8dp"
+                    android:text="12.12.2012 12:12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/elapsed_time_text_card_title"
+                <View
+                    android:id="@+id/top_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@+id/submission_time"/>
+
+                <LinearLayout
+                    android:id="@+id/priority_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/top_divider">
+
+                    <TextView
+                        android:id="@+id/priority"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Priorität: 3"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <!--android:text="@{`Priorität: `+ c.priority}"-->
+
+                    <TextView
+                        android:id="@+id/time_elapsed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:text="Vor 3 Std 5 Min"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/distance_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Eingereicht vor:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/case_id_card_title" />
+                    android:layout_marginLeft="8dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_place_24px"
+                    android:tint="@color/Red"
+                    app:layout_constraintTop_toBottomOf="@id/priority_layout"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/distance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="8dp"
+                    android:text="5.4km"
+                    android:textColor="@color/Red"
+                    app:layout_constraintStart_toEndOf="@id/distance_marker"
+                    app:layout_constraintBottom_toBottomOf="@id/distance_marker" />
+
 
                 <TextView
                     android:id="@+id/injury_card_title"
@@ -96,159 +183,95 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/media_card_layout" />
 
-                <LinearLayout
-                    android:id="@+id/media_card_layout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/injury_card_value"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:orientation="horizontal"
+                    android:text="Injury 1\nInjury 2\nInjury 3"
+                    android:background="@drawable/backgroundrectangle"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/media_card_title">
+                    app:layout_constraintTop_toBottomOf="@+id/injury_card_title" />
 
-                    <ImageView
-                        android:id="@+id/media_00_card"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
-
-                    <ImageView
-                        android:id="@+id/media_01_card"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
-
-                    <ImageView
-                        android:id="@+id/media_02_card"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/case_id_card_value"
+                <ImageView
+                    android:id="@+id/injury_edit_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="56dp"
-                    android:text="#2018012345"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/case_id_card_title"
-                    app:layout_constraintStart_toEndOf="@+id/case_id_card_title"
-                    app:layout_constraintTop_toTopOf="@+id/case_id_card_title"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/user_card_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Angenommen von:"
-                    app:layout_constraintBottom_toBottomOf="@+id/accept_card_button"
-                    app:layout_constraintStart_toStartOf="@+id/additional_information_card_textfield"
-                    app:layout_constraintTop_toTopOf="@+id/accept_card_button" />
-
-                <TextView
-                    android:id="@+id/media_card_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Medien:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/distance_text_card_title" />
-
-                <TextView
-                    android:id="@+id/user_card_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="no user assigned"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/user_card_title"
-                    app:layout_constraintStart_toEndOf="@+id/user_card_title"
-                    app:layout_constraintTop_toTopOf="@+id/user_card_title"
-                    app:layout_constraintVertical_bias="0.0" />
+                    android:tint="@android:color/darker_gray"
+                    app:layout_constraintRight_toRightOf="@id/injury_card_value"
+                    app:layout_constraintBottom_toBottomOf="@id/injury_card_value"
+                    app:srcCompat="@drawable/ic_baseline_edit_24px"
+                    />
 
                 <TextView
                     android:id="@+id/additional_information_card_textfield"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="50dp"
-                    android:hint="additional information"
-                    app:hintEnabled="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp"
+                    android:text="information\nsome more\nhello\nworld!"
+                    android:background="@drawable/backgroundrectangle"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/injury_card_value"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/injury_card_value" />
 
-
-                <ListView
-                    android:id="@+id/injury_card_value"
+                <ImageView
+                    android:id="@+id/additional_information_edit_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="8dp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/injury_card_title"
-                    app:layout_constraintTop_toBottomOf="@+id/injury_card_title" />
+                    android:layout_height="wrap_content"
+                    android:tint="@android:color/darker_gray"
+                    app:layout_constraintRight_toRightOf="@id/additional_information_card_textfield"
+                    app:layout_constraintBottom_toBottomOf="@id/additional_information_card_textfield"
+                    app:srcCompat="@drawable/ic_baseline_edit_24px"
+                    />
 
                 <TextView
-                    android:id="@+id/case_id_card_title"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/accepted_by_label"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:text="Case ID:"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="In Bearbeitung durch: "
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
 
                 <TextView
-                    android:id="@+id/date_time_card_value"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/accepted_by"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="28.06 14:12 Uhr (vor "
+                    android:layout_marginStart="8dp"
+                    android:text="Taubenfreund24"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_text_card_title"
-                    app:layout_constraintStart_toStartOf="@+id/case_id_card_value"
-                    app:layout_constraintTop_toTopOf="@+id/elapsed_time_text_card_title"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/accepted_by_label"/>
+
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/accept_card_button"
+                    android:id="@+id/accept_button"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="übernehmen"
+                    android:text="Fall Annehmen"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     app:backgroundTint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
+                    app:layout_constraintTop_toBottomOf="@id/accepted_by"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
                 <ImageView
                     android:id="@+id/expanded_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:visibility="invisible" />
 
 
