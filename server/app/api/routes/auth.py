@@ -28,10 +28,22 @@ def login():
 	access_token = generate_access_token(user)
 	return jsonify({"token": access_token})
 
+@bp.route('/logout', methods=["DELETE"], strict_slashes=False)
+def logout():
+	access_token = request.headers.get("Authorization")
+	if access_token is None:
+		return abort(401)
+	token_data = decode_access_token(access_token)
+	dbToken = Token.get(token_data['jit'])
+	if dbToken is None:
+		return abort(401)
+	dbToken.delete()
+	return jsonify(success=True), 200
+
 def generate_access_token(user):
 	with open(os.path.join(os.path.dirname(__file__), "../keys/private.pem"), 'rb') as f:
 		private_key = f.read()
-
+		
 	tokenID = uuid.uuid4().hex
 
 	payload = {
@@ -54,7 +66,7 @@ def only(scope):
 				return abort(401)
 			token_data = decode_access_token(access_token)
 			dbToken = Token.get(token_data['jit'])
-			
+
 			if dbToken is None:
 				return abort(401)
 			values = list(kwargs.values())
