@@ -5,6 +5,7 @@ import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.LocalDatabase
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.network.NetworkService
 
 /**
@@ -69,4 +70,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
     }.send(case)
+
+    /**
+     * Sends a PigeonCounter object to the server
+     * @param pigeonCounter PigeonCounter object to be sent
+     */
+    fun sendPigeonCounter(pigeonCounter: PigeonCounter) =
+            object : AsyncDataRequest<Unit, PigeonCounter>(appExecutors) {
+                override fun saveCallResult(resultData: Unit) {
+                    // nothing to save yet
+                }
+
+                override fun createCall(requestData: PigeonCounter): LiveDataRes<Unit> {
+                    return service.sendPigeonCounter(requestData)
+                }
+
+            }.send(pigeonCounter)
 }
