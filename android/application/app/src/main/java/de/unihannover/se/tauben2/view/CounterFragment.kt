@@ -11,21 +11,17 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
 import kotlinx.android.synthetic.main.fragment_counter.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
-import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.Year
 import java.util.*
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    var datePickerDialog : DatePickerDialog? = null
-    var timePickerDialog : TimePickerDialog? = null
+    private var selectedDate: Calendar = Calendar.getInstance()
 
     companion object : Singleton<CounterFragment>() {
         override fun newInstance() = CounterFragment()
@@ -36,12 +32,11 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
         val view = inflater.inflate(fragment_counter, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-        val c = Calendar.getInstance()
-        datePickerDialog = DatePickerDialog(context, this, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
-        timePickerDialog = TimePickerDialog(context, this, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),true)
+
+        var datePickerDialog = DatePickerDialog(context, this, selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.DAY_OF_MONTH))
+        var timePickerDialog = TimePickerDialog(context, this, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE),true)
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
-
 
         // OnClickListeners:
         view.set_position_button.setOnClickListener {
@@ -59,6 +54,7 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         }
 
         view.changedate_button.setOnClickListener {
+            timePickerDialog?.show()
             datePickerDialog?.show()
         }
 
@@ -76,9 +72,14 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
                     // Warning MSG: Counter at 0
                 }
 
-                Log.d("COUNTINFO", view?.current_timestamp_value?.text.toString())
+                Log.d("COUNTINFO", selectedDate.toString())
                 Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
                 Log.d("COUNTINFO", counter_value.text.toString())
+
+                // Reset Page
+                counter_value.setText(0)
+                setCurrentTimestamp()
+                // Success MSG
             }
         }
 
@@ -90,18 +91,25 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         setCurrentTimestamp()
     }
 
-    private fun setCurrentTimestamp() {
+    private fun refreshTextView () {
         view?.current_timestamp_value?.text =
-                SimpleDateFormat("dd.MM.yyyy – HH:mm", Locale.GERMANY).format(System.currentTimeMillis())
+                SimpleDateFormat("dd.MM.yy, HH:mm", Locale.GERMANY).format(selectedDate.timeInMillis)
     }
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        view?.current_timestamp_value?.text = (view?.current_timestamp_value?.text)?.replaceRange(0, 10, String.format("%02d.%02d.%02d", p3, p2 + 1, p1))
-        timePickerDialog?.show()
+    private fun setCurrentTimestamp() {
+        selectedDate = Calendar.getInstance()
+        refreshTextView()
     }
 
-    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
-        view?.current_timestamp_value?.text = (view?.current_timestamp_value?.text)?.replaceRange(13, 18, String.format("%02d:%02d", p1, p2))
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
+        selectedDate.set(year, month, day)
+        refreshTextView()
+    }
+
+    override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
+        selectedDate.set(Calendar.HOUR_OF_DAY, hour)
+        selectedDate.set(Calendar.MINUTE, minute)
+        refreshTextView()
     }
 
 }

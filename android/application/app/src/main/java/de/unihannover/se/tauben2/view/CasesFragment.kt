@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,12 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_cases.view.*
+import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import android.widget.TextView
+import androidx.databinding.DataBindingUtil.setContentView
+import kotlinx.android.synthetic.main.fragment_cases.*
+
 
 class CasesFragment : Fragment(){
 
@@ -116,18 +123,27 @@ class CasesFragment : Fragment(){
         speedDialView.setOnActionSelectedListener { speedDialActionItem ->
             when (speedDialActionItem.id) {
                 R.id.cases_filter_my -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "My cases"
                     loadCases(Filter.MY)
                     false
+
                 }
                 R.id.cases_filter_closed -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "Closed cases"
                     loadCases(Filter.CLOSED)
                     false
                 }
                 R.id.cases_filter_open -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "Open cases"
                     loadCases(Filter.OPEN)
                     false
                 }
                 R.id.cases_filter_all -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "All cases"
                     loadCases(Filter.ALL)
                     false // true to keep the Speed Dial open
                 }

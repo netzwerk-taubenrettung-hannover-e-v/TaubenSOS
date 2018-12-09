@@ -45,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_black_8dp" />
+                app:srcCompat="@drawable/ic_add_black_16dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

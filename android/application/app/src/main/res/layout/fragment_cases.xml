@@ -16,6 +16,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/text_currentCases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#E6FFFFFF"
+        android:text="All cases"
+        android:textSize="25dp"
+        app:cornerRadius="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/map_fragment"
+        app:layout_constraintEnd_toStartOf="@+id/map_fragment"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <fragment
         android:id="@+id/recycler_fragment"
         android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
