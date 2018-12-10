@@ -64,10 +64,11 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
         var LastPos : LatLng? = null
         var LastMarker : Marker?? = null
-
-         mMap?.setOnMarkerClickListener {
-            //TODO find MarkerCase
+        if (this.parentFragment is CasesFragment) {
+            mMap?.setOnMarkerClickListener {
+                //TODO find MarkerCase
                 mMarkers.keys.forEach { marker ->
+
                     if (LastPos != null && LastMarker != null) {
                         if (LastPos == marker.getMarker().position && LastMarker == it) {
                             val bundle = Bundle()
@@ -76,9 +77,10 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                         }
                     }
                 }
-             LastPos = it.position
-             LastMarker = it
-            false
+                LastPos = it.position
+                LastMarker = it
+                false
+            }
         }
     }
 

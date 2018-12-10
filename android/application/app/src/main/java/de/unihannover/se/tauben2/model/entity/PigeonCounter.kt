@@ -18,6 +18,10 @@ data class PigeonCounter(var latitude: Double,
                          var pigeonCount: Long,
                          var timestamp: String
 ) : MapMarkable {
+    override fun getMarkerCase(): Case {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun getMarker(): MarkerOptions {
         return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: $pigeonCount")
     }

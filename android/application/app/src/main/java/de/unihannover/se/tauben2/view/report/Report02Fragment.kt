@@ -29,8 +29,6 @@ import android.view.Gravity
 import android.os.Build
 
 
-
-
 class Report02Fragment : Fragment() {
 
     private val LOG_TAG = this::class.java.simpleName
@@ -74,7 +72,7 @@ class Report02Fragment : Fragment() {
                 it.sendCase(case)
                 Log.d(LOG_TAG, "Sent case: $case")
                 //Toast.makeText(context, "Case Sent!", Toast.LENGTH_SHORT).show()
-                var snack = Snackbar.make(myCoordinatorLayout, "Case Sent", Snackbar.LENGTH_SHORT)
+                var snack = Snackbar.make(myCoordinatorLayoutCase, "Case Sent", Snackbar.LENGTH_SHORT)
                 val mainTextView = snack.view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
                     mainTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
