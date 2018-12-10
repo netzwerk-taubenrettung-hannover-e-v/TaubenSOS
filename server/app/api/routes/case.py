@@ -61,6 +61,9 @@ def delete_case(caseID):
 		if case is None:
 			return jsonify({"message": "The case to be deleted could not be found"}), 404
 		case.delete()
+		s3 = boto3.client("s3")
+		for m in case.media:
+			s3.delete_object(Bucket="tauben2", Key=m.uri)
 		return "", 204, {"Content-Type": "application/json"}
 
 def generate_media_urls(Case, ClientMethod):
