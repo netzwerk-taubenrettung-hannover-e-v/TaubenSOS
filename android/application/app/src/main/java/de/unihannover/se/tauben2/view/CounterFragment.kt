@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.view
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -22,6 +23,10 @@ import kotlinx.android.synthetic.main.fragment_counter.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.content.DialogInterface
+import android.content.DialogInterface.BUTTON_NEUTRAL
+
+
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -75,6 +80,25 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
         view.resetdate_button.setOnClickListener {
             setCurrentTimestamp()
+        }
+
+        view.infoButtonCounter.setOnClickListener {
+            //Pop up for more info
+            val alertDialogBuilder = AlertDialog.Builder(
+                    context)
+
+            // set title
+            alertDialogBuilder.setTitle("Tauben zählen")
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage(R.string.tauben_zählen_info)
+
+            // create alert dialog
+            val alertDialog = alertDialogBuilder.create()
+
+            // show it
+            alertDialog.show()
         }
 
         view.send_count_button.setOnClickListener {
