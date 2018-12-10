@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.LocalDatabase
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.entity.Media
+import de.unihannover.se.tauben2.model.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
 import de.unihannover.se.tauben2.model.network.Resource
 
@@ -56,6 +57,27 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         override fun loadFromDb() = database.caseDao().getCase(id)
 
         override fun createCall() = service.getCase(id)
+
+    }.getAsLiveData()
+
+    fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
+        override fun saveCallResult(item: List<User>) {
+            database.userDao().insertOrUpdate(item)
+        }
+
+        override fun shouldFetch(data: List<User>?): Boolean {
+            return true
+        }
+
+        override fun loadFromDb(): LiveData<List<User>> {
+            val res = database.userDao().getUsers()
+            return res
+        }
+
+        override fun createCall(): LiveDataRes<List<User>> {
+            val res = service.getUsers()
+            return res
+        }
 
     }.getAsLiveData()
 

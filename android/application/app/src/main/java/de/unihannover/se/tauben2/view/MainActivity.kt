@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 FragmentMenuItem(R.id.casesFragment, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.graphsFragment, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.report00Fragment, "Report a Dove", R.drawable.ic_report_white_24dp),
+                FragmentMenuItem(R.id.membersFragment, "Users", R.drawable.ic_group_white_24dp),
                 FragmentMenuItem(R.id.emergencyCallFragment, "Emergency Call", R.drawable.ic_call_white_24dp),
                 FragmentMenuItem(R.id.contactFragment, "Contact", R.drawable.ic_contact_mail_white_24dp),
                 FragmentMenuItem(0, "Logout", R.drawable.ic_exit_to_app_white_24dp),

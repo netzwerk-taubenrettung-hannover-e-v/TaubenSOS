@@ -3,7 +3,6 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.R
@@ -12,12 +11,9 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
-
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -25,7 +21,6 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     private lateinit var case: Case
     private var mLocation: Location? = null
-
 
     override fun onResume() {
         super.onResume()
@@ -59,9 +54,4 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
             }
         }
     }
-//
-//    override fun onDataLoaded(itemView: View, position: Int) {
-//
-//    }
-
 }

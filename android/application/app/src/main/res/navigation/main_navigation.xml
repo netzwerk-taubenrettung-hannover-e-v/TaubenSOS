@@ -48,6 +48,10 @@
         android:name="de.unihannover.se.tauben2.view.report.Report02Fragment"
         android:label="Report02Fragment" />
     <fragment
+        android:id="@+id/membersFragment"
+        android:name="de.unihannover.se.tauben2.view.UsersFragment"
+        android:label="MembersFragment" />
+    <fragment
         android:id="@+id/emergencyCallFragment"
         android:name="de.unihannover.se.tauben2.view.EmergencyCallFragment"
         android:label="EmergencyCallFragment" />

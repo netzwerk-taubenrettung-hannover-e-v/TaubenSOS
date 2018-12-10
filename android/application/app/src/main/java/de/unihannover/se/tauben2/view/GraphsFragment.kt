@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 
-
-
-
 class GraphsFragment : Fragment() {
 
 
@@ -25,5 +22,4 @@ class GraphsFragment : Fragment() {
 
         return view
     }
-
 }

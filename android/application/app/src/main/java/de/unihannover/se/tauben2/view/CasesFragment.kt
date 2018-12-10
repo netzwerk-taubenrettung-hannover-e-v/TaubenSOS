@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,8 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_cases.view.*
-import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil.setContentView
 import kotlinx.android.synthetic.main.fragment_cases.*
-
 
 class CasesFragment : Fragment(){
 
@@ -58,9 +53,6 @@ class CasesFragment : Fragment(){
     }
 
     private fun loadCases (filter : Filter) {
-
-        // temp solution! - Map markers won't change
-        // using cases.observe(this, mapsFragment) again will cause a ConcurrentModificationException
 
         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
 
