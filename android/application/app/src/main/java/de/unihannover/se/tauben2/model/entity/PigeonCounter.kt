@@ -1,6 +1,9 @@
 package de.unihannover.se.tauben2.model.entity
 
 import androidx.room.Entity
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.model.MapMarkable
 
 
 /**
@@ -12,6 +15,11 @@ import androidx.room.Entity
 @Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "timestamp"])
 data class PigeonCounter(var latitude: Double,
                          var longitude: Double,
-                         var timestamp: Long,
-                         var numberOfPigeons: Long
-)
+                         var pigeonCount: Long,
+                         var timestamp: String
+) : MapMarkable {
+    override fun getMarker(): MarkerOptions {
+        return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: $pigeonCount")
+    }
+
+}
