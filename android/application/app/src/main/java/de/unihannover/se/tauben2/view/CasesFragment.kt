@@ -16,9 +16,11 @@ import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_cases.view.*
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_cases.*
 
-class CasesFragment : Fragment(){
+class CasesFragment : Fragment() {
 
     enum class Filter {
         ALL, CLOSED, OPEN, MY
@@ -79,13 +81,11 @@ class CasesFragment : Fragment(){
 
         // Add Filter Buttons
         // my cases
-
-
         speedDialView.addActionItem(
                 SpeedDialActionItem.Builder(R.id.cases_filter_my, R.drawable.ic_assignment_ind_white_24dp)
                         .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
                         // TODO: y u no work...
-//                        .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
+                        // .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
                         .setLabel("My Cases")
                         .create()
         )
