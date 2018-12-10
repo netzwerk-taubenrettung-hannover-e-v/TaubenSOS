@@ -15,4 +15,8 @@
             eine alternative Nummer unter der +49 157 80641268. In Hannover gibt es außerdem die
             Möglichkeit im Notfall zur Klinik der TiHo <a href="http://www.google.com">Google</a> zu fahren und Stadttauben abzugeben. Wer
             nicht mobil ist, kann auch über die Feuerwehr (112) die Tierrettung rufen.</string>
+    <string name = "tauben_zählen_info">Bitte wähle Standort, Datum, Uhrzeit
+            und Anzahl der Tauben, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
+
+
 </resources>
