@@ -11,6 +11,12 @@ import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.viewmodel.BaseViewModel
 import de.unihannover.se.tauben2.viewmodel.ViewModelFactory
 import retrofit2.Response
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.design_layout_snackbar_include.view.*
+
 
 fun <ResultType> Response<ResultType>.toResource(): Resource<ResultType> {
     val error = errorBody()?.toString() ?: message()
@@ -45,4 +51,12 @@ fun <X> LiveDataRes<List<X>>.filter(func: (X) -> Boolean): LiveDataRes<List<X>> 
             result = Resource.loading()
     } else result = Resource.error(it?.message)
     result
+}
+
+fun setSnackBar(root: View, snackTitle: String) {
+    val snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_SHORT)
+    snackbar.show()
+    val view = snackbar.view
+    val txtv = view.snackbar_text
+    txtv.gravity = Gravity.CENTER_HORIZONTAL
 }

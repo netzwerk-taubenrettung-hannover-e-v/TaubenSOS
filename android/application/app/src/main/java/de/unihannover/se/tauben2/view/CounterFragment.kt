@@ -23,19 +23,7 @@ import kotlinx.android.synthetic.main.fragment_counter.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.DialogInterface
-import android.content.DialogInterface.BUTTON_NEUTRAL
-import android.graphics.Paint
-import android.os.Build
-import android.view.Gravity
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.google.android.material.snackbar.Snackbar
-import de.unihannover.se.tauben2.R.id.myCoordinatorLayoutCounter
-import kotlinx.android.synthetic.main.fragment_report02.*
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
-import android.text.style.UnderlineSpan
-import android.text.SpannableString
+import de.unihannover.se.tauben2.setSnackBar
 
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -115,28 +103,21 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
             if (mapsFragment.getSelectedPosition() == null) {
                 // Error MSG: No location selected
-                //createSnackbar("Bitte Tragen sie eine Position auf der Karte ein.")
-                errorMsgMap.visibility = View.VISIBLE
+                setSnackBar(view, "Bitte Position auf der Karte eintragen.")
             } else {
                 if (counter_value.text.toString().toInt() == 0) {
                     // Warning MSG: Counter at 0
-                    //createSnackbar("Bitte Taubenanzahl eintragen.")
-                    errorMsgMap.visibility = View.INVISIBLE
-                    errorLayout.visibility = View.VISIBLE
-                    errorLayout.error = "Bitte Tauberanzahl eintragen"
-                    errorLayout.isErrorEnabled = true
+                    setSnackBar(view, "Bitte Taubenanzahl eintragen.")
                 } else {
                     Log.d("COUNTINFO", selectedDate.toString())
                     Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
                     Log.d("COUNTINFO", counter_value.text.toString())
 
                     // Reset Page
-                    errorMsgMap.visibility = View.INVISIBLE
-                    errorLayout.visibility = View.GONE
                     counter_value.setText("0")
                     setCurrentTimestamp()
                     // Success MSG
-                    createSnackbar("Taubenanzahl erfolgreich eigetragen.")
+                    setSnackBar(view, "Taubenanzahl erfolgreich eigetragen.")
                 }
             }
         }
@@ -146,20 +127,6 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         loadCounters()
 
         return view
-    }
-
-    private fun createSnackbar(message : String) {
-        var snack = Snackbar.make(myCoordinatorLayoutCounter, message, Snackbar.LENGTH_LONG)
-        val mainTextView = snack.view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            mainTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        else
-            mainTextView.gravity = Gravity.CENTER_HORIZONTAL
-        mainTextView.gravity = Gravity.CENTER_HORIZONTAL
-        /*context?.let { c ->
-            mainTextView.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
-        }*/
-        snack.show()
     }
 
     private fun loadCounters() {
@@ -201,5 +168,4 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         selectedDate.set(Calendar.MINUTE, minute)
         refreshTextView()
     }
-
 }
