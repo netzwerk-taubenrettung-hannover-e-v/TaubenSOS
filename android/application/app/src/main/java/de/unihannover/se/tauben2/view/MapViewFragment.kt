@@ -1,21 +1,38 @@
 package de.unihannover.se.tauben2.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import de.unihannover.se.tauben2.R
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
+import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.MapMarkable
+import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.network.Resource
+import kotlinx.android.synthetic.main.fragment_cases.*
+import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.fragment_map.view.*
+import kotlinx.android.synthetic.main.fragment_report02.*
 import org.json.JSONException
 import java.util.*
+import android.os.Handler
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
@@ -27,7 +44,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         if(mMarkers.isEmpty()) {
             data.forEach { mMarkers[it] = null }
             setCaseMarkers(data)
-            return
         }
         val casesToRemove: MutableMap<MapMarkable, Marker?> = mutableMapOf()
 
@@ -45,6 +61,25 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
 
         setCaseMarkers(data)
+
+        var LastPos : LatLng? = null
+        var LastMarker : Marker?? = null
+
+         mMap?.setOnMarkerClickListener {
+            //TODO find MarkerCase
+                mMarkers.keys.forEach { marker ->
+                    if (LastPos != null && LastMarker != null) {
+                        if (LastPos == marker.getMarker().position && LastMarker == it) {
+                            val bundle = Bundle()
+                            bundle.putParcelable("case", marker.getMarkerCase())
+                            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)
+                        }
+                    }
+                }
+             LastPos = it.position
+             LastMarker = it
+            false
+        }
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
@@ -54,7 +89,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 //        val view = inflater.inflate(R.layout.fragment_map, container, false)
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
-
 
 //        view.mapView.onCreate(savedInstanceState)
 //

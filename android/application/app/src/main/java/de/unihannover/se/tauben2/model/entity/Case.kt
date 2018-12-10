@@ -44,6 +44,10 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title("Priorität: $priority").snippet(additionalInfo)
 
+    override fun getMarkerCase(): Case {
+        return this
+    }
+
     override fun getType() = RecyclerItem.Type.ITEM
 
     fun getSinceString(): String {
