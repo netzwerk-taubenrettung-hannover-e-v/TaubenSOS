@@ -117,6 +117,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param pigeonCounter PigeonCounter object to be sent
      */
     fun sendPigeonCounter(pigeonCounter: PigeonCounter) =
+    // TODO update Unit with actual return type when known
             object : AsyncDataRequest<Unit, PigeonCounter>(appExecutors) {
                 override fun saveCallResult(resultData: Unit) {
                     // nothing to save yet
