@@ -32,8 +32,36 @@ def create_case():
 def read_case(caseID):
 	if request.method == "GET":
 		case = Case.get(caseID)
+		if case is None:
+			return jsonify({"message": "The case to be shown could not be found"}), 404
 		result = generate_media_urls(Case=case, ClientMethod="get_object")
 		return jsonify(result)
+
+@bp.route("/case/<caseID>", methods=["PUT"], strict_slashes=False)
+def update_case(caseID):
+	if request.method == "PUT":
+		json = request.get_json()
+		if json.get("media") is not None:
+			json.get("media")[:] = [medium_schema.dump(Medium("photos/" + str(uuid.uuid4()) + "-" + m)).data for m in json.get("media")]
+		case = Case.get(caseID)
+		if case is None:
+			return jsonify({"message": "The case to be updated could not be found"}), 404
+		errors = case_schema.validate(json, partial=True)
+		if errors:
+			return jsonify(errors), 400
+		case.update(**json)
+		result = generate_media_urls(Case=case, ClientMethod="put_object")
+		return jsonify(result), 200
+
+
+@bp.route("/case/<caseID>", methods=["DELETE"], strict_slashes=False)
+def delete_case(caseID):
+	if request.method == "DELETE":
+		case = Case.get(caseID)
+		if case is None:
+			return jsonify({"message": "The case to be deleted could not be found"}), 404
+		case.delete()
+		return "", 204, {"Content-Type": "application/json"}
 
 def generate_media_urls(Case, ClientMethod):
 	result = case_schema.dump(Case).data

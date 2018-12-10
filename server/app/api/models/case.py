@@ -19,8 +19,8 @@ class Case(db.Model):
     wasFoundDead = db.Column(db.Boolean, nullable=True)
     wasNotFound = db.Column(db.Boolean, nullable=True)
     isClosed = db.Column(db.Boolean, nullable=False)
-    injury = db.relationship("Injury", backref="case", lazy=True, uselist=False)
-    media = db.relationship("Medium", backref="case", lazy=True, uselist=True)
+    injury = db.relationship("Injury", cascade="all, delete-orphan", backref="case", lazy=True, uselist=False)
+    media = db.relationship("Medium", cascade="all, delete-orphan", backref="case", lazy=True, uselist=True)
 
     def __init__(self, timestamp, priority, reporter, rescuer, isCarrierPigeon, isWeddingPigeon, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media):
         self.timestamp = timestamp
@@ -41,6 +41,11 @@ class Case(db.Model):
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
         db.session.commit()
 
     def delete(self):
