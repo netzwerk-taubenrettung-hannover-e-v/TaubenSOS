@@ -19,6 +19,9 @@ interface NetworkService {
     @POST("case")
     fun sendCase(@Body case: Case): LiveDataRes<Case>
 
+    @GET("population")
+    fun getPigeonCounters(): LiveDataRes<List<PigeonCounter>>
+
     @POST("population")
     fun sendPigeonCounter(@Body pigeonCounter: PigeonCounter): LiveDataRes<Unit>
 }

@@ -55,6 +55,25 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
+    fun getPigeonCounters() = object : NetworkBoundResource<List<PigeonCounter>, List<PigeonCounter>>(appExecutors) {
+        override fun saveCallResult(item: List<PigeonCounter>) {
+            database.pigeonCounterDao().insertOrUpdate(item)
+        }
+
+        override fun shouldFetch(data: List<PigeonCounter>?): Boolean {
+            return true
+        }
+
+        override fun loadFromDb(): LiveData<List<PigeonCounter>> {
+            return database.pigeonCounterDao().getAllPigeonCounters()
+        }
+
+        override fun createCall(): LiveDataRes<List<PigeonCounter>> {
+            return service.getPigeonCounters()
+        }
+
+    }.getAsLiveData()
+
     /**
      * Sends case to server and inserts the answer from the server into the local database
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
