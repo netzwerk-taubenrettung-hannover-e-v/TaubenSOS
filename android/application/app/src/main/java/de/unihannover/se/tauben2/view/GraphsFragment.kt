@@ -19,7 +19,6 @@ class GraphsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_graphs, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-
         return view
     }
 }

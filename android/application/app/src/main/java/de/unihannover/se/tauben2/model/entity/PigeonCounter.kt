@@ -25,5 +25,4 @@ data class PigeonCounter(var latitude: Double,
     override fun getMarker(): MarkerOptions {
         return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: $pigeonCount")
     }
-
 }
