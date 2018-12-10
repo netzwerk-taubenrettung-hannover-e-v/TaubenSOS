@@ -9,12 +9,14 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.transition.TransitionManager
+import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.PopupWindow
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,17 +52,25 @@ class CasesInfoFragment: Fragment() {
 
             views.forEachIndexed { i, image ->
                 Picasso.get().load(if(media.size >= i+1) media[i] else null)
-                        .placeholder(R.drawable.ic_logo_48dp)
                         .into(image)
                 ZoomImage(image)
             }
+
         }
 
         binding.root.let{v->
-            //convert injury into string list and pass it to the list view
-            /*val injuryList = binding.c?.injury?.toStringList() ?: listOf()
-            val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, injuryList)
-            v.injury_card_value.adapter=adapter*/
+            //convert injury into string list, convert it into a newline seperated string and add it to the textview
+            val injuryList = binding.c?.injury?.toStringList() ?: listOf()
+            var injuryString = ""
+            //iteration counter to not add newline after last element
+            var i=0
+            injuryList.forEach { s ->
+                injuryString+="$s"
+                if(++i<injuryList.size){
+                    injuryString+="\n"
+                }
+            }
+            v.injury_card_value.text=injuryString;
 
             v.additional_information_card_textfield.text = binding.c?.additionalInfo
 
@@ -72,24 +82,64 @@ class CasesInfoFragment: Fragment() {
                 var formattedDate = sdf.format(netDate)
                 val sinceString = binding.c?.getSinceString()
                 v.submission_time.text = formattedDate
-                v.time_elapsed.text = "Vor $sinceString)"
+                v.time_elapsed.text = "Vor $sinceString"
 
             }
 
-            //TODO: Automatically scale height of injury_card_value and additional_information_card_textfield based on number of injuries/text length
-            /*val params = v.injury_card_value.layoutParams
-            params.height = injuryList.size*50
-            v.injury_card_value.layoutParams = params*/
+            //set name of rescuer
+            if(binding.c?.rescuer!=null){
+                v.rescued_by.text=binding.c?.rescuer
+            }
+            else{
+                v.rescued_by.text="Niemandem zugewiesen"
+            }
+
+            v.additional_information_edit_button.setOnClickListener{
+                v.additional_information_card_textfield.isCursorVisible = true;
+                v.additional_information_card_textfield.isFocusableInTouchMode = true;
+                v.additional_information_card_textfield.inputType = InputType.TYPE_CLASS_TEXT;
+                v.additional_information_card_textfield.requestFocus();
+            }
+
+            v.injury_edit_button.setOnClickListener {
+
+                val inflater: LayoutInflater = layoutInflater
+                val popupView = inflater.inflate(R.layout.popup_injury_edit, null)
+
+                var focusable = true
+                val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                popupWindow.isFocusable=true
+                popupWindow.isOutsideTouchable=true
+                popupWindow.setTouchInterceptor{pv,event ->
+                    if(event.action==MotionEvent.ACTION_OUTSIDE){
+                        popupWindow.dismiss()
+                        true
+                    }
+
+                    false
+                }
+
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                TransitionManager.beginDelayedTransition(c_layout)
+                popupWindow.showAtLocation(c_layout, Gravity.CENTER, 0, 0)
+            }
+
         }
 
         return binding.root
     }
 
+
+
+
     fun ZoomImage(image: ImageView) {
-        image.setOnClickListener {
-            zoomImageFromThumb(image, image.drawable)
+        if(image.drawable!=null) {
+            image.setOnClickListener {
+                zoomImageFromThumb(image, image.drawable)
+            }
+            mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
         }
-        mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
     private fun zoomImageFromThumb(thumbView: View, imageRes: Drawable) {
