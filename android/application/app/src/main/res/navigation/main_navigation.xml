@@ -6,7 +6,12 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="de.unihannover.se.tauben2.view.NewsFragment"
-        android:label="NewsFragment" ></fragment>
+        android:label="NewsFragment" >
+        <action
+            android:id="@+id/action_newsFragment_to_casesFragment"
+            app:destination="@id/casesFragment"
+            app:launchSingleTop="true" />
+    </fragment>
     <fragment
         android:id="@+id/counterFragment"
         android:name="de.unihannover.se.tauben2.view.CounterFragment"
@@ -18,6 +23,10 @@
         <action
             android:id="@+id/action_casesFragment_to_casesInfoFragment"
             app:destination="@id/casesInfoFragment" />
+        <action
+            android:id="@+id/action_casesFragment_to_newsFragment"
+            app:destination="@id/newsFragment"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/casesInfoFragment"

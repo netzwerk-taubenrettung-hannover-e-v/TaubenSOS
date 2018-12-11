@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +12,10 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -54,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
     }
-
+    
     private fun initBottomNavigation() {
 
         bottom_navigation.setMenuItems(
@@ -70,7 +73,14 @@ class MainActivity : AppCompatActivity() {
                 FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
         )
 
-        NavigationUI.setupWithNavController(bottom_navigation, (nav_host as NavHostFragment).navController)
+        val navController = (nav_host as NavHostFragment).navController
+        NavigationUI.setupWithNavController(bottom_navigation, navController)
+
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            NavigationUI.onNavDestinationSelected(it, Navigation.findNavController(this, R.id.nav_host))
+            true
+        }
+
     }
 
     // Add "Report a Dove"-Btn to the Toolbar
