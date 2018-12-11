@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 
-
-
-
 class GraphsFragment : Fragment() {
 
 
@@ -22,8 +19,6 @@ class GraphsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_graphs, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-
         return view
     }
-
 }

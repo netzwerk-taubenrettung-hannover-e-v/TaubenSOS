@@ -28,21 +28,19 @@
                     android:id="@+id/status_card_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:tint="@{c.statusColor}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_status"
-                    android:tint="@{c.statusColor}"
-                    />
-
+                    app:srcCompat="@drawable/ic_status" />
 
 
                 <LinearLayout
                     android:id="@+id/media_card_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -55,31 +53,28 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
+                        android:background="@color/design_default_color_background"
+                        android:scaleType="centerCrop" />
 
                     <de.unihannover.se.tauben2.view.SquareImageView
                         android:id="@+id/media_01_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:layout_marginLeft="8dp"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
+                        android:background="@color/design_default_color_background"
+                        android:scaleType="centerCrop" />
 
                     <de.unihannover.se.tauben2.view.SquareImageView
                         android:id="@+id/media_02_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:layout_marginLeft="8dp"
-                        android:background="@color/common_google_signin_btn_text_light_default"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_logo_48dp" />
+                        android:background="@color/design_default_color_background"
+                        android:scaleType="centerCrop" />
 
                 </LinearLayout>
 
@@ -110,14 +105,14 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@+id/submission_time"/>
+                    app:layout_constraintTop_toBottomOf="@+id/submission_time" />
 
                 <LinearLayout
                     android:id="@+id/priority_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -129,11 +124,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="Priorität: 3"
+                        android:text="@{`Priorität: `+ c.priority}"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <!--android:text="@{`Priorität: `+ c.priority}"-->
 
                     <TextView
                         android:id="@+id/time_elapsed"
@@ -152,14 +146,14 @@
                     android:id="@+id/distance_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_baseline_place_24px"
                     android:tint="@color/Red"
-                    app:layout_constraintTop_toBottomOf="@id/priority_layout"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/priority_layout" />
 
                 <TextView
                     android:id="@+id/distance_text"
@@ -169,8 +163,8 @@
                     android:layout_marginTop="8dp"
                     android:text="5.4km"
                     android:textColor="@color/Red"
-                    app:layout_constraintStart_toEndOf="@id/distance_marker"
-                    app:layout_constraintBottom_toBottomOf="@id/distance_marker" />
+                    app:layout_constraintBottom_toBottomOf="@id/distance_marker"
+                    app:layout_constraintStart_toEndOf="@id/distance_marker" />
 
 
                 <TextView
@@ -190,10 +184,10 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Injury 1\nInjury 2\nInjury 3"
                     android:background="@drawable/backgroundrectangle"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Injury 1\nInjury 2\nInjury 3"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_title" />
 
                 <ImageView
@@ -201,10 +195,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tint="@android:color/darker_gray"
-                    app:layout_constraintRight_toRightOf="@id/injury_card_value"
                     app:layout_constraintBottom_toBottomOf="@id/injury_card_value"
-                    app:srcCompat="@drawable/ic_baseline_edit_24px"
-                    />
+                    app:layout_constraintRight_toRightOf="@id/injury_card_value"
+                    app:srcCompat="@drawable/ic_baseline_edit_24px" />
 
                 <TextView
                     android:id="@+id/additional_information_card_textfield"
@@ -215,8 +208,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="information\nsome more\nhello\nworld!"
                     android:background="@drawable/backgroundrectangle"
+                    android:text="information\nsome more\nhello\nworld!"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_value" />
@@ -226,14 +219,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tint="@android:color/darker_gray"
-                    app:layout_constraintRight_toRightOf="@id/additional_information_card_textfield"
                     app:layout_constraintBottom_toBottomOf="@id/additional_information_card_textfield"
-                    app:srcCompat="@drawable/ic_baseline_edit_24px"
-                    />
+                    app:layout_constraintRight_toRightOf="@id/additional_information_card_textfield"
+                    app:srcCompat="@drawable/ic_baseline_edit_24px" />
 
                 <TextView
-                    android:id="@+id/accepted_by_label"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/rescued_by_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -244,15 +235,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
 
                 <TextView
-                    android:id="@+id/accepted_by"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/rescued_by"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Taubenfreund24"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/accepted_by_label"/>
+                    app:layout_constraintTop_toBottomOf="@id/rescued_by_label" />
 
 
                 <com.google.android.material.button.MaterialButton
@@ -265,8 +255,8 @@
                     android:text="Fall Annehmen"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     app:backgroundTint="@color/colorPrimaryDark"
-                    app:layout_constraintTop_toBottomOf="@id/accepted_by"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rescued_by" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

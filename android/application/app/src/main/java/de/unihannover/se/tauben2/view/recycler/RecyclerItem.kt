@@ -1,6 +1,5 @@
 package de.unihannover.se.tauben2.view.recycler
 
-
 interface RecyclerItem {
     enum class Type(val id: Int) { HEADER(0), ITEM(1) }
 

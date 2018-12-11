@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +15,12 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_cases.view.*
-import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil.setContentView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_cases.*
 
-
-class CasesFragment : Fragment(){
+class CasesFragment : Fragment() {
 
     enum class Filter {
         ALL, CLOSED, OPEN, MY
@@ -59,9 +56,6 @@ class CasesFragment : Fragment(){
 
     private fun loadCases (filter : Filter) {
 
-        // temp solution! - Map markers won't change
-        // using cases.observe(this, mapsFragment) again will cause a ConcurrentModificationException
-
         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
 
             // Remove old Observers
@@ -87,13 +81,11 @@ class CasesFragment : Fragment(){
 
         // Add Filter Buttons
         // my cases
-
-
         speedDialView.addActionItem(
                 SpeedDialActionItem.Builder(R.id.cases_filter_my, R.drawable.ic_assignment_ind_white_24dp)
                         .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
                         // TODO: y u no work...
-//                        .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
+                        // .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
                         .setLabel("My Cases")
                         .create()
         )
