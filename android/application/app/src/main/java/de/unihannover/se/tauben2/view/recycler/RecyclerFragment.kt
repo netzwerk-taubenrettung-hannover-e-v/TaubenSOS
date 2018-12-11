@@ -69,5 +69,4 @@ abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = f
      * @param data the new data
      */
     abstract fun onBindData(binding: ViewDataBinding, data: Data)
-
 }

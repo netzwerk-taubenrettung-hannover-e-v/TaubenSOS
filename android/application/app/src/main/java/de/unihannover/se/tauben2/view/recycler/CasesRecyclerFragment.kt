@@ -19,7 +19,6 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     override fun getRecylcerItemLayoutId(viewType: Int) = R.layout.card_case
 
-
     private lateinit var case: Case
     private var mLocation: Location? = null
 
@@ -31,9 +30,6 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     override fun onResume() {
         super.onResume()
         getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, locationObserver)
-        // TODO make scroll fix
-//        view?.recylcer_view?.scrollToPosition(0)
-//        view?.recylcer_view?.invalidate()
     }
 
     override fun onPause() {

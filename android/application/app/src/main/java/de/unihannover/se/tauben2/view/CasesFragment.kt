@@ -35,24 +35,6 @@ class CasesFragment : Fragment() {
         override fun newInstance()= CasesFragment()
     }
 
-//    private var coordinatorLayoutHeight: Int? = null
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        view?.let {v ->
-//            coordinatorLayoutHeight?.let { height ->
-//                val lp= v.appbar.layoutParams as CoordinatorLayout.LayoutParams
-//                lp.height = height
-//            }
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        coordinatorLayoutHeight = (view?.appbar?.layoutParams as CoordinatorLayout.LayoutParams).height
-//    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
