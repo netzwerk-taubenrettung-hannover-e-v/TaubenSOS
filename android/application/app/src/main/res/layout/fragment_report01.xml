@@ -167,15 +167,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/report_injury_layout" />
 
-        <TextView
-            android:id="@+id/report_state_help"
+        <ImageButton
+            android:id="@+id/infoButtonReport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text='("Hilfestellung für das Einschätzen")'
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_info_24dp"
+            android:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="@+id/report_state_title"
-            app:layout_constraintTop_toBottomOf="@+id/report_state_title" />
+            app:layout_constraintBottom_toBottomOf="@+id/report_state_title"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <SeekBar
             android:id="@+id/report_state_seekbar"
@@ -191,7 +192,8 @@
             android:thumbTint="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@+id/report_state_max"
             app:layout_constraintStart_toEndOf="@+id/report_state_min"
-            app:layout_constraintTop_toBottomOf="@+id/report_state_help" />
+            app:layout_constraintTop_toBottomOf="@+id/infoButtonReport"
+/>
 
         <TextView
             android:id="@+id/report_state_min"

@@ -19,6 +19,7 @@
             und Anzahl der Tauben, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
     <string name = "contact_info">Hier kannst du anrufen, falls du mehr Infos möchtest oder ein Notfall vorliegt. Alternative
             Nummer bla</string>
+    <string name = "taube_melden_info">Ein gebrochener Flügel wäre z.B. in der Mitte zwischen gut und schlecht, ...?</string>
 
 
 </resources>
