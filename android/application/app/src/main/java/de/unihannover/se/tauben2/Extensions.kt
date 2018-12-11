@@ -1,6 +1,8 @@
 package de.unihannover.se.tauben2
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Build
@@ -18,6 +20,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.design_layout_snackbar_include.view.*
@@ -79,3 +82,4 @@ fun PopupWindow.dimBehind() {
     wm.updateViewLayout(container, p)
 }
 
+fun hasDevicePermission(context: Context, permission: String) = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED

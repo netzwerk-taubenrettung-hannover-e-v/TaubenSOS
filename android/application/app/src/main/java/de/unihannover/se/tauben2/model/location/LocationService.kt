@@ -12,26 +12,33 @@ class LocationService(context: Context): LocationCallback() {
 
     private val listeners = mutableSetOf<LocationChangedListener>()
 
+    private var mLocationRequest: LocationRequest? = null
+
     private var mFusedLocProvider: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+
+    private var mTask: Task<LocationSettingsResponse>? = null
 
     init {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            val locationRequest = LocationRequest().apply {
+            mLocationRequest = LocationRequest().apply {
                 interval = 10000
                 fastestInterval = 8000
                 priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
             }
 
-            val builder = LocationSettingsRequest.Builder()
-            builder.addLocationRequest(locationRequest)
+            mLocationRequest?.let { locationRequest ->
 
-            val client: SettingsClient = LocationServices.getSettingsClient(context)
-            // TODO check permissions availability with task
-            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-            task.addOnSuccessListener {
-                mFusedLocProvider.requestLocationUpdates(locationRequest, this, null)
+                val builder = LocationSettingsRequest.Builder()
+                builder.addLocationRequest(locationRequest)
+
+                val client: SettingsClient = LocationServices.getSettingsClient(context)
+                // TODO check permissions availability with task
+                mTask = client.checkLocationSettings(builder.build())
+                mTask?.addOnSuccessListener {
+                    mFusedLocProvider.requestLocationUpdates(locationRequest, this, null)
+                }
             }
         }
     }
@@ -55,7 +62,7 @@ class LocationService(context: Context): LocationCallback() {
     }
 
     fun registerWithLastKnownLocation(context: Context, listener: LocationChangedListener) {
-        register(listener)
+        register(context, listener)
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocProvider.lastLocation.addOnSuccessListener {
@@ -64,12 +71,22 @@ class LocationService(context: Context): LocationCallback() {
         }
     }
 
-    fun register(listener: LocationChangedListener) {
+    fun register(context: Context, listener: LocationChangedListener) {
         listeners.add(listener)
+        if(listeners.size == 1 && mLocationRequest != null &&
+                ((ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED))) {
+
+            mTask?.addOnSuccessListener {
+                mFusedLocProvider.requestLocationUpdates(mLocationRequest, this, null)
+            }
+        }
     }
 
     fun unregister(listener: LocationChangedListener) {
         listeners.remove(listener)
+        if(listeners.isEmpty())
+            mFusedLocProvider.removeLocationUpdates(this)
     }
 }
 
