@@ -17,6 +17,8 @@
             nicht mobil ist, kann auch über die Feuerwehr (112) die Tierrettung rufen.</string>
     <string name = "tauben_zählen_info">Bitte wähle Standort, Datum, Uhrzeit
             und Anzahl der Tauben, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
+    <string name = "contact_info">Hier kannst du anrufen, falls du mehr Infos möchtest oder ein Notfall vorliegt. Alternative
+            Nummer bla</string>
 
 
 </resources>

@@ -85,17 +85,13 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
             val alertDialogBuilder = AlertDialog.Builder(
                     context)
 
-            // set title
             alertDialogBuilder.setTitle("Tauben zählen")
 
-            // set dialog message
             alertDialogBuilder
                     .setMessage(R.string.tauben_zählen_info)
 
-            // create alert dialog
             val alertDialog = alertDialogBuilder.create()
 
-            // show it
             alertDialog.show()
         }
 
