@@ -146,7 +146,7 @@
                     android:id="@+id/distance_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="8dp"
-                    android:text="5.4km"
+                    android:text="@string/search_location"
                     android:textColor="@color/Red"
                     app:layout_constraintBottom_toBottomOf="@id/distance_marker"
                     app:layout_constraintStart_toEndOf="@id/distance_marker" />

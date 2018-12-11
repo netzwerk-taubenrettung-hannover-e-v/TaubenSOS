@@ -20,6 +20,7 @@
     <string name = "contact_info">Hier kannst du anrufen, falls du mehr Infos möchtest oder ein Notfall vorliegt. Alternative
             Nummer bla</string>
     <string name = "taube_melden_info">Ein gebrochener Flügel wäre z.B. in der Mitte zwischen gut und schlecht, ...?</string>
+    <string name="search_location">Seach location</string>
 
 
 </resources>

@@ -35,8 +35,12 @@ class Report00Fragment : Fragment(), Observer<Location?> {
 
     override fun onResume() {
         super.onResume()
-        val locationViewModel = getViewModel(LocationViewModel::class.java)
-        locationViewModel?.observeCurrentLocation(this, this)
+        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +73,9 @@ class Report00Fragment : Fragment(), Observer<Location?> {
 
     override fun onChanged(loc: Location?) {
         loc ?: return
-        mLocation = LatLng(loc.latitude, loc.longitude)
+        // If location not set, set to current location
+        if(mLocation == null)
+            mLocation = LatLng(loc.latitude, loc.longitude)
     }
 
     /**

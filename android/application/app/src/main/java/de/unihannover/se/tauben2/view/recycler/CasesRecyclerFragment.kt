@@ -24,24 +24,22 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     private lateinit var case: Case
     private var mLocation: Location? = null
 
-    private val locationViewModel = getViewModel(LocationViewModel::class.java)
-
     private val locationObserver = Observer<Location?> {
         mLocation = it
         notifyDataSetChanged()
     }
 
     override fun onResume() {
-        locationViewModel?.observeCurrentLocation(this, locationObserver)
+        super.onResume()
+        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, locationObserver)
         // TODO make scroll fix
 //        view?.recylcer_view?.scrollToPosition(0)
 //        view?.recylcer_view?.invalidate()
-        super.onResume()
     }
 
-    override fun onStop() {
-        super.onStop()
-        locationViewModel?.stopObservingCurrentLocation(locationObserver)
+    override fun onPause() {
+        super.onPause()
+        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(locationObserver)
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {

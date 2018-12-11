@@ -9,6 +9,7 @@ import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.location.Location
 import android.os.Bundle
 import android.text.InputType
 import android.transition.TransitionManager
@@ -21,36 +22,37 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.dimBehind
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_casesinfo.*
 import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CasesInfoFragment: Fragment() {
+class CasesInfoFragment: Fragment(), Observer<Location?> {
+
+    private lateinit var mBinding: FragmentCasesinfoBinding
 
     private var mCurrentAnimator: Animator? = null
 
     private var mShortAnimationDuration: Int = 0
 
 
-    companion object : Singleton<CasesInfoFragment>() {
-        override fun newInstance() = CasesInfoFragment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentCasesinfoBinding>(inflater, R.layout.fragment_casesinfo, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_casesinfo, container, false)
         arguments?.getParcelable<Case>("case")?.let {
-            binding.c = it
+            mBinding.c = it
 
             val media = it.media
-            val views = listOf(binding.root.media_00_card, binding.root.media_01_card, binding.root.media_02_card)
+            val views = listOf(mBinding.root.media_00_card, mBinding.root.media_01_card, mBinding.root.media_02_card)
 
             views.forEachIndexed { i, image ->
                 Picasso.get().load(if(media.size >= i+1) media[i] else null)
@@ -60,9 +62,9 @@ class CasesInfoFragment: Fragment() {
 
         }
 
-        binding.root.let{v->
+        mBinding.root.let{v->
             //convert injury into string list, convert it into a newline seperated string and add it to the textview
-            val injuryList = binding.c?.injury?.toStringList() ?: listOf()
+            val injuryList = mBinding.c?.injury?.toStringList() ?: listOf()
             var injuryString = ""
             //iteration counter to not add newline after last element
             var i=0
@@ -74,23 +76,23 @@ class CasesInfoFragment: Fragment() {
             }
             v.injury_card_value.text=injuryString;
 
-            v.additional_information_card_textfield.text = binding.c?.additionalInfo
+            v.additional_information_card_textfield.text = mBinding.c?.additionalInfo
 
             //set date string
-            val timestamp = binding.c?.timestamp
+            val timestamp = mBinding.c?.timestamp
             if(timestamp!=null){
                 val sdf = SimpleDateFormat("dd.MM.yyyy' 'HH:mm")
                 val netDate = Date(timestamp*1000)
                 var formattedDate = sdf.format(netDate)
-                val sinceString = binding.c?.getSinceString()
+                val sinceString = mBinding.c?.getSinceString()
                 v.submission_time.text = formattedDate
                 v.time_elapsed.text = "Vor $sinceString"
 
             }
 
             //set name of rescuer
-            if(binding.c?.rescuer!=null){
-                v.rescued_by.text=binding.c?.rescuer
+            if(mBinding.c?.rescuer!=null){
+                v.rescued_by.text=mBinding.c?.rescuer
             }
             else{
                 v.rescued_by.text="Niemandem zugewiesen"
@@ -130,7 +132,7 @@ class CasesInfoFragment: Fragment() {
 
         }
 
-        return binding.root
+        return mBinding.root
     }
 
     fun ZoomImage(image: ImageView) {
@@ -266,4 +268,28 @@ class CasesInfoFragment: Fragment() {
         }
     }
 
+    override fun onChanged(location: Location?) {
+        if(location == null)
+            return
+        view?.let {
+            mBinding.c?.let {case ->
+                val caseLoc = Location("").apply {
+                    latitude = case.latitude
+                    longitude = case.longitude
+                }
+                val res = ((Math.round(location.distanceTo(caseLoc)/10))/100.0).toString() + " km"
+                it.distance_text.text = res
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
+    }
 }

@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2
 
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
 import android.os.Build
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -77,3 +78,4 @@ fun PopupWindow.dimBehind() {
     p.dimAmount = 0.3f
     wm.updateViewLayout(container, p)
 }
+

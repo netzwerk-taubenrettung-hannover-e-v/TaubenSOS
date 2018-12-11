@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import de.unihannover.se.tauben2.model.location.LocationChangedListener
 import de.unihannover.se.tauben2.model.location.LocationService
 
-class LocationViewModel(context: Context): ViewModel(), LocationChangedListener {
+class LocationViewModel(val context: Context): ViewModel(), LocationChangedListener {
 
     private val currentLocation: MutableLiveData<Location?> = MutableLiveData()
     private val locationService: LocationService = LocationService.getInstance(context)
@@ -20,7 +20,7 @@ class LocationViewModel(context: Context): ViewModel(), LocationChangedListener 
 
     fun observeCurrentLocation(owner: LifecycleOwner, observer: Observer<in Location?>) {
         currentLocation.observe(owner, observer)
-        locationService.register(this)
+        locationService.registerWithLastKnownLocation(context, this)
     }
 
     fun stopObservingCurrentLocation (observer: Observer<in Location?>) {

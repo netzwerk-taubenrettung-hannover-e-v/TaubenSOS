@@ -6,25 +6,15 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_more.*
-import kotlinx.android.synthetic.main.fragment_more.view.*
 import java.util.*
 
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): BottomNavigationView(context, attrs) {
 
     private var mRootView: View = View.inflate(context, R.layout.dynamic_bottom_navigation_view, this)
-
-    private var mStartFragmentListener: StartFragmentListener? = null
 
     private var mSize: Int = 5
 
@@ -124,20 +114,4 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
     }
 
     fun hasOverflowMenu() = menuSize > mSize
-
-    fun setStartFragmentListener(listener: (fragment: Fragment) -> Unit){
-        mStartFragmentListener = object : StartFragmentListener {
-            override fun onStartFragment(fragment: Fragment) {
-                listener(fragment)
-            }
-        }
-    }
-
-    fun clearStartFragmentListener(){
-        mStartFragmentListener = null
-    }
-
-    interface StartFragmentListener {
-        fun onStartFragment(fragment: Fragment)
-    }
 }

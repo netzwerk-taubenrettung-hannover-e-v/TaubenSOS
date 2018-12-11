@@ -74,9 +74,7 @@ class BottomNavigator(
             mBackStack.add(destination)
         } else {
             mBackStack.remove(destination)
-
             mBackStack.add(destination)
-//            if (destination.parent == null)
 
             transaction.attach(fragment)
         }
