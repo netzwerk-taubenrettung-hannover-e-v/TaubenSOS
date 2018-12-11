@@ -8,7 +8,7 @@ class PopulationValue(db.Model):
 	timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, primary_key=True)
 	pigeonCount = db.Column(db.Integer, nullable=False)
 
-	def __init__(populationMarkerID, timestamp, pigeonCount):
+	def __init__(self, populationMarkerID, timestamp, pigeonCount):
 		self.populationMarkerID = populationMarkerID
 		self.timestamp = timestamp
 		self.pigeonCount = pigeonCount
@@ -29,11 +29,11 @@ class PopulationValue(db.Model):
 		return PopulationValue.query.all()
 
 	@staticmethod
-	def get(populationMarkerID):
-		return PopulationValue.query.get(populationMarkerID)
+	def get_values_for_marker(populationMarkerID):
+		return db.session.query(PopulationValue).filter(PopulationValue.populationMarkerID == populationMarkerID)
 
 class PopulationValueSchema(ma.Schema):
-	populationMarkerID = ma.Integer(dump_only=True)
+	populationMarkerID = ma.Integer(required=True)
 	pigeonCount = ma.Integer(required=True)
 	timestamp = ma.DateTime("rfc", missing=None)
 

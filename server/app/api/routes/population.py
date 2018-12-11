@@ -1,3 +1,4 @@
+import json
 from flask import (Blueprint, request, jsonify)
 from api.models.populationMarker import (PopulationMarker, populationMarker_schema, populationMarkers_schema)
 from api.models.populationValue import (PopulationValue, populationValue_schema, populationValues_schema)
@@ -8,13 +9,14 @@ bp = Blueprint("population", __name__, url_prefix="/api")
 def get_Markers():
 	if request.method == "GET":
 		populationMarkers = PopulationMarker.all()
-		result = [make_json(populationMarker = p) for p in populationMarkers]
+		result = [make_json_marker(populationMarker = p) for p in populationMarkers]
 		return jsonify(result)
 
-@bp.route("/population/<populationMarkerID>", methods=["GET", "POST"], strict_slashes=False)
-def get_or_put_value_for_marker(populationMarkerID):
+@bp.route("/population/<populationMarkerID>", methods=["GET"], strict_slashes=False)
+def get_values_for_marker(populationMarkerID):
 	if request.method == "GET":
-		return
+		values = PopulationValue.get_values_for_marker(populationMarkerID)
+		return populationValues_schema.jsonify(values)
 
 @bp.route("/population", methods=["POST"], strict_slashes=False)
 def create_marker():
@@ -31,14 +33,15 @@ def create_marker():
 
 @bp.route("/population/<populationMarkerID>", methods=["POST"], strict_slashes=False)
 def create_value_for_marker(populationMarkerID):
-	if request.method == "PUT":
+	if request.method == "POST":
 		json = request.get_json()
+		json["populationMarkerID"] = int(populationMarkerID)
 		populationValue, errors = populationValue_schema.load(data=json)
 		if errors:
 			return jsonify(errors), 400
 		else:
 			populationValue.save()
-			result = make_json_marker(populationMarker=populationMarker)
+			result = make_json_value(populationValue=populationValue)
 			return jsonify(result), 201
 
 
