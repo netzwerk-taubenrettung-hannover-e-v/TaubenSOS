@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import de.unihannover.se.tauben2.R
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_report02.*
 import org.json.JSONException
 import java.util.*
 import android.os.Handler
+import com.google.maps.android.heatmaps.Gradient
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
@@ -114,8 +116,9 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
                 map.setLatLngBoundsForCameraTarget(bounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
-                //addHeatMap()
                 setCaseMarkers(mMarkers.keys)
+
+                if (this.parentFragment is GraphsFragment) addHeatMap()
             }
         }
 
@@ -154,21 +157,26 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         // LatLng(52.3050934, 9.4635117)
         // LatLng(52.5386801, 9.9908932)
 
+        // test data
         var testlist : MutableList<WeightedLatLng> = mutableListOf()
-
         for (i in 1..1000) {
-            var r1 = Random().nextDouble()
             testlist.add(WeightedLatLng(
-                    LatLng(52.3050934 + (52.5386801 - 52.3050934) * Random().nextDouble(), 9.4635117 + (9.9908932 - 9.4635117) * Random().nextDouble()), 10 * Random().nextDouble()))
+                    LatLng(52.3050934 + (52.5386801 - 52.3050934) * Random().nextDouble(), 9.4635117 + (9.9908932 - 9.4635117) * Random().nextDouble()), 100 * Random().nextDouble()))
         }
 
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
+        val colors = intArrayOf(Color.rgb(255, 100, 100),
+                Color.rgb(255, 0, 0))
+        val startPoints = floatArrayOf(0.2f, 1f)
+        val gradient = Gradient(colors, startPoints)
+
         var mProvider = HeatmapTileProvider.Builder()
                 .weightedData(testlist)
+                .gradient(gradient)
+                .radius(50)
+                .opacity(0.5)
                 .build()
-        // Add a tile overlay to the map, using the heat map tile provider.
-        var mOverlay = mMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
 
-        // mOverlay?.remove()
+        var mOverlay = mMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+        //mOverlay?.remove()
     }
 }

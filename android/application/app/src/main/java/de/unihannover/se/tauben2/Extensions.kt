@@ -44,7 +44,6 @@ fun <T: ViewModel> Fragment.getViewModel(modelClass: Class<T>): T? {
     return null
 }
 
-
 fun <X> LiveDataRes<List<X>>.filter(func: (X) -> Boolean): LiveDataRes<List<X>> = Transformations.map(this) {
     var result: Resource<List<X>>? = null
     if(it != null){

@@ -183,6 +183,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@drawable/ic_info_24dp"
+            android:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/send_count_button"
             app:layout_constraintEnd_toEndOf="@+id/minus_button"
             app:layout_constraintStart_toStartOf="@+id/minus_button"

@@ -18,7 +18,6 @@ import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
 import de.unihannover.se.tauben2.setSnackBar
 
-
 class Report02Fragment : Fragment() {
 
     private val LOG_TAG = this::class.java.simpleName
@@ -60,7 +59,5 @@ class Report02Fragment : Fragment() {
                 setSnackBar(view, "Case sent successfully.")
             }
         }
-
     }
-
 }
