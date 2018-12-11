@@ -1,0 +1,12 @@
+Retrieve all existing cases
+---
+tags:
+  - case
+parameters: []
+responses:
+  200:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/Case"

@@ -28,6 +28,7 @@ Creates a new case.
     latitude | The latitude of the pigeon's location. | NO | Float | — | 52.3744
     longitude | The longitude of the pigeon's location. | NO | Float | — | 9.73886
     wasFoundDead | Was the pigeon found dead? | YES | Boolean | null | false
+    wasNotFound | True if the pigeon couldn't be found at the specified location. | YES | Boolean | null | false
     isClosed | Is the case closed? | YES | Boolean | false | true
     injury | The pigeon's injuries. | NO | JSON Object | — | See table below.
     media | An array of the names of the files to be uploaded. | YES | JSON Array of Strings | [] | ["photo1.png", "photo2.png"]
@@ -37,6 +38,7 @@ Creates a new case.
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     footOrLeg | Is the pigeon's foot or leg injured? | NO | Boolean | — | true
+    feetTiedTogether | Are the pigeon's feet tied together? | NO | Boolean | - | true
     wing | Is the pigeon's wing injured? | NO | Boolean | — | false
     headOrEye | Is the pigeon's head or eye injured? | NO | Boolean | — | false
     openWound | Has the pigeon an open wound? | NO | Boolean | — | false

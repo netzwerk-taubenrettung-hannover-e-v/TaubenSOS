@@ -9,6 +9,9 @@ bp = Blueprint("case", __name__, url_prefix="/api")
 
 @bp.route("/case", methods=["GET"], strict_slashes=False)
 def read_cases():
+	"""
+	file: ../../docs/case/read_all.yml
+	"""
 	if request.method == "GET":
 		cases = Case.all()
 		result = [generate_media_urls(Case=c, ClientMethod="get_object") for c in cases]
@@ -16,6 +19,9 @@ def read_cases():
 
 @bp.route("/case", methods=["POST"], strict_slashes=False)
 def create_case():
+	"""
+	file: ../../docs/case/create.yml
+	"""
 	if request.method == "POST":
 		json = request.get_json()
 		if json.get("media") is not None:
@@ -30,6 +36,9 @@ def create_case():
 
 @bp.route("/case/<caseID>", methods=["GET"], strict_slashes=False)
 def read_case(caseID):
+	"""
+	file: ../../docs/case/read.yml
+	"""
 	if request.method == "GET":
 		case = Case.get(caseID)
 		if case is None:
@@ -39,6 +48,9 @@ def read_case(caseID):
 
 @bp.route("/case/<caseID>", methods=["PUT"], strict_slashes=False)
 def update_case(caseID):
+	"""
+	file: ../../docs/case/update.yml
+	"""
 	if request.method == "PUT":
 		json = request.get_json()
 		if json.get("media") is not None:
@@ -56,6 +68,9 @@ def update_case(caseID):
 
 @bp.route("/case/<caseID>", methods=["DELETE"], strict_slashes=False)
 def delete_case(caseID):
+	"""
+	file: ../../docs/case/delete.yml
+	"""
 	if request.method == "DELETE":
 		case = Case.get(caseID)
 		if case is None:

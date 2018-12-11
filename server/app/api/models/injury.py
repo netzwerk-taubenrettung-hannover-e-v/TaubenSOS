@@ -1,10 +1,11 @@
-from api import db, ma
+from api import db, ma, spec
 from marshmallow import post_load
 
 class Injury(db.Model):
     __tablename__ = "injury"
     caseID = db.Column(db.Integer, db.ForeignKey("case.caseID"), primary_key=True)
     footOrLeg = db.Column(db.Boolean, nullable=False)
+    feetTiedTogether = db.Column(db.Boolean, nullable=False)
     wing = db.Column(db.Boolean, nullable=False)
     headOrEye = db.Column(db.Boolean, nullable=False)
     openWound = db.Column(db.Boolean, nullable=False)
@@ -12,8 +13,9 @@ class Injury(db.Model):
     fledgling = db.Column(db.Boolean, nullable=False)
     other = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, footOrLeg, wing, headOrEye, openWound, paralyzedOrFlightless, fledgling, other):
+    def __init__(self, footOrLeg, feetTiedTogether, wing, headOrEye, openWound, paralyzedOrFlightless, fledgling, other):
         self.footOrLeg = footOrLeg
+        self.feetTiedTogether = feetTiedTogether
         self.wing = wing
         self.headOrEye = headOrEye
         self.openWound = openWound
@@ -42,6 +44,7 @@ class Injury(db.Model):
 
 class InjurySchema(ma.Schema):
     footOrLeg = ma.Boolean(required=True)
+    feetTiedTogether = ma.Boolean(required=True)
     wing = ma.Boolean(required=True)
     headOrEye = ma.Boolean(required=True)
     openWound = ma.Boolean(required=True)
@@ -55,3 +58,5 @@ class InjurySchema(ma.Schema):
 
 injury_schema = InjurySchema()
 injuries_schema = InjurySchema(many=True)
+
+spec.definition("Injury", schema=InjurySchema)

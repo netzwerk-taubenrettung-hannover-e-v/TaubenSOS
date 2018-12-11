@@ -1,4 +1,4 @@
-from api import db, ma
+from api import db, ma, spec
 from api.models import injury, medium
 from datetime import datetime
 from marshmallow import post_dump, pre_load, post_load, utils, validate
@@ -113,3 +113,5 @@ class CaseSchema(ma.Schema):
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
+
+spec.definition("Case", schema=CaseSchema)
