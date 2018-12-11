@@ -93,7 +93,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:text="Zusätliche Angaben"
+                android:text="Zusätzliche Angaben"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Hast du noch zusätliche Informationen zu dem genauen Standort oder dem Zustand der Taube?"
+                android:text="Hast du noch zusätzliche Informationen zu dem genauen Standort oder dem Zustand der Taube?"
                 app:layout_constraintEnd_toEndOf="@+id/report_additional_information_title"
                 app:layout_constraintStart_toStartOf="@+id/report_additional_information_title"
                 app:layout_constraintTop_toBottomOf="@+id/report_additional_information_title" />

@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,21 @@ class Report01Fragment : Fragment() {
                     report_injury_title.setError("")
                 }
             }
+        }
+
+        binding.root.infoButtonReport.setOnClickListener {
+                //Pop up for more info
+                val alertDialogBuilder = AlertDialog.Builder(
+                        context)
+
+                alertDialogBuilder.setTitle("Zustand der Taube")
+
+                alertDialogBuilder
+                        .setMessage(R.string.taube_melden_info)
+
+                val alertDialog = alertDialogBuilder.create()
+
+                alertDialog.show()
         }
 
         return binding.root
