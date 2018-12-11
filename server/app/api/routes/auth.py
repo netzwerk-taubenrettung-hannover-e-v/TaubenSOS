@@ -58,8 +58,8 @@ def login():
 
 	user = User.get(username)
 
-	if user is None or password != user.password:
-		return jsonify(message="User does not exist or password is wrong"), 401
+	if user is None or password != user.password or not user.isActivated:
+		return jsonify(message="User does not exist, password is wrong or user is not activated"), 401
 
 	access_token = generate_access_token(user)
 	return jsonify({"token": access_token})
