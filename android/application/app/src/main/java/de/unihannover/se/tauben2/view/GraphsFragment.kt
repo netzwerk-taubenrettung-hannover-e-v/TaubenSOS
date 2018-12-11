@@ -9,7 +9,6 @@ import de.unihannover.se.tauben2.R
 
 class GraphsFragment : Fragment() {
 
-
     companion object: Singleton<GraphsFragment>() {
         override fun newInstance() = GraphsFragment()
     }
