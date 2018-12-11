@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
@@ -23,6 +24,7 @@ import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
+import de.unihannover.se.tauben2.dimBehind
 import de.unihannover.se.tauben2.model.entity.Case
 import kotlinx.android.synthetic.main.fragment_casesinfo.*
 import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
@@ -110,7 +112,7 @@ class CasesInfoFragment: Fragment() {
                 val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
                 popupWindow.isFocusable=true
                 popupWindow.isOutsideTouchable=true
-                popupWindow.setTouchInterceptor{pv,event ->
+                popupWindow.setTouchInterceptor{_,event ->
                     if(event.action==MotionEvent.ACTION_OUTSIDE){
                         popupWindow.dismiss()
                         true
@@ -123,15 +125,13 @@ class CasesInfoFragment: Fragment() {
 
                 TransitionManager.beginDelayedTransition(c_layout)
                 popupWindow.showAtLocation(c_layout, Gravity.CENTER, 0, 0)
+                popupWindow.dimBehind()
             }
 
         }
 
         return binding.root
     }
-
-
-
 
     fun ZoomImage(image: ImageView) {
         if(image.drawable!=null) {
