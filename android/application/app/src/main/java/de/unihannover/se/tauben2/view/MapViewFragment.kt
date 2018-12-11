@@ -63,27 +63,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
 
         setCaseMarkers(data)
-
-        var LastPos : LatLng? = null
-        var LastMarker : Marker?? = null
-        if (this.parentFragment is CasesFragment) {
-            mMap?.setOnMarkerClickListener {
-                //TODO find MarkerCase
-                mMarkers.keys.forEach { marker ->
-
-                    if (LastPos != null && LastMarker != null) {
-                        if (LastPos == marker.getMarker().position && LastMarker == it) {
-                            val bundle = Bundle()
-                            bundle.putParcelable("case", marker.getMarkerCase())
-                            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)
-                        }
-                    }
-                }
-                LastPos = it.position
-                LastMarker = it
-                false
-            }
-        }
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
@@ -119,6 +98,22 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 setCaseMarkers(mMarkers.keys)
 
                 if (this.parentFragment is GraphsFragment) addHeatMap()
+                else if (this.parentFragment is CasesFragment) {
+
+                    mMap?.setOnInfoWindowClickListener { clickedMarker ->
+                        //TODO find MarkerCase
+
+                        val filter = mMarkers.filter { it.value == clickedMarker }
+                        if(filter.size == 1) {
+                            val case = filter.keys.toList()[0] as? Case ?: return@setOnInfoWindowClickListener
+
+                            val bundle = Bundle()
+                            bundle.putParcelable("case", case)
+                            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)
+                        }
+                    }
+                }
+
             }
         }
 
