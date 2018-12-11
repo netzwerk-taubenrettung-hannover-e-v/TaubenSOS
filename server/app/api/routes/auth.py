@@ -34,7 +34,7 @@ def logout():
 	if access_token is None:
 		return abort(401)
 	token_data = decode_access_token(access_token)
-	dbToken = Token.get(token_data['jit'])
+	dbToken = Token.get(token_data['jti'])
 	if dbToken is None:
 		return abort(401)
 	dbToken.delete()
@@ -49,7 +49,7 @@ def generate_access_token(user):
 	payload = {
 		"username": user.username,
 		"iat": datetime.utcnow(),
-		"jit": tokenID
+		"jti": tokenID
 	}
 
 	dbToken = Token(tokenID, user.username)
@@ -65,7 +65,7 @@ def only(scope):
 			if access_token is None:
 				return abort(401)
 			token_data = decode_access_token(access_token)
-			dbToken = Token.get(token_data['jit'])
+			dbToken = Token.get(token_data['jti'])
 
 			if dbToken is None:
 				return abort(401)
