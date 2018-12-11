@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -12,29 +11,34 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
+import de.unihannover.se.tauben2.databinding.ActivityMainBinding
 import de.unihannover.se.tauben2.model.Permission
-import de.unihannover.se.tauben2.view.navigation.FragmentChangeListener
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    // For navigation //
+    private lateinit var mNavHostFragment: NavHostFragment
+    private lateinit var mBottomNavigator: BottomNavigator
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // Fixing later map loading delay
         Thread {
@@ -57,31 +61,46 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
     }
-    
+
+
     private fun initBottomNavigation() {
 
-        bottom_navigation.setMenuItems(
+        binding.bottomNavigation.setMenuItems(
                 FragmentMenuItem(R.id.newsFragment, "News", R.drawable.ic_today_white_24dp),
                 FragmentMenuItem(R.id.counterFragment, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.casesFragment, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.graphsFragment, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.report00Fragment, "Report a Dove", R.drawable.ic_report_white_24dp),
-                FragmentMenuItem(R.id.membersFragment, "Users", R.drawable.ic_group_white_24dp),
+                FragmentMenuItem(R.id.membersFragment, "Users", R.drawable.ic_group_white_24dp, Permission.ADMIN),
                 FragmentMenuItem(R.id.emergencyCallFragment, "Emergency Call", R.drawable.ic_call_white_24dp),
                 FragmentMenuItem(R.id.contactFragment, "Contact", R.drawable.ic_contact_mail_white_24dp),
-                FragmentMenuItem(0, "Logout", R.drawable.ic_exit_to_app_white_24dp),
+                FragmentMenuItem(0, "Logout", R.drawable.ic_exit_to_app_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.loginFragment, "Login", R.drawable.ic_person_black_24dp),
                 FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
         )
 
         val navController = (nav_host as NavHostFragment).navController
-        NavigationUI.setupWithNavController(bottom_navigation, navController)
+        mNavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+        mBottomNavigator = BottomNavigator(this, mNavHostFragment.childFragmentManager, R.id.nav_host, binding.bottomNavigation)
 
-        bottom_navigation.setOnNavigationItemSelectedListener {
-            NavigationUI.onNavDestinationSelected(it, Navigation.findNavController(this, R.id.nav_host))
-            true
-        }
+        navController.navigatorProvider.addNavigator(mBottomNavigator)
 
+        navController.setGraph(R.navigation.main_navigation)
+
+        binding.bottomNavigation.setupWithNavController(navController)
+
+//        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+//            NavigationUI.onNavDestinationSelected(it, navController)
+//            true
+//        }
+
+    }
+
+    override fun onBackPressed() {
+//        if(binding.bottomNavigation.isCurrentTabMore())
+//            super.onBackPressed()
+//        else
+            mBottomNavigator.onBackPressed()
     }
 
     // Add "Report a Dove"-Btn to the Toolbar
@@ -96,16 +115,10 @@ class MainActivity : AppCompatActivity() {
 
         if (item?.itemId == toolbar_report_button) {
             Navigation.findNavController(this, R.id.nav_host).navigate(R.id.report00Fragment)
+            binding.bottomNavigation.selectMoreTab()
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount == 1)
-            finish()
-        else
-            super.onBackPressed()
     }
 
     // sets the gradient for the status bar

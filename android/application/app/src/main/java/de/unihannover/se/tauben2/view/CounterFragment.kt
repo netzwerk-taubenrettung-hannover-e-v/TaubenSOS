@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import de.unihannover.se.tauben2.setSnackBar
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {

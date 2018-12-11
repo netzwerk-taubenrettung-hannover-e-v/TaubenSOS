@@ -28,8 +28,6 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 
     private var mSize: Int = 5
 
-    private var mMoreMenuItem: FragmentMenuItem? = null
-
     private val MORE_MENU_ITEM = R.id.moreFragment
 
     private var menuSize: Int = menu.size()
@@ -96,17 +94,29 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 //        }
     }
 
+    fun setSelectedItem(id: Int) {
+        menu.findItem(id)?.let {
+            menu.findItem(id).isChecked = true
+//            selectedItemId = it.itemId
+        }
+    }
+
+    fun selectMoreTab(){
+        setSelectedItem(MORE_MENU_ITEM)
+    }
+
+    fun isCurrentTabMore() = menu.findItem(MORE_MENU_ITEM).isChecked
+
     private val moreFragmentBundle = Bundle()
 
     private fun createOverflowMenu(items: List<FragmentMenuItem>) {
-        mMoreMenuItem = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp)
+        addMenuItem(item = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp))
 
         moreFragmentBundle.putParcelableArrayList("items", ArrayList(items))
-        Navigation.findNavController(context as Activity, R.id.nav_host).addOnNavigatedListener { _, destination ->
+        Navigation.findNavController(context as Activity, R.id.nav_host).addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == MORE_MENU_ITEM)
                 destination.addDefaultArguments(moreFragmentBundle)
         }
-        mMoreMenuItem?.let { addMenuItem(item = it) }
     }
 
     private fun addMenuItem(menu: Menu = getMenu(), item: FragmentMenuItem) {

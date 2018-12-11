@@ -9,7 +9,6 @@ class MapAppBarBehavior(context: Context, attrs: AttributeSet) : AppBarLayout.Be
     init {
         setDragCallback(object : DragCallback() {
             override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-
                 if ((appBarLayout.height - appBarLayout.bottom) == 0) return false
                 return true
             }

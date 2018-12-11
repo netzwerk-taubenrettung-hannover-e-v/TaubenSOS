@@ -14,21 +14,34 @@ import kotlinx.android.synthetic.main.card_case.view.*
 import android.widget.ImageView
 import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     override fun getRecylcerItemLayoutId(viewType: Int) = R.layout.card_case
 
+
     private lateinit var case: Case
     private var mLocation: Location? = null
 
+    private val locationViewModel = getViewModel(LocationViewModel::class.java)
+
+    private val locationObserver = Observer<Location?> {
+        mLocation = it
+        notifyDataSetChanged()
+    }
+
     override fun onResume() {
+        locationViewModel?.observeCurrentLocation(this, locationObserver)
+        // TODO make scroll fix
+//        view?.recylcer_view?.scrollToPosition(0)
+//        view?.recylcer_view?.invalidate()
         super.onResume()
-        val viewModel = getViewModel(LocationViewModel::class.java)
-        viewModel?.observeCurrentLocation(this, Observer {
-            mLocation = it
-            notifyDataSetChanged()
-        })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        locationViewModel?.stopObservingCurrentLocation(locationObserver)
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {

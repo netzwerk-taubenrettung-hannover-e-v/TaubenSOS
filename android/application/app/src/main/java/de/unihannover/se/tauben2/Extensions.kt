@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.design_layout_snackbar_include.view.*
 
 
@@ -55,8 +56,12 @@ fun <X> LiveDataRes<List<X>>.filter(func: (X) -> Boolean): LiveDataRes<List<X>> 
     result
 }
 
-fun setSnackBar(root: View, snackTitle: String) {
+fun setSnackBar(root: View, snackTitle: String, anchorView: View? = null) {
     val snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_SHORT)
+    if(anchorView == null)
+        snackbar.anchorView = root.rootView.bottom_navigation
+    else
+        snackbar.anchorView = anchorView
     snackbar.show()
     val view = snackbar.view
     val txtv = view.snackbar_text

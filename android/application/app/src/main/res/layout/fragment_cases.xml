@@ -6,16 +6,26 @@
     android:layout_height="match_parent"
     android:background="#e6e5e6">
 
+    <fragment
+        android:id="@+id/recycler_fragment"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"/>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior">
+        app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior"
+        >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll">
+            app:layout_scrollFlags="scroll"
+            >
 
             <fragment
                 android:id="@+id/map_fragment"
@@ -39,14 +49,6 @@
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <fragment
-        android:id="@+id/recycler_fragment"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp"/>
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/overlay"

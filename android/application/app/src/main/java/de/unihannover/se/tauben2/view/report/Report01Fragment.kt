@@ -36,7 +36,7 @@ class Report01Fragment : Fragment() {
         }
 
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
+            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report00Fragment)
         }
 
         binding.root.report_next_step_button.setOnClickListener {
