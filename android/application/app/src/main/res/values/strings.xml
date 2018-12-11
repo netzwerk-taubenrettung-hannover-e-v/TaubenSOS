@@ -20,7 +20,82 @@
     <string name = "contact_info">Hier kannst du anrufen, falls du mehr Infos möchtest oder ein Notfall vorliegt. Alternative
             Nummer bla</string>
     <string name = "taube_melden_info">Ein gebrochener Flügel wäre z.B. in der Mitte zwischen gut und schlecht, ...?</string>
-    <string name="search_location">Seach location</string>
+    <string name="search_location">Search location</string>
+
+    <string name="priority">Priority: %s</string>
+    <string name="priority_blank">Priority:</string>
+    <string name="before">Before: %s</string>
+
+    <string name ="long_duration">%d days, %02d minutes, %02d seconds</string>
+    <string name ="short_duration">%d hours, %02d minutes, %02d seconds</string>
+    
+    <plurals name="second">
+        <item quantity="one">%02d second</item>
+        <item quantity="other">%02d seconds</item>
+    </plurals>
+
+    <plurals name="minute">
+        <item quantity="one">%02d minute</item>
+        <item quantity="other">%02d minutes</item>
+    </plurals>
+
+    <plurals name="hour">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <plurals name="day">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <string name="no_rescuer">No rescuer</string>
+    <string name="take_case">Take case</string>
+    <string name="in_progress_by">In progress by:</string>
+    <string name="injuries">Injuries:</string>
+    <string name="case_id">ID: %s</string>
+    <string name="submitted_before">Submitted before:</string>
+    <string name="distance">Distance:</string>
+    <string name="no_gps">No GPS available</string>
+    <string name="report_injured_pigeon">Report an injured pigeon</string>
+    <string name="report_pigeon">Report pigeon</string>
+    <string name="enter_location">Enter your location:</string>
+    <string name="set_position">SET POSITION</string>
+    <string name="add_media">Include up to three pictures or videos:</string>
+    <string name="specify_injuries">Specify the type of injuries:</string>
+    <string name="injury_foot_leg">Foot or leg</string>
+    <string name="injury_wings">Wings</string>
+    <string name="injury_head_eye">Head or eye</string>
+    <string name="injury_paralyzed_flightless">Paralyzed or flightless</string>
+    <string name="injury_open_wound">Open wound</string>
+    <string name="injury_strings_feet">Strings at the feet</string>
+    <string name="injury_fledgling">Fledgling</string>
+    <string name="injury_other">Other (more details later)</string>
+    <string name="estimate_condition">Estimate the general condition of the pigeon:</string>
+    <string name="good">good</string>
+    <string name="poor">poor</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="kind_of_pigeon">What kind of pigeon?</string>
+    <string name="carrier_pigeon">Carrier pigeon</string>
+    <string name="wedding_pigeon">Wedding pigeon</string>
+    <string name="common_wood_pigeon">Common wood pigeon</string>
+    <string name="feral_pigeon">Feral pigeon</string>
+    <string name="additional_information">Additional information</string>
+    <string name="additional_information_help">Do you have any additional information about the exact location or condition of the pigeon?</string>
+    <string name="graphs">Graphs</string>
+    <string name="cases">Cases</string>
+    <string name="counter">Counter</string>
+    <string name="news">News</string>
+    <string name="users">Users</string>
+    <string name="contact">Contact</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="permission_denied">Permission has been denied by user</string>
+    <string name="permission_granted">Permission has been granted by user</string>
+    <string name="permission">Permission</string>
+    <string name="record_permission_denied">Permission to record denied</string>
+    <string name="error">Error</string>
 
 
 </resources>

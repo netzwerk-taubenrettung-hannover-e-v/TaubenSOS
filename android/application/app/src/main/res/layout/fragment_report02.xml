@@ -20,8 +20,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:text="Handelt es sich um eine Brief- oder Ziertaube?"
-                android:textSize="20dp"
+                android:text="@string/kind_of_pigeon"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
                 android:layout_marginTop="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.carrierPigeon}"
-                android:text="Brieftaube"
+                android:text="@string/carrier_pigeon"
                 app:layout_constraintEnd_toEndOf="@+id/report_special_help"
                 app:layout_constraintStart_toStartOf="@+id/report_special_help"
                 app:layout_constraintTop_toBottomOf="@+id/report_special_help" />
@@ -57,7 +57,7 @@
                 android:layout_marginTop="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.weddingPigeon}"
-                android:text="Ziertaube"
+                android:text="@string/wedding_pigeon"
                 app:layout_constraintEnd_toEndOf="@+id/report_special_checkbox_00"
                 app:layout_constraintStart_toStartOf="@+id/report_special_checkbox_00"
                 app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_00" />
@@ -69,7 +69,7 @@
                 android:layout_marginTop="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="false"
-                android:text="Ringeltaube"
+                android:text="@string/common_wood_pigeon"
                 app:layout_constraintEnd_toEndOf="@+id/report_special_checkbox_00"
                 app:layout_constraintStart_toStartOf="@+id/report_special_checkbox_00"
                 app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_01" />
@@ -81,7 +81,7 @@
                 android:layout_marginTop="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="false"
-                android:text="Stadttaube"
+                android:text="@string/feral_pigeon"
                 app:layout_constraintEnd_toEndOf="@+id/report_special_checkbox_00"
                 app:layout_constraintStart_toStartOf="@+id/report_special_checkbox_00"
                 app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_02" />
@@ -93,8 +93,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:text="Zusätzliche Angaben"
-                android:textSize="20dp"
+                android:text="@string/additional_information"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/report_special_checkbox_03" />
@@ -106,7 +106,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Hast du noch zusätzliche Informationen zu dem genauen Standort oder dem Zustand der Taube?"
+                android:text="@string/additional_information_help"
                 app:layout_constraintEnd_toEndOf="@+id/report_additional_information_title"
                 app:layout_constraintStart_toStartOf="@+id/report_additional_information_title"
                 app:layout_constraintTop_toBottomOf="@+id/report_additional_information_title" />
@@ -120,7 +120,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:hint="additional Informations"
+                android:hint="@string/additional_information"
                 app:hintEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/report_send_button"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -143,7 +143,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="taube melden"
+                android:text="@string/report_pigeon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -155,7 +155,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Back"
+                android:text="@string/back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 

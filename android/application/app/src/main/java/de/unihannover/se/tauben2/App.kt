@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import de.unihannover.se.tauben2.model.Permission
@@ -16,11 +17,16 @@ class App: Application() {
         private lateinit var mNetworkService: NetworkService
         val CURRENT_PERMISSION = Permission.ADMIN
 
+        @SuppressLint("StaticFieldLeak")
+        lateinit var context: Context
+
         fun getNetworkService() = mNetworkService
     }
 
     override fun onCreate() {
         super.onCreate()
+
+        context = this
 
         val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
