@@ -3,21 +3,17 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-import android.view.View
+import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
-import com.squareup.picasso.Picasso
-
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -26,14 +22,19 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     private lateinit var case: Case
     private var mLocation: Location? = null
 
+    private val locationObserver = Observer<Location?> {
+        mLocation = it
+        notifyDataSetChanged()
+    }
 
     override fun onResume() {
         super.onResume()
-        val viewModel = getViewModel(LocationViewModel::class.java)
-        viewModel?.observeCurrentLocation(this, Observer {
-            mLocation = it
-            notifyDataSetChanged()
-        })
+        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, locationObserver)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(locationObserver)
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {
@@ -59,9 +60,4 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
             }
         }
     }
-//
-//    override fun onDataLoaded(itemView: View, position: Int) {
-//
-//    }
-
 }

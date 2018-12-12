@@ -18,13 +18,13 @@ interface PigeonCounterDao : BaseDao<PigeonCounter> {
      * @param to timestamp for latest pigeon counter object to be retrieved
      * @return LiveData of List of all PigeonCounters between from and to
      */
-    @Query("""
-        SELECT *
-        FROM population
-        WHERE latitude = :latitude AND longitude = :longitude
-        AND timestamp BETWEEN :from AND :to
-        """)
-    fun getPigeonCounters(latitude: Double, longitude: Double, from: Long, to: Long): LiveData<List<PigeonCounter>>
+//    @Query("""
+//        SELECT *
+//        FROM population
+//        WHERE latitude = :latitude AND longitude = :longitude
+//        AND timestamp BETWEEN :from AND :to
+//        """)
+//    fun getPigeonCounters(latitude: Double, longitude: Double, from: Long, to: Long): LiveData<List<PigeonCounter>>
 
     /**
      * @return LiveData of List of all PigeonCounters

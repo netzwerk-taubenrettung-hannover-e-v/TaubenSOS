@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
@@ -14,9 +15,10 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import kotlinx.android.synthetic.main.fragment_cases.*
 import kotlinx.android.synthetic.main.fragment_cases.view.*
 
-class CasesFragment : Fragment(){
+class CasesFragment : Fragment() {
 
     enum class Filter {
         ALL, CLOSED, OPEN, MY
@@ -45,15 +47,12 @@ class CasesFragment : Fragment(){
 
         loadCases(Filter.ALL)
 
-        initFab(view, recyclerFragment!!, mapsFragment!!)
+        initFab(view, recyclerFragment, mapsFragment)
 
         return view
     }
 
     private fun loadCases (filter : Filter) {
-
-        // temp solution! - Map markers won't change
-        // using cases.observe(this, mapsFragment) again will cause a ConcurrentModificationException
 
         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
 
@@ -80,13 +79,11 @@ class CasesFragment : Fragment(){
 
         // Add Filter Buttons
         // my cases
-
-
         speedDialView.addActionItem(
                 SpeedDialActionItem.Builder(R.id.cases_filter_my, R.drawable.ic_assignment_ind_white_24dp)
                         .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
                         // TODO: y u no work...
-//                        .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
+                        // .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
                         .setLabel("My Cases")
                         .create()
         )
@@ -116,18 +113,27 @@ class CasesFragment : Fragment(){
         speedDialView.setOnActionSelectedListener { speedDialActionItem ->
             when (speedDialActionItem.id) {
                 R.id.cases_filter_my -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "My cases"
                     loadCases(Filter.MY)
                     false
+
                 }
                 R.id.cases_filter_closed -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "Closed cases"
                     loadCases(Filter.CLOSED)
                     false
                 }
                 R.id.cases_filter_open -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "Open cases"
                     loadCases(Filter.OPEN)
                     false
                 }
                 R.id.cases_filter_all -> {
+                    val tv1 = text_currentCases as TextView
+                    tv1.text = "All cases"
                     loadCases(Filter.ALL)
                     false // true to keep the Speed Dial open
                 }

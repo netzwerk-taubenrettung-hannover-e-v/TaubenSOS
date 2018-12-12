@@ -6,10 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.NavigatorProvider
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReport02Binding
 import de.unihannover.se.tauben2.getViewModel
@@ -17,6 +17,9 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
+import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.MainActivity
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 
 class Report02Fragment : Fragment() {
 
@@ -27,7 +30,6 @@ class Report02Fragment : Fragment() {
     companion object : Singleton<Report02Fragment>() {
         override fun newInstance() = Report02Fragment()
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,30 +42,28 @@ class Report02Fragment : Fragment() {
         }
 
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
+            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
         }
 
         binding.root.report_send_button.setOnClickListener {
             mCreatedCase?.setToCurrentTime()
-            sendCaseToServer()
-//            Report00Fragment.removeInstance()
-//            Report01Fragment.removeInstance()
-//            Report02Fragment.removeInstance()
+            sendCaseToServer(binding.root)
         }
 
         return binding.root
     }
 
-    private fun sendCaseToServer() {
+    private fun sendCaseToServer(view : View) {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
         mCreatedCase?.let { case ->
             caseViewModel?.let {
                 it.sendCase(case)
                 Log.d(LOG_TAG, "Sent case: $case")
-                Toast.makeText(context, "Case Sent!", Toast.LENGTH_SHORT).show()
+                setSnackBar(view, "Case sent successfully.")
+                val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack(3)
+                controller.navigate(R.id.newsFragment)
             }
         }
-
     }
-
 }

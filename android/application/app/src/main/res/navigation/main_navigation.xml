@@ -3,73 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
     app:startDestination="@id/newsFragment">
 
-    <fragment
+    <custom_fragment
         android:id="@+id/newsFragment"
         android:name="de.unihannover.se.tauben2.view.NewsFragment"
-        android:label="NewsFragment" ></fragment>
-    <fragment
+        android:label="NewsFragment" />
+    <custom_fragment
         android:id="@+id/counterFragment"
         android:name="de.unihannover.se.tauben2.view.CounterFragment"
         android:label="CounterFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/casesFragment"
         android:name="de.unihannover.se.tauben2.view.CasesFragment"
         android:label="CasesFragment" >
         <action
             android:id="@+id/action_casesFragment_to_casesInfoFragment"
-            app:destination="@id/casesInfoFragment" />
-    </fragment>
-    <fragment
+            app:destination="@+id/casesInfoFragment" />
+    </custom_fragment>
+    <custom_fragment
         android:id="@+id/casesInfoFragment"
         android:name="de.unihannover.se.tauben2.view.CasesInfoFragment"
         android:label="CasesInfoFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/graphsFragment"
         android:name="de.unihannover.se.tauben2.view.GraphsFragment"
         android:label="GraphsFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/report00Fragment"
         android:name="de.unihannover.se.tauben2.view.report.Report00Fragment"
         android:label="Report00Fragment" >
         <action
             android:id="@+id/action_report00Fragment_to_report01Fragment"
             app:destination="@+id/report01Fragment" />
-    </fragment>
-    <fragment
+    </custom_fragment>
+    <custom_fragment
         android:id="@+id/report01Fragment"
         android:name="de.unihannover.se.tauben2.view.report.Report01Fragment"
         android:label="Report01Fragment" >
         <action
             android:id="@+id/action_report01Fragment_to_report02Fragment"
             app:destination="@id/report02Fragment" />
-    </fragment>
-    <fragment
+    </custom_fragment>
+    <custom_fragment
         android:id="@+id/report02Fragment"
         android:name="de.unihannover.se.tauben2.view.report.Report02Fragment"
         android:label="Report02Fragment" />
-    <fragment
+    <custom_fragment
+        android:id="@+id/membersFragment"
+        android:name="de.unihannover.se.tauben2.view.UsersFragment"
+        android:label="MembersFragment" />
+    <custom_fragment
         android:id="@+id/emergencyCallFragment"
         android:name="de.unihannover.se.tauben2.view.EmergencyCallFragment"
         android:label="EmergencyCallFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/contactFragment"
         android:name="de.unihannover.se.tauben2.view.ContactFragment"
         android:label="ContactFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/loginFragment"
         android:name="de.unihannover.se.tauben2.view.LoginFragment"
         android:label="LoginFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/registerFragment"
         android:name="de.unihannover.se.tauben2.view.RegisterFragment"
         android:label="RegisterFragment" />
-    <fragment
+    <custom_fragment
         android:id="@+id/moreFragment"
         android:name="de.unihannover.se.tauben2.view.navigation.MoreFragment"
         android:label="MoreFragment" >
         <action
             android:id="@+id/action_moreFragment_to_navigation"
             app:destination="@id/navigation" />
-    </fragment>
+    </custom_fragment>
     <include app:graph="@navigation/more_navigation" />
 </navigation>

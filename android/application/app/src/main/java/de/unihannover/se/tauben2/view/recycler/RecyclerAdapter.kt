@@ -12,7 +12,6 @@ abstract class RecyclerAdapter<Data : RecyclerItem>(var data: List<Data> = listO
 
     class ViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             ViewHolder(DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(parent.context), getItemLayoutId(viewType), parent, false))
 
@@ -22,5 +21,4 @@ abstract class RecyclerAdapter<Data : RecyclerItem>(var data: List<Data> = listO
 
     @LayoutRes
     abstract fun getItemLayoutId(viewType: Int): Int
-
 }

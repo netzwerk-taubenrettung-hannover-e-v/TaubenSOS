@@ -2,21 +2,18 @@ package de.unihannover.se.tauben2.model.entity
 
 import android.content.res.Resources
 import android.graphics.Color
-import android.os.Build
 import android.os.Parcelable
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_casesinfo.view.*
 
 /**
  * represents the case of an injured pigeon
@@ -48,7 +45,7 @@ data class Case(@PrimaryKey var caseID: Int?,
 
 ) : RecyclerItem, MapMarkable, Parcelable {
 
-    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title("Priorität: $priority").snippet(additionalInfo)
+    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority)).snippet(additionalInfo)
 
     override fun getType() = RecyclerItem.Type.ITEM
 
@@ -56,10 +53,10 @@ data class Case(@PrimaryKey var caseID: Int?,
         val diff = (System.currentTimeMillis() / 1000 - timestamp).toDouble() / 60 //in minutes
         var res = ""
         when {
-            diff > 1440 -> return "${(diff / 1440).toInt()}  " + if (diff < 2880) "Tag" else "Tagen"
-            diff >= 60 -> res = "${(diff / 60).toInt()} h"
+            diff > 1440 -> return "$res${(diff / 1440).toInt()} " + if (diff < 2880) "Tag)" else "Tagen"
+            diff >= 60 -> res = "${(diff / 60).toInt()} Std"
         }
-        return res + " ${Math.round(diff % 60)} min"
+        return res + " ${Math.round(diff % 60)} Min"
     }
 
     fun setToCurrentTime() {

@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="de.unihannover.se.tauben2.ExtensionsKt" />
         <variable name="c" type="de.unihannover.se.tauben2.model.entity.Case" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/case_card_view"
+        android:id="@+id/card_case_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Eingereicht vor:"
+                android:text="@string/submitted_before"
                 app:layout_constraintStart_toEndOf="@+id/image_card"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="@{c.sinceString}"
+                android:text="@{ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000)}"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_text_card_title"
                 app:layout_constraintStart_toEndOf="@+id/elapsed_time_text_card_title"
@@ -62,7 +63,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Priorität:"
+                android:text="@string/priority_blank"
                 app:layout_constraintBottom_toTopOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toEndOf="@+id/image_card"
                 app:layout_constraintTop_toBottomOf="@+id/elapsed_time_text_card_title" />
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="Entfernung:"
+                android:text="@string/distance"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_card" />
 
@@ -91,7 +92,7 @@
                 android:id="@+id/distance_text_card_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="no GPS available"
+                android:text="@string/no_gps"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"

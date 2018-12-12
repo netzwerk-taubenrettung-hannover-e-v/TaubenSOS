@@ -32,13 +32,17 @@
         android:name="de.unihannover.se.tauben2.view.report.Report01Fragment"
         android:label="Report01Fragment" >
         <action
-            android:id="@+id/action_report01Fragment_to_report02Fragment2"
+            android:id="@+id/action_report01Fragment_to_report02Fragment"
             app:destination="@id/report02Fragment" />
     </fragment>
     <fragment
         android:id="@+id/report02Fragment"
         android:name="de.unihannover.se.tauben2.view.report.Report02Fragment"
         android:label="Report02Fragment" />
+    <fragment
+        android:id="@+id/membersFragment"
+        android:name="de.unihannover.se.tauben2.view.UsersFragment"
+        android:label="MembersFragment" />
     <fragment
         android:id="@+id/emergencyCallFragment"
         android:name="de.unihannover.se.tauben2.view.EmergencyCallFragment"

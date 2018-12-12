@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,9 +36,8 @@ class Report01Fragment : Fragment() {
             binding.createdCase = it
         }
 
-
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigateUp()
+            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report00Fragment)
         }
 
         binding.root.report_next_step_button.setOnClickListener {
@@ -51,6 +51,21 @@ class Report01Fragment : Fragment() {
                     report_injury_title.setError("")
                 }
             }
+        }
+
+        binding.root.infoButtonReport.setOnClickListener {
+                //Pop up for more info
+                val alertDialogBuilder = AlertDialog.Builder(
+                        context)
+
+                alertDialogBuilder.setTitle("Zustand der Taube")
+
+                alertDialogBuilder
+                        .setMessage(R.string.taube_melden_info)
+
+                val alertDialog = alertDialogBuilder.create()
+
+                alertDialog.show()
         }
 
         return binding.root

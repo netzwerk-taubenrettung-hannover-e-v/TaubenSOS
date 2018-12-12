@@ -2,6 +2,8 @@ package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.entity.User
+import de.unihannover.se.tauben2.model.entity.PigeonCounter
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,4 +19,13 @@ interface NetworkService {
 
     @POST("case")
     fun sendCase(@Body case: Case): LiveDataRes<Case>
+
+    @GET("user")
+    fun getUsers(): LiveDataRes<List<User>>
+
+    @GET("population")
+    fun getPigeonCounters(): LiveDataRes<List<PigeonCounter>>
+
+    @POST("population")
+    fun sendPigeonCounter(@Body pigeonCounter: PigeonCounter): LiveDataRes<Unit>
 }

@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.view.list
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,17 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.R.id.infoButtonContact
 import kotlinx.android.synthetic.main.card_contact.view.*
+import kotlinx.android.synthetic.main.card_contact2.view.*
 
 class ContactItemAdapter(private val context: Context,
                          private val contactItems: ArrayList<ContactItem>) : BaseAdapter() {
 
-    private class ViewHolder {
+    class ViewHolder {
         lateinit var descriptionTextView: TextView
         lateinit var contactButton: MaterialButton
+        var infoButton: ImageButton? = null
     }
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -27,15 +32,31 @@ class ContactItemAdapter(private val context: Context,
         val cardView: View
         val holder: ViewHolder
 
+        var isInfoButton = false
         if (convertView == null) {
-            cardView = inflater.inflate(R.layout.card_contact, parent, false)
 
+            if(position == 0) {
+                cardView = inflater.inflate(R.layout.card_contact2, parent, false)
+                isInfoButton = true
+
+            }else{
+                cardView = inflater.inflate(R.layout.card_contact, parent, false)
+
+            }
             holder = ViewHolder()
 
-            holder.descriptionTextView = cardView.text_description
-            holder.contactButton = cardView.button_contact
+            if(isInfoButton) {
+                holder.infoButton = cardView.infoButtonContact
+                holder.descriptionTextView = cardView.text_description2
+                holder.contactButton = cardView.button_contact2
+            }else{
+                holder.descriptionTextView = cardView.text_description
+                holder.contactButton = cardView.button_contact
+            }
 
             cardView.tag = holder
+
+
         } else {
             cardView = convertView
             holder = convertView.tag as ViewHolder
@@ -50,7 +71,12 @@ class ContactItemAdapter(private val context: Context,
         contactButton.text = curItem.buttonLabel
         contactButton.icon = context.getDrawable(curItem.buttonIconId)
         contactButton.id = curItem.buttonId
-        addOnclickListeners(context, contactButton)
+        if(isInfoButton){
+            val contactInfoButton = holder.infoButton
+            addInfoOnClickListener(context, contactInfoButton)
+        }else{
+            addOnclickListeners(context, contactButton)
+        }
 
         return cardView
     }
@@ -65,6 +91,24 @@ class ContactItemAdapter(private val context: Context,
 
     override fun getCount(): Int {
         return contactItems.size
+    }
+
+    private fun addInfoOnClickListener(context: Context, infoButton: ImageButton?){
+        infoButton?.setOnClickListener{
+            //Pop up for more info
+            val alertDialogBuilder = AlertDialog.Builder(
+                    context)
+
+            alertDialogBuilder.setTitle("Anruf")
+
+            alertDialogBuilder
+                    .setMessage(R.string.contact_info)
+
+            val alertDialog = alertDialogBuilder.create()
+
+            alertDialog.show()
+        }
+
     }
 
     private fun addOnclickListeners(context: Context, contactButton: MaterialButton) {
@@ -98,6 +142,7 @@ class ContactItemAdapter(private val context: Context,
                 val websiteIntent = Intent(Intent.ACTION_VIEW, uri)
                 context.startActivity(websiteIntent)
             }
+
         }
     }
 
