@@ -1,0 +1,26 @@
+Update an existing case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case to be updated
+    required: true
+    type: integer
+    format: int64
+  - in: body
+    name: body
+    description: The updated case object
+    required: true
+    schema:
+      $ref: "#/definitions/Case"
+responses:
+  200:
+    description: The case has been successfully updated
+    schema:
+      $ref: "#/definitions/Case"
+  400:
+    description: There was an error with your request
+  404:
+    description: The case to be updated could not be found

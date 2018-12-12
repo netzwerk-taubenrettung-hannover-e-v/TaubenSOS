@@ -12,15 +12,16 @@ The Connexion framework doesn't serve our purposes as it lacks in terms of OAuth
 
 ## Setting up your virtual environment
 
-1. Navigate to the respective project folder
+1. Navigate to the respective project's root folder
 2. Create a virtual environment named 'env' by typing `python3 -m venv env`
 3. Activate that environment by running `source env/bin/activate`
 4. Install the packages required by the project with `pip install -r requirements.txt`
 5. Deactivate the virtual environment by typing `deactivate`
-6. Now you're set up to run the project: `env/bin/python server.py`
+6. Now you're set up to run the project: `env/bin/python run.py`
 
 ## Other helpful stuff
 
 * [OpenAPI Specification ver. 2 (fka Swagger)](https://swagger.io/docs/specification/2-0/basic-structure/)
 * For more information on Python virtual environments check [this](https://docs.python.org/3/library/venv.html) out
 * For a nice and comprehensive tutorial on Flask, check [this](http://flask.pocoo.org/docs/1.0/tutorial/) out
+* [Flask-Marshmallow docs](https://flask-marshmallow.readthedocs.io/en/latest/)
