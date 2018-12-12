@@ -15,6 +15,9 @@ def get_Markers():
 @bp.route("/population/<populationMarkerID>", methods=["GET"], strict_slashes=False)
 def get_values_for_marker(populationMarkerID):
 	if request.method == "GET":
+		populationMarker = PopulationMarker.get(populationMarkerID)
+		if populationMarker is None:
+			return jsonify({"message": "The population marker could not be found"}), 404
 		values = PopulationValue.get_values_for_marker(populationMarkerID)
 		return populationValues_schema.jsonify(values)
 
@@ -22,7 +25,6 @@ def get_values_for_marker(populationMarkerID):
 def create_marker():
 	if request.method == "POST":
 		json = request.get_json()
-		print(json)
 		populationMarker, errors = populationMarker_schema.load(data=json)
 		if errors:
 			return jsonify(errors), 400
@@ -34,6 +36,9 @@ def create_marker():
 @bp.route("/population/<populationMarkerID>", methods=["POST"], strict_slashes=False)
 def create_value_for_marker(populationMarkerID):
 	if request.method == "POST":
+		populationMarker = PopulationMarker.get(populationMarkerID)
+		if populationMarker is None:
+			return jsonify({"message": "The population marker to be added a value could not be found"}), 404
 		json = request.get_json()
 		json["populationMarkerID"] = int(populationMarkerID)
 		populationValue, errors = populationValue_schema.load(data=json)
@@ -43,6 +48,32 @@ def create_value_for_marker(populationMarkerID):
 			populationValue.save()
 			result = make_json_value(populationValue=populationValue)
 			return jsonify(result), 201
+
+@bp.route("/population/<populationMarkerID>", methods=["DELETE"], strict_slashes=False)
+def delete_marker(populationMarkerID):
+	if request.method == "DELETE":
+		populationMarker = PopulationMarker.get(populationMarkerID)
+		if populationMarker is None:
+			return jsonify({"message": "The population marker to be deleted could not be found"}), 404
+		populationMarker.delete()
+		return "", 204, {"Content-Type": "application/json"}
+
+@bp.route("/population/<populationMarkerID>", methods=["PUT"], strict_slashes=False)
+def change_marker(populationMarkerID):
+	if request.method == "PUT":
+		populationMarker = PopulationMarker.get(populationMarkerID)
+		if populationMarker is None:
+			return jsonify({"message": "The population marker to be changed could not be found"}), 404
+		json = request.get_json()
+		errors = populationMarker_schema.validate(json, partial=True)
+		if errors:
+			return jsonify(errors), 400
+		PopulationMarker.update(populationMarker, **json)
+		result = make_json_marker(populationMarker=populationMarker)
+		return jsonify(result), 200
+
+
+
 
 
 def make_json_marker(populationMarker):
