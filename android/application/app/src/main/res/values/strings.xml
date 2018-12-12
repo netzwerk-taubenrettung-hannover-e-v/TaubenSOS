@@ -24,7 +24,7 @@
 
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
-    <string name="before">Before: %s</string>
+    <string name="before">%s ago</string>
 
     <string name ="long_duration">%d days, %02d minutes, %02d seconds</string>
     <string name ="short_duration">%d hours, %02d minutes, %02d seconds</string>
@@ -51,8 +51,9 @@
 
     <string name="no_rescuer">No rescuer</string>
     <string name="take_case">Take case</string>
-    <string name="in_progress_by">In progress by:</string>
-    <string name="injuries">Injuries:</string>
+    <string name="finish_case">Finish case</string>
+    <string name="in_progress_by">In progress by</string>
+    <string name="injuries">Injuries</string>
     <string name="case_id">ID: %s</string>
     <string name="submitted_before">Submitted before:</string>
     <string name="distance">Distance:</string>
@@ -96,6 +97,7 @@
     <string name="permission">Permission</string>
     <string name="record_permission_denied">Permission to record denied</string>
     <string name="error">Error</string>
+    <string name="edit">Edit</string>
 
 
 </resources>

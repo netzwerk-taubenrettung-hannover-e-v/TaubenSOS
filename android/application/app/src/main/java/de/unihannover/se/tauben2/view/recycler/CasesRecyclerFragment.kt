@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.card_case.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
-    override fun getRecylcerItemLayoutId(viewType: Int) = R.layout.card_case
+    override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_case
 
     private lateinit var case: Case
     private var mLocation: Location? = null

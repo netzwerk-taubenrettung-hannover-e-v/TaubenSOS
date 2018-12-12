@@ -45,28 +45,25 @@ data class Case(@PrimaryKey var caseID: Int?,
 
 ) : RecyclerItem, MapMarkable, Parcelable {
 
-    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority)).snippet(additionalInfo)
+    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority.toString())).snippet(additionalInfo)
 
     override fun getType() = RecyclerItem.Type.ITEM
-
-    fun getSinceString(): String {
-        val diff = (System.currentTimeMillis() / 1000 - timestamp).toDouble() / 60 //in minutes
-        var res = ""
-        when {
-            diff > 1440 -> return "$res${(diff / 1440).toInt()} " + if (diff < 2880) "Tag)" else "Tagen"
-            diff >= 60 -> res = "${(diff / 60).toInt()} Std"
-        }
-        return res + " ${Math.round(diff % 60)} Min"
-    }
 
     fun setToCurrentTime() {
         timestamp = System.currentTimeMillis() / 1000
     }
 
     fun getStatusColor(): Int {
-        var color = Color.GREEN
+        var color = Color.parseColor("#00c853")
         if (isClosed == false)
-            color = if (rescuer != null) Color.YELLOW else Color.RED
+            color = if (rescuer != null) Color.parseColor("#ffea00") else Color.parseColor("#d50000")
+        return color
+    }
+
+    fun getStatusColorTransparent(): Int {
+        var color = Color.parseColor("#8000c853")
+        if (isClosed == false)
+            color = if (rescuer != null) Color.parseColor("#80ffea00") else Color.parseColor("#80d50000")
         return color
     }
 }

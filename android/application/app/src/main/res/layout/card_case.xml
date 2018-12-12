@@ -13,8 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
+        android:padding="4dp"
         android:clickable="true"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,44 +26,42 @@
                 android:id="@+id/image_card"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="8dp"
                 android:background="@color/common_google_signin_btn_text_light_default"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/elapsed_time_text_card_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/elapsed_time_text_card_title"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
                 android:text="@string/submitted_before"
-                app:layout_constraintStart_toEndOf="@+id/image_card"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/image_card"
+                app:layout_constraintTop_toTopOf="@id/image_card" />
 
             <TextView
                 android:id="@+id/elapsed_time_text_card_value"
+                style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@{ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000)}"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_text_card_title"
                 app:layout_constraintStart_toEndOf="@+id/elapsed_time_text_card_title"
                 app:layout_constraintTop_toTopOf="@+id/elapsed_time_text_card_title" />
 
             <TextView
                 android:id="@+id/priority_text_card_title"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/priority_blank"
                 app:layout_constraintBottom_toTopOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toEndOf="@+id/image_card"
@@ -70,30 +69,31 @@
 
             <TextView
                 android:id="@+id/priority_text_card_value"
+                style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{``+ c.priority}"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/priority_text_card_title"
+                app:layout_constraintBottom_toTopOf="@+id/distance_text_card_value"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
-                app:layout_constraintTop_toTopOf="@+id/priority_text_card_title" />
+                app:layout_constraintTop_toBottomOf="@+id/elapsed_time_text_card_value" />
 
             <TextView
                 android:id="@+id/distance_text_card_title"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="4dp"
                 android:text="@string/distance"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/image_card"
                 app:layout_constraintStart_toEndOf="@+id/image_card" />
 
             <TextView
                 android:id="@+id/distance_text_card_value"
+                style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="@string/no_gps"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/distance_text_card_title" />
@@ -103,11 +103,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
+                android:tint="@{c.statusColor}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_status"
-                android:tint="@{c.statusColor}"
-                />
+                app:srcCompat="@drawable/ic_status" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

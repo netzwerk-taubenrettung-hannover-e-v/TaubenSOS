@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
 
-abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = false): Fragment(), Observer<List<Data>> {
+abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = false, val orientation: Int = RecyclerView.VERTICAL): Fragment(), Observer<List<Data>> {
 
     private val viewAdapter: RecyclerAdapter<Data>
 
@@ -24,7 +24,7 @@ abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = f
                 onDataLoaded(holder.binding.root, position)
             }
 
-            override fun getItemLayoutId(viewType: Int) = getRecylcerItemLayoutId(viewType)
+            override fun getItemLayoutId(viewType: Int) = getRecyclerItemLayoutId(viewType)
         }
     }
 
@@ -36,11 +36,13 @@ abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = f
 
         val layout = inflater.inflate(R.layout.fragment_recyler_view, container, false)
 
-        viewManager = LinearLayoutManager(activity)
+        viewManager = LinearLayoutManager(activity, orientation, false)
 
-        layout.recylcer_view.setHasFixedSize(true)
-        layout.recylcer_view.layoutManager = viewManager
-        layout.recylcer_view.adapter = viewAdapter
+        layout.recycler_view.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
 
         return layout
     }
@@ -61,7 +63,7 @@ abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = f
     fun getData() = viewAdapter.data
 
     @LayoutRes
-    abstract fun getRecylcerItemLayoutId(viewType: Int): Int
+    abstract fun getRecyclerItemLayoutId(viewType: Int): Int
 
     /**
      * Called every time data has changed
