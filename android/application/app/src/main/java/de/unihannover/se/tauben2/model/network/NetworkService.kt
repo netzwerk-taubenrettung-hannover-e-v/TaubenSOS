@@ -2,12 +2,11 @@ package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.User
 import de.unihannover.se.tauben2.model.entity.PigeonCounter
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import de.unihannover.se.tauben2.model.entity.User
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.*
 
 interface NetworkService {
 
@@ -19,6 +18,9 @@ interface NetworkService {
 
     @POST("case")
     fun sendCase(@Body case: Case): LiveDataRes<Case>
+
+    @PUT
+    fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
     @GET("user")
     fun getUsers(): LiveDataRes<List<User>>

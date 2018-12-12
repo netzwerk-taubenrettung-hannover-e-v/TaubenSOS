@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
@@ -8,6 +9,11 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.model.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -101,9 +107,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
      * the api doesn't accept are set to null
      */
-    fun sendCase(case: Case) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+    fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
         override fun saveCallResult(resultData: Case) {
+            // update db
             database.caseDao().insertOrUpdate(resultData)
+
+            // amazon urls for upload
+            val urls = resultData.media
+            uploadPictures(mediaItems, urls)
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -117,7 +128,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param pigeonCounter PigeonCounter object to be sent
      */
     fun sendPigeonCounter(pigeonCounter: PigeonCounter) =
-    // TODO update Unit with actual return type when known
+    // TODO update Unit with actual return type when known (this will most likely be Void)
             object : AsyncDataRequest<Unit, PigeonCounter>(appExecutors) {
                 override fun saveCallResult(resultData: Unit) {
                     // nothing to save yet
@@ -128,4 +139,36 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                 }
 
             }.send(pigeonCounter)
+
+
+    /**
+     * Helper function for uploading media files to their corresponding upload urls
+     * The mediaItems urls and Files need to
+     * @param mediaItems List of mediaItems items
+     * @param urls  List of urls for upload request
+     */
+    fun uploadPictures(mediaItems: List<ByteArray>, urls: List<String>) {
+        if (mediaItems.size != urls.size)
+            throw Exception("The number of upload urls and media items is different!")
+
+        // upload mediaItems to amazon
+        for ((url, mediaItem) in urls.zip(mediaItems)) {
+
+            val parsedPicture = RequestBody.create(
+                    MediaType.parse("application/octet"), mediaItem)
+
+            // enqueue a new call for each mediaItem
+            val call = service.uploadCasePicture(url, parsedPicture)
+            call.enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("KEK", "File upload failed!")
+                }
+
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Log.d("KEK", "File upload request successful!")
+                }
+
+            })
+        }
+    }
 }

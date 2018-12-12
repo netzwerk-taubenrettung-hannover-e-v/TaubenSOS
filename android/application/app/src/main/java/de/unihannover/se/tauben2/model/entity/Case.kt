@@ -33,6 +33,8 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var longitude: Double,
 
                 var rescuer: String?,
+                var reporter: String?,
+
                 var priority: Int,
                 var timestamp: Long,
                 var phone: String,

@@ -25,9 +25,9 @@ class Report00Fragment : Fragment(), Observer<Location?> {
 
     private var mLocation: LatLng? = null
     private var mCreatedCase: Case = Case(null, null, null, false,
-            false, 0.0, 0.0, null, 1, 0,
+            false, 0.0, 0.0, null, null, 1, 0,
             "", null, Injury(false, false, false,
-            false, false, false, false), listOf())
+            false, false, false, false, false), listOf())
 
     companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()
@@ -85,7 +85,7 @@ class Report00Fragment : Fragment(), Observer<Location?> {
     override fun onChanged(loc: Location?) {
         loc ?: return
         // If location not set, set to current location
-        if(mLocation == null)
+        if (mLocation == null)
             mLocation = LatLng(loc.latitude, loc.longitude)
     }
 
