@@ -2,38 +2,23 @@ package de.unihannover.se.tauben2.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import de.unihannover.se.tauben2.R
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
-import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.network.Resource
-import kotlinx.android.synthetic.main.fragment_cases.*
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.android.synthetic.main.fragment_map.view.*
-import kotlinx.android.synthetic.main.fragment_report02.*
-import org.json.JSONException
 import java.util.*
-import android.os.Handler
 import com.google.maps.android.heatmaps.Gradient
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -43,6 +28,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     private var selectedPosition : Marker? = null
 
     override fun onChanged(data: List<MapMarkable>) {
+
         if(mMarkers.isEmpty()) {
             data.forEach { mMarkers[it] = null }
             setCaseMarkers(data)
@@ -130,6 +116,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         val mo = MarkerOptions()
         mo.position(mMap!!.cameraPosition.target)
         mo.title("your selected position")
+        mo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         selectedPosition = mMap?.addMarker(mo)
     }
 

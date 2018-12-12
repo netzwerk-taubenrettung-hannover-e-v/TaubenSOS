@@ -69,6 +69,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/fullscreen_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="2dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:tint="#B3000000"
+                app:backgroundTint="#B3FFFFFF"
+                app:iconPadding="0dp"
+                app:cornerRadius="2dp"
+                android:src="@drawable/ic_fullscreen_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

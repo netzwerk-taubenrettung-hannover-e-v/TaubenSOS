@@ -42,7 +42,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:background="#E6FFFFFF"
+                    android:background="@drawable/background_map_button"
+                    android:textColor="#B3000000"
                     android:text="All cases"
                     android:textSize="25dp"
                     app:cornerRadius="2dp"/>

@@ -68,6 +68,17 @@ class Report00Fragment : Fragment(), Observer<Location?> {
             }
         }
 
+        view.fullscreen_button.setOnClickListener {
+
+            if (view.bottom_layout.visibility == View.VISIBLE) {
+                view.bottom_layout.visibility = View.GONE
+                view.fullscreen_button.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp)
+            } else {
+                view.bottom_layout.visibility = View.VISIBLE
+                view.fullscreen_button.setImageResource(R.drawable.ic_fullscreen_black_24dp)
+            }
+        }
+
         return view
     }
 
