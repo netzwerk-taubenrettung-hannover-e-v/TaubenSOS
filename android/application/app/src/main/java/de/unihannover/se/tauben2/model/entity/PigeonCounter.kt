@@ -12,14 +12,15 @@ import de.unihannover.se.tauben2.model.MapMarkable
  * @param longitude longitude coordinate
  * @param timestamp unix timestamp when the pigeons where counted
  */
-@Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "timestamp"])
+@Entity(tableName = "population", primaryKeys = ["latitude", "longitude"])
 data class PigeonCounter(var latitude: Double,
                          var longitude: Double,
-                         var pigeonCount: Long,
-                         var timestamp: String
+                         var description: String,
+                         var populationMarkerID: Long,
+                         var radius: Double
 ) : MapMarkable {
 
     override fun getMarker(): MarkerOptions {
-        return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: $pigeonCount")
+        return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: xy")
     }
 }

@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.model.entity
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.Embedded
@@ -7,6 +8,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.App
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
@@ -42,7 +45,7 @@ data class Case(@PrimaryKey var caseID: Int?,
 
 ) : RecyclerItem, MapMarkable, Parcelable {
 
-    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title("Priorität: $priority").snippet(additionalInfo)
+    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority)).snippet(additionalInfo)
 
     override fun getType() = RecyclerItem.Type.ITEM
 

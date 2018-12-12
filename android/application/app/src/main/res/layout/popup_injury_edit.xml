@@ -28,7 +28,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.footOrLeg}"
-            android:text="Fuß-/Beinverletzung"
+            android:text="@string/injury_foot_leg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,10 +42,10 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.wing}"
-            android:text="Flügelverletzung"
+            android:text="@string/injury_wings"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_footOrLeg" />
+            app:layout_constraintTop_toBottomOf="@id/edit_injury_checkBox_footOrLeg" />
 
         <CheckBox
             android:id="@+id/edit_injury_checkBox_headOrEye"
@@ -56,7 +56,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.headOrEye}"
-            android:text="Kopf-/Augenverletzung"
+            android:text="@string/injury_head_eye"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_wing" />
@@ -70,7 +70,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.paralyzedOrFlightless}"
-            android:text="Regungslosigkeit/Flugunfähigkeit"
+            android:text="@string/injury_paralyzed_flightless"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_headOrEye" />
@@ -84,7 +84,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.openWound}"
-            android:text="sichtbare Wunde"
+            android:text="@string/injury_open_wound"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_paralyzedOrFlightless" />
@@ -98,7 +98,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="false"
-            android:text="Schnüre an den Füßen"
+            android:text="@string/injury_strings_feet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_openWound" />
@@ -112,7 +112,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.fledgling}"
-            android:text="Küken/Jungtier"
+            android:text="@string/injury_fledgling"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_feet" />
@@ -126,7 +126,7 @@
             android:layout_marginEnd="8dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:checked="@={currentCase.injury.other}"
-            android:text="Sonstiges"
+            android:text="@string/injury_other"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_injury_checkBox_fledgling" />

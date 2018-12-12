@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="de.unihannover.se.tauben2.ExtensionsKt" />
         <variable name="c" type="de.unihannover.se.tauben2.model.entity.Case" />
     </data>
 
@@ -21,7 +20,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/c_layout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/design_default_color_background">
 
                 <ImageView
@@ -60,7 +59,7 @@
                         android:id="@+id/media_01_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:background="@color/design_default_color_background"
@@ -70,7 +69,7 @@
                         android:id="@+id/media_02_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:background="@color/design_default_color_background"
@@ -85,7 +84,7 @@
                     android:layout_height="19dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="ID: 20180101010"
+                    android:text="@{@string/case_id(c.caseID)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="12.12.2012 12:12"
+                    android:text="@{ExtensionsKt.getDateTimeString(c.timestamp * 1000)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,21 +123,19 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="@{`Priorität: `+ c.priority}"
-                        android:textSize="20dp"
+                        android:text="@{@string/priority(c.priority)}"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
-
 
                     <TextView
                         android:id="@+id/time_elapsed"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:gravity="right"
-                        android:text="Vor 3 Std 5 Min"
-                        android:textSize="20dp"
+                        android:gravity="end"
+                        android:text="@{@string/before(ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000))}"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
-
 
                 </LinearLayout>
 
@@ -173,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Verletzung:"
+                    android:text="@string/injuries"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/media_card_layout" />
 
@@ -209,7 +206,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/backgroundrectangle"
-                    android:text="information\nsome more\nhello\nworld!"
+                    android:text="@{c.additionalInfo}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/injury_card_value" />
@@ -230,7 +227,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:text="In Bearbeitung durch: "
+                    android:text="@string/in_progress_by"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/additional_information_card_textfield" />
 
@@ -239,7 +236,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Taubenfreund24"
+                    android:text="@{c.rescuer ?? @string/no_rescuer}"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rescued_by_label" />
@@ -252,7 +249,7 @@
                     android:layout_height="48dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Fall Annehmen"
+                    android:text="@string/take_case"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     app:backgroundTint="@color/colorPrimaryDark"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -3,17 +3,17 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-import android.widget.ImageView
-import androidx.navigation.Navigation
-import com.squareup.picasso.Picasso
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 

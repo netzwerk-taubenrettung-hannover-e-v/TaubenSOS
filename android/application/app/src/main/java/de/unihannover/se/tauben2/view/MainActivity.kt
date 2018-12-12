@@ -66,18 +66,17 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNavigation() {
 
         binding.bottomNavigation.setMenuItems(
-                FragmentMenuItem(R.id.newsFragment, "News", R.drawable.ic_today_white_24dp),
-                FragmentMenuItem(R.id.counterFragment, "Counter", R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.casesFragment, "Cases", R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.graphsFragment, "Graphs", R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.report00Fragment, "Report a Dove", R.drawable.ic_report_white_24dp),
-                FragmentMenuItem(R.id.membersFragment, "Users", R.drawable.ic_group_white_24dp, Permission.ADMIN),
-                FragmentMenuItem(R.id.membersFragment, "Users", R.drawable.ic_group_white_24dp),
+                FragmentMenuItem(R.id.newsFragment, getString(R.string.news), R.drawable.ic_today_white_24dp),
+                FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.graphsFragment, getString(R.string.graphs), R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.report00Fragment, getString(R.string.report_pigeon), R.drawable.ic_report_white_24dp),
+                FragmentMenuItem(R.id.membersFragment, getString(R.string.users), R.drawable.ic_group_white_24dp, Permission.ADMIN),
                 //FragmentMenuItem(R.id.emergencyCallFragment, "Emergency Call", R.drawable.ic_call_white_24dp),
-                FragmentMenuItem(R.id.contactFragment, "Contact", R.drawable.ic_contact_mail_white_24dp),
-                FragmentMenuItem(0, "Logout", R.drawable.ic_exit_to_app_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.loginFragment, "Login", R.drawable.ic_person_black_24dp),
-                FragmentMenuItem(R.id.registerFragment, "Register", R.drawable.ic_person_add_black_24dp)
+                FragmentMenuItem(R.id.contactFragment, getString(R.string.contact), R.drawable.ic_contact_mail_white_24dp),
+                FragmentMenuItem(0, getString(R.string.logout), R.drawable.ic_exit_to_app_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.loginFragment, getString(R.string.login), R.drawable.ic_person_black_24dp),
+                FragmentMenuItem(R.id.registerFragment, getString(R.string.register), R.drawable.ic_person_add_black_24dp)
         )
 
         val navController = (nav_host as NavHostFragment).navController
@@ -134,17 +133,17 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i("Permissioon", "Permission has been denied by user")
+                    Log.i(getString(R.string.permission), getString(R.string.permission_denied))
                 } else {
-                    Log.i("Permissioon", "Permission has been granted by user")
+                    Log.i(getString(R.string.permission), getString(R.string.permission_granted))
                 }
             }
             2 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i("Permissioon", "Permission has been denied by user")
+                    Log.i(getString(R.string.permission), getString(R.string.permission_denied))
                 } else {
-                    Log.i("Permissioon", "Permission has been granted by user")
+                    Log.i(getString(R.string.permission), getString(R.string.permission_granted))
                 }
             }
         }
@@ -155,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Error", "Permission to record denied")
+            Log.i(getString(R.string.error), getString(R.string.record_permission_denied))
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }
