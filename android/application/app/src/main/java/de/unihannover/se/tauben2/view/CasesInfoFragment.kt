@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.AlertDialog
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
@@ -11,19 +12,15 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.text.InputType
-import android.transition.TransitionManager
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
-import android.widget.PopupWindow
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCasesinfoBinding
-import de.unihannover.se.tauben2.dimBehind
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
@@ -80,25 +77,22 @@ class CasesInfoFragment: Fragment(), Observer<Location?> {
         }
 
         v.injury_edit_button.setOnClickListener {
-
-            val popupView = inflater.inflate(R.layout.popup_injury_edit, null)
-
-            val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-            popupWindow.isFocusable=true
-            popupWindow.isOutsideTouchable=true
-            popupWindow.setTouchInterceptor {_, event ->
-                if(event.action == MotionEvent.ACTION_OUTSIDE) {
-                    popupWindow.dismiss()
-                    true
-                } else
-                false
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setTitle("Verletzungen:")
+                    setView(layoutInflater.inflate(R.layout.alertdialog_injury_edit, null))
+                    setPositiveButton("Anwenden"
+                    ) { dialog, id ->
+                    }
+                    setNegativeButton("Abbrechen"
+                    ) { dialog, id ->
+                        dialog.cancel()
+                    }
+                }
+                builder.create()
             }
 
-            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-            TransitionManager.beginDelayedTransition(c_layout)
-            popupWindow.showAtLocation(c_layout, Gravity.CENTER, 0, 0)
-            popupWindow.dimBehind()
         }
         return v
     }
