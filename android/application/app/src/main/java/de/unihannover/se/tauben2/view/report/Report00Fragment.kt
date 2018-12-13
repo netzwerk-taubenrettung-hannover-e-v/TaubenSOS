@@ -82,7 +82,7 @@ class Report00Fragment : Fragment(), Observer<Location?> {
     override fun onChanged(loc: Location?) {
         loc ?: return
         // If location not set, set to current location
-        if(mLocation == null)
+        if (mLocation == null)
             mLocation = LatLng(loc.latitude, loc.longitude)
     }
 
