@@ -21,8 +21,9 @@ Creates a new case.
     priority | An integer between 1 and 5 representing the case's severity. | NO | Integer | — | 5
     reporter | The pigeon reporter's username. | YES | String | null | "Pigeonator"
     rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenfreund24"
-    isCarrierPigeon | Is the bird a carrier pigeon? | NO | Boolean | — | true
-    isWeddingPigeon | Is the bird a wedding pigeon? | NO | Boolean | — | false
+    ~~isCarrierPigeon~~ | ~~Is the bird a carrier pigeon?~~ | ~~NO~~ | ~~Boolean~~ | — | ~~true~~
+    ~~isWeddingPigeon~~ | ~~Is the bird a wedding pigeon?~~ | ~~NO~~ | ~~Boolean~~ | — | ~~false~~
+    breed | The pigeon's breed. May be one of the following options: Carrier Pigeon, Fancy Pigeon, Feral Pigeon, Common Wood Pigeon | YES | String | — | "Common Wood Pigeon"
     additionalInfo | Additional info on the pigeon's condition/location. | YES | String | null | "Taube liegt unter der Brücke."
     phone | The rescuer's mobile number. | NO | String | — | "015237342956"
     latitude | The latitude of the pigeon's location. | NO | Float | — | 52.3744
@@ -38,7 +39,7 @@ Creates a new case.
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     footOrLeg | Is the pigeon's foot or leg injured? | NO | Boolean | — | true
-    feetTiedTogether | Are the pigeon's feet tied together? | NO | Boolean | - | true
+    strappedFeet | Are the pigeon's feet strapped? | NO | Boolean | — | true
     wing | Is the pigeon's wing injured? | NO | Boolean | — | false
     headOrEye | Is the pigeon's head or eye injured? | NO | Boolean | — | false
     openWound | Has the pigeon an open wound? | NO | Boolean | — | false

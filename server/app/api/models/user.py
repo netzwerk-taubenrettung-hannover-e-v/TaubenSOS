@@ -34,6 +34,10 @@ class User(db.Model):
 	def get(username):
 		return User.query.get(username)
 
+	@staticmethod
+	def exists(username):
+		return db.session.query(User.query.filter(User.username == username).exists()).scalar()
+
 class UserSchema(ma.ModelSchema):
     class Meta:
         model = User
