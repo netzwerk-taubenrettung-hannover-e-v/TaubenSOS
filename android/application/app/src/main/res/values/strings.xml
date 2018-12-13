@@ -69,7 +69,7 @@
     <string name="injury_head_eye">Head or eye</string>
     <string name="injury_paralyzed_flightless">Paralyzed or flightless</string>
     <string name="injury_open_wound">Open wound</string>
-    <string name="injury_strings_feet">Strings at the feet</string>
+    <string name="injury_strings_feet">Strapped feet</string>
     <string name="injury_fledgling">Fledgling</string>
     <string name="injury_other">Other (more details later)</string>
     <string name="estimate_condition">Estimate the general condition of the pigeon:</string>
