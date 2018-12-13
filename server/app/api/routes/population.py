@@ -1,5 +1,7 @@
 import json
 from flask import (Blueprint, request, jsonify)
+from datetime import datetime
+from marshmallow import utils
 from api.models.populationMarker import (PopulationMarker, populationMarker_schema, populationMarkers_schema)
 from api.models.populationValue import (PopulationValue, populationValue_schema, populationValues_schema)
 
@@ -8,18 +10,14 @@ bp = Blueprint("population", __name__, url_prefix="/api")
 @bp.route("/population", methods=["GET"], strict_slashes=False)
 def get_Markers():
 	if request.method == "GET":
-		populationMarkers = PopulationMarker.all()
+		jsonData = request.get_json()
+		data = json.loads(str(jsonData).replace('\'', '\"'))
+		if "lastUpdate" in data:
+			populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(jsonData["lastUpdate"])))
+		else:
+			populationMarkers = PopulationMarker.all()
 		result = [make_json_marker(populationMarker = p) for p in populationMarkers]
 		return jsonify(result)
-
-@bp.route("/population/<populationMarkerID>", methods=["GET"], strict_slashes=False)
-def get_values_for_marker(populationMarkerID):
-	if request.method == "GET":
-		populationMarker = PopulationMarker.get(populationMarkerID)
-		if populationMarker is None:
-			return jsonify({"message": "The population marker could not be found"}), 404
-		values = PopulationValue.get_values_for_marker(populationMarkerID)
-		return populationValues_schema.jsonify(values)
 
 @bp.route("/population", methods=["POST"], strict_slashes=False)
 def create_marker():
@@ -42,6 +40,11 @@ def create_value_for_marker(populationMarkerID):
 		json = request.get_json()
 		json["populationMarkerID"] = int(populationMarkerID)
 		populationValue, errors = populationValue_schema.load(data=json)
+		lastUpdate = datetime.utcnow()
+		lastUpdateDict = {
+			"lastUpdate": lastUpdate
+		}
+		PopulationMarker.update(populationMarker, **lastUpdateDict)
 		if errors:
 			return jsonify(errors), 400
 		else:
@@ -72,9 +75,8 @@ def change_marker(populationMarkerID):
 		result = make_json_marker(populationMarker=populationMarker)
 		return jsonify(result), 200
 
-
-
-
+def convert_timestamp(unix):
+	return utils.rfcformat(datetime.fromtimestamp(unix))
 
 def make_json_marker(populationMarker):
 	result = populationMarker_schema.dump(populationMarker).data
