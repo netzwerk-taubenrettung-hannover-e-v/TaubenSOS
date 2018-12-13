@@ -1,31 +1,54 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.getExternalStoragePublicDirectory
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.model.LatLng
+import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.R.id.report_map_title
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Injury
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.view.MainActivity
 import de.unihannover.se.tauben2.view.MapViewFragment
+import de.unihannover.se.tauben2.view.PhotoFragment
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.*
 import kotlinx.android.synthetic.main.fragment_report00.view.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Report00Fragment : Fragment(), Observer<Location?> {
 
     private var mLocation: LatLng? = null
     private var mCreatedCase = Case.getCleanInstance()
-
+    private var addedImagesCount = 0
+    private lateinit var mCurrentPhotoPath: String
+    private lateinit var mImageView: ImageView
     companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()
     }
@@ -49,6 +72,25 @@ class Report00Fragment : Fragment(), Observer<Location?> {
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition()
             mLocation = mapsFragment.getSelectedPosition()
+        }
+
+        view.report_media_add_button.setOnClickListener {
+            if(addedImagesCount == 0) {
+                addedImagesCount++
+                mImageView = view.report_media_00
+                dispatchTakePictureIntent()
+                mCreatedCase.media.plus(mCurrentPhotoPath)
+            } else if(addedImagesCount == 1) {
+                addedImagesCount++
+                mImageView = view.report_media_01
+                dispatchTakePictureIntent()
+                mCreatedCase.media.plus(mCurrentPhotoPath)
+            } else if(addedImagesCount == 2) {
+                addedImagesCount++
+                mImageView = view.report_media_02
+                dispatchTakePictureIntent()
+                mCreatedCase.media.plus(mCurrentPhotoPath)
+            }
         }
 
         view.report_next_step_button.setOnClickListener {
@@ -97,5 +139,56 @@ class Report00Fragment : Fragment(), Observer<Location?> {
             return true
         }
         return false
+    }
+
+
+
+
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(this.activity?.packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                }catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    //...
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    /*val photoURI= FileProvider.getUriForFile(
+                            if(context!=null) context as Context else return,
+                            "com.example.android.fileprovider",
+                            it
+                    )*/
+                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, 1)
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val imageBitmap = data.extras.get("data") as Bitmap
+            mImageView.setImageBitmap(imageBitmap)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = absolutePath
+        }
     }
 }
