@@ -13,7 +13,8 @@ data class Injury (var fledgling: Boolean,
                    var openWound: Boolean,
                    var other: Boolean,
                    var paralyzedOrFlightless: Boolean,
-                   var wing: Boolean) : Parcelable, RecyclerItem {
+                   var wing: Boolean,
+                   var feetTiedTogether: Boolean) : Parcelable, RecyclerItem {
 
     override fun getType(): RecyclerItem.Type = RecyclerItem.Type.ITEM
 

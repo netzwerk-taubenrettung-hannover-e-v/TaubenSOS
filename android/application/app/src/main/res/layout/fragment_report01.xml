@@ -117,7 +117,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.feetTiedTogether}"
                 android:text="@string/injury_strings_feet"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

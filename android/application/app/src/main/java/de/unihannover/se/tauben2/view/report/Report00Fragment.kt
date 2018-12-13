@@ -24,10 +24,7 @@ import kotlinx.android.synthetic.main.fragment_report00.view.*
 class Report00Fragment : Fragment(), Observer<Location?> {
 
     private var mLocation: LatLng? = null
-    private var mCreatedCase: Case = Case(null, null, null, false,
-            false, 0.0, 0.0, null, 1, 0,
-            "", null, Injury(false, false, false,
-            false, false, false, false), listOf())
+    private var mCreatedCase = Case.getCleanInstance()
 
     companion object : Singleton<Report00Fragment>() {
         override fun newInstance() = Report00Fragment()

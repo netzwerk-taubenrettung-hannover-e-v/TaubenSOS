@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.network.Resource
+import okhttp3.ResponseBody
 
 /**
  * A generic class for making asynchronous requests that expect data from the server and write
@@ -17,18 +18,27 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
 
         apiResponse.observeForever(object : Observer<Resource<ResultType>> {
             override fun onChanged(response: Resource<ResultType>?) {
-                if (response?.status?.isSuccessful() == true) {
-                    appExecutors.diskIO().execute {
-                        val result = response.data
-                        result?.let {
-                            saveCallResult(it)
-                            Log.d("KEK", "inserted $it into db")
+                response?.let { resp ->
+                    if (resp.status.isSuccessful()) {
+                        appExecutors.diskIO().execute {
+                            val result = resp.data
+                            result?.let {
+                                saveCallResult(it)
+                                Log.d("KEK", "inserted $it into db")
 
-                            // data successfully added to database, can remove observer
-                            appExecutors.mainThread().execute {
-                                apiResponse.removeObserver(this)
+                                // data successfully added to database, can remove observer
+                                appExecutors.mainThread().execute {
+                                    apiResponse.removeObserver(this)
+                                }
                             }
                         }
+                    }
+                    else if(resp.hasError()) {
+                        if(resp.message == null)
+                            Log.e("DataRequest error", "An unknown error occurred.")
+                        else
+                            Log.e("DataRequest error", resp.message)
+
                     }
                 }
             }
