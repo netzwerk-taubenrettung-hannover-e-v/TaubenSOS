@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -38,6 +39,7 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var priority: Int,
                 var timestamp: Long,
                 var phone: String,
+                var wasNotFound: Boolean?,
                 var wasFoundDead: Boolean?,
 
                 @Embedded
@@ -46,6 +48,14 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var media: List<String>
 
 ) : RecyclerItem, MapMarkable, Parcelable {
+
+    companion object {
+        @Ignore
+        fun getCleanInstance() = Case(null, null, null, false,
+                false, 0.0, 0.0, null, null,-1, -1,
+                "", null, null, Injury(false, false, false,
+                false, false, false, false, false), listOf())
+    }
 
     override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority.toString())).snippet(additionalInfo)
 
