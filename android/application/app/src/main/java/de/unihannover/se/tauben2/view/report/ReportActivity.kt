@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.toolbar_report.view.*
 
 class ReportActivity : FragmentActivity() {
 
-    //what da fuq am I doing
+    // To get rid of this shit, I need the navigation order
     private var currentPosition = 0
 
     private lateinit var binding: ActivityMainBinding

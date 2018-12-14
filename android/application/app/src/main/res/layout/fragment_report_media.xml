@@ -101,6 +101,7 @@
                 android:src="@drawable/ic_logo_48dp" />
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

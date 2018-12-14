@@ -2,18 +2,20 @@ package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 
 open class ReportFragment : Fragment() {
 
+    // check bottom of the class
     enum class PagePos {
         FIRST, BETWEEN, LAST
     }
@@ -28,6 +30,30 @@ open class ReportFragment : Fragment() {
         setButtonStyle()
     }
 
+    protected fun sendCaseToServer() {
+
+        val caseViewModel = getViewModel(CaseViewModel::class.java)
+
+        Log.d("ASDF", "Sent case: $mCreatedCase")
+        mCreatedCase?.let { case ->
+            caseViewModel?.let {
+                Log.d("ASDF", "Sent case: $case")
+                val mediaFiles = readAsRaw(case.media)
+                it.sendCase(case, mediaFiles)
+            }
+        }
+    }
+
+    private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
+        val files: MutableList<ByteArray> = mutableListOf()
+        for (name in fileNames) {
+            val fileStream = context?.openFileInput(name)
+            val file = IOUtils.readInputStreamFully(fileStream)
+            files.add(file)
+        }
+        return files
+    }
+
     fun setBtnListener(forwardId: Int?, backId: Int?) {
 
         (activity as ReportActivity).next_btn.setOnClickListener {
@@ -36,14 +62,16 @@ open class ReportFragment : Fragment() {
                     (activity as ReportActivity).stepForward()
                     val caseBundle = Bundle()
                     caseBundle.putParcelable("createdCase", mCreatedCase)
-                    Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(id)
+                    Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(id, caseBundle)
                 }
             }
         }
         (activity as ReportActivity).prev_btn.setOnClickListener {
             backId?.let { id ->
                 (activity as ReportActivity).stepBack()
-                Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(id)
+                val caseBundle = Bundle()
+                caseBundle.putParcelable("createdCase", mCreatedCase)
+                Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(id, caseBundle)
             }
         }
     }

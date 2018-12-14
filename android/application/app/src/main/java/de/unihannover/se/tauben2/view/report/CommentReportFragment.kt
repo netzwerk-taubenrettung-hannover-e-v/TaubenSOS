@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +25,13 @@ class CommentReportFragment : ReportFragment() {
         setBtnListener(null, R.id.fragment_report_breed)
 
         (activity as ReportActivity).next_btn.setOnClickListener {
-            // send data to server
-            
+            sendCaseToServer()
+            (activity as ReportActivity).finish()
         }
 
         return binding.root
     }
+
+
 
 }
