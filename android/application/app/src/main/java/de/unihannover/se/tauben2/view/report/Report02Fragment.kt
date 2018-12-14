@@ -2,7 +2,6 @@ package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
-import java.io.File
 
 class Report02Fragment : Fragment() {
 
@@ -38,7 +36,7 @@ class Report02Fragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentReport02Binding>(inflater, R.layout.fragment_report02, container, false)
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
+        mCreatedCase = arguments?.getParcelable(Report00Fragment.CREATED_CASE_KEY)
         mCreatedCase?.let {
             binding.createdCase = it
         }
@@ -59,10 +57,12 @@ class Report02Fragment : Fragment() {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
         mCreatedCase?.let { case ->
             caseViewModel?.let {
-                val mediaPaths = arguments?.getStringArrayList(Report00Fragment.MEDIA_PATHS_KEY)
-                val mediaFiles = mediaPaths?.let { paths -> readAsRaw(paths) }
 
-                //it.sendCase(case, )
+                val mediaFiles = readAsRaw(case.media)
+
+
+                it.sendCase(case, mediaFiles)
+
                 Log.d(LOG_TAG, "Sent case: $case")
                 setSnackBar(view, "Case sent successfully.")
 
@@ -73,7 +73,13 @@ class Report02Fragment : Fragment() {
         }
     }
 
-    private fun readAsRaw(filePaths: List<String>): List<ByteArray> {
-        return mutableListOf()
+    private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
+        val files: MutableList<ByteArray> = mutableListOf()
+        for (name in fileNames) {
+            val fileStream = context?.openFileInput(name)
+            val file = IOUtils.readInputStreamFully(fileStream)
+            files.add(file)
+        }
+        return files
     }
 }

@@ -47,7 +47,7 @@ class Report01Fragment : Fragment() {
             if (canGoForward()) {
                 arguments?.putParcelable(Report00Fragment.CREATED_CASE_KEY, mCreatedCase)
 
-                Log.d(LOG_TAG, "Passed ${arguments?.getStringArrayList(Report00Fragment.CREATED_CASE_KEY)} to next Fragment")
+                Log.d(LOG_TAG, "Passed ${arguments?.getParcelable<Case>(Report00Fragment.CREATED_CASE_KEY)} to next Fragment")
                 Log.d(LOG_TAG, "Passed ${arguments?.getStringArrayList(Report00Fragment.MEDIA_PATHS_KEY)} to next Fragment")
 
                 Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment, arguments)
