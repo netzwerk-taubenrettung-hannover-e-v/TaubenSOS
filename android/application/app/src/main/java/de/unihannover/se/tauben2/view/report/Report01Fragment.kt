@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.report
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ class Report01Fragment : Fragment() {
 
     companion object : Singleton<Report01Fragment>() {
         override fun newInstance() = Report01Fragment()
+
+        private val LOG_TAG = Report01Fragment::class.java.simpleName
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +34,7 @@ class Report01Fragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentReport01Binding>(inflater, R.layout.fragment_report01, container, false)
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
+        mCreatedCase = arguments?.getParcelable(Report00Fragment.CREATED_CASE_KEY)
         mCreatedCase?.let {
             binding.createdCase = it
         }
@@ -42,9 +45,12 @@ class Report01Fragment : Fragment() {
 
         binding.root.report_next_step_button.setOnClickListener {
             if (canGoForward()) {
-                val caseBundle = Bundle()
-                caseBundle.putParcelable("createdCase", mCreatedCase)
-                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment, caseBundle)
+                arguments?.putParcelable(Report00Fragment.CREATED_CASE_KEY, mCreatedCase)
+
+                Log.d(LOG_TAG, "Passed ${arguments?.getStringArrayList(Report00Fragment.CREATED_CASE_KEY)} to next Fragment")
+                Log.d(LOG_TAG, "Passed ${arguments?.getStringArrayList(Report00Fragment.MEDIA_PATHS_KEY)} to next Fragment")
+
+                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment, arguments)
             } else {
                 context?.let { c ->
                     report_injury_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))
@@ -54,18 +60,18 @@ class Report01Fragment : Fragment() {
         }
 
         binding.root.infoButtonReport.setOnClickListener {
-                //Pop up for more info
-                val alertDialogBuilder = AlertDialog.Builder(
-                        context)
+            //Pop up for more info
+            val alertDialogBuilder = AlertDialog.Builder(
+                    context)
 
-                alertDialogBuilder.setTitle("Zustand der Taube")
+            alertDialogBuilder.setTitle("Zustand der Taube")
 
-                alertDialogBuilder
-                        .setMessage(R.string.taube_melden_info)
+            alertDialogBuilder
+                    .setMessage(R.string.taube_melden_info)
 
-                val alertDialog = alertDialogBuilder.create()
+            val alertDialog = alertDialogBuilder.create()
 
-                alertDialog.show()
+            alertDialog.show()
         }
 
         return binding.root

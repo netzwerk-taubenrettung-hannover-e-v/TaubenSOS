@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,17 +15,19 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReport02Binding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
-import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.navigation.BottomNavigator
+import java.io.File
 
 class Report02Fragment : Fragment() {
 
     private val LOG_TAG = this::class.java.simpleName
 
     private var mCreatedCase: Case? = null
+
 
     companion object : Singleton<Report02Fragment>() {
         override fun newInstance() = Report02Fragment()
@@ -56,20 +59,10 @@ class Report02Fragment : Fragment() {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
         mCreatedCase?.let { case ->
             caseViewModel?.let {
+                val mediaPaths = arguments?.getStringArrayList(Report00Fragment.MEDIA_PATHS_KEY)
+                val mediaFiles = mediaPaths?.let { paths -> readAsRaw(paths) }
 
-                // TODO replace with actual pictures!
-                // sample pictures for testing picture upload
-                val bigPigeonStream = resources.openRawResource(R.raw.big_pigeon)
-                val bigPigeon = IOUtils.toByteArray(bigPigeonStream)
-
-                val twoPigeonsStream = resources.openRawResource(R.raw.pigeon_times_two)
-                val twoPigeons = IOUtils.toByteArray(twoPigeonsStream)
-
-                val pigeonGangStream = resources.openRawResource(R.raw.pigeon_gang)
-                val pigeonGang = IOUtils.toByteArray(pigeonGangStream)
-
-                case.media = listOf("big_pigeon.jpg", "pigeon_times_two.jpg", "pigeon_gang.jpg")
-                it.sendCase(case, listOf(bigPigeon, twoPigeons, pigeonGang))
+                //it.sendCase(case, )
                 Log.d(LOG_TAG, "Sent case: $case")
                 setSnackBar(view, "Case sent successfully.")
 
@@ -78,5 +71,9 @@ class Report02Fragment : Fragment() {
                 controller.navigate(R.id.newsFragment)
             }
         }
+    }
+
+    private fun readAsRaw(filePaths: List<String>): List<ByteArray> {
+        return mutableListOf()
     }
 }
