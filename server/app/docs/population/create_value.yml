@@ -1,0 +1,18 @@
+Create a new value for a marker
+---
+tags:
+  - value
+parameters:
+  - in: body
+    name: body
+    description: The value to be created
+    required: true
+    schema:
+      $ref: '#/definitions/Population'
+responses:
+  201:
+    description: A new value has been successfully created
+    schema:
+      $ref: "#/definitions/Population"
+  400:
+    description: There was an error with your request
