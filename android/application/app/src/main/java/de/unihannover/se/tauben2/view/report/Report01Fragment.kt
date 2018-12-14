@@ -22,6 +22,10 @@ class Report01Fragment : Fragment() {
 
     private var mCreatedCase: Case? = null
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     companion object : Singleton<Report01Fragment>() {
         override fun newInstance() = Report01Fragment()
     }
@@ -37,14 +41,14 @@ class Report01Fragment : Fragment() {
         }
 
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report00Fragment)
+            Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(R.id.report00Fragment)
         }
 
         binding.root.report_next_step_button.setOnClickListener {
             if (canGoForward()) {
                 val caseBundle = Bundle()
                 caseBundle.putParcelable("createdCase", mCreatedCase)
-                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report02Fragment, caseBundle)
+                Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(R.id.report02Fragment, caseBundle)
             } else {
                 context?.let { c ->
                     report_injury_title.setTextColor(ContextCompat.getColor(c, R.color.errorColor))

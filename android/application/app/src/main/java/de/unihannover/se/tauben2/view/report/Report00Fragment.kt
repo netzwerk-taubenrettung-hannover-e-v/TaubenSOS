@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.report
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
+import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report00.*
 import kotlinx.android.synthetic.main.fragment_report00.view.*
 
@@ -45,9 +47,13 @@ class Report00Fragment : Fragment(), Observer<Location?> {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_report00, container, false)
 
+        val view = inflater.inflate(R.layout.fragment_report00, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
+
+        (activity as ReportActivity).next_btn.setOnClickListener {
+            Log.d("TESST", "VKADFJHADG")
+        }
 
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition()
@@ -64,7 +70,7 @@ class Report00Fragment : Fragment(), Observer<Location?> {
             } else {
                 val bundle = Bundle()
                 bundle.putParcelable("createdCase", mCreatedCase)
-                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment, bundle)
+                Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(R.id.report01Fragment, bundle)
             }
         }
 

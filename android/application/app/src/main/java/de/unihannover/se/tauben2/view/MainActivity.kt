@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +24,8 @@ import de.unihannover.se.tauben2.databinding.ActivityMainBinding
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
+import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     // For navigation //
     private lateinit var mNavHostFragment: NavHostFragment
     private lateinit var mBottomNavigator: BottomNavigator
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
     }
 
-
     private fun initBottomNavigation() {
 
         binding.bottomNavigation.setMenuItems(
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.graphsFragment, getString(R.string.graphs), R.drawable.ic_show_chart_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.report00Fragment, getString(R.string.report_pigeon), R.drawable.ic_report_white_24dp),
+                //FragmentMenuItem(R.id.report00Fragment, getString(R.string.report_pigeon), R.drawable.ic_report_white_24dp),
                 FragmentMenuItem(R.id.membersFragment, getString(R.string.users), R.drawable.ic_group_white_24dp, Permission.ADMIN),
                 //FragmentMenuItem(R.id.emergencyCallFragment, "Emergency Call", R.drawable.ic_call_white_24dp),
                 FragmentMenuItem(R.id.contactFragment, getString(R.string.contact), R.drawable.ic_contact_mail_white_24dp),
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity() {
 //            NavigationUI.onNavDestinationSelected(it, navController)
 //            true
 //        }
-
     }
 
     override fun onBackPressed() {
@@ -114,8 +112,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         if (item?.itemId == toolbar_report_button) {
-            Navigation.findNavController(this, R.id.nav_host).navigate(R.id.report00Fragment)
-            binding.bottomNavigation.selectMoreTab()
+
+            //Navigation.findNavController(findViewById(R.id.content)).navigate(R.id.reportActivity)
+            //Navigation.findNavController(this, R.id.nav_host).navigate(R.id.report00Fragment)
+            // binding.bottomNavigation.selectMoreTab()
+            val intent = Intent(this, ReportActivity::class.java)
+            startActivity(intent)
         }
 
         return super.onOptionsItemSelected(item)
@@ -158,6 +160,5 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }
-
 }
 

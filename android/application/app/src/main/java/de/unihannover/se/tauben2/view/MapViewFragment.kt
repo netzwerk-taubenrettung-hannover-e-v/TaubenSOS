@@ -80,7 +80,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 // TODO Find best bound coordinates
                 val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
                 map.setLatLngBoundsForCameraTarget(bounds)
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0))
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 setCaseMarkers(mMarkers.keys)
 
                 if (this.parentFragment is GraphsFragment) addHeatMap()

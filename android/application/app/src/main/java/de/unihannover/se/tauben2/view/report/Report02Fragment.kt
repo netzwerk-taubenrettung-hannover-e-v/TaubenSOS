@@ -26,6 +26,10 @@ class Report02Fragment : Fragment() {
 
     private var mCreatedCase: Case? = null
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     companion object : Singleton<Report02Fragment>() {
         override fun newInstance() = Report02Fragment()
     }
@@ -41,7 +45,7 @@ class Report02Fragment : Fragment() {
         }
 
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
+            Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(R.id.report01Fragment)
         }
 
         binding.root.report_send_button.setOnClickListener {
