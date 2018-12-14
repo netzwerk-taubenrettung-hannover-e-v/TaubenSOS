@@ -60,10 +60,6 @@ class Report00Fragment : Fragment(), Observer<Location?> {
         val view = inflater.inflate(R.layout.fragment_report00, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-        (activity as ReportActivity).next_btn.setOnClickListener {
-            Log.d("TESST", "VKADFJHADG")
-        }
-
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition()
             mLocation = mapsFragment.getSelectedPosition()

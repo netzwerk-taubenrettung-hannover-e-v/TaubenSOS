@@ -70,24 +70,6 @@ class ReportActivity : FragmentActivity() {
         step_indicator.text = "Step $step: $label"
     }
 
-    // Button Styles
-    fun firstPageButton () {
-        prev_btn.text = "Cancel"
-        prev_btn.icon = null
-    }
-
-    fun normalPageButton () {
-        prev_btn.text = "Back"
-        prev_btn.icon = ContextCompat.getDrawable(this, R.drawable.ic_keyboard_arrow_left_white_24dp)
-        next_btn.text = "Next"
-        next_btn.icon = ContextCompat.getDrawable(this, R.drawable.ic_keyboard_arrow_right_white_24dp)
-    }
-
-    fun lastPageButton () {
-        next_btn.text = "Finish"
-        next_btn.icon = null
-    }
-
     // STEP INDICATOR
     private fun createStepIndicator () {
 

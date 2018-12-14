@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="createdCase"
+            type="de.unihannover.se.tauben2.model.entity.Case" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -12,9 +19,9 @@
             android:id="@+id/report_injury_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
             android:text="@string/specify_injuries"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +47,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.footOrLeg}"
                 android:text="@string/injury_foot_leg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +61,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.wing}"
                 android:text="@string/injury_wings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +75,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.headOrEye}"
                 android:text="@string/injury_head_eye"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.paralyzedOrFlightless}"
                 android:text="@string/injury_paralyzed_flightless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +103,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.openWound}"
                 android:text="@string/injury_open_wound"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +117,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.feetTiedTogether}"
                 android:text="@string/injury_strings_feet"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +131,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.fledgling}"
                 android:text="@string/injury_fledgling"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +145,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:buttonTint="@color/colorPrimaryDark"
-                android:checked="false"
+                android:checked="@={createdCase.injury.other}"
                 android:text="@string/injury_other"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

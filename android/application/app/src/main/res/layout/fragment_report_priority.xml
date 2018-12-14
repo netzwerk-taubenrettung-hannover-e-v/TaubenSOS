@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="createdCase"
+            type="de.unihannover.se.tauben2.model.entity.Case" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -47,7 +53,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:max="4"
-            android:progress="1"
+            android:progress="@={createdCase.priority}"
             android:progressTint="@color/colorPrimaryDark"
             android:thumbTint="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@+id/report_state_max"

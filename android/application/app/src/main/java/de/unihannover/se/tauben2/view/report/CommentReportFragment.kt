@@ -1,28 +1,36 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.databinding.FragmentReportCommentBinding
+import kotlinx.android.synthetic.main.activity_report.*
 
 class CommentReportFragment : ReportFragment() {
 
-    override fun onResume() {
-        super.onResume()
-        (activity as ReportActivity).lastPageButton()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        (activity as ReportActivity).normalPageButton()
-    }
+    private val layoutId = R.layout.fragment_report_comment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_report_comment, container, false)
 
+        val binding = DataBindingUtil.inflate<FragmentReportCommentBinding>(inflater, layoutId, container, false)
+
+        pagePos = PagePos.LAST
+        mCreatedCase = arguments?.getParcelable("createdCase")
+        mCreatedCase?.let {
+            binding.createdCase = it
+        }
         setBtnListener(null, R.id.fragment_report_breed)
-        return view
+
+        (activity as ReportActivity).next_btn.setOnClickListener {
+            // send data to server
+            
+        }
+
+        return binding.root
     }
 
 }

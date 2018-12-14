@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="createdCase"
+            type="de.unihannover.se.tauben2.model.entity.Case" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -54,7 +61,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:buttonTint="@color/colorPrimaryDark"
-            android:checked="false"
+            android:checked="@={createdCase.carrierPigeon}"
             android:text="@string/carrier_pigeon"
             app:layout_constraintEnd_toEndOf="@+id/report_special_help"
             app:layout_constraintHorizontal_bias="0.0"
@@ -67,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:buttonTint="@color/colorPrimaryDark"
-            android:checked="false"
+            android:checked="@={createdCase.weddingPigeon}"
             android:text="@string/wedding_pigeon"
             app:layout_constraintEnd_toEndOf="@+id/report_special_checkbox_00"
             app:layout_constraintStart_toStartOf="@+id/report_special_checkbox_00"
