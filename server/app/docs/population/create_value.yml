@@ -8,11 +8,11 @@ parameters:
     description: The value to be created
     required: true
     schema:
-      $ref: '#/definitions/Population'
+      $ref: '#/definitions/PopulationValue'
 responses:
   201:
     description: A new value has been successfully created
     schema:
-      $ref: "#/definitions/Population"
+      $ref: "#/definitions/PopulationValue"
   400:
     description: There was an error with your request
