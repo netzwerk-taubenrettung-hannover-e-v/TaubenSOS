@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import com.squareup.picasso.Picasso
+import de.unihannover.se.tauben2.view.SquareImageView
 
 class MediaReportFragment : ReportFragment() {
 
@@ -35,7 +38,7 @@ class MediaReportFragment : ReportFragment() {
         val view = inflater.inflate(layoutId, container, false)
 
         pagePos = PagePos.FIRST
-        mCreatedCase = Case.getCleanInstance()
+        if (mCreatedCase == null) mCreatedCase = Case.getCleanInstance()
         setBtnListener (R.id.fragment_report_location, null)
 
         (activity as ReportActivity).prev_btn.setOnClickListener {
@@ -64,6 +67,9 @@ class MediaReportFragment : ReportFragment() {
                 }
             }
         }
+
+        Log.d("CURRENT CASE", mCreatedCase.toString())
+        if (mCreatedCase!!.media.isNotEmpty()) loadImages(view)
 
         return view
     }
@@ -101,8 +107,8 @@ class MediaReportFragment : ReportFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
-            //val imageStream = data
             val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+            Log.d("SpaceDose", mCurrentPhotoPath)
             mImageView.setImageBitmap(bitmap) // TODO picasso?
         }
     }
@@ -128,4 +134,15 @@ class MediaReportFragment : ReportFragment() {
     private fun String.getFileName(): String {
         return this.substringAfterLast("/")
     }
+
+    private fun loadImages (view : View) {
+        for (i in 0 until view.image_layout!!.childCount) {
+            val image = view.image_layout!!.getChildAt(i)
+            if (image is SquareImageView) {
+                Picasso.get().load(if (mCreatedCase!!.media.size >= i + 1) mCreatedCase!!.media[i] else null)
+                        .into(image)
+            }
+        }
+    }
+
 }

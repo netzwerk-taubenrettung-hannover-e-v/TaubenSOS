@@ -113,9 +113,6 @@ class MainActivity : AppCompatActivity() {
 
         if (item?.itemId == toolbar_report_button) {
 
-            //Navigation.findNavController(findViewById(R.id.content)).navigate(R.id.reportActivity)
-            //Navigation.findNavController(this, R.id.nav_host).navigate(R.id.report00Fragment)
-            // binding.bottomNavigation.selectMoreTab()
             val intent = Intent(this, ReportActivity::class.java)
             startActivity(intent)
         }

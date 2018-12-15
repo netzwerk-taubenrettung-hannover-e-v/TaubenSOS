@@ -1,6 +1,8 @@
 package de.unihannover.se.tauben2.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
+import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 
 
@@ -46,32 +49,14 @@ class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
                 adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
             }
 
+            v.btn_edit.setOnClickListener {
+                // send case to ReportActivity
+                val intent = Intent(activity, ReportActivity::class.java)
+                intent.putExtra("case", case)
+                startActivity(intent)
+            }
+
         }
         return v
     }
-
-//    override fun onChanged(location: Location?) {
-//        if(location == null)
-//            return
-//        view?.let {
-//            mBinding.c?.let {case ->
-//                val caseLoc = Location("").apply {
-//                    latitude = case.latitude
-//                    longitude = case.longitude
-//                }
-//                val res = ((Math.round(location.distanceTo(caseLoc)/10))/100.0).toString() + " km"
-////                it.distance_text.text = res
-//            }
-//        }
-//    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, this)
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
-//    }
 }

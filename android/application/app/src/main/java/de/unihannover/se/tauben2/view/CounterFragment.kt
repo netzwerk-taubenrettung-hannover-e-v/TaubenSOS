@@ -57,7 +57,7 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
         // OnClickListeners:
         view.set_position_button.setOnClickListener {
-            mapsFragment.selectPosition()
+            mapsFragment.selectPosition(null)
         }
 
         view.plus_button.setOnClickListener {

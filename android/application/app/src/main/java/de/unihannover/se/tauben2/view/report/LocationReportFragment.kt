@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2.view.report
 
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_report00.view.*
 class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
     private var mLocation: LatLng? = null
+    private lateinit var mapsFragment : MapViewFragment
 
     private val layoutId = R.layout.fragment_report_location
 
@@ -33,13 +35,13 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(layoutId, container, false)
-        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
+        mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
         mCreatedCase = arguments?.getParcelable("createdCase")
         setBtnListener(R.id.fragment_report_injuries, R.id.fragment_report_media)
 
         view.set_position_button.setOnClickListener {
-            mapsFragment.selectPosition()
+            mapsFragment.selectPosition(null)
             mLocation = mapsFragment.getSelectedPosition()
         }
 
@@ -71,5 +73,13 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         else setSnackBar(view!!, "please select a location")
         return false
    }
+
+    fun setMarker() {
+
+        if (mCreatedCase!!.latitude != 0.0 && mCreatedCase!!.longitude != 0.0) {
+            mapsFragment.selectPosition(LatLng(mCreatedCase!!.latitude, mCreatedCase!!.longitude))
+            mLocation = mapsFragment.getSelectedPosition()
+        }
+    }
 
 }

@@ -20,6 +20,7 @@ import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.entity.Case
 import java.util.*
 import com.google.maps.android.heatmaps.Gradient
+import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
@@ -83,23 +84,24 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 setCaseMarkers(mMarkers.keys)
 
-                if (this.parentFragment is GraphsFragment) addHeatMap()
-                else if (this.parentFragment is CasesFragment) {
+                when (this.parentFragment) {
+                    is GraphsFragment -> addHeatMap()
+                    is CasesFragment -> {
+                        mMap?.setOnInfoWindowClickListener { clickedMarker ->
+                            //TODO find MarkerCase
 
-                    mMap?.setOnInfoWindowClickListener { clickedMarker ->
-                        //TODO find MarkerCase
+                            val filter = mMarkers.filter { it.value == clickedMarker }
+                            if(filter.size == 1) {
+                                val case = filter.keys.toList()[0] as? Case ?: return@setOnInfoWindowClickListener
 
-                        val filter = mMarkers.filter { it.value == clickedMarker }
-                        if(filter.size == 1) {
-                            val case = filter.keys.toList()[0] as? Case ?: return@setOnInfoWindowClickListener
-
-                            val bundle = Bundle()
-                            bundle.putParcelable("case", case)
-                            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)
+                                val bundle = Bundle()
+                                bundle.putParcelable("case", case)
+                                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.casesInfoFragment, bundle)
+                            }
                         }
                     }
+                    is LocationReportFragment -> (this.parentFragment as LocationReportFragment).setMarker()
                 }
-
             }
         }
 
@@ -107,14 +109,15 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     }
 
     // add a marker at the middle of the map and save it in 'selectedPosition'
-    fun selectPosition () {
+    fun selectPosition (position: LatLng?) {
 
         // remove the old position if exists
         selectedPosition?.remove()
 
         // add marker
         val mo = MarkerOptions()
-        mo.position(mMap!!.cameraPosition.target)
+        if (position == null) mo.position(mMap!!.cameraPosition.target)
+        else mo.position(position)
         mo.title("your selected position")
         mo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         selectedPosition = mMap?.addMarker(mo)

@@ -24,6 +24,11 @@ open class ReportFragment : Fragment() {
 
     protected var mCreatedCase: Case? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mCreatedCase = (activity as ReportActivity).case
+    }
+
     override fun onResume() {
         super.onResume()
         (activity as ReportActivity).onFragmentChange()
@@ -34,12 +39,19 @@ open class ReportFragment : Fragment() {
 
         val caseViewModel = getViewModel(CaseViewModel::class.java)
 
-        Log.d("ASDF", "Sent case: $mCreatedCase")
         mCreatedCase?.let { case ->
             caseViewModel?.let {
-                Log.d("ASDF", "Sent case: $case")
-                val mediaFiles = readAsRaw(case.media)
-                it.sendCase(case, mediaFiles)
+                // New Case
+                if (case.caseID == null) {
+                    val mediaFiles = readAsRaw(case.media)
+                    it.sendCase(case, mediaFiles)
+                }
+                // Edit Case
+                else {
+                    // TODO send edited case to server
+                    // existing images inside the case are already saved as URLs
+                    Log.d("EDIT CASE", "case edited: $case")
+                }
             }
         }
     }

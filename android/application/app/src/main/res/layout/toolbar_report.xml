@@ -9,6 +9,7 @@
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
     <TextView
+        android:id="@+id/toolbar_title"
         style="@style/RobotoTextViewStyle"
         android:layout_width="wrap_content"
         android:textColor="@color/White"

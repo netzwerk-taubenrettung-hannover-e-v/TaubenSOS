@@ -12,6 +12,9 @@ import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import kotlinx.android.synthetic.main.activity_report.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.maps.MapView
+import de.unihannover.se.tauben2.model.entity.Case
+import kotlinx.android.synthetic.main.toolbar_report.*
 import kotlinx.android.synthetic.main.toolbar_report.view.*
 
 class ReportActivity : FragmentActivity() {
@@ -20,6 +23,7 @@ class ReportActivity : FragmentActivity() {
     private var currentPosition = 0
 
     private lateinit var binding: ActivityMainBinding
+    var case : Case? = null
 
     // For navigation //
     private lateinit var mNavHostFragment: NavHostFragment
@@ -29,8 +33,20 @@ class ReportActivity : FragmentActivity() {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
+        case = intent.getParcelableExtra("case")
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setContentView(R.layout.activity_report)
+
+        // Fixing later map loading delay
+        Thread {
+            try {
+                val mv = MapView(applicationContext)
+                mv.onCreate(null)
+                mv.onPause()
+                mv.onDestroy()
+            } catch (ignored: Exception) {}
+        }.start()
 
         backgroundColor()
         initNavigation()
@@ -41,6 +57,7 @@ class ReportActivity : FragmentActivity() {
         }
 
         createStepIndicator()
+        if (case != null) editCase()
     }
 
     // sets the gradient for the status bar
@@ -68,6 +85,10 @@ class ReportActivity : FragmentActivity() {
         val step = currentPosition + 1
         val label = mNavHostFragment.navController.currentDestination?.label
         step_indicator.text = "Step $step: $label"
+    }
+
+    private fun editCase () {
+        toolbar_title.text = "Edit Case #${case?.caseID}"
     }
 
     // STEP INDICATOR

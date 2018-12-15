@@ -70,7 +70,7 @@ class Report00Fragment : Fragment(), Observer<Location?> {
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
         view.set_position_button.setOnClickListener {
-            mapsFragment.selectPosition()
+            mapsFragment.selectPosition(null)
             mLocation = mapsFragment.getSelectedPosition()
         }
 
