@@ -2,7 +2,8 @@ package de.unihannover.se.tauben2.view.report
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -10,7 +11,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.entity.Case
@@ -21,57 +27,35 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import com.squareup.picasso.Picasso
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.SquareImageView
 
 class MediaReportFragment : ReportFragment() {
 
-    private val layoutId = R.layout.fragment_report_media
-
-    private lateinit var mCurrentPhotoPath: String
-    private lateinit var mImageView: ImageView
-    private var addedImagesCount = 0
-
-    private val TAKE_PICTURE_REQUEST = 1
+    private lateinit var v : View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(layoutId, container, false)
+        v = inflater.inflate(R.layout.fragment_report_media, container, false)
 
         pagePos = PagePos.FIRST
         if (mCreatedCase == null) mCreatedCase = Case.getCleanInstance()
-        setBtnListener (R.id.fragment_report_location, null)
+        setBtnListener(R.id.fragment_report_location, null)
+
+        Log.d("CURRENT CASE", mCreatedCase.toString())
+        createBlankImages(v)
+        loadImages()
 
         (activity as ReportActivity).prev_btn.setOnClickListener {
             (activity as ReportActivity).finish()
         }
 
-        view.report_media_add_button.setOnClickListener {
-            when (addedImagesCount) {
-                0 -> {
-                    addedImagesCount++
-                    mImageView = view.report_media_00
-                    dispatchTakePictureIntent()
-                    mCreatedCase!!.media += mCurrentPhotoPath.getFileName()
-                }
-                1 -> {
-                    addedImagesCount++
-                    mImageView = view.report_media_01
-                    dispatchTakePictureIntent()
-                    mCreatedCase!!.media += mCurrentPhotoPath.getFileName()
-                }
-                2 -> {
-                    addedImagesCount++
-                    mImageView = view.report_media_02
-                    dispatchTakePictureIntent()
-                    mCreatedCase!!.media += mCurrentPhotoPath.getFileName()
-                }
-            }
+        v.report_media_add_button.setOnClickListener {
+            if (mCreatedCase!!.media.size < 3) dispatchTakePictureIntent()
+            else setSnackBar(v, "maximum amount reached")
         }
 
-        Log.d("CURRENT CASE", mCreatedCase.toString())
-        if (mCreatedCase!!.media.isNotEmpty()) loadImages(view)
-
-        return view
+        return v
     }
 
     private fun dispatchTakePictureIntent() {
@@ -85,7 +69,6 @@ class MediaReportFragment : ReportFragment() {
                         createImageFile()
                     } catch (ex: IOException) {
                         // Error occurred while creating the File
-                        //...
                         null
                     }
                     // Continue only if the File was successfully created
@@ -98,49 +81,104 @@ class MediaReportFragment : ReportFragment() {
                             )
                         }
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takePictureIntent, TAKE_PICTURE_REQUEST)
+                        startActivityForResult(takePictureIntent, 1)
                     }
                 }
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
-            val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
-            Log.d("SpaceDose", mCurrentPhotoPath)
-            mImageView.setImageBitmap(bitmap) // TODO picasso?
-        }
-    }
-
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMAN).format(Date())
         val storageDir: File? = context?.filesDir
         return File.createTempFile(
                 "JPEG_${timeStamp}_", /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = absolutePath
+            mCreatedCase!!.media += absolutePath
         }
     }
 
-    /**
-     * Helper function for extracting the filename to a given filepath
-     **/
-    private fun String.getFileName(): String {
-        return this.substringAfterLast("/")
+    // triggered after capturing a photo
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            loadImages()
+        }
     }
 
-    private fun loadImages (view : View) {
-        for (i in 0 until view.image_layout!!.childCount) {
-            val image = view.image_layout!!.getChildAt(i)
-            if (image is SquareImageView) {
-                Picasso.get().load(if (mCreatedCase!!.media.size >= i + 1) mCreatedCase!!.media[i] else null)
-                        .into(image)
+    private fun loadImages() {
+
+        for (i in 0 until v.image_layout!!.childCount) {
+
+            val layout = (v.image_layout.getChildAt(i) as ConstraintLayout)
+            val image = layout.getChildAt(0) as ImageView
+
+            layout.visibility = View.INVISIBLE
+
+            if (image is SquareImageView && i < mCreatedCase!!.media.size) {
+
+                val imageLink = mCreatedCase!!.media[i]
+
+                if (URLUtil.isValidUrl(imageLink)) Picasso.get().load(imageLink).into(image)
+                else Picasso.get().load(File(imageLink)).into(image)
+
+                layout.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun deleteImage (image : SquareImageView) {
+        for (i in 0 until v.image_layout!!.childCount) {
+            if ((v.image_layout!!.getChildAt(i) as ConstraintLayout).getChildAt(0) == image ) {
+                (mCreatedCase!!.media as MutableList<String>).removeAt(i)
+            }
+        }
+        loadImages()
+    }
+
+    private fun createBlankImages(view: View) {
+
+        //  LinearLayout [
+        //      3x ConstraintLayout [
+        //          Image
+        //          Button
+        //      ]
+        //  ]
+
+        for (i in 0..2) {
+
+            val constraintLayout = ConstraintLayout(view.context)
+            val layout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f)
+            layout.setMargins(2, 2, 2, 2)
+            constraintLayout.layoutParams = layout
+
+            val image = SquareImageView(view.context)
+            image.id = View.generateViewId()
+            image.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            val button = ImageButton(view.context)
+            button.setImageResource(R.drawable.ic_close_black_24dp)
+            button.setPadding(0, 0, 0, 0)
+            button.background = ColorDrawable(Color.TRANSPARENT)
+            button.id = View.generateViewId()
+
+            constraintLayout.addView(image)
+            constraintLayout.addView(button)
+            constraintLayout.visibility = View.INVISIBLE
+
+            view.image_layout.addView(constraintLayout)
+
+            val set = ConstraintSet()
+            set.clone(constraintLayout)
+            set.connect(button.id, ConstraintSet.TOP, image.id, ConstraintSet.TOP)
+            set.connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
+            set.applyTo(constraintLayout)
+
+            button.setOnClickListener {
+                deleteImage(image)
             }
         }
     }

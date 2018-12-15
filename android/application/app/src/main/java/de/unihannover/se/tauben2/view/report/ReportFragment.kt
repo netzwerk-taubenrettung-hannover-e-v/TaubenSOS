@@ -43,13 +43,14 @@ open class ReportFragment : Fragment() {
             caseViewModel?.let {
                 // New Case
                 if (case.caseID == null) {
+                    Log.d("SENT CASE", "case sent: $case")
                     val mediaFiles = readAsRaw(case.media)
                     it.sendCase(case, mediaFiles)
                 }
                 // Edit Case
                 else {
                     // TODO send edited case to server
-                    // existing images inside the case are already saved as URLs
+                    // existing images inside the case are already saved as URLs!
                     Log.d("EDIT CASE", "case edited: $case")
                 }
             }
@@ -59,11 +60,15 @@ open class ReportFragment : Fragment() {
     private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
         val files: MutableList<ByteArray> = mutableListOf()
         for (name in fileNames) {
-            val fileStream = context?.openFileInput(name)
+            val fileStream = context?.openFileInput(name.substringAfterLast("/"))
             val file = IOUtils.readInputStreamFully(fileStream)
             files.add(file)
         }
         return files
+    }
+
+    protected fun deleteCase () {
+        // TODO delete case
     }
 
     fun setBtnListener(forwardId: Int?, backId: Int?) {
