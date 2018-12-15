@@ -1,0 +1,25 @@
+Update an existing user
+---
+tags:
+  - user
+parameters:
+  - in: path
+    name: username
+    description: The name of the user to be updated
+    required: true
+    type: string
+  - in: body
+    name: body
+    description: The updated user object
+    required: true
+    schema:
+      $ref: "#/definitions/User"
+responses:
+  200:
+    description: The user has been successfully updated
+    schema:
+      $ref: "#/definitions/User"
+  400:
+    description: There was an error with your request
+  404:
+    description: The user to be updated could not be found

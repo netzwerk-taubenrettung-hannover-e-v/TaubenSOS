@@ -1,0 +1,15 @@
+Delete an existing user
+---
+tags:
+  - user
+parameters:
+  - in: path
+    name: username
+    description: The name of the user to be deleted
+    required: true
+    type: string
+responses:
+  204:
+    description: The user has been successfully deleted
+  404:
+    description: The user to be deleted could not be found

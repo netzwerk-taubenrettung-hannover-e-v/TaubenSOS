@@ -20,7 +20,7 @@ def get_Markers():
 				populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(jsonData["lastUpdate"])))
 			else:
 				return jsonify("Json Body has no key lastUpdate"), 400
-			populationMarkers = PopulationMarker.all()
+		populationMarkers = PopulationMarker.all()
 		result = [make_json_marker(populationMarker = p) for p in populationMarkers]
 		return jsonify(result)
 

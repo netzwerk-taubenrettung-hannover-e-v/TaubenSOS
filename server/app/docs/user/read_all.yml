@@ -1,0 +1,12 @@
+Retrieve all users
+---
+tags:
+  - user
+parameters: []
+responses:
+  200:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/User"
