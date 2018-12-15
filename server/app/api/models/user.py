@@ -9,6 +9,8 @@ class User(db.Model):
 	phone = db.Column(db.String(30))
 	isAdmin = db.Column(db.Boolean)
 	isActivated = db.Column(db.Boolean)
+	asReporter = db.relationship("Case", foreign_keys="Case.reporter")
+	asRescuer = db.relationship("Case", foreign_keys="Case.rescuer")
 
 	def __init__(self, username, password, phone, isAdmin, isActivated):
 		self.username = username
