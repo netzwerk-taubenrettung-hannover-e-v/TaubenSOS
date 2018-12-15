@@ -1,7 +1,7 @@
 Create a new user
 ---
 tags:
-  - case
+  - user
 parameters:
   - in: body
     name: body
