@@ -31,6 +31,8 @@ open class ReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCreatedCase = (activity as ReportActivity).case
+
+        mCreatedCase?.media = listOf()
     }
 
     override fun onResume() {
@@ -47,14 +49,13 @@ open class ReportFragment : Fragment() {
             caseViewModel?.let {
                 // New Case
                 if (case.caseID == null) {
+                    case.setToCurrentTime()
                     Log.d("SENT CASE", "case sent: $case")
                     val mediaFiles = readAsRaw(case.media)
                     it.sendCase(case, mediaFiles)
                 }
                 // Edit Case
                 else {
-                    //case.media = listOf()
-                    // TODO does not work yet with the current api
                     it.updateCase(case)
                     // existing images inside the case are already saved as URLs!
                     Log.d("EDIT CASE", "case edited: $case")

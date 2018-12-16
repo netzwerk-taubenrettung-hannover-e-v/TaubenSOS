@@ -1,6 +1,5 @@
 package de.unihannover.se.tauben2.model.entity
 
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.Embedded
@@ -27,8 +26,6 @@ import kotlinx.android.parcel.Parcelize
 data class Case(@PrimaryKey var caseID: Int?,
                 var additionalInfo: String?,
                 var isClosed: Boolean?,
-                var isWeddingPigeon: Boolean,
-                var isCarrierPigeon: Boolean,
 
                 var latitude: Double,
                 var longitude: Double,
@@ -42,6 +39,8 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var wasNotFound: Boolean?,
                 var wasFoundDead: Boolean?,
 
+                var breed: String?,
+
                 @Embedded
                 var injury: Injury?,
 
@@ -51,9 +50,8 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     companion object {
         @Ignore
-        fun getCleanInstance() = Case(null, null, null, false,
-                false, 0.0, 0.0, null, null,-1, -1,
-                "", null, null, Injury(false, false, false,
+        fun getCleanInstance() = Case(null, null, null, 0.0, 0.0, null, null, -1, -1,
+                "", null, null, null, Injury(false, false, false,
                 false, false, false, false, false), listOf())
     }
 
