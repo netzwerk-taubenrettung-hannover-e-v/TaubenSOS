@@ -25,9 +25,9 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
-        if(drawable == null) return
         this.setOnClickListener {
-            zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
+            if(drawable == null)
+            else zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
         }
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }

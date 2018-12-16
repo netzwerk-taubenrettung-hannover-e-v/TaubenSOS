@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 
-data class Injury(var feetTiedTogether: Boolean,
+data class Injury(var strappedFeet: Boolean,
                   var fledgling: Boolean,
                   var footOrLeg: Boolean,
                   var headOrEye: Boolean,
