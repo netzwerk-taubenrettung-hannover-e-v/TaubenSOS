@@ -15,6 +15,10 @@ import kotlinx.android.synthetic.main.activity_report.*
 
 open class ReportFragment : Fragment() {
 
+    companion object {
+        private val LOG_TAG = ReportFragment::class.java.simpleName
+    }
+
     // check bottom of the class
     enum class PagePos {
         FIRST, BETWEEN, LAST
@@ -49,7 +53,9 @@ open class ReportFragment : Fragment() {
                 }
                 // Edit Case
                 else {
-                    // TODO send edited case to server
+                    //case.media = listOf()
+                    // TODO does not work yet with the current api
+                    it.updateCase(case)
                     // existing images inside the case are already saved as URLs!
                     Log.d("EDIT CASE", "case edited: $case")
                 }
@@ -67,8 +73,15 @@ open class ReportFragment : Fragment() {
         return files
     }
 
-    protected fun deleteCase () {
-        // TODO delete case
+    private fun deleteCase() {
+        val caseViewModel = getViewModel(CaseViewModel::class.java)
+
+        mCreatedCase?.let { case ->
+            caseViewModel?.let {
+                it.deleteCase(case)
+                Log.d(LOG_TAG, "Case deleted!")
+            }
+        }
     }
 
     fun setBtnListener(forwardId: Int?, backId: Int?) {
@@ -93,12 +106,12 @@ open class ReportFragment : Fragment() {
         }
     }
 
-    protected open fun canGoForward () : Boolean {
+    protected open fun canGoForward(): Boolean {
         return true
     }
 
     // dis is shit - TODO do it nice-etly
-    private fun setButtonStyle () {
+    private fun setButtonStyle() {
 
         when (pagePos) {
             PagePos.FIRST -> {
@@ -111,7 +124,7 @@ open class ReportFragment : Fragment() {
                 (activity as ReportActivity).next_btn.text = "Next"
                 (activity as ReportActivity).next_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_right_white_24dp)
             }
-            PagePos . LAST -> {
+            PagePos.LAST -> {
                 (activity as ReportActivity).next_btn.text = "Finish"
                 (activity as ReportActivity).next_btn.icon = null
             }

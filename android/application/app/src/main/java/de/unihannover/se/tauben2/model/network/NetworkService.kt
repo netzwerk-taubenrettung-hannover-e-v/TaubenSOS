@@ -19,6 +19,12 @@ interface NetworkService {
     @POST("case")
     fun sendCase(@Body case: Case): LiveDataRes<Case>
 
+    @PUT("case/{id}")
+    fun updateCase(@Path("id") id: Int, @Body case: Case): LiveDataRes<Case>
+
+    @DELETE("case/{id}")
+    fun deleteCase(@Path("id") id: Int): Call<Void>
+
     @PUT
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 

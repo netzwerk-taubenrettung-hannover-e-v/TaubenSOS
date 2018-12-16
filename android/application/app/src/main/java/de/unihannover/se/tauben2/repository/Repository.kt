@@ -25,6 +25,9 @@ import retrofit2.Response
  */
 class Repository(private val database: LocalDatabase, private val service: NetworkService, private val appExecutors: AppExecutors = AppExecutors.INSTANCE) {
 
+    companion object {
+        private val LOG_TAG = Repository::class.java.simpleName
+    }
 
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
@@ -124,6 +127,39 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     }.send(case)
 
     /**
+     * Updates case on server via PUT request
+     * @param case the case with updated values
+     */
+    fun updateCase(case: Case) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+        override fun saveCallResult(resultData: Case) {
+            database.caseDao().insertOrUpdate(resultData)
+        }
+
+        override fun createCall(requestData: Case): LiveDataRes<Case> {
+            requestData.caseID?.let {
+                return service.updateCase(it, requestData)
+            }
+            throw Exception("Case id must not be null!")
+        }
+
+    }.send(case)
+
+    /**
+     * Deletes case from server via DELETE request and from local database
+     * @param case The case to be deleted
+     */
+    fun deleteCase(case: Case) = object : AsyncDeleteRequest<Case>(appExecutors) {
+        override fun deleteFromDB(requestData: Case) {
+            database.caseDao().delete(requestData)
+        }
+
+        override fun createCall(requestData: Case): Call<Void> {
+            requestData.caseID?.let { return service.deleteCase(it) }
+            throw Exception("Case id must not be null!")
+        }
+    }.send(case)
+
+    /**
      * Sends a PigeonCounter object to the server
      * @param pigeonCounter PigeonCounter object to be sent
      */
@@ -143,7 +179,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     /**
      * Helper function for uploading media files to their corresponding upload urls
-     * The mediaItems urls and Files need to
+     * The urls and files need to have the same length and order
      * @param mediaItems List of mediaItems items
      * @param urls  List of urls for upload request
      */
@@ -161,11 +197,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             val call = service.uploadCasePicture(url, parsedPicture)
             call.enqueue(object : Callback<Void> {
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("KEK", "File upload failed!")
+                    Log.d(LOG_TAG, "File upload failed!")
                 }
 
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    Log.d("KEK", "File upload request successful!")
+                    Log.d(LOG_TAG, "File upload request successful!")
                 }
 
             })

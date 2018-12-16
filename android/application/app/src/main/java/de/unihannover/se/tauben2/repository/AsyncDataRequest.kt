@@ -5,13 +5,16 @@ import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.network.Resource
-import okhttp3.ResponseBody
 
 /**
  * A generic class for making asynchronous requests that expect data from the server and write
  * it to the database
  */
 abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutors: AppExecutors) {
+
+    companion object {
+        private val LOG_TAG = AsyncDataRequest::class.java.simpleName
+    }
 
     fun send(objects: RequestType) {
         val apiResponse = createCall(objects)
@@ -24,7 +27,7 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
                             val result = resp.data
                             result?.let {
                                 saveCallResult(it)
-                                Log.d("KEK", "inserted $it into db")
+                                Log.d(LOG_TAG, "inserted $it into db")
 
                                 // data successfully added to database, can remove observer
                                 appExecutors.mainThread().execute {
@@ -32,12 +35,11 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
                                 }
                             }
                         }
-                    }
-                    else if(resp.hasError()) {
-                        if(resp.message == null)
-                            Log.e("DataRequest error", "An unknown error occurred.")
+                    } else if (resp.hasError()) {
+                        if (resp.message == null)
+                            Log.e(LOG_TAG, "An unknown error occurred.")
                         else
-                            Log.e("DataRequest error", resp.message)
+                            Log.e(LOG_TAG, resp.message)
 
                     }
                 }
