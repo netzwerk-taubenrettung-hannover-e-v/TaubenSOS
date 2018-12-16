@@ -71,12 +71,11 @@ class ContactItemAdapter(private val context: Context,
         contactButton.text = curItem.buttonLabel
         contactButton.icon = context.getDrawable(curItem.buttonIconId)
         contactButton.id = curItem.buttonId
-        if(isInfoButton){
+        if(isInfoButton) {
             val contactInfoButton = holder.infoButton
             addInfoOnClickListener(context, contactInfoButton)
-        }else{
-            addOnclickListeners(context, contactButton)
         }
+        addOnclickListeners(context, contactButton)
 
         return cardView
     }
