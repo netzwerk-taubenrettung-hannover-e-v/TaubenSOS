@@ -47,6 +47,10 @@ class Case(db.Model):
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
+            if key == "injury":
+                value = injury.injury_schema.load(value).data
+            elif key == "media":
+                value = medium.media_schema.load(value).data + self.media
             setattr(self, key, value)
         db.session.commit()
 
