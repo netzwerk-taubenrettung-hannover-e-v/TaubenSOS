@@ -98,6 +98,7 @@
     <string name="record_permission_denied">Permission to record denied</string>
     <string name="error">Error</string>
     <string name="edit">Edit</string>
+    <string name="call_reporter">Call reporter</string>
 
 
 </resources>

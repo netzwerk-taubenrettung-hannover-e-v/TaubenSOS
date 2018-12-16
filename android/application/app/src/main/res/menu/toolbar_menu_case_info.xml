@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
+        android:id="@+id/toolbar_call_button"
+        android:icon="@drawable/ic_phone"
+        android:title="@string/call_reporter"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/toolbar_report_button"
         android:icon="@drawable/ic_report_white_24dp"
         android:title="@string/report_pigeon"

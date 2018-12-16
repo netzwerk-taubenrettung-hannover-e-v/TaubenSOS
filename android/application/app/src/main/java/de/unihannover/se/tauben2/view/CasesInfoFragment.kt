@@ -1,9 +1,9 @@
 package de.unihannover.se.tauben2.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,7 +47,19 @@ class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
             }
 
         }
+
+        setHasOptionsMenu(true)
         return v
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.toolbar_menu_case_info, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == R.id.toolbar_call_button)
+            activity?.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(mBinding.c?.phone)))
+        return super.onOptionsItemSelected(item)
     }
 
 //    override fun onChanged(location: Location?) {

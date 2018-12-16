@@ -105,8 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     // Add "Report a Dove"-Btn to the Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.toolbar_menu, menu)
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
