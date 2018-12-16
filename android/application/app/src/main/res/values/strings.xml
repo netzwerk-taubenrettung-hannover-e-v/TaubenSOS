@@ -30,7 +30,7 @@
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
 
-    <string name ="long_duration">%d days, %02d minutes, %02d seconds</string>
+    <string name ="long_duration">%d days, %02d hours, %02d minutes</string>
     <string name ="short_duration">%d hours, %02d minutes, %02d seconds</string>
     
     <plurals name="second">

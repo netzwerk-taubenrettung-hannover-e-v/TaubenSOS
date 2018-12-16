@@ -21,7 +21,7 @@
     </custom_fragment>
     <custom_fragment
         android:id="@+id/casesInfoFragment"
-        android:name="de.unihannover.se.tauben2.view.CasesInfoFragment"
+        android:name="de.unihannover.se.tauben2.view.CaseInfoFragment"
         android:label="CasesInfoFragment" />
     <custom_fragment
         android:id="@+id/graphsFragment"

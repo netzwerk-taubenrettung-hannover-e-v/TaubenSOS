@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,10 +22,13 @@ import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
+import de.unihannover.se.tauben2.filter
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Permission
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
