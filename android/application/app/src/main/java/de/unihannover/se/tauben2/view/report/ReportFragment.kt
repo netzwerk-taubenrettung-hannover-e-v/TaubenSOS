@@ -31,8 +31,6 @@ open class ReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCreatedCase = (activity as ReportActivity).case
-
-        mCreatedCase?.media = listOf()
     }
 
     override fun onResume() {
@@ -56,7 +54,9 @@ open class ReportFragment : Fragment() {
                 }
                 // Edit Case
                 else {
-                    it.updateCase(case)
+                    val mediaFiles = readAsRaw(case.media)
+
+                    it.updateCase(case, mediaFiles)
                     // existing images inside the case are already saved as URLs!
                     Log.d("EDIT CASE", "case edited: $case")
                 }
@@ -66,11 +66,13 @@ open class ReportFragment : Fragment() {
 
     private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
         val files: MutableList<ByteArray> = mutableListOf()
+
         for (name in fileNames) {
             val fileStream = context?.openFileInput(name.substringAfterLast("/"))
             val file = IOUtils.readInputStreamFully(fileStream)
             files.add(file)
         }
+
         return files
     }
 
@@ -131,5 +133,6 @@ open class ReportFragment : Fragment() {
             }
         }
     }
+
 
 }
