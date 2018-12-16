@@ -25,9 +25,7 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
-        if(drawable == null)
-            return
-
+        if(drawable == null) return
         this.setOnClickListener {
             zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
         }

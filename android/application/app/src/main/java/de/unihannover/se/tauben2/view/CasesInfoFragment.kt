@@ -4,6 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +16,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.model.entity.Case
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
+import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 
 
@@ -44,6 +48,13 @@ class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
             v.recycler_injuries.apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                 adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
+            }
+
+            v.btn_edit.setOnClickListener {
+                // send case to ReportActivity
+                val intent = Intent(activity, ReportActivity::class.java)
+                intent.putExtra("case", case)
+                startActivity(intent)
             }
 
         }
@@ -79,11 +90,12 @@ class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
 
 //    override fun onResume() {
 //        super.onResume()
-//        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this, this)
+//        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this,s this)
 //    }
 //
 //    override fun onPause() {
 //        super.onPause()
 //        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
 //    }
+
 }

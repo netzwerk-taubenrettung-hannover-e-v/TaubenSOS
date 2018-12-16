@@ -14,11 +14,11 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReport02Binding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_report02.view.*
-import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 
 class Report02Fragment : Fragment() {
 
@@ -35,13 +35,13 @@ class Report02Fragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentReport02Binding>(inflater, R.layout.fragment_report02, container, false)
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
+        mCreatedCase = arguments?.getParcelable(Report00Fragment.CREATED_CASE_KEY)
         mCreatedCase?.let {
             binding.createdCase = it
         }
 
         binding.root.report_prev_step_button.setOnClickListener {
-            Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.report01Fragment)
+            Navigation.findNavController(context as Activity, R.id.report_nav_host).navigate(R.id.report01Fragment)
         }
 
         binding.root.report_send_button.setOnClickListener {
@@ -57,19 +57,11 @@ class Report02Fragment : Fragment() {
         mCreatedCase?.let { case ->
             caseViewModel?.let {
 
-                // TODO replace with actual pictures!
-                // sample pictures for testing picture upload
-                val bigPigeonStream = resources.openRawResource(R.raw.big_pigeon)
-                val bigPigeon = IOUtils.toByteArray(bigPigeonStream)
+                val mediaFiles = readAsRaw(case.media)
 
-                val twoPigeonsStream = resources.openRawResource(R.raw.pigeon_times_two)
-                val twoPigeons = IOUtils.toByteArray(twoPigeonsStream)
 
-                val pigeonGangStream = resources.openRawResource(R.raw.pigeon_gang)
-                val pigeonGang = IOUtils.toByteArray(pigeonGangStream)
+                it.sendCase(case, mediaFiles)
 
-                case.media = listOf("big_pigeon.jpg", "pigeon_times_two.jpg", "pigeon_gang.jpg")
-                it.sendCase(case, listOf(bigPigeon, twoPigeons, pigeonGang))
                 Log.d(LOG_TAG, "Sent case: $case")
                 setSnackBar(view, "Case sent successfully.")
 
@@ -78,5 +70,15 @@ class Report02Fragment : Fragment() {
                 controller.navigate(R.id.newsFragment)
             }
         }
+    }
+
+    private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
+        val files: MutableList<ByteArray> = mutableListOf()
+        for (name in fileNames) {
+            val fileStream = context?.openFileInput(name)
+            val file = IOUtils.readInputStreamFully(fileStream)
+            files.add(file)
+        }
+        return files
     }
 }
