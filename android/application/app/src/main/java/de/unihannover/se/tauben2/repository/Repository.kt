@@ -130,8 +130,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * Updates case on server via PUT request
      * @param case the case with updated values
      */
-    fun updateCase(case: Case) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+    fun updateCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
         override fun saveCallResult(resultData: Case) {
+            // TODO somehow figure out a good way to update pictures
+            //uploadPictures(mediaItems, uploadUrls)
+
             database.caseDao().insertOrUpdate(resultData)
         }
 

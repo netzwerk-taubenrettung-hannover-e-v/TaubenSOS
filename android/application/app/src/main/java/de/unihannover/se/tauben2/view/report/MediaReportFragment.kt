@@ -18,21 +18,21 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
+import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.SquareImageView
 import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report_media.view.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import com.squareup.picasso.Picasso
-import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.SquareImageView
 
 class MediaReportFragment : ReportFragment() {
 
-    private lateinit var v : View
+    private lateinit var v: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -41,6 +41,9 @@ class MediaReportFragment : ReportFragment() {
         pagePos = PagePos.FIRST
         if (mCreatedCase == null) mCreatedCase = Case.getCleanInstance()
         setBtnListener(R.id.fragment_report_location, null)
+
+        // clear case media entry for adding filenames for request
+        mCreatedCase?.media = listOf()
 
         Log.d("CURRENT CASE", mCreatedCase.toString())
         createBlankImages(v)
@@ -98,7 +101,7 @@ class MediaReportFragment : ReportFragment() {
                 ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
-            mCreatedCase!!.media += absolutePath
+            mCreatedCase!!.media += absolutePath.getFileName()
         }
     }
 
@@ -120,7 +123,8 @@ class MediaReportFragment : ReportFragment() {
 
             if (image is SquareImageView && i < mCreatedCase!!.media.size) {
 
-                val imageLink = mCreatedCase!!.media[i]
+                val imageLink = context?.getFileStreamPath(mCreatedCase!!.media[i])?.absolutePath
+
 
                 if (URLUtil.isValidUrl(imageLink)) Picasso.get().load(imageLink).into(image)
                 else Picasso.get().load(File(imageLink)).into(image)
@@ -130,9 +134,9 @@ class MediaReportFragment : ReportFragment() {
         }
     }
 
-    private fun deleteImage (image : SquareImageView) {
+    private fun deleteImage(image: SquareImageView) {
         for (i in 0 until v.image_layout!!.childCount) {
-            if ((v.image_layout!!.getChildAt(i) as ConstraintLayout).getChildAt(0) == image ) {
+            if ((v.image_layout!!.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
                 (mCreatedCase!!.media as MutableList<String>).removeAt(i)
             }
         }
@@ -181,6 +185,13 @@ class MediaReportFragment : ReportFragment() {
                 deleteImage(image)
             }
         }
+    }
+
+    /**
+     * Helper function for extracting the filename to a given filepath
+     **/
+    private fun String.getFileName(): String {
+        return this.substringAfterLast("/")
     }
 
 }
