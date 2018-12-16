@@ -1,8 +1,9 @@
 package de.unihannover.se.tauben2.view
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 
 
-class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
+class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
 
     private lateinit var mBinding: FragmentCaseInfoBinding
 
@@ -57,6 +58,44 @@ class CasesInfoFragment: Fragment()/*, Observer<Location?>*/ {
             }
 
         }
+
+        setHasOptionsMenu(true)
         return v
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.findItem(R.id.toolbar_call_button)?.isVisible = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == R.id.toolbar_call_button)
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.c?.phone)))
+        return super.onOptionsItemSelected(item)
+    }
+
+//    override fun onChanged(location: Location?) {
+//        if(location == null)
+//            return
+//        view?.let {
+//            mBinding.c?.let {case ->
+//                val caseLoc = Location("").apply {
+//                    latitude = case.latitude
+//                    longitude = case.longitude
+//                }
+//                val res = ((Math.round(location.distanceTo(caseLoc)/10))/100.0).toString() + " km"
+////                it.distance_text.text = res
+//            }
+//        }
+//    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        getViewModel(LocationViewModel::class.java)?.observeCurrentLocation(this,s this)
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(this)
+//    }
+
 }

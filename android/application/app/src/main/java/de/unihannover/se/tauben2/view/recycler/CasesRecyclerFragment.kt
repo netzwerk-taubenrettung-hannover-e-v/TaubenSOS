@@ -51,7 +51,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
             Picasso.get().load(if(data.media.isEmpty()) null else data.media[0])
                     .placeholder(R.drawable.ic_logo_48dp)
-                    .into(binding.root.findViewById<ImageView>(R.id.image_card))
+                    .into(binding.root.image_card)
 
             binding.root.setOnClickListener {
                 val bundle = Bundle()

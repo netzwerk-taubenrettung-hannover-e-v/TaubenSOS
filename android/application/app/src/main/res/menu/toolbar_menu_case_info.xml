@@ -6,8 +6,7 @@
         android:id="@+id/toolbar_call_button"
         android:icon="@drawable/ic_phone"
         android:title="@string/call_reporter"
-        app:showAsAction="ifRoom"
-        android:visible="false"
+        app:showAsAction="always"
         />
 
     <item
