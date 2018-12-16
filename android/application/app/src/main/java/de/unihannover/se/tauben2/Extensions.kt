@@ -115,5 +115,9 @@ fun getLowSpaceDurationString(time: Long): String {
         return App.context.resources.getQuantityString(R.plurals.hour, hours, hours)
     val days   = (hours / 24.0).toInt()
     return App.context.resources.getQuantityString(R.plurals.day, days, days)
+}
 
+fun getDpValue(dpValue: Int): Int {
+    val d = App.context.resources.displayMetrics.density
+    return (dpValue * d).toInt()
 }

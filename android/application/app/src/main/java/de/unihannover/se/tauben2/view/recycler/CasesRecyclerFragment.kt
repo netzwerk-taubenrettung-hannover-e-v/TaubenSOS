@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
 

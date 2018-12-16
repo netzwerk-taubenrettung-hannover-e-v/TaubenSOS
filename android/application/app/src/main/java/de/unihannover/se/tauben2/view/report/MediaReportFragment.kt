@@ -19,7 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report_media.view.*
 import java.io.File

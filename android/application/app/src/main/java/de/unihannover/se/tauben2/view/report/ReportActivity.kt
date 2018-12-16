@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_report.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.MapView
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import kotlinx.android.synthetic.main.toolbar_report.*
 import kotlinx.android.synthetic.main.toolbar_report.view.*
 

@@ -107,5 +107,7 @@
     <string name="report_explanation">In order to provide the injured dove with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="other">Other</string>
+    <string name="no_specification">No specification</string>
 
 </resources>

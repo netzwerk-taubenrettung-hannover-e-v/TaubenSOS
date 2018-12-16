@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
 import de.unihannover.se.tauben2.model.MapMarkable
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
 import com.google.maps.android.heatmaps.Gradient
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
@@ -92,7 +92,8 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
                             val filter = mMarkers.filter { it.value == clickedMarker }
                             if(filter.size == 1) {
-                                val case = filter.keys.toList()[0] as? Case ?: return@setOnInfoWindowClickListener
+                                val case = filter.keys.toList()[0] as? Case
+                                        ?: return@setOnInfoWindowClickListener
 
                                 val bundle = Bundle()
                                 bundle.putParcelable("case", case)

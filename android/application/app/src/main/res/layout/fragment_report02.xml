@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="createdCase" type="de.unihannover.se.tauben2.model.entity.Case" />
+        <variable name="createdCase" type="de.unihannover.se.tauben2.model.database.entity.Case" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout

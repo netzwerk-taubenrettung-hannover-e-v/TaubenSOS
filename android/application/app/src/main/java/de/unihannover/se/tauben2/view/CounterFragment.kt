@@ -16,7 +16,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
 import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
 import kotlinx.android.synthetic.main.fragment_counter.*

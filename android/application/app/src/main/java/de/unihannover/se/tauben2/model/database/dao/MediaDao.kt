@@ -1,9 +1,9 @@
-package de.unihannover.se.tauben2.model.dao
+package de.unihannover.se.tauben2.model.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import de.unihannover.se.tauben2.model.entity.Media
+import de.unihannover.se.tauben2.model.database.entity.Media
 
 @Dao
 interface MediaDao: BaseDao<Media> {

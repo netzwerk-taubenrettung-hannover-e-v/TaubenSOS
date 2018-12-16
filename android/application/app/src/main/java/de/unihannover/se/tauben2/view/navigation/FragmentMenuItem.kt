@@ -3,7 +3,7 @@ package de.unihannover.se.tauben2.view.navigation
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import de.unihannover.se.tauben2.model.LimitedAccessible
-import de.unihannover.se.tauben2.model.Permission
+import de.unihannover.se.tauben2.model.database.Permission
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

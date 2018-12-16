@@ -1,18 +1,20 @@
-package de.unihannover.se.tauben2.model
+package de.unihannover.se.tauben2.model.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import de.unihannover.se.tauben2.model.dao.CaseDao
-import de.unihannover.se.tauben2.model.dao.InjuryDao
-import de.unihannover.se.tauben2.model.dao.PigeonCounterDao
-import de.unihannover.se.tauben2.model.dao.UserDao
-import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.InjuryEntity
-import de.unihannover.se.tauben2.model.entity.PigeonCounter
-import de.unihannover.se.tauben2.model.entity.User
+import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
+import de.unihannover.se.tauben2.model.database.converter.StringListConverter
+import de.unihannover.se.tauben2.model.database.dao.CaseDao
+import de.unihannover.se.tauben2.model.database.dao.InjuryDao
+import de.unihannover.se.tauben2.model.database.dao.PigeonCounterDao
+import de.unihannover.se.tauben2.model.database.dao.UserDao
+import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.InjuryEntity
+import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.User
 
 /**
  * class with capability to create and retrieve a RoomDatabase singleton object which represents

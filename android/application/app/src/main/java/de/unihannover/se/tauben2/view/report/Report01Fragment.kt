@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReport01Binding
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.Singleton
 import kotlinx.android.synthetic.main.fragment_report01.*
 import kotlinx.android.synthetic.main.fragment_report01.view.*

@@ -1,9 +1,9 @@
 package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.PigeonCounter
-import de.unihannover.se.tauben2.model.entity.User
+import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.User
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*

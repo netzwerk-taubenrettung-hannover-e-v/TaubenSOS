@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.model.dao
+package de.unihannover.se.tauben2.model.database.dao
 
 import androidx.room.Delete
 import androidx.room.Insert

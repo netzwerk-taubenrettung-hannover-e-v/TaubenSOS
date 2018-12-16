@@ -6,7 +6,7 @@
 
         <variable
             name="createdCase"
-            type="de.unihannover.se.tauben2.model.entity.Case" />
+            type="de.unihannover.se.tauben2.model.database.entity.Case" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

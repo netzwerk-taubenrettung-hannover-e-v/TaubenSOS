@@ -4,7 +4,7 @@
 
     <data>
         <import type="de.unihannover.se.tauben2.ExtensionsKt" />
-        <variable name="c" type="de.unihannover.se.tauben2.model.entity.Case" />
+        <variable name="c" type="de.unihannover.se.tauben2.model.database.entity.Case" />
     </data>
 
 
@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         style="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:textColor="@color/White"
-                        android:text="@{@string/case_id(c.caseID), default=20180000}" />
+                        android:text="@{@string/case_id(c.caseID) + `, `+ @string/priority(c.priority), default=20180000}" />
 
                     <TextView
                         android:id="@+id/text_title"
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/White"
-                        android:text="@{@string/priority(c.priority), default=Priority}"
+                        android:text="@{c.pigeonBreed.title, default=`Carrier Pigeon`}"
                         />
 
                     <TextView

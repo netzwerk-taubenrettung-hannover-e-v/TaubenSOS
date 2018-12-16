@@ -13,7 +13,7 @@ import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReport02Binding
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator

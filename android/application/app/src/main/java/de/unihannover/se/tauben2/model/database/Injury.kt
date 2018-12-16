@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.model
+package de.unihannover.se.tauben2.model.database
 
 import android.os.Parcelable
 import de.unihannover.se.tauben2.App

@@ -1,17 +1,15 @@
-package de.unihannover.se.tauben2.model.entity
+package de.unihannover.se.tauben2.model.database.entity
 
 import android.graphics.Color
 import android.os.Parcelable
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.model.Injury
+import de.unihannover.se.tauben2.model.database.Injury
 import de.unihannover.se.tauben2.model.MapMarkable
+import de.unihannover.se.tauben2.model.database.PigeonBreed
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
 
@@ -48,6 +46,10 @@ data class Case(@PrimaryKey var caseID: Int?,
 
 ) : RecyclerItem, MapMarkable, Parcelable {
 
+    fun getPigeonBreed() = PigeonBreed.fromString(breed)
+
+    fun setPigeonBreed(pigeonBreed: PigeonBreed) = PigeonBreed.fromPigeonBreed(pigeonBreed)
+
     companion object {
         @Ignore
         fun getCleanInstance() = Case(null, null, null, 0.0, 0.0, null, null, -1, -1,
@@ -76,4 +78,24 @@ data class Case(@PrimaryKey var caseID: Int?,
             color = if (rescuer != null) Color.parseColor("#80ffea00") else Color.parseColor("#80d50000")
         return color
     }
+
+
+    // Functions needed for two way data binding
+
+//    fun isCarrier() = breed == PigeonBreed.CARRIER
+
+//    fun setCarrier(value: Boolean) {
+//        breed = if(value)
+//            PigeonBreed.CARRIER
+//        else
+//            PigeonBreed.NO_SPECIFICATION
+//    }
+//
+//    fun isCommonWood() = breed == PigeonBreed.COMMON_WOOD
+//
+//    fun isFeral() = breed == PigeonBreed.FERAL
+//
+//    fun isFancy() = breed == PigeonBreed.FANCY
+//
+//    fun hasNoSpecification() = breed == PigeonBreed.NO_SPECIFICATION
 }

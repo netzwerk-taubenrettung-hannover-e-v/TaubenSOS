@@ -9,7 +9,7 @@ import androidx.navigation.Navigation
 import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 

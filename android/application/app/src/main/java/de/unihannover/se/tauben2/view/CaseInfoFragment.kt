@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
 import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.fragment_case_info.view.*

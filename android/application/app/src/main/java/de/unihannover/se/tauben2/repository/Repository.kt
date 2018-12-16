@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.model.LocalDatabase
-import de.unihannover.se.tauben2.model.entity.Case
-import de.unihannover.se.tauben2.model.entity.PigeonCounter
-import de.unihannover.se.tauben2.model.entity.User
+import de.unihannover.se.tauben2.model.database.LocalDatabase
+import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.RequestBody

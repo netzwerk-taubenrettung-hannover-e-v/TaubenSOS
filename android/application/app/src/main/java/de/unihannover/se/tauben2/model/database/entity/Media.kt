@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.model.entity
+package de.unihannover.se.tauben2.model.database.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

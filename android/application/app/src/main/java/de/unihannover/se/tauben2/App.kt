@@ -3,7 +3,7 @@ package de.unihannover.se.tauben2
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import de.unihannover.se.tauben2.model.Permission
+import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.network.LiveDataCallAdapterFactory
 import de.unihannover.se.tauben2.model.network.NetworkService
 import retrofit2.Retrofit
