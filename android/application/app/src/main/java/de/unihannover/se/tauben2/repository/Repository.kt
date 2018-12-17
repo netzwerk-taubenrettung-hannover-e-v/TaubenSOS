@@ -2,7 +2,6 @@ package de.unihannover.se.tauben2.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.database.LocalDatabase
@@ -10,7 +9,6 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
-import de.unihannover.se.tauben2.model.network.Resource
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -113,36 +111,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * the api doesn't accept are set to null
      */
     fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
-        override fun saveCallResult(resultData: Case) {
-            // update db
-            //database.caseDao().insertOrUpdate(resultData)
 
-            // amazon urls for upload
+        override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
+            // amazon upload urls
             val urls = resultData.media
             appExecutors.networkIO().execute {
                 uploadPictures(mediaItems, urls)
             }
 
-            // update case in db, fetch from server
-            resultData.caseID?.let {
-                appExecutors.mainThread().execute {
-                    val newCase = getCase(it)
-                    newCase.observeForever(object : Observer<Resource<Case>> {
-                        override fun onChanged(t: Resource<Case>?) {
-                            appExecutors.diskIO().execute {
-                                t?.data?.let { case ->
-                                    database.caseDao().insertOrUpdate(case)
-                                    // data successfully added to database, can remove observer
-                                    appExecutors.mainThread().execute {
-                                        newCase.removeObserver(this)
-                                    }
-                                }
-                            }
-                        }
+            resultData.caseID?.let { return getCase(it) }
+            throw Exception("Couldn't fetch updated case from server!")
+        }
 
-                    })
-                }
-            }
+        override fun saveUpdatedData(updatedData: Case) {
+            database.caseDao().insertOrUpdate(updatedData)
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -156,11 +138,15 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case the case with updated values
      */
     fun updateCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
-        override fun saveCallResult(resultData: Case) {
+        override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // TODO somehow figure out a good way to update pictures
-            //uploadPictures(mediaItems, uploadUrls)
+            resultData.caseID?.let { return getCase(it) }
+            throw Exception("Couldn't fetch updated case from server!")
+        }
 
-            database.caseDao().insertOrUpdate(resultData)
+        override fun saveUpdatedData(updatedData: Case) {
+
+            database.caseDao().insertOrUpdate(updatedData)
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -186,23 +172,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             throw Exception("Case id must not be null!")
         }
     }.send(case)
-
-    /**
-     * Sends a PigeonCounter object to the server
-     * @param pigeonCounter PigeonCounter object to be sent
-     */
-    fun sendPigeonCounter(pigeonCounter: PigeonCounter) =
-    // TODO update Unit with actual return type when known (this will most likely be Void)
-            object : AsyncDataRequest<Unit, PigeonCounter>(appExecutors) {
-                override fun saveCallResult(resultData: Unit) {
-                    // nothing to save yet
-                }
-
-                override fun createCall(requestData: PigeonCounter): LiveDataRes<Unit> {
-                    return service.sendPigeonCounter(requestData)
-                }
-
-            }.send(pigeonCounter)
 
 
     /**

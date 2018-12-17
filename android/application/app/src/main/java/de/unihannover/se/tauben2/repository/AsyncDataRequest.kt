@@ -23,24 +23,22 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
             override fun onChanged(response: Resource<ResultType>?) {
                 response?.let { resp ->
                     if (resp.status.isSuccessful()) {
-                        appExecutors.diskIO().execute {
-                            val result = resp.data
-                            result?.let {
-                                saveCallResult(it)
-                                Log.d(LOG_TAG, "inserted $it into db")
-
-                                // data successfully added to database, can remove observer
-                                appExecutors.mainThread().execute {
-                                    apiResponse.removeObserver(this)
-                                }
+                        val result = resp.data
+                        result?.let {
+                            updateData(it)
+                            appExecutors.mainThread().execute {
+                                apiResponse.removeObserver(this)
                             }
                         }
+
                     } else if (resp.hasError()) {
                         if (resp.message == null)
                             Log.e(LOG_TAG, "An unknown error occurred.")
                         else
                             Log.e(LOG_TAG, resp.message)
 
+                    } else {
+                        // why do I need to do that
                     }
                 }
             }
@@ -48,10 +46,46 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
     }
 
     /**
-     * saves the server's answer to the database
-     * @param resultData data received from server
+     * Fetches the updated item from server and inserts it into the local database
+     * This is necessary because the server's response for a case only contains the upload urls
+     * but not the host urls for pictures
      */
-    protected abstract fun saveCallResult(resultData: ResultType)
+    private fun updateData(resultData: ResultType) {
+        // update case in db, fetch from server
+
+        val newItem = fetchUpdatedData(resultData)
+        newItem.observeForever(object : Observer<Resource<ResultType>> {
+            override fun onChanged(response: Resource<ResultType>?) {
+                appExecutors.diskIO().execute {
+                    response?.let { resp ->
+                        if (resp.status.isSuccessful()) {
+                            resp.data?.let { saveUpdatedData(it) }
+                            // data successfully added to database, can remove observer
+                            appExecutors.mainThread().execute {
+                                newItem.removeObserver(this)
+                            }
+                        } else if (resp.hasError()) {
+                            Log.e(LOG_TAG, resp.message)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * fetches an instance of the item to be updated or created in db based on information from
+     * resultData
+     * @param resultData data received from server
+     * @return
+     */
+    protected abstract fun fetchUpdatedData(resultData: ResultType): LiveDataRes<ResultType>
+
+    /**
+     * saves the server's answer to the database
+     * @param updatedData data received from server
+     */
+    protected abstract fun saveUpdatedData(updatedData: ResultType)
 
     /**
      * creates the api call
