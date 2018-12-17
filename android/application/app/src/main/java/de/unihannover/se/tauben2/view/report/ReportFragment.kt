@@ -66,15 +66,14 @@ open class ReportFragment : Fragment() {
 
     private fun readAsRaw(fileNames: List<String>): List<ByteArray> {
         val files: MutableList<ByteArray> = mutableListOf()
-
         for (name in fileNames) {
-            val fileStream = context?.openFileInput(name.substringAfterLast("/"))
+            val fileStream = context?.openFileInput(name)
             val file = IOUtils.readInputStreamFully(fileStream)
             files.add(file)
         }
-
         return files
     }
+
 
     private fun deleteCase() {
         val caseViewModel = getViewModel(CaseViewModel::class.java)
