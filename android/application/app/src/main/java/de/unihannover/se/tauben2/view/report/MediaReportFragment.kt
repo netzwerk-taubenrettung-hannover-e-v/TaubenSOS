@@ -22,7 +22,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
-import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
@@ -118,7 +117,6 @@ class MediaReportFragment : ReportFragment() {
                 val imageName = media[media.lastIndex]
                 compressImage(imageName, 80, 1000, 1000)
             }
-
             loadImages()
         }
     }
@@ -213,13 +211,38 @@ class MediaReportFragment : ReportFragment() {
      * @param height new height of the image
      */
     private fun compressImage(fileName: String, quality: Int, width: Int, height: Int) {
-        AppExecutors.INSTANCE.diskIO().execute {
-            val rawImage = context?.getFileStreamPath(fileName)?.absolutePath
-            val bitmap = BitmapFactory.decodeFile(rawImage)
-            val resized = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            val fileOutStream = context?.openFileOutput(fileName, Context.MODE_PRIVATE)
-            resized.compress(Bitmap.CompressFormat.JPEG, quality, fileOutStream)
+        val rawImage = context?.getFileStreamPath(fileName)?.absolutePath
+
+        val resized = BitmapFactory.Options().run {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(rawImage, this)
+
+            inSampleSize = calculateInSampleSize(this, width, height)
+            inJustDecodeBounds = false
+
+            BitmapFactory.decodeFile(rawImage, this)
         }
+
+        val fileOutStream = context?.openFileOutput(fileName, Context.MODE_PRIVATE)
+        resized.compress(Bitmap.CompressFormat.JPEG, quality, fileOutStream)
+    }
+
+    /**
+     * calculate in sample size parameter for loading a scaled bitmap into memory
+     */
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val (height: Int, width: Int) = options.run { outHeight to outWidth }
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
     }
 
 }
