@@ -31,6 +31,8 @@ open class ReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCreatedCase = (activity as ReportActivity).case
+        // clear case media entry for adding filenames for request
+        mCreatedCase?.media = listOf()
     }
 
     override fun onResume() {

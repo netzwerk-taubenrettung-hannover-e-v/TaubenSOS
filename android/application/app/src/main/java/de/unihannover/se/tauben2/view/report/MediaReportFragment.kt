@@ -45,9 +45,6 @@ class MediaReportFragment : ReportFragment() {
         if (mCreatedCase == null) mCreatedCase = Case.getCleanInstance()
         setBtnListener(R.id.fragment_report_location, null)
 
-        // clear case media entry for adding filenames for request
-        mCreatedCase?.media = listOf()
-
         Log.d("CURRENT CASE", mCreatedCase.toString())
         createBlankImages(v)
         loadImages()
