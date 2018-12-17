@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.database.LocalDatabase
@@ -9,6 +10,7 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
+import de.unihannover.se.tauben2.model.network.Resource
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -113,11 +115,34 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
         override fun saveCallResult(resultData: Case) {
             // update db
-            database.caseDao().insertOrUpdate(resultData)
+            //database.caseDao().insertOrUpdate(resultData)
 
             // amazon urls for upload
             val urls = resultData.media
-            uploadPictures(mediaItems, urls)
+            appExecutors.networkIO().execute {
+                uploadPictures(mediaItems, urls)
+            }
+
+            // update case in db, fetch from server
+            resultData.caseID?.let {
+                appExecutors.mainThread().execute {
+                    val newCase = getCase(it)
+                    newCase.observeForever(object : Observer<Resource<Case>> {
+                        override fun onChanged(t: Resource<Case>?) {
+                            appExecutors.diskIO().execute {
+                                t?.data?.let { case ->
+                                    database.caseDao().insertOrUpdate(case)
+                                    // data successfully added to database, can remove observer
+                                    appExecutors.mainThread().execute {
+                                        newCase.removeObserver(this)
+                                    }
+                                }
+                            }
+                        }
+
+                    })
+                }
+            }
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -201,6 +226,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             call.enqueue(object : Callback<Void> {
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d(LOG_TAG, "File upload failed!")
+                    Log.d(LOG_TAG, "Reason: ${t.message}")
                 }
 
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
