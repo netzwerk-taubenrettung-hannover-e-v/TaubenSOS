@@ -111,13 +111,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * the api doesn't accept are set to null
      */
     fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
-        override fun saveCallResult(resultData: Case) {
-            // update db
-            database.caseDao().insertOrUpdate(resultData)
 
-            // amazon urls for upload
+        override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
+            // amazon upload urls
             val urls = resultData.media
-            uploadPictures(mediaItems, urls)
+            appExecutors.networkIO().execute {
+                uploadPictures(mediaItems, urls)
+            }
+
+            resultData.caseID?.let { return getCase(it) }
+            throw Exception("Couldn't fetch updated case from server!")
+        }
+
+        override fun saveUpdatedData(updatedData: Case) {
+            database.caseDao().insertOrUpdate(updatedData)
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -131,11 +138,15 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case the case with updated values
      */
     fun updateCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
-        override fun saveCallResult(resultData: Case) {
+        override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // TODO somehow figure out a good way to update pictures
-            //uploadPictures(mediaItems, uploadUrls)
+            resultData.caseID?.let { return getCase(it) }
+            throw Exception("Couldn't fetch updated case from server!")
+        }
 
-            database.caseDao().insertOrUpdate(resultData)
+        override fun saveUpdatedData(updatedData: Case) {
+
+            database.caseDao().insertOrUpdate(updatedData)
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
@@ -162,23 +173,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }.send(case)
 
-    /**
-     * Sends a PigeonCounter object to the server
-     * @param pigeonCounter PigeonCounter object to be sent
-     */
-    fun sendPigeonCounter(pigeonCounter: PigeonCounter) =
-    // TODO update Unit with actual return type when known (this will most likely be Void)
-            object : AsyncDataRequest<Unit, PigeonCounter>(appExecutors) {
-                override fun saveCallResult(resultData: Unit) {
-                    // nothing to save yet
-                }
-
-                override fun createCall(requestData: PigeonCounter): LiveDataRes<Unit> {
-                    return service.sendPigeonCounter(requestData)
-                }
-
-            }.send(pigeonCounter)
-
 
     /**
      * Helper function for uploading media files to their corresponding upload urls
@@ -201,6 +195,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             call.enqueue(object : Callback<Void> {
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d(LOG_TAG, "File upload failed!")
+                    Log.d(LOG_TAG, "Reason: ${t.message}")
                 }
 
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
