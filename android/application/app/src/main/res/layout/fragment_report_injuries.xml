@@ -19,20 +19,21 @@
             android:id="@+id/report_injury_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/specify_injuries"
-            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/report_injury_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
+            android:orientation="vertical"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_00"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -49,13 +50,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.footOrLeg}"
                 android:text="@string/injury_foot_leg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_01"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -63,13 +62,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.wing}"
                 android:text="@string/injury_wings"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_00" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_02"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -77,13 +74,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.headOrEye}"
                 android:text="@string/injury_head_eye"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_01" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_03"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -91,13 +86,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.paralyzedOrFlightless}"
                 android:text="@string/injury_paralyzed_flightless"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_02" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_04"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -105,13 +98,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.openWound}"
                 android:text="@string/injury_open_wound"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_03" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_05"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -119,13 +110,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.strappedFeet}"
                 android:text="@string/injury_strings_feet"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_04" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_06"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -133,13 +122,11 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.fledgling}"
                 android:text="@string/injury_fledgling"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_05" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <CheckBox
                 android:id="@+id/report_injury_checkBox_07"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -147,11 +134,9 @@
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="@={createdCase.injury.other}"
                 android:text="@string/injury_other"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/report_injury_checkBox_06" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

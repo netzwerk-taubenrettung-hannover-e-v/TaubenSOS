@@ -170,7 +170,7 @@ class MediaReportFragment : ReportFragment() {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
 
             val button = ImageButton(view.context)
-            button.setImageResource(R.drawable.ic_close_black_24dp)
+            button.setImageResource(R.drawable.ic_close)
             button.setPadding(0, 0, 0, 0)
             button.background = ColorDrawable(Color.TRANSPARENT)
             button.id = View.generateViewId()

@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.report
 
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,9 @@ class BreedReportFragment : ReportFragment() {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             buttonTintList = csList
             isChecked = breed == mCreatedCase?.getPigeonBreed()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
+            }
             setOnClickListener { if(this.isChecked) mCreatedCase?.setPigeonBreed(breed) }
         }
         mBinding.root.radio_group.addView(button)

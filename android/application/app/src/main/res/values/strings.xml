@@ -112,5 +112,9 @@
         fledgling on the ground. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
     <string name="other">Other</string>
     <string name="no_specification">No specification</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="selected_position">Selected position</string>
+    <string name="delete">Delete</string>
 
 </resources>
