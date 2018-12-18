@@ -10,7 +10,7 @@ bp = Blueprint("stats", __name__, url_prefix="/api")
 @bp.route("/stats", methods=["GET"], strict_slashes=False)
 def get_closed_cases():
 	"""
-	file: ../../docs/stats/get_closed_cases.yml
+	file: ../../docs/stats/read_closed_cases.yml
 	"""
 	if request.method == "GET":
 		data = request.get_json()
