@@ -1,7 +1,10 @@
 package de.unihannover.se.tauben2.repository
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.database.LocalDatabase
@@ -25,6 +28,8 @@ import retrofit2.Response
  */
 class Repository(private val database: LocalDatabase, private val service: NetworkService, private val appExecutors: AppExecutors = AppExecutors.INSTANCE) {
 
+    private val sp = App.context.getSharedPreferences("tauben2", Context.MODE_PRIVATE)
+
     companion object {
         private val LOG_TAG = Repository::class.java.simpleName
     }
@@ -32,10 +37,15 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
             database.caseDao().insertOrUpdate(item)
+            sp.edit().apply {
+                putLong("caseLastLoaded", System.currentTimeMillis())
+                apply()
+            }
         }
 
         override fun shouldFetch(data: List<Case>?): Boolean {
-            return true
+            // 15 min
+            return System.currentTimeMillis() - sp.getLong("caseLastLoaded", 0) > 900000
         }
 
         override fun loadFromDb(): LiveData<List<Case>> {

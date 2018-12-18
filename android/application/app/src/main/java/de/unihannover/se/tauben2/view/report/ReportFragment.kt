@@ -11,6 +11,7 @@ import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.setRightIcon
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 
@@ -115,23 +116,26 @@ open class ReportFragment : Fragment() {
         return true
     }
 
-    // dis is shit - TODO do it nice-etly
     private fun setButtonStyle() {
 
         when (pagePos) {
             PagePos.FIRST -> {
-                (activity as ReportActivity).prev_btn.text = "Cancel"
-                (activity as ReportActivity).prev_btn.icon = null
+                (activity as ReportActivity).prev_btn.text = getString(R.string.cancel)
+                (activity as ReportActivity).prev_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_close)
+                (activity as ReportActivity).next_btn.text = getString(R.string.next)
+                (activity as ReportActivity).next_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_right_white_24dp)
             }
             PagePos.BETWEEN -> {
-                (activity as ReportActivity).prev_btn.text = "Back"
+                (activity as ReportActivity).prev_btn.text = getString(R.string.back)
                 (activity as ReportActivity).prev_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_left_white_24dp)
-                (activity as ReportActivity).next_btn.text = "Next"
+                (activity as ReportActivity).next_btn.text = getString(R.string.next)
                 (activity as ReportActivity).next_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_right_white_24dp)
             }
             PagePos.LAST -> {
-                (activity as ReportActivity).next_btn.text = "Finish"
-                (activity as ReportActivity).next_btn.icon = null
+                (activity as ReportActivity).next_btn.text = getString(R.string.send)
+                (activity as ReportActivity).next_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_done)
+                (activity as ReportActivity).prev_btn.text = getString(R.string.back)
+                (activity as ReportActivity).prev_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_left_white_24dp)
             }
         }
     }

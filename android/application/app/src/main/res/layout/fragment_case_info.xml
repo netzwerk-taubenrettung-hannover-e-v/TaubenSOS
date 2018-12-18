@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <import type="de.unihannover.se.tauben2.ExtensionsKt" />
         <variable name="c" type="de.unihannover.se.tauben2.model.database.entity.Case" />
     </data>
@@ -55,6 +56,8 @@
                         style="@style/TextAppearance.MaterialComponents.Headline4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/White"
                         android:text="@{c.pigeonBreed.title, default=`Carrier Pigeon`}"
                         />
@@ -152,6 +155,17 @@
 
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/delete"
+                android:textColor="@color/Red"
+                app:layout_constraintEnd_toStartOf="@id/btn_edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
@@ -170,6 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@{c.rescuer == null ? @string/take_case : @string/finish_case}"
+                android:visibility="@{c.isClosed() ? View.GONE : View.VISIBLE}"
                 android:backgroundTint="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

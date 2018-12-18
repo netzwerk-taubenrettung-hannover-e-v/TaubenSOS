@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.fragment_recyler_view.view.*
+import android.view.animation.AnimationUtils.loadAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+
 
 abstract class RecyclerFragment<Data : RecyclerItem>(val hasDivider: Boolean = false, val orientation: Int = RecyclerView.VERTICAL): Fragment(), Observer<List<Data>> {
 

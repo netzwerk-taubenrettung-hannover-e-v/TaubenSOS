@@ -1,22 +1,27 @@
 package de.unihannover.se.tauben2.view
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
+import de.unihannover.se.tauben2.filter
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
 import de.unihannover.se.tauben2.view.report.ReportActivity
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 
 
@@ -29,34 +34,63 @@ class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_case_info, container, false)
         val v = mBinding.root
 
-        arguments?.getParcelable<Case>("case")?.let { case ->
-            mBinding.c = case
+        arguments?.getParcelable<Case>("case")?.let { argumentCase ->
+            getViewModel(CaseViewModel::class.java)?.cases?.filter { it.caseID == argumentCase.caseID }?.observe(this, LoadingObserver({
+                if(it.size == 1) {
+                    val case = it[0]
+                    mBinding.c = case
 
-            val firstImage = Picasso.get().load(if (case.media.isEmpty()) null else case.media[0])
-            firstImage.into(v.image_header)
+                    val firstImage = Picasso.get().load(if (case.media.isEmpty()) null else case.media[0])
+                    firstImage.into(v.image_header)
 
-            for (i in 0 until v.layout_media.childCount) {
-                val image = v.layout_media.getChildAt(i)
-                if (image is SquareImageView) {
-                    Picasso.get().load(if (case.media.size >= i + 1) case.media[i] else null)
-                            .into(image)
-                    image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
+                    for (i in 0 until v.layout_media.childCount) {
+                        val image = v.layout_media.getChildAt(i)
+                        if (image is SquareImageView) {
+                            Picasso.get().load(if (case.media.size >= i + 1) case.media[i] else null)
+                                    .into(image)
+                            image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
+                        }
+                    }
+
+                    val injuryList = case.injury?.toStringList() ?: listOf()
+                    v.recycler_injuries.apply {
+                        layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                        adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
+                    }
+
+                    v.btn_edit.setOnClickListener {
+                        // send case to ReportActivity
+                        val intent = Intent(activity, ReportActivity::class.java)
+                        intent.putExtra("case", case)
+                        startActivity(intent)
+                    }
+
+                    v.btn_delete.setOnClickListener {
+                        context?.let { cxt ->
+                            AlertDialog.Builder(cxt).setTitle("Do you want to delete this case?").setMessage("The case will not be recoverable.")
+                                    .setPositiveButton(R.string.delete) { _, _ ->
+                                        getViewModel(CaseViewModel::class.java)?.deleteCase(case)
+                                        val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                                        controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
+                                        controller.navigate(R.id.casesFragment)
+                                    }.setNegativeButton(R.string.cancel) { di, _ ->
+                                        di.cancel()
+                                    }.show()
+                        }
+                    }
+
+                    v.btn_take.setOnClickListener {
+                        getViewModel(CaseViewModel::class.java)?.let { viewModel ->
+                            if(case.rescuer == null)
+                                case.rescuer = "Taubenhans"
+                            else
+                                case.isClosed = true
+                            case.media = listOf()
+                            viewModel.updateCase(case, listOf())
+                        }
+                    }
                 }
-            }
-
-            val injuryList = case.injury?.toStringList() ?: listOf()
-            v.recycler_injuries.apply {
-                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
-            }
-
-            v.btn_edit.setOnClickListener {
-                // send case to ReportActivity
-                val intent = Intent(activity, ReportActivity::class.java)
-                intent.putExtra("case", case)
-                startActivity(intent)
-            }
-
+            }))
         }
 
         setHasOptionsMenu(true)

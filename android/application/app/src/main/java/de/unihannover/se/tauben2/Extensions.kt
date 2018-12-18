@@ -2,17 +2,20 @@ package de.unihannover.se.tauben2
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.text.format.DateFormat
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.viewmodel.ViewModelFactory
@@ -120,4 +123,8 @@ fun getLowSpaceDurationString(time: Long): String {
 fun getDpValue(dpValue: Int): Int {
     val d = App.context.resources.displayMetrics.density
     return (dpValue * d).toInt()
+}
+
+fun MaterialButton.setRightIcon(end: Drawable?) {
+    TextViewCompat.setCompoundDrawablesRelative(this, null, null, end, null)
 }

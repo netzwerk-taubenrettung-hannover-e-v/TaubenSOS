@@ -1,77 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/you_must_be_kidding_fix"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#e6e5e6">
-
-    <fragment
-        android:id="@+id/recycler_fragment"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
+    <FrameLayout
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"/>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior"
+        android:background="@color/White"
         >
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/you_must_be_kidding_fix"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll"
-            >
+            android:background="#e6e5e6">
 
             <fragment
-                android:id="@+id/map_fragment"
-                android:name="de.unihannover.se.tauben2.view.MapViewFragment"
+                android:id="@+id/recycler_fragment"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:name="de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_collapseMode="parallax">
+                android:layout_margin="4dp"/>
 
-                <TextView
-                    android:id="@+id/text_currentCases"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/background_map_button"
-                    android:textColor="#B3000000"
-                    android:text="All cases"
-                    android:textSize="25dp"
-                    app:cornerRadius="2dp"/>
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior"
+                >
 
-            </fragment>
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll"
+                    >
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+                    <fragment
+                        android:id="@+id/map_fragment"
+                        android:name="de.unihannover.se.tauben2.view.MapViewFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_collapseMode="parallax">
 
-    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#66000000"
-        app:clickable_overlay="true"
-        />
+                        <TextView
+                            android:id="@+id/text_currentCases"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/background_map_button"
+                            android:textColor="#B3000000"
+                            android:text="All cases"
+                            android:textSize="25dp"
+                            app:cornerRadius="2dp"/>
 
-    <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/speedDial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:sdMainFabAnimationRotateAngle="360"
-        app:sdMainFabClosedBackgroundColor="@color/colorPrimaryDark"
-        app:sdMainFabClosedSrc="@drawable/ic_filter_list_white_24dp"
-        app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
-        app:sdMainFabOpenedSrc="@drawable/ic_arrow_drop_down_white_24dp"
-        app:sdOverlayLayout="@id/overlay"
-        app:layout_anchor="@id/recycler_fragment"
-        app:layout_anchorGravity="bottom|right|end"/>
+                    </fragment>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+                android:id="@+id/overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000"
+                app:clickable_overlay="true"
+                />
+
+            <com.leinardi.android.speeddial.SpeedDialView
+                android:id="@+id/speedDial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:sdMainFabAnimationRotateAngle="360"
+                app:sdMainFabClosedBackgroundColor="@color/colorPrimaryDark"
+                app:sdMainFabClosedSrc="@drawable/ic_filter_list_white_24dp"
+                app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
+                app:sdMainFabOpenedSrc="@drawable/ic_arrow_drop_down_white_24dp"
+                app:sdOverlayLayout="@id/overlay"
+                app:layout_anchor="@id/recycler_fragment"
+                app:layout_anchorGravity="bottom|right|end"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <ImageView
+            android:id="@+id/image_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+    </FrameLayout>
+</layout>

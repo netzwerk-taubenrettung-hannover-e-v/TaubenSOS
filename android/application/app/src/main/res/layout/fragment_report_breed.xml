@@ -14,14 +14,13 @@
         android:background="#FFFFFF">
 
         <TextView
-            style="@style/RobotoTextViewStyle"
+            style="@style/TextAppearance.MaterialComponents.Body2"
             android:id="@+id/report_special_help"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textSize="18sp"
             android:text="@string/lorem_ipsum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
