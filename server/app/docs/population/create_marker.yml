@@ -1,7 +1,7 @@
 Create a new marker
 ---
 tags:
-  - marker
+  - populationMarker
 parameters:
   - in: body
     name: body

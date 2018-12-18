@@ -13,14 +13,11 @@ def get_Markers():
 	file: ../../docs/population/read_all.yml
 	"""
 	if request.method == "GET":
-		if request.is_json == True:
-			jsonData = request.get_json()
-			data = json.loads(str(jsonData).replace('\'', '\"'))
-			if "lastUpdate" in data:
-				populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(jsonData["lastUpdate"])))
-			else:
-				return jsonify("Json Body has no key lastUpdate"), 400
-		populationMarkers = PopulationMarker.all()
+		data = request.get_json()
+		if data.get("lastUpdate") is not None:
+			populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(data.get("lastUpdate"))))
+		else:
+			populationMarkers = PopulationMarker.all()
 		result = [make_json_marker(populationMarker = p) for p in populationMarkers]
 		return jsonify(result)
 

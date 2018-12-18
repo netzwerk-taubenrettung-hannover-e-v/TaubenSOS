@@ -1,7 +1,7 @@
 Create a new value for a marker
 ---
 tags:
-  - value
+  - populationValue
 parameters:
   - in: body
     name: body

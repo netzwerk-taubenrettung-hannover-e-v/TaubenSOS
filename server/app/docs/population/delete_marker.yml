@@ -1,7 +1,7 @@
 Delete an existing marker
 ---
 tags:
-  - marker
+  - populationMarker
 parameters:
   - in: path
     name: populationMarkerID

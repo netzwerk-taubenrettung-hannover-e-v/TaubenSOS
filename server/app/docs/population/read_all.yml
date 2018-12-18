@@ -1,7 +1,7 @@
 Retrieve all existing markers or only retrieve newly updated ones
 ---
 tags:
-  - marker
+  - populationMarker
 parameters:
   - in: body
     name: lastUpdate
