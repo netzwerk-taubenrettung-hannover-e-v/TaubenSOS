@@ -12,8 +12,10 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
+import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -49,9 +51,17 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
                 binding.root.distance_text_card_value.text = res
             }
 
+
+            val squareImgV = binding.root.image_card
             Picasso.get().load(if(data.media.isEmpty()) null else data.media[0])
                     .placeholder(R.drawable.ic_logo_48dp)
-                    .into(binding.root.image_card)
+                    .into(squareImgV)
+
+            if(squareImgV is SquareImageView && data.media.isNotEmpty()){
+                activity?.let {
+                    squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix))
+                }
+            }
 
             binding.root.setOnClickListener {
                 val bundle = Bundle()
