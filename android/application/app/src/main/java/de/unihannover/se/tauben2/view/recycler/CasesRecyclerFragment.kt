@@ -21,12 +21,18 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_case
 
-    private lateinit var case: Case
     private var mLocation: Location? = null
+
+    //TODO remove workaround
+    var alreadyLoaded: Boolean = false
+
 
     private val locationObserver = Observer<Location?> {
         mLocation = it
-        notifyDataSetChanged()
+        if(!alreadyLoaded) {
+            notifyDataSetChanged()
+            alreadyLoaded = true
+        }
     }
 
     override fun onResume() {
@@ -40,7 +46,6 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {
-        this.case = data
         if(binding is CardCaseBinding) {
             binding.c = data
             mLocation?.let { location ->

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <import type="de.unihannover.se.tauben2.ExtensionsKt" />
         <variable name="c" type="de.unihannover.se.tauben2.model.database.entity.Case" />
     </data>
@@ -183,6 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@{c.rescuer == null ? @string/take_case : @string/finish_case}"
+                android:visibility="@{c.isClosed() ? View.GONE : View.VISIBLE}"
                 android:backgroundTint="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

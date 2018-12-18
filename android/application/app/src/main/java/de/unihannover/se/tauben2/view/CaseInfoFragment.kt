@@ -78,6 +78,17 @@ class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
                                     }.show()
                         }
                     }
+
+                    v.btn_take.setOnClickListener {
+                        getViewModel(CaseViewModel::class.java)?.let { viewModel ->
+                            if(case.rescuer == null)
+                                case.rescuer = "Taubenhans"
+                            else
+                                case.isClosed = true
+                            case.media = listOf()
+                            viewModel.updateCase(case, listOf())
+                        }
+                    }
                 }
             }))
         }

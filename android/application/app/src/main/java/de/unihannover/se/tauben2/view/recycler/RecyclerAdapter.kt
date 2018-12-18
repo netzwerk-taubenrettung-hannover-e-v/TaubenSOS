@@ -10,10 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class RecyclerAdapter<Data : RecyclerItem>(var data: List<Data> = listOf()) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
+    lateinit var mViewHolder: ViewHolder
+
     class ViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(parent.context), getItemLayoutId(viewType), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        mViewHolder = ViewHolder(DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(parent.context), getItemLayoutId(viewType), parent, false))
+        return mViewHolder
+    }
 
     override fun getItemCount() = data.size
 
