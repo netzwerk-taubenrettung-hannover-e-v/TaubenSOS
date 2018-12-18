@@ -139,13 +139,21 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      */
     fun updateCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
         override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
-            // TODO somehow figure out a good way to update pictures
+            // amazon upload urls
+            var urls = resultData.media
+            while (urls.size != mediaItems.size) {
+                urls = urls.takeLast(urls.size - 1)
+            }
+            if (urls.isNotEmpty()) {
+                appExecutors.networkIO().execute {
+                    uploadPictures(mediaItems, urls)
+                }
+            }
             resultData.caseID?.let { return getCase(it) }
             throw Exception("Couldn't fetch updated case from server!")
         }
 
         override fun saveUpdatedData(updatedData: Case) {
-
             database.caseDao().insertOrUpdate(updatedData)
         }
 

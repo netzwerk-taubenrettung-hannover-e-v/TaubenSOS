@@ -36,26 +36,46 @@ import java.util.*
 class MediaReportFragment : ReportFragment() {
 
     private lateinit var v: View
+    private var mEditing: Boolean = false
+    private var mExistingMediaCnt: Int? = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         v = inflater.inflate(R.layout.fragment_report_media, container, false)
 
         pagePos = PagePos.FIRST
-        if (mCreatedCase == null) mCreatedCase = Case.getCleanInstance()
+
+        createBlankImages(v)
+
+        if (mCreatedCase == null) {
+            mCreatedCase = Case.getCleanInstance()
+            mEditing = false
+            loadImages(mEditing)
+        } else {
+            mEditing = true
+            mExistingMediaCnt = mCreatedCase?.media?.size
+            loadImages(mEditing)
+        }
         setBtnListener(R.id.fragment_report_location, null)
 
         Log.d("CURRENT CASE", mCreatedCase.toString())
-        createBlankImages(v)
-        loadImages()
 
         (activity as ReportActivity).prev_btn.setOnClickListener {
             (activity as ReportActivity).finish()
         }
 
         v.report_media_add_button.setOnClickListener {
-            if (mCreatedCase!!.media.size < 3) dispatchTakePictureIntent()
-            else setSnackBar(v, "maximum amount reached")
+            if (mEditing && mCreatedCase!!.media.size < 3 - mExistingMediaCnt!!) {
+                mCreatedCase?.media = listOf()
+                mEditing = false
+            }
+
+            mExistingMediaCnt?.let { items ->
+                if (mCreatedCase!!.media.size < 3 - items) dispatchTakePictureIntent()
+                else setSnackBar(v, "maximum amount reached")
+            }
+
+
         }
 
         return v
@@ -114,11 +134,11 @@ class MediaReportFragment : ReportFragment() {
                 val imageName = media[media.lastIndex]
                 compressImage(imageName, 80, 1000, 1000)
             }
-            loadImages()
+            loadImages(mEditing)
         }
     }
 
-    private fun loadImages() {
+    private fun loadImages(editing: Boolean) {
 
         for (i in 0 until v.image_layout!!.childCount) {
 
@@ -129,7 +149,9 @@ class MediaReportFragment : ReportFragment() {
 
             if (image is SquareImageView && i < mCreatedCase!!.media.size) {
 
-                val imageLink = context?.getFileStreamPath(mCreatedCase!!.media[i])?.absolutePath
+
+                val imageLink = if (editing) mCreatedCase!!.media[i]
+                else context?.getFileStreamPath(mCreatedCase!!.media[i])?.absolutePath
 
 
                 if (URLUtil.isValidUrl(imageLink)) Picasso.get().load(imageLink).into(image)
@@ -143,10 +165,12 @@ class MediaReportFragment : ReportFragment() {
     private fun deleteImage(image: SquareImageView) {
         for (i in 0 until v.image_layout!!.childCount) {
             if ((v.image_layout!!.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
-                (mCreatedCase!!.media as MutableList<String>).removeAt(i)
+                if (mCreatedCase!!.media.isNotEmpty()) {
+                    (mCreatedCase!!.media as MutableList<String>).removeAt(i)
+                }
             }
         }
-        loadImages()
+        loadImages(mEditing)
     }
 
     private fun createBlankImages(view: View) {

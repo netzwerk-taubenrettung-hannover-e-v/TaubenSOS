@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.report
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -31,8 +32,6 @@ open class ReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCreatedCase = (activity as ReportActivity).case
-        // clear case media entry for adding filenames for request
-        mCreatedCase?.media = listOf()
     }
 
     override fun onResume() {
@@ -56,8 +55,10 @@ open class ReportFragment : Fragment() {
                 }
                 // Edit Case
                 else {
-                    val mediaFiles = readAsRaw(case.media)
+                    case.media = case.media.filter { url -> !URLUtil.isValidUrl(url) }
+                    Log.d(LOG_TAG, case.media.toString())
 
+                    val mediaFiles = readAsRaw(case.media)
                     it.updateCase(case, mediaFiles)
                     // existing images inside the case are already saved as URLs!
                     Log.d("EDIT CASE", "case edited: $case")
