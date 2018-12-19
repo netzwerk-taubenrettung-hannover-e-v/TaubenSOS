@@ -91,7 +91,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         //layout.
         crosshair.layoutParams = layout
 
-        map_ui.addView(crosshair)
+        //map_ui.addView(crosshair)
 
         if (mCreatedCase!!.latitude != 0.0 && mCreatedCase!!.longitude != 0.0) {
             mapsFragment.selectPosition(LatLng(mCreatedCase!!.latitude, mCreatedCase!!.longitude))
