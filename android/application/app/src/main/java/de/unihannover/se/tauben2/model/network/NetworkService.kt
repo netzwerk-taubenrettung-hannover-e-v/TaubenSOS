@@ -28,8 +28,13 @@ interface NetworkService {
     @PUT
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
+
     @GET("user")
     fun getUsers(): LiveDataRes<List<User>>
+
+    @POST("user")
+    fun register(@Body user: User): LiveDataRes<User>
+
 
     @GET("population")
     fun getPigeonCounters(): LiveDataRes<List<PigeonCounter>>

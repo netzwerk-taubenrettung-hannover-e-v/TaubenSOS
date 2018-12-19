@@ -16,7 +16,11 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
         private val LOG_TAG = AsyncDataRequest::class.java.simpleName
     }
 
-    fun send(objects: RequestType) {
+    /**
+     * creates a request and saves it's result into the database or fetches the data from server if
+     * re-fetching is enabled
+     */
+    fun send(objects: RequestType, enableRefetching: Boolean = true) {
         val apiResponse = createCall(objects)
 
         apiResponse.observeForever(object : Observer<Resource<ResultType>> {
@@ -25,7 +29,13 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
                     if (resp.status.isSuccessful()) {
                         val result = resp.data
                         result?.let {
-                            updateData(it)
+                            if (enableRefetching) {
+                                updateData(it)
+                            } else {
+                                appExecutors.diskIO().execute {
+                                    saveUpdatedData(it)
+                                }
+                            }
                             appExecutors.mainThread().execute {
                                 apiResponse.removeObserver(this)
                             }
@@ -83,7 +93,8 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
 
     /**
      * saves the server's answer to the database
-     * @param updatedData data received from server
+     * @param updatedData data received from server: either the response data or freshly fetched if
+     * re-fetching is enabled
      */
     protected abstract fun saveUpdatedData(updatedData: ResultType)
 

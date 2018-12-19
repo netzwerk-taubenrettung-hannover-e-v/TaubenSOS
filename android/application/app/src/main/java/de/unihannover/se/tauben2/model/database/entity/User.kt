@@ -11,7 +11,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 @Entity(tableName = "user")
-//data class User(@PrimaryKey val id: Int, var permission: Permission) : RecyclerItem, Parcelable {
 data class User(@PrimaryKey val username: String,
                 var isActivated : Boolean,
                 var isAdmin : Boolean,

@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import de.unihannover.se.tauben2.App
@@ -190,6 +189,25 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             throw Exception("Case id must not be null!")
         }
     }.send(case)
+
+    /**
+     * Creates a register request and saves the register data to the local database
+     * @param user The user that should be created
+     */
+    fun register(user: User) = object : AsyncDataRequest<User, User>(appExecutors) {
+        override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: User) {
+            database.userDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: User): LiveDataRes<User> {
+            return service.register(user)
+        }
+
+    }.send(user, false)
 
 
     /**
