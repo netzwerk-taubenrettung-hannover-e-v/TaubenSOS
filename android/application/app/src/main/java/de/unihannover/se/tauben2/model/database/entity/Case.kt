@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2.model.database.entity
 
 import android.graphics.Color
 import android.os.Parcelable
+import android.widget.SeekBar
 import androidx.room.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -32,6 +33,7 @@ data class Case(@PrimaryKey var caseID: Int?,
                 var reporter: String?,
 
                 var priority: Int,
+
                 var timestamp: Long,
                 var phone: String,
                 var wasNotFound: Boolean?,
@@ -48,7 +50,9 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     fun getPigeonBreed() = PigeonBreed.fromString(breed)
 
-    fun setPigeonBreed(pigeonBreed: PigeonBreed) = PigeonBreed.fromPigeonBreed(pigeonBreed)
+    fun setPigeonBreed(pigeonBreed: PigeonBreed) {
+        breed = PigeonBreed.fromPigeonBreed(pigeonBreed)
+    }
 
     companion object {
         @Ignore
@@ -77,6 +81,10 @@ data class Case(@PrimaryKey var caseID: Int?,
         if (isClosed == false)
             color = if (rescuer != null) Color.parseColor("#80ffea00") else Color.parseColor("#80d50000")
         return color
+    }
+
+    fun onPrioritySeekbarValueChanged(seekBar: SeekBar, progresValue: Int, fromUser: Boolean) {
+        priority = progresValue + 1
     }
 
 
