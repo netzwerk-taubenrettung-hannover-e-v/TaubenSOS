@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReportCommentBinding
+import de.unihannover.se.tauben2.model.database.entity.Case
 import kotlinx.android.synthetic.main.activity_report.*
 
 class CommentReportFragment : ReportFragment() {
@@ -18,8 +19,8 @@ class CommentReportFragment : ReportFragment() {
         val binding = DataBindingUtil.inflate<FragmentReportCommentBinding>(inflater, layoutId, container, false)
 
         pagePos = PagePos.LAST
-        mCreatedCase = arguments?.getParcelable("createdCase")
-        mCreatedCase?.let {
+        arguments?.getParcelable<Case>("createdCase")?.let {
+            mCreatedCase = it
             binding.createdCase = it
         }
         setBtnListener(null, R.id.fragment_report_breed)

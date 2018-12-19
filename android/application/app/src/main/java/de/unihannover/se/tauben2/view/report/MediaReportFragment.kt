@@ -1,8 +1,10 @@
 package de.unihannover.se.tauben2.view.report
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -10,7 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +22,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
@@ -37,13 +41,13 @@ class MediaReportFragment : ReportFragment() {
 
     private lateinit var v: View
 
+    init {
+        pagePos = PagePos.FIRST
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         v = inflater.inflate(R.layout.fragment_report_media, container, false)
-
-        pagePos = PagePos.FIRST
-
-        mCreatedCase = mCreatedCase ?: Case.getCleanInstance()
 
         setBtnListener(R.id.fragment_report_location, null)
 
@@ -52,7 +56,7 @@ class MediaReportFragment : ReportFragment() {
         }
 
         v.report_media_add_button.setOnClickListener {
-            if (mCreatedCase!!.media.size < 3) dispatchTakePictureIntent()
+            if (mCreatedCase.media.size < 3) dispatchTakePictureIntent()
             else setSnackBar(v, "maximum amount reached")
         }
 
@@ -103,7 +107,7 @@ class MediaReportFragment : ReportFragment() {
                 ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
-            mCreatedCase!!.media += absolutePath.getFileName()
+            mCreatedCase.media += absolutePath.getFileName()
         }
     }
 
@@ -111,29 +115,24 @@ class MediaReportFragment : ReportFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             // compress most recent image
-            val media = mCreatedCase?.media
-            media?.let {
-                val imageName = media[media.lastIndex]
-                compressImage(imageName, 80, 1000, 1000)
-            }
+            compressImage(mCreatedCase.media.last(), 80, 1000, 1000)
             loadImages()
         }
     }
 
     private fun loadImages() {
 
-        for (i in 0 until v.image_layout!!.childCount) {
+        for (i in 0 until v.image_layout.childCount) {
 
             val layout = (v.image_layout.getChildAt(i) as ConstraintLayout)
             val image = layout.getChildAt(0) as ImageView
 
             layout.visibility = View.INVISIBLE
 
-            if (image is SquareImageView && i < mCreatedCase!!.media.size) {
+            if (image is SquareImageView && i < mCreatedCase.media.size) {
 
-
-                val imageLink = if (URLUtil.isValidUrl(mCreatedCase!!.media[i])) mCreatedCase!!.media[i]
-                else context?.getFileStreamPath(mCreatedCase!!.media[i])?.absolutePath
+                val imageLink = if (URLUtil.isValidUrl(mCreatedCase.media[i])) mCreatedCase.media[i]
+                else context?.getFileStreamPath(mCreatedCase.media[i])?.absolutePath
 
 
                 if (URLUtil.isValidUrl(imageLink)) Picasso.get().load(imageLink).into(image)
@@ -145,11 +144,11 @@ class MediaReportFragment : ReportFragment() {
     }
 
     private fun deleteImage(image: SquareImageView) {
-        for (i in 0 until v.image_layout!!.childCount) {
-            if ((v.image_layout!!.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
+        for (i in 0 until v.image_layout.childCount) {
+            if ((v.image_layout.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
                 // TODO remove this and do it properly
-                if (!URLUtil.isValidUrl(mCreatedCase!!.media[i]))
-                    (mCreatedCase!!.media as MutableList<String>).removeAt(i)
+                if (!URLUtil.isValidUrl(mCreatedCase.media[i]))
+                    (mCreatedCase.media as MutableList<String>).removeAt(i)
             }
         }
         loadImages()

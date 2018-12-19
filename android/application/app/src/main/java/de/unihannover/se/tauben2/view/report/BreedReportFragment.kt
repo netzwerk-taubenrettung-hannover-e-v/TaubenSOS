@@ -13,6 +13,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReportBreedBinding
 import de.unihannover.se.tauben2.getDpValue
 import de.unihannover.se.tauben2.model.database.PigeonBreed
+import de.unihannover.se.tauben2.model.database.entity.Case
 import kotlinx.android.synthetic.main.fragment_report_breed.view.*
 
 
@@ -25,10 +26,11 @@ class BreedReportFragment : ReportFragment() {
 
         mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
-        mCreatedCase?.let {
+        arguments?.getParcelable<Case>("createdCase")?.let {
+            mCreatedCase = it
             mBinding.createdCase = it
         }
+
         setBtnListener(R.id.fragment_report_comment, R.id.fragment_report_priority)
 
         PigeonBreed.values().forEach { createRadioButton(it) }
@@ -53,7 +55,7 @@ class BreedReportFragment : ReportFragment() {
             }
             setOnClickListener {
                 if(this.isChecked)
-                    mCreatedCase?.setPigeonBreed(breed)
+                    mCreatedCase.setPigeonBreed(breed)
             }
         }
         mBinding.root.radio_group.addView(button)

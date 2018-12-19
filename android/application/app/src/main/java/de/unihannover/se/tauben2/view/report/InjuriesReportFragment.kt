@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReportInjuriesBinding
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
 import kotlinx.android.synthetic.main.fragment_report_injuries.*
 
@@ -19,8 +20,8 @@ class InjuriesReportFragment : ReportFragment() {
 
         val binding = DataBindingUtil.inflate<FragmentReportInjuriesBinding>(inflater, layoutId, container, false)
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
-        mCreatedCase?.let {
+        arguments?.getParcelable<Case>("createdCase")?.let {
+            mCreatedCase = it
             binding.createdCase = it
         }
         setBtnListener(R.id.fragment_report_priority, R.id.fragment_report_location)

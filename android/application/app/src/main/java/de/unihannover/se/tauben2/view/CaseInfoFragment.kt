@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.filter
@@ -82,7 +83,7 @@ class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
                     v.btn_take.setOnClickListener {
                         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
                             if(case.rescuer == null)
-                                case.rescuer = "Taubenhans"
+                                case.rescuer = App.CURRENT_USER
                             else
                                 case.isClosed = true
                             case.media = listOf()

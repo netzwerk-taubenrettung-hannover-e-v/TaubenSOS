@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
@@ -37,7 +38,10 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         val view = inflater.inflate(layoutId, container, false)
         mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-        mCreatedCase = arguments?.getParcelable("createdCase")
+        arguments?.getParcelable<Case>("createdCase")?.let {
+            mCreatedCase = it
+        }
+
         setBtnListener(R.id.fragment_report_injuries, R.id.fragment_report_media)
 
         view.set_position_button.setOnClickListener {
@@ -61,8 +65,8 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
      */
     private fun saveLocation(): Boolean {
         mLocation?.let {
-            mCreatedCase?.longitude = it.longitude
-            mCreatedCase?.latitude = it.latitude
+            mCreatedCase.longitude = it.longitude
+            mCreatedCase.latitude = it.latitude
             return true
         }
         return false
@@ -76,8 +80,8 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
     fun setMarker() {
 
-        if (mCreatedCase!!.latitude != 0.0 && mCreatedCase!!.longitude != 0.0) {
-            mapsFragment.selectPosition(LatLng(mCreatedCase!!.latitude, mCreatedCase!!.longitude))
+        if (mCreatedCase.latitude != 0.0 && mCreatedCase.longitude != 0.0) {
+            mapsFragment.selectPosition(LatLng(mCreatedCase.latitude, mCreatedCase.longitude))
             mLocation = mapsFragment.getSelectedPosition()
         }
     }

@@ -8,10 +8,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
-import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.filter
-import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
@@ -61,7 +58,7 @@ class CasesFragment : Fragment() {
             mCurrentObservedData?.removeObserver(mCurrentMapObserver)
 
             mCurrentObservedData = when (filter) {
-               Filter.MY -> viewModel.cases
+               Filter.MY -> viewModel.cases.filter { case -> case.rescuer == App.CURRENT_USER }
                Filter.CLOSED -> viewModel.cases.filter { case -> case.isClosed == true }
                Filter.OPEN -> viewModel.cases.filter { case -> case.isClosed == false}
                else -> viewModel.cases

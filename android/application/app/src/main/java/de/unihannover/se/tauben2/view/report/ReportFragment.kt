@@ -1,7 +1,12 @@
 package de.unihannover.se.tauben2.view.report
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
@@ -11,7 +16,6 @@ import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.setRightIcon
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 
@@ -28,11 +32,20 @@ open class ReportFragment : Fragment() {
 
     var pagePos = PagePos.BETWEEN
 
-    protected var mCreatedCase: Case? = null
+    protected lateinit var mCreatedCase: Case
 
+
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCreatedCase = (activity as ReportActivity).case
+        mCreatedCase = (activity as ReportActivity).case ?: Case.getCleanInstance().apply {
+            context?.let { cxt ->
+                if(ContextCompat.checkSelfPermission(cxt, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    phone = (cxt.applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number
+                }
+            }
+        }
+
     }
 
     override fun onResume() {
