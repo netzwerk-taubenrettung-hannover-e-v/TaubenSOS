@@ -1,11 +1,15 @@
 package de.unihannover.se.tauben2.view.report
 
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
@@ -14,6 +18,7 @@ import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.view.*
+import kotlinx.android.synthetic.main.fragment_report_location.*
 
 class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
@@ -75,6 +80,18 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
    }
 
     fun setMarker() {
+
+        // works but is bad
+        var crosshair = ImageView(context)
+
+        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_add_white_24dp))
+        crosshair.setColorFilter(Color.BLACK)
+        var layout = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        // set last alignments here
+        //layout.
+        crosshair.layoutParams = layout
+
+        map_ui.addView(crosshair)
 
         if (mCreatedCase!!.latitude != 0.0 && mCreatedCase!!.longitude != 0.0) {
             mapsFragment.selectPosition(LatLng(mCreatedCase!!.latitude, mCreatedCase!!.longitude))

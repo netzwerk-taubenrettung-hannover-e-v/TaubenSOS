@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:elevation="4dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_layout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:elevation="0dp"
-                android:text="@string/set_position"
+                android:text="SET POSITION"
                 android:textColor="#B3000000"
                 app:backgroundTint="#B3FFFFFF"
                 app:cornerRadius="2dp"
@@ -38,8 +38,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/crosshair"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +49,6 @@
                 app:srcCompat="@drawable/ic_add_black_16dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </fragment>
 
     <androidx.constraintlayout.widget.ConstraintLayout
