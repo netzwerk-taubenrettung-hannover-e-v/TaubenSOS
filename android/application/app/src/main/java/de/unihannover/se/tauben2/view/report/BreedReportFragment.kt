@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.radiobutton.MaterialRadioButton
 import de.unihannover.se.tauben2.App
@@ -24,7 +23,7 @@ class BreedReportFragment : ReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        mBinding = DataBindingUtil.inflate<FragmentReportBreedBinding>(inflater, layoutId, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 
         mCreatedCase = arguments?.getParcelable("createdCase")
         mCreatedCase?.let {
@@ -52,7 +51,10 @@ class BreedReportFragment : ReportFragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
             }
-            setOnClickListener { if(this.isChecked) mCreatedCase?.setPigeonBreed(breed) }
+            setOnClickListener {
+                if(this.isChecked)
+                    mCreatedCase?.setPigeonBreed(breed)
+            }
         }
         mBinding.root.radio_group.addView(button)
         if(button.layoutParams is ViewGroup.MarginLayoutParams)
