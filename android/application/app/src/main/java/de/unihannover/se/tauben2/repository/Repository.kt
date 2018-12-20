@@ -16,6 +16,8 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -201,15 +203,38 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: User) {
-            sp.edit().putString(TOKEN_KEY, updatedData.password).apply()
             database.userDao().insertOrUpdate(updatedData)
         }
 
         override fun createCall(requestData: User): LiveDataRes<User> {
-            return service.register(token(), user)
+            return service.register(token(), requestData)
         }
 
     }.send(user, false)
+
+    /**
+     * Makes a login request, waits for its result and saves the authorization token.
+     * Throws Exception if login not successful
+     * @param user The user who is trying to login
+     */
+    fun login(user: User) {
+        val threadPool = Executors.newSingleThreadScheduledExecutor()
+        val future = threadPool.submit(Callable {
+            val call = service.login(user)
+            val response = call.execute()
+            when {
+                response.isSuccessful -> {
+                    sp.edit().putString(TOKEN_KEY, response.body()?.token).apply()
+                    Log.d(LOG_TAG, "Token saved")
+                }
+                response.code() == 401 -> throw Exception("Wrong username or password")
+                else -> throw Exception(response.errorBody().toString())
+            }
+        })
+        threadPool.shutdown()
+
+        future.get()
+    }
 
 
     /**

@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:labelFor="@+id/loginUsernameField"
+        android:labelFor="@+id/edit_login_username"
         android:text="@string/nutzername"
-        app:layout_constraintStart_toStartOf="@+id/loginUsernameField"
+        app:layout_constraintStart_toStartOf="@+id/edit_login_username"
         app:layout_constraintTop_toBottomOf="@+id/loginTitle" />
 
     <EditText
-        android:id="@+id/loginUsernameField"
+        android:id="@+id/edit_login_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -34,7 +34,7 @@
         tools:targetApi="o" />
 
     <EditText
-        android:id="@+id/loginPasswordField"
+        android:id="@+id/edit_login_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -54,21 +54,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:labelFor="@+id/loginPasswordField"
+        android:labelFor="@+id/edit_login_password"
         android:text="@string/passwort"
-        app:layout_constraintStart_toStartOf="@+id/loginUsernameField"
-        app:layout_constraintTop_toBottomOf="@+id/loginUsernameField" />
+        app:layout_constraintStart_toStartOf="@+id/edit_login_username"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_username" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginButton"
+        android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/login"
         android:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/loginPasswordField"
-        app:layout_constraintTop_toBottomOf="@+id/loginPasswordField" />
+        app:layout_constraintStart_toStartOf="@+id/edit_login_password"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_password" />
 
     <TextView
         android:id="@+id/loginTitle"
@@ -77,6 +77,6 @@
         android:layout_marginTop="32dp"
         android:text="@string/login_titel"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        app:layout_constraintStart_toStartOf="@+id/loginUsernameField"
+        app:layout_constraintStart_toStartOf="@+id/edit_login_username"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

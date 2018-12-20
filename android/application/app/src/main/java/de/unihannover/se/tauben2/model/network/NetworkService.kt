@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
+import de.unihannover.se.tauben2.model.Token
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
@@ -34,6 +35,9 @@ interface NetworkService {
 
     @POST("user")
     fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>
+
+    @POST("auth/login")
+    fun login(@Body user: User): Call<Token>
 
 
     @GET("population")

@@ -13,6 +13,7 @@ import de.unihannover.se.tauben2.R.layout.fragment_register
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.input.InputFilterRequired.Companion.allInputsFilled
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -47,7 +48,7 @@ class RegisterFragment : Fragment() {
                     userViewModel?.register(User(username, false, false, pw, ""))
 
                     setSnackBar(view, "Registration has been requested!")
-                    // copy pasta
+
                     val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
                     controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
                     controller.navigate(R.id.newsFragment)
@@ -58,13 +59,5 @@ class RegisterFragment : Fragment() {
         return view
     }
 
-    private fun allInputsFilled(viewGroup: ViewGroup): Boolean {
-        for (i in 0 until viewGroup.childCount) {
-            val curView = viewGroup.getChildAt(i)
-            if (curView is EditText && curView.text.isBlank()) {
-                return false
-            }
-        }
-        return true
-    }
+
 }
