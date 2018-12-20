@@ -1,6 +1,7 @@
 import os
 import jwt
 import uuid
+import hashlib
 from datetime import datetime
 from flask import (Blueprint, request)
 from flask import jsonify
@@ -57,8 +58,9 @@ def login():
 	password = request.json["password"]
 
 	user = User.get(username)
+	passwordHashed = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
-	if user is None or password != user.password or not user.isActivated:
+	if user is None or passwordHashed != user.password or not user.isActivated:
 		return jsonify(message="User does not exist, password is wrong or user is not activated"), 401
 
 	access_token = generate_access_token(user)

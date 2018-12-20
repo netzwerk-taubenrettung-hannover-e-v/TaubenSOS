@@ -9,3 +9,5 @@ pyjwt==1.6.4
 boto3==1.9.52
 flasgger==0.9.2
 apispec==0.39.0
+cryptography==2.4.2
+pyOpenSSL==18.0.0
