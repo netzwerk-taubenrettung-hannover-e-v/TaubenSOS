@@ -1,11 +1,16 @@
 package de.unihannover.se.tauben2.view.report
 
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
@@ -15,6 +20,7 @@ import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.view.*
+import kotlinx.android.synthetic.main.fragment_report_location.*
 
 class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
@@ -79,6 +85,29 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
    }
 
     fun setMarker() {
+
+        // works but is bad
+        val crosshair = ImageView(context)
+
+        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_add_white_24dp, null))
+        crosshair.setColorFilter(Color.BLACK)
+
+        crosshair.id = View.generateViewId()
+        // set last alignments here
+        //layout.
+        crosshair.layoutParams = ViewGroup.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        crosshair.setPadding(0,0,0,0)
+        map_ui.addView(crosshair)
+
+        val set = ConstraintSet()
+        set.clone(map_ui)
+        set.connect(crosshair.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0)
+        set.connect(crosshair.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+        set.connect(crosshair.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0)
+        set.connect(crosshair.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0)
+
+
+        set.applyTo(map_ui)
 
         if (mCreatedCase.latitude != 0.0 && mCreatedCase.longitude != 0.0) {
             mapsFragment.selectPosition(LatLng(mCreatedCase.latitude, mCreatedCase.longitude))
