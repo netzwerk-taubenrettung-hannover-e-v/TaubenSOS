@@ -53,7 +53,8 @@
             app:layout_constraintStart_toStartOf="@+id/image_layout"
             app:layout_constraintTop_toTopOf="@+id/image_layout"
             app:srcCompat="@drawable/ic_add_white_24dp"
-            app:tint="#FFFFFF" />
+            app:tint="@color/White"
+            />
 
         <LinearLayout
             android:id="@+id/image_layout"

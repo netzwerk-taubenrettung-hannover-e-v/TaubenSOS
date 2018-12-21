@@ -116,5 +116,7 @@
     <string name="send">Send</string>
     <string name="selected_position">Selected position</string>
     <string name="delete">Delete</string>
+    <string name="change_state_dead">Report dead</string>
+    <string name="change_state_alive">Report as alive</string>
 
 </resources>

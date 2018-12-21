@@ -55,8 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupPermissions()
 
         // Toolbar Settings
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         initBottomNavigation()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/toolbar_call_button"
@@ -11,9 +11,24 @@
         />
 
     <item
+        android:id="@+id/toolbar_report_dead"
+        android:title="@string/change_state_dead"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/toolbar_report_alive"
+        android:title="@string/change_state_alive"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/toolbar_report_button"
         android:icon="@drawable/ic_report_white_24dp"
         android:title="@string/report_pigeon"
         app:showAsAction="always" />
+
 
 </menu>

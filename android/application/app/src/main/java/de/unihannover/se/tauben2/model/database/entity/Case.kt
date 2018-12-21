@@ -70,21 +70,25 @@ data class Case(@PrimaryKey var caseID: Int?,
     }
 
     fun getStatusColor(): Int {
-        var color = Color.parseColor("#00c853")
-        if (isClosed == false)
-            color = if (rescuer != null) Color.parseColor("#ffea00") else Color.parseColor("#d50000")
+        var color = App.getColor(R.color.colorGreen)
+        if(wasFoundDead == true)
+            color = App.getColor(R.color.colorGray)
+        else if (isClosed == false)
+            color = if (rescuer != null) App.getColor(R.color.colorYellow) else App.getColor(R.color.colorRed)
         return color
     }
 
     fun getStatusColorTransparent(): Int {
-        var color = Color.parseColor("#8000c853")
-        if (isClosed == false)
-            color = if (rescuer != null) Color.parseColor("#80ffea00") else Color.parseColor("#80d50000")
+        var color = App.getColor(R.color.colorGreenTransparent)
+        if(wasFoundDead == true)
+            color = App.getColor(R.color.colorGrayTransparent)
+        else if (isClosed == false)
+            color = if (rescuer != null) App.getColor(R.color.colorYellowTransparent) else App.getColor(R.color.colorRedTransparent)
         return color
     }
 
-    fun onPrioritySeekbarValueChanged(seekBar: SeekBar, progresValue: Int, fromUser: Boolean) {
-        priority = progresValue + 1
+    fun onPrioritySeekbarValueChanged(seekBar: SeekBar, progressValue: Int, fromUser: Boolean) {
+        priority = progressValue + 1
     }
 
 

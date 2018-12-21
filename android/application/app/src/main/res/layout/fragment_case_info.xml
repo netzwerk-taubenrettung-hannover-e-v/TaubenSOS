@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/delete"
-                android:textColor="@color/Red"
+                android:textColor="@color/colorRed"
                 app:layout_constraintEnd_toStartOf="@id/btn_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />

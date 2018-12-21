@@ -3,6 +3,8 @@ package de.unihannover.se.tauben2
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import androidx.annotation.ColorRes
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.network.LiveDataCallAdapterFactory
 import de.unihannover.se.tauben2.model.network.NetworkService
@@ -22,6 +24,13 @@ class App: Application() {
         lateinit var context: Context
 
         fun getNetworkService() = mNetworkService
+
+        fun getColor(@ColorRes colorRes: Int) =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                context.getColor(colorRes)
+            else
+                context.resources.getColor(colorRes)
+
     }
 
     override fun onCreate() {

@@ -100,7 +100,7 @@
 
             <ImageView
                 android:id="@+id/status_card_image"
-                android:layout_width="4dp"
+                android:layout_width="8dp"
                 android:layout_height="0dp"
                 android:tint="@{c.statusColor}"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_case_info.view.*
 class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
 
     private lateinit var mBinding: FragmentCaseInfoBinding
+    private var toolbarMenu: Menu? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -58,6 +59,8 @@ class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
                         layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                         adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
                     }
+
+                    toolbarMenu?.let { menu -> setOptionsMenuDeadItems(menu) }
 
                     v.btn_edit.setOnClickListener {
                         // send case to ReportActivity
@@ -99,13 +102,42 @@ class CaseInfoFragment: Fragment()/*, Observer<Location?>*/ {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        menu?.findItem(R.id.toolbar_call_button)?.isVisible = true
+        toolbarMenu = menu
+        toolbarMenu?.let { setOptionsMenuItems(it) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.toolbar_call_button)
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.c?.phone)))
-        return super.onOptionsItemSelected(item)
+        val result = super.onOptionsItemSelected(item)
+
+        when(item?.itemId){
+            R.id.toolbar_call_button -> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.c?.phone)))
+            R.id.toolbar_report_dead -> reportAsDead(true)
+            R.id.toolbar_report_alive -> reportAsDead(false)
+        }
+        return result
+    }
+
+    private fun reportAsDead(isDead: Boolean) {
+        mBinding.c?.let { case ->
+
+            getViewModel(CaseViewModel::class.java)?.let { viewModel ->
+                case.wasFoundDead = isDead
+                case.media = listOf()
+                viewModel.updateCase(case, listOf())
+            }
+
+        }
+    }
+
+    private fun setOptionsMenuItems(menu: Menu) {
+        menu.findItem(R.id.toolbar_call_button)?.isVisible = true
+        setOptionsMenuDeadItems(menu)
+    }
+
+    private fun setOptionsMenuDeadItems(menu: Menu) {
+        val wasFoundDead = mBinding.c?.wasFoundDead ?: false
+        menu.findItem(R.id.toolbar_report_alive)?.isVisible = wasFoundDead
+        menu.findItem(R.id.toolbar_report_dead)?.isVisible = !wasFoundDead
     }
 
 //    override fun onChanged(location: Location?) {
