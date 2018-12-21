@@ -4,4 +4,5 @@
     <item name="contact_button_mail" type="id" />
     <item name="contact_button_facebook" type="id" />
     <item name="contact_button_website" type="id" />
+    <item name="button_logout" type="id" />
 </resources>

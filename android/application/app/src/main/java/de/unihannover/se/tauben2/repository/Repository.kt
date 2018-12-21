@@ -236,6 +236,16 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         future.get()
     }
 
+    fun logout() = object : AsyncDeleteRequest<String>(appExecutors) {
+        override fun deleteFromDB(requestData: String) {
+            sp.edit().remove(TOKEN_KEY).apply()
+        }
+
+        override fun createCall(requestData: String): Call<Void> {
+            return service.logout(requestData)
+        }
+    }.send(token())
+
 
     /**
      * Helper function for uploading media files to their corresponding upload urls
