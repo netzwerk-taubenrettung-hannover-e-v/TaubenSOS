@@ -1,7 +1,9 @@
 package de.unihannover.se.tauben2.repository
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.network.Resource
@@ -16,29 +18,46 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
         private val LOG_TAG = AsyncDataRequest::class.java.simpleName
     }
 
-    fun send(objects: RequestType) {
+    /**
+     * creates a request and saves it's result into the database or fetches the data from server if
+     * re-fetching is enabled
+     */
+    fun send(objects: RequestType, enableRefetching: Boolean = true) {
+
+
         val apiResponse = createCall(objects)
 
         apiResponse.observeForever(object : Observer<Resource<ResultType>> {
             override fun onChanged(response: Resource<ResultType>?) {
+
                 response?.let { resp ->
-                    if (resp.status.isSuccessful()) {
-                        val result = resp.data
-                        result?.let {
-                            updateData(it)
-                            appExecutors.mainThread().execute {
-                                apiResponse.removeObserver(this)
+                    when {
+                        resp.status.isSuccessful() -> {
+                            val result = resp.data
+                            result?.let {
+                                if (enableRefetching) {
+                                    updateData(it)
+                                } else {
+                                    appExecutors.diskIO().execute {
+                                        saveUpdatedData(it)
+                                    }
+                                }
+                                appExecutors.mainThread().execute {
+                                    apiResponse.removeObserver(this)
+                                }
+                            }
+
+                        }
+                        resp.hasError() -> {
+                            if (resp.message == null) {
+                                Log.e(LOG_TAG, "An unknown error occurred.")
+                            } else {
+                                Log.e(LOG_TAG, resp.message)
+                                // TODO someone please figure this out I have no idea how to do this properly
+                                Toast.makeText(App.context, "Wrong username or password", Toast.LENGTH_SHORT).show()
                             }
                         }
-
-                    } else if (resp.hasError()) {
-                        if (resp.message == null)
-                            Log.e(LOG_TAG, "An unknown error occurred.")
-                        else
-                            Log.e(LOG_TAG, resp.message)
-
-                    } else {
-                        // why do I need to do that
+                        else -> Log.d(LOG_TAG, "waiting for response...")
                     }
                 }
             }
@@ -83,7 +102,8 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
 
     /**
      * saves the server's answer to the database
-     * @param updatedData data received from server
+     * @param updatedData data received from server: either the response data or freshly fetched if
+     * re-fetching is enabled
      */
     protected abstract fun saveUpdatedData(updatedData: ResultType)
 

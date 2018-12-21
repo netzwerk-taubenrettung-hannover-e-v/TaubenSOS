@@ -20,6 +20,7 @@ import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
 import com.google.maps.android.heatmaps.Gradient
+import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -60,6 +61,8 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+
+
 //        view.mapView.onCreate(savedInstanceState)
 //
 //        view.mapView.onResume() // needed to get the map to display immediately
@@ -83,6 +86,8 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.setLatLngBoundsForCameraTarget(bounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 setCaseMarkers(mMarkers.keys)
+
+
 
                 when (this.parentFragment) {
                     is GraphsFragment -> addHeatMap()
@@ -133,6 +138,13 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
             markers.forEach { marker ->
                 if(mMarkers[marker] == null)
                     mMarkers[marker] = map.addMarker(marker.getMarker())
+                    if(marker is PigeonCounter){
+                        map.addCircle(CircleOptions()
+                                .center(marker.getMarker().position)
+                                .radius(marker.radius)
+                                .strokeColor(Color.argb(40, 59, 148, 225))
+                                .fillColor(Color.argb(20, 59, 148, 225)))
+                    }
             }
         }
     }

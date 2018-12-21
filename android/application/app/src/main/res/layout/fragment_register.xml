@@ -7,26 +7,29 @@
     android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/registerConfirmPwLbl"
-        android:layout_width="wrap_content"
+        android:id="@+id/registerTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:labelFor="@+id/registerConfirmPwField"
-        android:text="@string/passwort_wiederholen"
-        app:layout_constraintStart_toStartOf="@+id/registerConfirmPwField"
-        app:layout_constraintTop_toBottomOf="@+id/registerPwField" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/offizielle_registrierung_beantragen"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/registerPwLabel"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView7"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:labelFor="@+id/registerPwField"
-        android:text="@string/passwort"
-        app:layout_constraintStart_toStartOf="@+id/registerPwField"
-        app:layout_constraintTop_toBottomOf="@+id/registerUsernameField" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/registrierung_erklaerung"
+        app:layout_constraintEnd_toEndOf="@+id/registerTitle"
+        app:layout_constraintStart_toStartOf="@+id/registerTitle"
+        app:layout_constraintTop_toBottomOf="@+id/registerTitle" />
 
     <TextView
         android:id="@+id/registerUsernameLbl"
@@ -50,12 +53,34 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerUsernameLbl" tools:targetApi="o" />
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameLbl"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/registerConfirmPwLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:labelFor="@+id/edit_register_confirm_pw"
+        android:text="@string/passwort_wiederholen"
+        app:layout_constraintStart_toStartOf="@+id/edit_register_confirm_pw"
+        app:layout_constraintTop_toBottomOf="@+id/edit_register_pw" />
+
+    <TextView
+        android:id="@+id/registerPwLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:labelFor="@+id/edit_register_pw"
+        android:text="@string/passwort"
+        app:layout_constraintStart_toStartOf="@+id/edit_register_pw"
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameField" />
 
     <EditText
-        android:id="@+id/registerPwField"
+        android:id="@+id/edit_register_pw"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -66,13 +91,12 @@
         android:inputType="textPassword"
         android:labelFor="@+id/registerConfirmPwField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerPwLabel"
         tools:targetApi="o" />
 
     <EditText
-        android:id="@+id/registerConfirmPwField"
+        android:id="@+id/edit_register_confirm_pw"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -82,44 +106,22 @@
         android:importantForAutofill="no"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerConfirmPwLbl" tools:targetApi="o" />
 
-    <TextView
-        android:id="@+id/registerTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/offizielle_registrierung_beantragen"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/registerConfirmPwLbl"
+        tools:targetApi="o" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:text="@string/registrierung_beantragen"
-        app:layout_constraintStart_toStartOf="@+id/registerConfirmPwField"
-        app:layout_constraintTop_toBottomOf="@+id/registerConfirmPwField" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/registrierung_erklaerung"
-        app:layout_constraintEnd_toEndOf="@+id/registerTitle"
-        app:layout_constraintStart_toStartOf="@+id/registerTitle"
-        app:layout_constraintTop_toBottomOf="@+id/registerTitle" />
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="@string/registrierung_beantragen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_register_confirm_pw" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

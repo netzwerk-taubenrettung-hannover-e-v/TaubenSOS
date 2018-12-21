@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -45,7 +46,8 @@ class MainActivity : AppCompatActivity() {
                 mv.onCreate(null)
                 mv.onPause()
                 mv.onDestroy()
-            } catch (ignored: Exception) {}
+            } catch (ignored: Exception) {
+            }
         }.start()
 
         backgroundColor()
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 //        if(binding.bottomNavigation.isCurrentTabMore())
 //            super.onBackPressed()
 //        else
-            mBottomNavigator.onBackPressed()
+        mBottomNavigator.onBackPressed()
     }
 
     // Add "Report a Dove"-Btn to the Toolbar

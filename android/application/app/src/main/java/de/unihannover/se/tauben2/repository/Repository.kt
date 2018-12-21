@@ -1,7 +1,6 @@
 package de.unihannover.se.tauben2.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import de.unihannover.se.tauben2.App
@@ -17,6 +16,8 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -32,6 +33,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     companion object {
         private val LOG_TAG = Repository::class.java.simpleName
+        private const val TOKEN_KEY = "authToken"
     }
 
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
@@ -54,7 +56,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<Case>> {
-            val res = service.getCases()
+            val res = service.getCases(token())
             return res
         }
 
@@ -71,7 +73,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun loadFromDb() = database.caseDao().getCase(id)
 
-        override fun createCall() = service.getCase(id)
+        override fun createCall() = service.getCase(token(), id)
 
     }.getAsLiveData()
 
@@ -90,7 +92,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<User>> {
-            val res = service.getUsers()
+            val res = service.getUsers(token())
             return res
         }
 
@@ -110,7 +112,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<PigeonCounter>> {
-            return service.getPigeonCounters()
+            return service.getPigeonCounters(token())
         }
 
     }.getAsLiveData()
@@ -138,7 +140,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
-            return service.sendCase(requestData)
+            return service.sendCase(token(), requestData)
         }
 
     }.send(case)
@@ -169,7 +171,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
             requestData.caseID?.let {
-                return service.updateCase(it, requestData)
+                return service.updateCase(token(), it, requestData)
             }
             throw Exception("Case id must not be null!")
         }
@@ -186,10 +188,53 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Case): Call<Void> {
-            requestData.caseID?.let { return service.deleteCase(it) }
+            requestData.caseID?.let { return service.deleteCase(token(), it) }
             throw Exception("Case id must not be null!")
         }
     }.send(case)
+
+    /**
+     * Creates a register request and saves the register data to the local database
+     * @param user The user that should be created
+     */
+    fun register(user: User) = object : AsyncDataRequest<User, User>(appExecutors) {
+        override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: User) {
+            database.userDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: User): LiveDataRes<User> {
+            return service.register(token(), requestData)
+        }
+
+    }.send(user, false)
+
+    /**
+     * Makes a login request, waits for its result and saves the authorization token.
+     * Throws Exception if login not successful
+     * @param user The user who is trying to login
+     */
+    fun login(user: User) {
+        val threadPool = Executors.newSingleThreadScheduledExecutor()
+        val future = threadPool.submit(Callable {
+            val call = service.login(user)
+            val response = call.execute()
+            when {
+                response.isSuccessful -> {
+                    sp.edit().putString(TOKEN_KEY, response.body()?.token).apply()
+                    Log.d(LOG_TAG, "Token saved")
+                }
+                response.code() == 401 -> throw Exception("Wrong username or password")
+                else -> throw Exception(response.errorBody().toString())
+            }
+        })
+        threadPool.shutdown()
+
+        future.get()
+    }
 
 
     /**
@@ -222,5 +267,13 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
             })
         }
+    }
+
+    private fun token(): String {
+        val token = sp.getString(TOKEN_KEY, "")
+        token?.let {
+            return it
+        }
+        throw Exception("Auth token is null!")
     }
 }

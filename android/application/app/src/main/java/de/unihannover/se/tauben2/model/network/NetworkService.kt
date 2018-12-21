@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.model.network
 
 import de.unihannover.se.tauben2.LiveDataRes
+import de.unihannover.se.tauben2.model.Token
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
@@ -11,29 +12,37 @@ import retrofit2.http.*
 interface NetworkService {
 
     @GET("case")
-    fun getCases(): LiveDataRes<List<Case>>
+    fun getCases(@Header("Authorization") token: String): LiveDataRes<List<Case>>
 
     @GET("case/{id}")
-    fun getCase(@Path("id") id: Int): LiveDataRes<Case>
+    fun getCase(@Header("Authorization") token: String, @Path("id") id: Int): LiveDataRes<Case>
 
     @POST("case")
-    fun sendCase(@Body case: Case): LiveDataRes<Case>
+    fun sendCase(@Header("Authorization") token: String, @Body case: Case): LiveDataRes<Case>
 
     @PUT("case/{id}")
-    fun updateCase(@Path("id") id: Int, @Body case: Case): LiveDataRes<Case>
+    fun updateCase(@Header("Authorization") token: String, @Path("id") id: Int, @Body case: Case): LiveDataRes<Case>
 
     @DELETE("case/{id}")
-    fun deleteCase(@Path("id") id: Int): Call<Void>
+    fun deleteCase(@Header("Authorization") token: String, @Path("id") id: Int): Call<Void>
 
     @PUT
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
+
     @GET("user")
-    fun getUsers(): LiveDataRes<List<User>>
+    fun getUsers(@Header("Authorization") token: String): LiveDataRes<List<User>>
+
+    @POST("user")
+    fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>
+
+    @POST("auth/login")
+    fun login(@Body user: User): Call<Token>
+
 
     @GET("population")
-    fun getPigeonCounters(): LiveDataRes<List<PigeonCounter>>
+    fun getPigeonCounters(@Header("Authorization") token: String): LiveDataRes<List<PigeonCounter>>
 
     @POST("population")
-    fun sendPigeonCounter(@Body pigeonCounter: PigeonCounter): LiveDataRes<Unit>
+    fun sendPigeonCounter(@Header("Authorization") token: String, @Body pigeonCounter: PigeonCounter): LiveDataRes<Unit>
 }
