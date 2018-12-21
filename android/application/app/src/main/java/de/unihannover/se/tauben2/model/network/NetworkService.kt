@@ -39,6 +39,9 @@ interface NetworkService {
     @POST("auth/login")
     fun login(@Body user: User): Call<Token>
 
+    @DELETE("auth/logout")
+    fun logout(@Header("Authorization") token: String): Call<Void>
+
 
     @GET("population")
     fun getPigeonCounters(@Header("Authorization") token: String): LiveDataRes<List<PigeonCounter>>

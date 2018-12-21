@@ -1,9 +1,7 @@
 package de.unihannover.se.tauben2.repository
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.network.Resource
@@ -53,8 +51,6 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
                                 Log.e(LOG_TAG, "An unknown error occurred.")
                             } else {
                                 Log.e(LOG_TAG, resp.message)
-                                // TODO someone please figure this out I have no idea how to do this properly
-                                Toast.makeText(App.context, "Wrong username or password", Toast.LENGTH_SHORT).show()
                             }
                         }
                         else -> Log.d(LOG_TAG, "waiting for response...")

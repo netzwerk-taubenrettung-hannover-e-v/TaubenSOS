@@ -48,8 +48,9 @@ class LoginFragment : Fragment() {
                     val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
                     controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
                     controller.navigate(R.id.newsFragment)
+                } else {
+                    setSnackBar(view, "Please fill out all the fields!")
                 }
-                setSnackBar(view, "Please fill out all the fields!")
             } catch (e: Exception) {
                 setSnackBar(view, "Wrong username or password!")
             }
