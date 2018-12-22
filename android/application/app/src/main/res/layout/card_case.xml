@@ -97,7 +97,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/distance_text_card_title"
                 app:layout_constraintStart_toStartOf="@+id/elapsed_time_text_card_value"
                 app:layout_constraintTop_toTopOf="@+id/distance_text_card_title" />
-t
+
             <ImageView
                 android:id="@+id/status_card_image"
                 android:layout_width="8dp"
