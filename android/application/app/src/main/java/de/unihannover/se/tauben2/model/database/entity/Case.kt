@@ -91,6 +91,22 @@ data class Case(@PrimaryKey var caseID: Int?,
         priority = progressValue + 1
     }
 
+    fun nextState(user: User) {
+        if(rescuer == null)
+            rescuer = user.username
+        else
+            isClosed = true
+    }
+
+    fun previousState(user: User) {
+        if(isClosed == true)
+             isClosed = false
+        else
+            rescuer = user.username
+
+    }
+
+
 
     // Functions needed for two way data binding
 
