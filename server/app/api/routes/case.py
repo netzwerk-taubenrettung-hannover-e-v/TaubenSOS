@@ -7,6 +7,9 @@ from api.models.medium import (Medium, medium_schema)
 
 bp = Blueprint("case", __name__, url_prefix="/api")
 
+bucket_location = boto3.client("s3").get_bucket_location(Bucket="tauben2")
+s3 = boto3.client("s3", region_name=bucket_location["LocationConstraint"])
+
 @bp.route("/case", methods=["GET"], strict_slashes=False)
 def read_cases():
 	"""
@@ -76,13 +79,11 @@ def delete_case(caseID):
 		if case is None:
 			return jsonify({"message": "The case to be deleted could not be found"}), 404
 		case.delete()
-		s3 = boto3.client("s3")
 		for m in case.media:
 			s3.delete_object(Bucket="tauben2", Key=m.uri)
 		return "", 204, {"Content-Type": "application/json"}
 
 def generate_media_urls(Case, ClientMethod):
 	result = case_schema.dump(Case).data
-	s3 = boto3.client("s3")
 	result.get("media")[:] = [s3.generate_presigned_url(ClientMethod=ClientMethod, Params={"Bucket": "tauben2", "Key": m.get("uri")}, ExpiresIn=600) for m in result.get("media")]
 	return result
