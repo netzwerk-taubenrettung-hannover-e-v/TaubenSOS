@@ -12,9 +12,9 @@ import de.unihannover.se.tauben2.model.network.NetworkService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val BASE_URL = "https://tauben2.herokuapp.com/api/"
+private const val BASE_URL = "http://tauben2.eu-central-1.elasticbeanstalk.com/api/"
 
-class App: Application() {
+class App : Application() {
 
     companion object {
         private lateinit var mNetworkService: NetworkService
@@ -31,10 +31,10 @@ class App: Application() {
         fun getNetworkService() = mNetworkService
 
         fun getColor(@ColorRes colorRes: Int) =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                context.getColor(colorRes)
-            else
-                context.resources.getColor(colorRes)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    context.getColor(colorRes)
+                else
+                    context.resources.getColor(colorRes)
 
     }
 
