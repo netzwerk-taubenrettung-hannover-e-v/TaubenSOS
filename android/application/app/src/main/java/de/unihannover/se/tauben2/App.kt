@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.ColorRes
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.LiveDataCallAdapterFactory
 import de.unihannover.se.tauben2.model.network.NetworkService
 import retrofit2.Retrofit
@@ -17,8 +18,12 @@ class App: Application() {
 
     companion object {
         private lateinit var mNetworkService: NetworkService
-        val CURRENT_PERMISSION = Permission.ADMIN
-        val CURRENT_USER = "Pascal"
+        val mCurrentUser = User("Pascal", true, true, "", null)
+        val CURRENT_PERMISSION = when {
+            mCurrentUser.isAdmin -> Permission.ADMIN
+            mCurrentUser.isActivated -> Permission.AUTHORISED
+            else -> Permission.GUEST
+        }
 
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context

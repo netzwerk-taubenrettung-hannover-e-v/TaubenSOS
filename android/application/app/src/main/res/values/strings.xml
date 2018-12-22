@@ -56,6 +56,9 @@
     <string name="no_rescuer">No rescuer</string>
     <string name="take_case">Take case</string>
     <string name="finish_case">Finish case</string>
+    <string name="reopen_case">Reopen case</string>
+    <string name="take_over">Take over</string>
+    <string name="remove_rescuer">Remove rescuer</string>
     <string name="in_progress_by">In progress by</string>
     <string name="injuries">Injuries</string>
     <string name="case_id">ID: %s</string>
@@ -116,7 +119,7 @@
     <string name="send">Send</string>
     <string name="selected_position">Selected position</string>
     <string name="delete">Delete</string>
-    <string name="change_state_dead">Report dead</string>
-    <string name="change_state_alive">Report as alive</string>
+    <string name="change_state_dead">Report death</string>
+    <string name="change_state_alive">Report alive</string>
 
 </resources>

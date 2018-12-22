@@ -23,7 +23,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored" />
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            android:fitsSystemWindows="true"
+            />
 
         <fragment
             android:layout_width="0dp"

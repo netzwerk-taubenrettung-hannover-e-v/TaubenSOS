@@ -58,7 +58,7 @@ class CasesFragment : Fragment() {
             mCurrentObservedData?.removeObserver(mCurrentMapObserver)
 
             mCurrentObservedData = when (filter) {
-               Filter.MY -> viewModel.cases.filter { case -> case.rescuer == App.CURRENT_USER }
+               Filter.MY -> viewModel.cases.filter { case -> case.rescuer == App.mCurrentUser.username }
                Filter.CLOSED -> viewModel.cases.filter { case -> case.isClosed == true }
                Filter.OPEN -> viewModel.cases.filter { case -> case.isClosed == false}
                else -> viewModel.cases

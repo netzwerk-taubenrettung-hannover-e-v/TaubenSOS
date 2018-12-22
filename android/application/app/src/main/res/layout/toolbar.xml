@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:background="@drawable/gradient"
     android:elevation="4dp"
-    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+    android:theme="@style/ToolbarMainActivity"
+    >
+    <!--android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"-->
 
     <!-- app_icon_size: 48dp; toolbar height: 56dp -->
     <ImageView
