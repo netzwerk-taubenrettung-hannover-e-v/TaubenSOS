@@ -36,6 +36,10 @@ interface NetworkService {
     @POST("user")
     fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>
 
+    @PUT("user/{username}")
+    fun updatePermissions(@Header("Authorization") token: String, @Body user: User,
+                          @Path("username") username: String): LiveDataRes<User>
+
     @POST("auth/login")
     fun login(@Body user: User): Call<Token>
 

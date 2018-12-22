@@ -10,5 +10,5 @@ class UserViewModel(context: Context) : BaseViewModel(context) {
     fun register(user: User) = repository.register(user)
     fun login(user: User) = repository.login(user)
     fun logout() = repository.logout()
-
+    fun updatePermissions(user: User) = repository.updatePermissions(user)
 }

@@ -246,6 +246,21 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }.send(token())
 
+    fun updatePermissions(user: User) = object : AsyncDataRequest<User, User>(appExecutors) {
+        override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: User) {
+            database.userDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: User): LiveDataRes<User> {
+            return service.updatePermissions(token(), requestData, requestData.username)
+        }
+
+    }.send(user, false)
+
 
     /**
      * Helper function for uploading media files to their corresponding upload urls
