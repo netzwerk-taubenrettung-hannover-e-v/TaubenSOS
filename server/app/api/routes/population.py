@@ -13,9 +13,12 @@ def get_Markers():
 	file: ../../docs/population/read_all.yml
 	"""
 	if request.method == "GET":
-		data = request.get_json()
-		if data.get("lastUpdate") is not None:
-			populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(data.get("lastUpdate"))))
+		if request.get_data():
+			data = request.get_json()
+			if data.get("lastUpdate") is not None:
+				populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(data.get("lastUpdate"))))
+			else:
+				populationMarkers = PopulationMarker.all()
 		else:
 			populationMarkers = PopulationMarker.all()
 		result = [make_json_marker(populationMarker = p) for p in populationMarkers]

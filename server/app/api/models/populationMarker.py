@@ -39,7 +39,7 @@ class PopulationMarker(db.Model):
 
 	@staticmethod
 	def all():
-		return PopulationMarker.query.all()
+		return db.session.query(PopulationMarker).all()
 
 	@staticmethod
 	def get_newly_updated_markers(lastUpdate):
