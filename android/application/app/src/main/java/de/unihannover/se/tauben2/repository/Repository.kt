@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
@@ -97,6 +98,27 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
     }.getAsLiveData()
+
+    /*fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
+        override fun saveCallResult(item: List<News>) {
+           database.newsDao().insertOrUpdate(item)
+        }
+
+        override fun shouldFetch(data: List<News>?): Boolean {
+            return true
+        }
+
+        override fun loadFromDb(): LiveData<List<News>> {
+            val res = database.newsDao().getNews()
+            return res
+        }
+
+        override fun createCall(): LiveDataRes<List<News>> {
+            val res = service.getNews(token())
+            return res
+        }
+
+    }.getAsLiveData()*/
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PigeonCounter>, List<PigeonCounter>>(appExecutors) {
         override fun saveCallResult(item: List<PigeonCounter>) {

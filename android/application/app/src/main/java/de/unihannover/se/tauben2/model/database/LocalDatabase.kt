@@ -7,14 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.converter.StringListConverter
-import de.unihannover.se.tauben2.model.database.dao.CaseDao
-import de.unihannover.se.tauben2.model.database.dao.InjuryDao
-import de.unihannover.se.tauben2.model.database.dao.PigeonCounterDao
-import de.unihannover.se.tauben2.model.database.dao.UserDao
-import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.InjuryEntity
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
-import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.dao.*
+import de.unihannover.se.tauben2.model.database.entity.*
 
 /**
  * class with capability to create and retrieve a RoomDatabase singleton object which represents
@@ -50,6 +44,8 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun injuryDao(): InjuryDao
 
     abstract fun userDao(): UserDao
+
+    //abstract  fun newsDao() : NewsDao
 
     abstract fun pigeonCounterDao(): PigeonCounterDao
 

@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.model.network
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Token
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
 import okhttp3.RequestBody
@@ -29,6 +30,8 @@ interface NetworkService {
     @PUT
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
+    @GET("news")
+    fun getNews(@Header("Authorization") token: String): LiveDataRes<List<News>>
 
     @GET("user")
     fun getUsers(@Header("Authorization") token: String): LiveDataRes<List<User>>
