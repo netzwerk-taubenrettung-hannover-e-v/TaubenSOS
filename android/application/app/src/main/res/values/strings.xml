@@ -121,5 +121,9 @@
     <string name="delete">Delete</string>
     <string name="change_state_dead">Report death</string>
     <string name="change_state_alive">Report alive</string>
+    <string name="take_photo">Take photo</string>
+    <string name="record_video">Record video</string>
+    <string name="what_kind_of_media">What kind of media would you like to add?</string>
+    <string name="maximum_reached">Maximum amount reached.</string>
 
 </resources>

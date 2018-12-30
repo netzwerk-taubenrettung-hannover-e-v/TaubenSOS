@@ -12,7 +12,9 @@ import de.unihannover.se.tauben2.model.network.NetworkService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val BASE_URL = "http://tauben2.eu-central-1.elasticbeanstalk.com/api/"
+private const val BASE_AMAZON_URL = "https://tauben2.eu-central-1.elasticbeanstalk.com/api/"
+private const val BASE_HEROKU_URL = "https://tauben2.herokuapp.com/api/"
+private const val USE_AMAZON = true
 
 class App : Application() {
 
@@ -43,7 +45,7 @@ class App : Application() {
 
         context = this
 
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+        val retrofit = Retrofit.Builder().baseUrl(if(USE_AMAZON) BASE_AMAZON_URL else BASE_HEROKU_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(LiveDataCallAdapterFactory()).build()
 

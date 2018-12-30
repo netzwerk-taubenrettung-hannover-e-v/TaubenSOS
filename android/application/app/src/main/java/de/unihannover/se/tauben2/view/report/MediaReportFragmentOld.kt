@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.report
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.SquareImageView
 import kotlinx.android.synthetic.main.activity_report.*
@@ -33,29 +34,21 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MediaReportFragment : ReportFragment() {
+private const val REQUEST_IMAGE_CAPTURE = 1
+private const val REQUEST_VIDEO_CAPTURE = 2
+
+class MediaReportFragmentOld : ReportFragment() {
 
     private lateinit var v: View
 
-    private lateinit var picassoInstance: Picasso
 
     init {
         pagePos = PagePos.FIRST
     }
 
-    companion object {
-        private const val REQUEST_IMAGE_CAPTURE = 0
-        private const val REQUEST_VIDEO_CAPTURE = 1
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         v = inflater.inflate(R.layout.fragment_report_media, container, false)
-
-        context?.let {
-            picassoInstance = Picasso.Builder(it.applicationContext)
-                    .addRequestHandler(PicassoVideoRequestHandler()).build()
-        }
 
         setBtnListener(R.id.fragment_report_location, null)
 
@@ -64,16 +57,17 @@ class MediaReportFragment : ReportFragment() {
         }
 
         val alertBuilder = AlertDialog.Builder(context).apply {
-            setTitle(getString(R.string.what_kind_of_media))
-            setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))){ _, i ->
+            setTitle("What kind of media do you want to add?")
+            setItems(arrayOf("Take photo", "Take video", "Get local media")){ dialogInterface, i ->
                 if(mCreatedCase.media.size > 3) {
-                    setSnackBar(v, getString(R.string.maximum_reached))
+                    setSnackBar(v, "Maximum amount reached.")
                     return@setItems
                 }
-                when(i){
-                    0 -> dispatchTakeMediaIntent()
-                    1 -> dispatchTakeMediaIntent(true)
-                }
+                if(i == 0)
+                    dispatchTakePictureIntent()
+                else if(i ==1)
+                    dispatchTakeVideoIntent()
+                dialogInterface.dismiss()
             }
         }
 
@@ -83,25 +77,20 @@ class MediaReportFragment : ReportFragment() {
 
         createBlankImages(v)
 
-        loadMedia()
+        loadImages()
 
         return v
     }
 
-    private fun dispatchTakeMediaIntent(isVideo: Boolean = false) {
-
-        val intentAction = if(isVideo) MediaStore.ACTION_VIDEO_CAPTURE else MediaStore.ACTION_IMAGE_CAPTURE
-        val filePrefix = if(isVideo) "VIDEO" else "JPEG"
-        val fileSuffix = if(isVideo) ".mp4" else ".jpg"
-        val requestCode = if(isVideo) REQUEST_VIDEO_CAPTURE else REQUEST_IMAGE_CAPTURE
-
-        Intent(intentAction).also { takeMediaIntent ->
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
-            activity?.packageManager?.let {
-                takeMediaIntent.resolveActivity(it)?.also {
+            val packageManager = activity?.packageManager
+            packageManager?.let {
+                takePictureIntent.resolveActivity(it)?.also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
-                        createMediaFile(filePrefix, fileSuffix)
+                        createImageFile()
                     } catch (ex: IOException) {
                         // Error occurred while creating the File
                         null
@@ -115,8 +104,8 @@ class MediaReportFragment : ReportFragment() {
                                     file
                             )
                         }
-                        takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takeMediaIntent, requestCode)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, 1)
                     }
                 }
             }
@@ -124,32 +113,92 @@ class MediaReportFragment : ReportFragment() {
     }
 
     @Throws(IOException::class)
-    private fun createMediaFile(prefix: String, suffix: String): File {
+    private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMAN).format(Date())
         val storageDir: File? = context?.filesDir
         return File.createTempFile(
-                "${prefix}_${timeStamp}_", /* prefix */
-                suffix, /* suffix */
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
             mCreatedCase.media += absolutePath.getFileName()
         }
     }
 
-    // triggered after capturing a photo
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if(resultCode == RESULT_OK) {
-            when(requestCode) {
-                REQUEST_IMAGE_CAPTURE -> {
-                    compressImage(mCreatedCase.media.last(), 80, 1000, 1000)
+
+
+
+//    private fun dispatchTakePictureIntent() {
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//            // Ensure that there's a camera activity to handle the intent
+//            activity?.packageManager?.also {
+//                takePictureIntent.resolveActivity(it)?.also {
+//                    // Create the File where the photo should go
+//                    val photoFile: File? = try {
+//                        createImageFile()
+//                    } catch (ex: IOException) { null }
+//                    // Continue only if the File was successfully created
+//                    photoFile?.also { file ->
+//                        val photoURI: Uri? = context?.let { context ->
+//                            FileProvider.getUriForFile(context, "de.unihannover.se.tauben2.fileprovider", file)
+//                        }
+////                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//                        startActivityForResult(takePictureIntent, 1)
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    private fun dispatchTakeVideoIntent() {
+        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+            activity?.packageManager?.let {
+                takeVideoIntent.resolveActivity(it)?.also {
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
                 }
             }
-            loadMedia()
         }
     }
 
-    private fun loadMedia() {
+//    @Throws(IOException::class)
+//    private fun createImageFile(): File {
+//        // Create an image file name
+//        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMAN).format(Date())
+//        val storageDir: File? = context?.filesDir
+//        return File.createTempFile(
+//                "JPEG_${timeStamp}_", /* prefix */
+//                ".jpg", /* suffix */
+//                storageDir /* directory */
+//        ).apply {
+//            mCreatedCase.media += absolutePath.getFileName()
+//        }
+//    }
+
+    // triggered after capturing a photo
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
+        Log.i("MediaReport", "OnActivityResult")
+        if(resultCode != RESULT_OK)
+            return
+        when(requestCode) {
+            1 -> {
+                // compress most recent image
+                val intentResult = intent.extras?.get("data")
+                if(intentResult is Bitmap) {
+                    Log.i("MediaReport", "Bitmap was chosen")
+                }
+                compressImage(mCreatedCase.media.last(), 80, 1000, 1000)
+                loadImages()
+            }
+            REQUEST_VIDEO_CAPTURE -> {
+                intent.data?.apply {
+                    mCreatedCase.media += this.toString()
+                }
+            }
+        }
+    }
+
+    private fun loadImages() {
 
         for (i in 0 until v.image_layout.childCount) {
 
@@ -160,20 +209,12 @@ class MediaReportFragment : ReportFragment() {
 
             if (image is SquareImageView && i < mCreatedCase.media.size) {
 
-                val mediaLink = if (URLUtil.isValidUrl(mCreatedCase.media[i])) mCreatedCase.media[i]
+                val imageLink = if (URLUtil.isValidUrl(mCreatedCase.media[i])) mCreatedCase.media[i]
                 else context?.getFileStreamPath(mCreatedCase.media[i])?.absolutePath
 
-                val suffix = mediaLink?.split(".")?.last()
-                if(suffix != "jpg") {
-//                    MediaMetadataRetriever().apply {
-//                        setDataSource(mediaLink, hashMapOf<String, String>())
-//                    }
-                    picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-                } else {
-                    if (URLUtil.isValidUrl(mediaLink)) Picasso.get().load(mediaLink).into(image)
-                    else Picasso.get().load(File(mediaLink)).into(image)
-                }
 
+                if (URLUtil.isValidUrl(imageLink)) Picasso.get().load(imageLink).into(image)
+                else Picasso.get().load(File(imageLink)).into(image)
 
                 layout.visibility = View.VISIBLE
             }
@@ -188,7 +229,7 @@ class MediaReportFragment : ReportFragment() {
                     (mCreatedCase.media as MutableList<String>).removeAt(i)
             }
         }
-        loadMedia()
+        loadImages()
     }
 
     private fun createBlankImages(view: View) {
@@ -200,8 +241,12 @@ class MediaReportFragment : ReportFragment() {
         //      ]
         //  ]
 
+        for (i in 0..2) {
 
-        (0..2).forEach {
+            val constraintLayout = ConstraintLayout(view.context)
+            val layout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f)
+            layout.setMargins(2, 2, 2, 2)
+            constraintLayout.layoutParams = layout
 
             val image = SquareImageView(view.context).apply {
                 id = View.generateViewId()
@@ -209,23 +254,17 @@ class MediaReportFragment : ReportFragment() {
             }
 
             val button = ImageButton(view.context).apply {
-                id = View.generateViewId()
                 setImageResource(R.drawable.ic_close)
-//                setPadding(0,0,0,0)
+                setPadding(0, 0, 0, 0)
                 background = ColorDrawable(Color.TRANSPARENT)
+                id = View.generateViewId()
+
                 setOnClickListener {
                     deleteImage(image)
                 }
             }
 
-            val constraintLayout = ConstraintLayout(view.context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        1.0f).apply {
-
-                    setMargins(2,2,2,2)
-                }
+            constraintLayout.apply {
                 addView(image)
                 addView(button)
                 visibility = View.INVISIBLE
@@ -239,7 +278,6 @@ class MediaReportFragment : ReportFragment() {
                 connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
                 applyTo(constraintLayout)
             }
-
         }
     }
 
@@ -291,4 +329,5 @@ class MediaReportFragment : ReportFragment() {
         }
         return inSampleSize
     }
+
 }

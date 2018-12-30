@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
+import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
@@ -25,13 +27,19 @@ import kotlinx.android.synthetic.main.fragment_case_info.view.*
 class CaseInfoFragment: Fragment() {
 
     private lateinit var mBinding: FragmentCaseInfoBinding
-    private var toolbarMenu: Menu? = null
+    private var mToolbarMenu: Menu? = null
+    private lateinit var mPicassoInstance: Picasso
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_case_info, container, false)
         val v = mBinding.root
         setHasOptionsMenu(true)
+
+        context?.let {
+            mPicassoInstance = Picasso.Builder(it.applicationContext)
+                    .addRequestHandler(PicassoVideoRequestHandler()).build()
+        }
 
         //TODO observe
         mBinding.currentUser = App.mCurrentUser
@@ -45,15 +53,12 @@ class CaseInfoFragment: Fragment() {
                 val case = it[0]
                 mBinding.c = case
 
-
-                val firstImage = Picasso.get().load(if (case.media.isEmpty()) null else case.media[0])
-                firstImage.into(v.image_header)
+                loadMedia(0, v.image_header)
 
                 for (i in 0 until v.layout_media.childCount) {
                     val image = v.layout_media.getChildAt(i)
                     if (image is SquareImageView) {
-                        Picasso.get().load(if (case.media.size >= i + 1) case.media[i] else null)
-                                .into(image)
+                        loadMedia(i, image)
                         image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
                     }
                 }
@@ -65,7 +70,7 @@ class CaseInfoFragment: Fragment() {
                     adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
                 }
 
-                toolbarMenu?.run { setOptionsMenuDeadItems(this) }
+                mToolbarMenu?.run { setOptionsMenuDeadItems(this) }
 
                 v.btn_state_next.setOnClickListener {
                     case.nextState(App.mCurrentUser)
@@ -83,9 +88,30 @@ class CaseInfoFragment: Fragment() {
         return v
     }
 
+    private fun loadMedia(index: Int, target: ImageView) {
+        mBinding.c?.also { case ->
+            var media: String? = null
+
+            if(case.media.size <= index) {
+                Picasso.get().load(media).into(target)
+                return
+            }
+
+            media = case.media[index]
+
+            //TODO Thumbnail loading don't work
+            if(media.contains("VIDEO"))
+                mPicassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + media)?.into(target)
+            else
+                Picasso.get().load(media).into(target)
+
+        }
+
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        toolbarMenu = menu
-        toolbarMenu?.let { setOptionsMenuItems(it) }
+        mToolbarMenu = menu
+        mToolbarMenu?.let { setOptionsMenuItems(it) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
