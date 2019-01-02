@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="48dp"
-            app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior">
+            app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior"
+            app:elevation="0dp" >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -25,9 +26,9 @@
                     android:name="de.unihannover.se.tauben2.view.MapViewFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_collapseMode="parallax">
+                    app:layout_collapseMode="parallax"
+                    />
 
-                </fragment>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -39,40 +40,43 @@
             android:background="@color/White"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/date_selection"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp">
+                android:paddingEnd="8dp"
+                app:cardCornerRadius="0dp"
+                >
 
-                <TextView
-                    android:id="@+id/testtext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="This is Date. Change my mind!"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/collapse_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="collapse"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <ImageView
-                    android:id="@+id/spacer"
+                <LinearLayout
+                    android:id="@+id/date_selection"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:tint="@color/Gray"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:srcCompat="@drawable/rectangle" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:gravity="center_vertical"
+                    >
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/testtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This is Date. Change my mind!"
+                        android:layout_weight="2"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/collapse_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_keyboard_arrow_up"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
