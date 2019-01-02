@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
 import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.converter.StringListConverter
 import de.unihannover.se.tauben2.model.database.dao.*
@@ -15,7 +16,7 @@ import de.unihannover.se.tauben2.model.database.entity.*
  * the local SQLite Database
  */
 @Database(entities = [Case::class, InjuryEntity::class, User::class, PigeonCounter::class], exportSchema = false, version = 1)
-@TypeConverters(StringListConverter::class, PermissionConverter::class)
+@TypeConverters(StringListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
     companion object {
