@@ -56,6 +56,18 @@ def update_user(username):
 		user.update(**json)
 		return jsonify(make_json(User=user)), 200
 
+@bp.route("user/<username>", methods=["GET"], strict_slashes=False)
+def read_user(username):
+	"""
+	file: ../../docs/user/read_user.yml
+	"""
+	if request.method == "GET":
+		user = User.get(username)
+		if user is None:
+			return jsonify({"message": "The user to be shown could not be found"}), 404
+		result = make_json(User=user)
+		return jsonify(result)
+
 def make_json(User):
 	result = user_schema.dump(User).data
 	return result
