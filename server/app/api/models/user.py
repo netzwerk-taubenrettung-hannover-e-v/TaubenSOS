@@ -3,7 +3,7 @@ from marshmallow import pre_load, post_load, utils, validate
 import hashlib
 
 class User(db.Model):
-	__tablename__="user"
+	__tablename__= "user"
 	username = db.Column(db.String(20), primary_key=True)
 	password = db.Column(db.String(255), nullable=False)
 	phone = db.Column(db.String(30))
@@ -11,6 +11,8 @@ class User(db.Model):
 	isActivated = db.Column(db.Boolean)
 	asReporter = db.relationship("Case", foreign_keys="Case.reporter")
 	asRescuer = db.relationship("Case", foreign_keys="Case.rescuer")
+	#asAuthor = db.relationship("Feed", foreign_keys="Feed.author")
+	asUsername = db.relationship("Token", foreign_keys="Token.username")
 
 	def __init__(self, username, password, phone, isAdmin, isActivated):
 		self.username = username

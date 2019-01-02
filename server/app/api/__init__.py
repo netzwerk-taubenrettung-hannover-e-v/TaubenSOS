@@ -55,6 +55,9 @@ def create_app(config_name):
     from api.routes import stats
     app.register_blueprint(stats.bp)
 
+    from api.routes import feed
+    app.register_blueprint(feed.bp)
+
     swag.template = spec.to_flasgger(app)
 
     return app
