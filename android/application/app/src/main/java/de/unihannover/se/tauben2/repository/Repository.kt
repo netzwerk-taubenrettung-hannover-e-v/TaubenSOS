@@ -140,6 +140,22 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
+
+    fun postNewMarker(marker: PopulationMarker) = object : AsyncDataRequest<PopulationMarker, PopulationMarker>(appExecutors) {
+        override fun fetchUpdatedData(resultData: PopulationMarker): LiveDataRes<PopulationMarker> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: PopulationMarker) {
+            database.populationMarkerDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: PopulationMarker): LiveDataRes<PopulationMarker> {
+            return service.postNewMarker(requestData)
+        }
+
+    }.send(marker, enableRefetching = false)
+
     fun postCounterValue(value: CounterValue) = object : AsyncDataRequest<CounterValue, CounterValue>(appExecutors) {
         override fun fetchUpdatedData(resultData: CounterValue): LiveDataRes<CounterValue> {
             throw Exception("Re-fetching is disabled, don't try to force it!")

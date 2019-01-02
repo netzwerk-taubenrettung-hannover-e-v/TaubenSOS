@@ -111,7 +111,7 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
                     mapsFragment.getSelectedPosition()?.run {
                         val count = counter_value.text.toString().toInt()
-                        sendMarker(selectedDate.timeInMillis / 1000, count)
+                        sendMarker(latitude, longitude, selectedDate.timeInMillis / 1000, count)
                     }
 
                     // Reset Page
@@ -130,16 +130,18 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         return view
     }
 
-    private fun sendMarker(timestamp: Long, count: Int) {
+    private fun sendMarker(latitude: Double, longitude: Double, timestamp: Long, count: Int) {
         val vm = getViewModel(PopulationMarkerViewModel::class.java)
         vm?.let {
-            val newMarker = false
+            val newMarker = true
             // TODO get selected marker ID:
             if (!newMarker)
                 it.postCounterValue(CounterValue(count, 4, timestamp))
             // TODO if not selected: post new marker
             else
-                Log.d("efesa", "eskjgeikjst")
+                it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, 400.0,
+                        listOf(CounterValue(count, -1, timestamp))))
+
         }
     }
 

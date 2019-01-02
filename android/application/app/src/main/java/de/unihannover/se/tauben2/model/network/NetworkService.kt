@@ -65,4 +65,7 @@ interface NetworkService {
     @POST("population/{markerId}")
     fun postCounterValue(@Body value: CounterValue,
                          @Path("markerId") markerId: Int): LiveDataRes<CounterValue>
+
+    @POST("population")
+    fun postNewMarker(@Body marker: PopulationMarker): LiveDataRes<PopulationMarker>
 }
