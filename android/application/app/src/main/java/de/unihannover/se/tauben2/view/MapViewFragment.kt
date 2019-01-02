@@ -20,7 +20,7 @@ import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
 import com.google.maps.android.heatmaps.Gradient
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -138,7 +138,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
             markers.forEach { marker ->
                 if(mMarkers[marker] == null)
                     mMarkers[marker] = map.addMarker(marker.getMarker())
-                    if(marker is PigeonCounter){
+                    if(marker is PopulationMarker){
                         map.addCircle(CircleOptions()
                                 .center(marker.getMarker().position)
                                 .radius(marker.radius)

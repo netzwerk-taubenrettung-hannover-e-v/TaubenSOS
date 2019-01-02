@@ -5,7 +5,7 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.Token
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -52,8 +52,8 @@ interface NetworkService {
 
 
     @GET("population")
-    fun getPigeonCounters(@Header("Authorization") token: String): LiveDataRes<List<PigeonCounter>>
+    fun getPigeonCounters(@Header("Authorization") token: String): LiveDataRes<List<PopulationMarker>>
 
     @POST("population")
-    fun sendPigeonCounter(@Header("Authorization") token: String, @Body pigeonCounter: PigeonCounter): LiveDataRes<Unit>
+    fun sendPigeonCounter(@Header("Authorization") token: String, @Body populationMarker: PopulationMarker): LiveDataRes<Unit>
 }

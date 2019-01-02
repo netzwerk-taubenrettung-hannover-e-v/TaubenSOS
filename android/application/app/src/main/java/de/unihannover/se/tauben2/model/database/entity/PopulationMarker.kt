@@ -17,16 +17,18 @@ import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
  */
 @TypeConverters(CounterValueConverter::class)
 @Entity(tableName = "population", primaryKeys = ["latitude", "longitude"])
-data class PigeonCounter(var latitude: Double,
-                         var longitude: Double,
-                         var description: String,
-                         var populationMarkerID: Long,
-                         var radius: Double,
-                         var values: List<CounterValue>
+data class PopulationMarker(var latitude: Double,
+                            var longitude: Double,
+                            var description: String,
+                            var populationMarkerID: Long,
+                            var radius: Double,
+                            var values: List<CounterValue>
 ) : MapMarkable {
 
     override fun getMarker(): MarkerOptions {
         val totalPigeonCount = values.fold(0) { sum, element -> sum + element.pigeonCount }
-        return MarkerOptions().position(LatLng(latitude, longitude)).title("Taubenanzahl: $totalPigeonCount")
+        return MarkerOptions().position(LatLng(latitude, longitude))
+                .title(description)
+                .snippet("Taubenanzahl: $totalPigeonCount")
     }
 }

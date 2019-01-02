@@ -9,8 +9,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.News
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
 import okhttp3.MediaType
@@ -121,20 +120,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()*/
 
-    fun getPigeonCounters() = object : NetworkBoundResource<List<PigeonCounter>, List<PigeonCounter>>(appExecutors) {
-        override fun saveCallResult(item: List<PigeonCounter>) {
+    fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
+        override fun saveCallResult(item: List<PopulationMarker>) {
             database.pigeonCounterDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<PigeonCounter>?): Boolean {
+        override fun shouldFetch(data: List<PopulationMarker>?): Boolean {
             return true
         }
 
-        override fun loadFromDb(): LiveData<List<PigeonCounter>> {
+        override fun loadFromDb(): LiveData<List<PopulationMarker>> {
             return database.pigeonCounterDao().getAllPigeonCounters()
         }
 
-        override fun createCall(): LiveDataRes<List<PigeonCounter>> {
+        override fun createCall(): LiveDataRes<List<PopulationMarker>> {
             return service.getPigeonCounters(token())
         }
 

@@ -16,7 +16,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
 import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
 import kotlinx.android.synthetic.main.fragment_counter.*
@@ -29,8 +29,8 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     private var selectedDate: Calendar = Calendar.getInstance()
 
-    private var mCurrentObservedData: LiveDataRes<List<PigeonCounter>>? = null
-    private lateinit var mCurrentMapObserver: LoadingObserver<List<PigeonCounter>>
+    private var mCurrentObservedData: LiveDataRes<List<PopulationMarker>>? = null
+    private lateinit var mCurrentMapObserver: LoadingObserver<List<PopulationMarker>>
 
     companion object : Singleton<CounterFragment>() {
         override fun newInstance() = CounterFragment()
