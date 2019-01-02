@@ -5,7 +5,7 @@
 
     <data>
         <import type="de.unihannover.se.tauben2.ExtensionsKt" />
-        <variable name="c" type="de.unihannover.se.tauben2.model.database.entity.Case" />
+        <variable name="n" type="de.unihannover.se.tauben2.model.database.entity.News" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Pigeonnator hat Event hinzugefügt"
+                android:text="@{String.format(@string/written_by_text, n.writtenBy)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,19 +40,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Vor 5 Minuten"
+                android:text="@{n.timestamp}"
                 android:textColor="@color/colorGray"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/written_by" />
 
             <TextView
-                android:id="@+id/news_titel"
+                android:id="@+id/news_title"
                 style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Auf Streife!!!"
+                android:text="@{n.newsTitle}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/timestamp" />
@@ -65,13 +65,13 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Streife, wir gehen auf Streife!\nSilvester gehen alle Vereinsmitglieder auf Streife um alle Selbstmordgefährdeten Tauben die sich an Böller, Raketen und sonstiges schnallen einzufangen."
+                android:text="@{n.newsText}"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/news_titel"
+                app:layout_constraintTop_toBottomOf="@+id/news_title"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -80,14 +80,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:tint="@{c.statusColor}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/news_text"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_facebook" />
+                app:layout_constraintVertical_bias="1.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

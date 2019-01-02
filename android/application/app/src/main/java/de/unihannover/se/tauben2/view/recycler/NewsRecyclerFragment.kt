@@ -18,7 +18,7 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
         val vm = getViewModel(NewsViewModel::class.java)
 
         if (binding is CardNewsBinding) {
-            //binding.c = data
+            binding.c = data
         }
     }
 }

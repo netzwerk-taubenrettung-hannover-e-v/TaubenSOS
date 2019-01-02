@@ -125,5 +125,6 @@
     <string name="record_video">Record video</string>
     <string name="what_kind_of_media">What kind of media would you like to add?</string>
     <string name="maximum_reached">Maximum amount reached.</string>
+    <string name="written_by_text">Written by: </string>
 
 </resources>
