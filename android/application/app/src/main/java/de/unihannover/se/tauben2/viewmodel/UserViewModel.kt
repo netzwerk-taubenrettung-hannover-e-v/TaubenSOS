@@ -2,6 +2,7 @@ package de.unihannover.se.tauben2.viewmodel
 
 import android.content.Context
 import de.unihannover.se.tauben2.LiveDataRes
+import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.database.entity.User
 
 class UserViewModel(context: Context) : BaseViewModel(context) {
@@ -10,5 +11,5 @@ class UserViewModel(context: Context) : BaseViewModel(context) {
     fun register(user: User) = repository.register(user)
     fun login(user: User) = repository.login(user)
     fun logout() = repository.logout()
-    fun updatePermissions(user: User) = repository.updatePermissions(user)
+    fun updatePermissions(auth: Auth) = repository.updatePermissions(auth)
 }

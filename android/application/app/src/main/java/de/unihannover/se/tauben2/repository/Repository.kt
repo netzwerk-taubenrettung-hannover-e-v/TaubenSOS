@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
+import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
@@ -268,7 +269,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }.send(token())
 
-    fun updatePermissions(user: User) = object : AsyncDataRequest<User, User>(appExecutors) {
+    fun updatePermissions(auth: Auth) = object : AsyncDataRequest<User, Auth>(appExecutors) {
         override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
         }
@@ -277,11 +278,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             database.userDao().insertOrUpdate(updatedData)
         }
 
-        override fun createCall(requestData: User): LiveDataRes<User> {
+        override fun createCall(requestData: Auth): LiveDataRes<User> {
             return service.updatePermissions(token(), requestData, requestData.username)
         }
 
-    }.send(user, false)
+    }.send(auth, false)
 
 
     /**
