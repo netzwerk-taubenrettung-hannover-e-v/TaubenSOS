@@ -19,7 +19,13 @@ class StatisticFragment : Fragment(){
 
         view.collapse_button.setOnClickListener {
             val appbar = appbar as AppBarLayout
-            appbar.setExpanded(!(appbar.height - appbar.bottom == 0))
+            val expand = appbar.height - appbar.bottom != 0
+            appbar.setExpanded(expand)
+            if(expand)
+                view.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
+            else
+                view.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_down)
+
         }
 
         return view
