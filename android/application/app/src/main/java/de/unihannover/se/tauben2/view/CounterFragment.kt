@@ -16,14 +16,15 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
-import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
+import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import de.unihannover.se.tauben2.setSnackBar
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -108,6 +109,11 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
                     Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
                     Log.d("COUNTINFO", counter_value.text.toString())
 
+                    mapsFragment.getSelectedPosition()?.run {
+                        val count = counter_value.text.toString().toInt()
+                        sendMarker(selectedDate.timeInMillis / 1000, count)
+                    }
+
                     // Reset Page
                     counter_value.setText("0")
                     setCurrentTimestamp()
@@ -124,14 +130,27 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         return view
     }
 
+    private fun sendMarker(timestamp: Long, count: Int) {
+        val vm = getViewModel(PopulationMarkerViewModel::class.java)
+        vm?.let {
+            val newMarker = false
+            // TODO get selected marker ID:
+            if (!newMarker)
+                it.postCounterValue(CounterValue(count, 4, timestamp))
+            // TODO if not selected: post new marker
+            else
+                Log.d("efesa", "eskjgeikjst")
+        }
+    }
+
     private fun loadCounters() {
 
-        getViewModel(PigeonCounterViewModel::class.java)?.let { viewModel ->
+        getViewModel(PopulationMarkerViewModel::class.java)?.let { viewModel ->
 
             // Remove old Observers
             mCurrentObservedData?.removeObserver(mCurrentMapObserver)
 
-            mCurrentObservedData = viewModel.pigeonCounters
+            mCurrentObservedData = viewModel.populationMarkers
 
             mCurrentObservedData?.observe(this, mCurrentMapObserver)
         }

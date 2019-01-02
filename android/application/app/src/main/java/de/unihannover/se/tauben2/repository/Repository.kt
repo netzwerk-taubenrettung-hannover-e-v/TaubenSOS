@@ -7,6 +7,7 @@ import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
+import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
@@ -122,7 +123,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
-            database.pigeonCounterDao().insertOrUpdate(item)
+            database.populationMarkerDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<PopulationMarker>?): Boolean {
@@ -130,7 +131,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun loadFromDb(): LiveData<List<PopulationMarker>> {
-            return database.pigeonCounterDao().getAllPigeonCounters()
+            return database.populationMarkerDao().getAllPigeonCounters()
         }
 
         override fun createCall(): LiveDataRes<List<PopulationMarker>> {
@@ -138,6 +139,23 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
     }.getAsLiveData()
+
+    fun postCounterValue(value: CounterValue) = object : AsyncDataRequest<CounterValue, CounterValue>(appExecutors) {
+        override fun fetchUpdatedData(resultData: CounterValue): LiveDataRes<CounterValue> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: CounterValue) {
+            val marker = database.populationMarkerDao().getPopulationMarker(updatedData.populationMarkerID)
+            marker.values += updatedData
+            database.populationMarkerDao().insertOrUpdate(marker)
+        }
+
+        override fun createCall(requestData: CounterValue): LiveDataRes<CounterValue> {
+            return service.postCounterValue(requestData, requestData.populationMarkerID)
+        }
+
+    }.send(value, enableRefetching = false)
 
     /**
      * Sends case to server and inserts the answer from the server into the local database
@@ -232,7 +250,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return service.register(token(), requestData)
         }
 
-    }.send(user, false)
+    }.send(user, enableRefetching = false)
 
     /**
      * Makes a login request, waits for its result and saves the authorization token.
@@ -281,7 +299,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return service.updatePermissions(token(), requestData, requestData.username)
         }
 
-    }.send(auth, false)
+    }.send(auth, enableRefetching = false)
 
 
     /**

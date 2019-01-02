@@ -16,11 +16,11 @@ import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
  * @param values list of CounterValue instances at the given Marker
  */
 @TypeConverters(CounterValueConverter::class)
-@Entity(tableName = "population", primaryKeys = ["latitude", "longitude"])
-data class PopulationMarker(var latitude: Double,
-                            var longitude: Double,
+@Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "populationMarkerID"])
+data class PopulationMarker(val latitude: Double,
+                            val longitude: Double,
                             var description: String,
-                            var populationMarkerID: Long,
+                            val populationMarkerID: Int,
                             var radius: Double,
                             var values: List<CounterValue>
 ) : MapMarkable {

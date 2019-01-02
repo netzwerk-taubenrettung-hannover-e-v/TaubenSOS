@@ -4,7 +4,6 @@ import androidx.databinding.ViewDataBinding
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardNewsBinding
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 
@@ -18,7 +17,8 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
         val vm = getViewModel(NewsViewModel::class.java)
 
         if (binding is CardNewsBinding) {
-            binding.c = data
+            //binding.c = data
+            // bitte erst testen ob es kompiliert bevor ihr etwas pusht danke
         }
     }
 }

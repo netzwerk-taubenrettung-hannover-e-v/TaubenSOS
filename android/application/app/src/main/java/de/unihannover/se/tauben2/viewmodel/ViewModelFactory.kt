@@ -13,7 +13,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             modelClass.isAssignableFrom(NewsViewModel::class.java) -> NewsViewModel(context) as T
             modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(context) as T
             modelClass.isAssignableFrom(MediaViewModel::class.java) -> MediaViewModel(context) as T
-            modelClass.isAssignableFrom(PigeonCounterViewModel::class.java) -> PigeonCounterViewModel(context) as T
+            modelClass.isAssignableFrom(PopulationMarkerViewModel::class.java) -> PopulationMarkerViewModel(context) as T
             else -> throw IllegalArgumentException(this::class.java.simpleName + " Unknown ViewModelClass to handle")
         }
     }

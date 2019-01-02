@@ -16,4 +16,7 @@ interface PopulationMarkerDao : BaseDao<PopulationMarker> {
      */
     @Query("SELECT * FROM population")
     fun getAllPigeonCounters(): LiveData<List<PopulationMarker>>
+
+    @Query("SELECT * FROM population WHERE populationMarkerID= :id")
+    fun getPopulationMarker(id: Int): PopulationMarker
 }

@@ -48,6 +48,6 @@ abstract class LocalDatabase : RoomDatabase() {
 
     //abstract  fun newsDao() : NewsDao
 
-    abstract fun pigeonCounterDao(): PopulationMarkerDao
+    abstract fun populationMarkerDao(): PopulationMarkerDao
 
 }
