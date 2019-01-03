@@ -7,9 +7,10 @@ import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
+import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
 import okhttp3.MediaType
@@ -131,24 +132,57 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()*/
 
-    fun getPigeonCounters() = object : NetworkBoundResource<List<PigeonCounter>, List<PigeonCounter>>(appExecutors) {
-        override fun saveCallResult(item: List<PigeonCounter>) {
-            database.pigeonCounterDao().insertOrUpdate(item)
+    fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
+        override fun saveCallResult(item: List<PopulationMarker>) {
+            database.populationMarkerDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<PigeonCounter>?): Boolean {
+        override fun shouldFetch(data: List<PopulationMarker>?): Boolean {
             return true
         }
 
-        override fun loadFromDb(): LiveData<List<PigeonCounter>> {
-            return database.pigeonCounterDao().getAllPigeonCounters()
+        override fun loadFromDb(): LiveData<List<PopulationMarker>> {
+            return database.populationMarkerDao().getAllPigeonCounters()
         }
 
-        override fun createCall(): LiveDataRes<List<PigeonCounter>> {
+        override fun createCall(): LiveDataRes<List<PopulationMarker>> {
             return service.getPigeonCounters(getToken())
         }
 
     }.getAsLiveData()
+
+
+    fun postNewMarker(marker: PopulationMarker) = object : AsyncDataRequest<PopulationMarker, PopulationMarker>(appExecutors) {
+        override fun fetchUpdatedData(resultData: PopulationMarker): LiveDataRes<PopulationMarker> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: PopulationMarker) {
+            database.populationMarkerDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: PopulationMarker): LiveDataRes<PopulationMarker> {
+            return service.postNewMarker(requestData)
+        }
+
+    }.send(marker, enableRefetching = false)
+
+    fun postCounterValue(value: CounterValue) = object : AsyncDataRequest<CounterValue, CounterValue>(appExecutors) {
+        override fun fetchUpdatedData(resultData: CounterValue): LiveDataRes<CounterValue> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: CounterValue) {
+            val marker = database.populationMarkerDao().getPopulationMarker(updatedData.populationMarkerID)
+            marker.values += updatedData
+            database.populationMarkerDao().insertOrUpdate(marker)
+        }
+
+        override fun createCall(requestData: CounterValue): LiveDataRes<CounterValue> {
+            return service.postCounterValue(requestData, requestData.populationMarkerID)
+        }
+
+    }.send(value, enableRefetching = false)
 
     /**
      * Sends case to server and inserts the answer from the server into the local database
@@ -243,7 +277,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return service.register(getToken(), requestData)
         }
 
-    }.send(user, false)
+    }.send(user, enableRefetching = false)
 
     /**
      * Makes a login request, waits for its result and saves the authorization getToken.
@@ -299,7 +333,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return service.updatePermissions(getToken(), requestData, requestData.username)
         }
 
-    }.send(auth, false)
+    }.send(auth, enableRefetching = false)
 
 
     /**

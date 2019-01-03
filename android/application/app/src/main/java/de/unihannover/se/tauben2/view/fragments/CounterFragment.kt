@@ -16,14 +16,15 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_counter
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.model.CounterValue
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
-import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
+import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
 
@@ -31,8 +32,10 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     private var selectedDate: Calendar = Calendar.getInstance()
 
-    private var mCurrentObservedData: LiveDataRes<List<PigeonCounter>>? = null
-    private lateinit var mCurrentMapObserver: LoadingObserver<List<PigeonCounter>>
+    private var mCurrentObservedData: LiveDataRes<List<PopulationMarker>>? = null
+    private lateinit var mCurrentMapObserver: LoadingObserver<List<PopulationMarker>>
+
+    var mSelectedMarkerID: Int? = null
 
     companion object : Singleton<CounterFragment>() {
         override fun newInstance() = CounterFragment()
@@ -110,6 +113,11 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
                     Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
                     Log.d("COUNTINFO", counter_value.text.toString())
 
+                    mapsFragment.getSelectedPosition()?.run {
+                        val count = counter_value.text.toString().toInt()
+                        sendMarker(latitude, longitude, selectedDate.timeInMillis / 1000, count)
+                    }
+
                     // Reset Page
                     counter_value.setText("0")
                     setCurrentTimestamp()
@@ -126,14 +134,29 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         return view
     }
 
+    private fun sendMarker(latitude: Double, longitude: Double, timestamp: Long, count: Int) {
+        val vm = getViewModel(PopulationMarkerViewModel::class.java)
+        vm?.let {
+
+            if (mSelectedMarkerID != null) {
+                it.postCounterValue(CounterValue(count, mSelectedMarkerID ?: return, timestamp))
+                mSelectedMarkerID = null
+            } else
+            // TODO implement drawing radius, adding description text in ui
+                it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, 400.0,
+                        listOf(CounterValue(count, -1, timestamp))))
+
+        }
+    }
+
     private fun loadCounters() {
 
-        getViewModel(PigeonCounterViewModel::class.java)?.let { viewModel ->
+        getViewModel(PopulationMarkerViewModel::class.java)?.let { viewModel ->
 
             // Remove old Observers
             mCurrentObservedData?.removeObserver(mCurrentMapObserver)
 
-            mCurrentObservedData = viewModel.pigeonCounters
+            mCurrentObservedData = viewModel.populationMarkers
 
             mCurrentObservedData?.observe(this, mCurrentMapObserver)
         }

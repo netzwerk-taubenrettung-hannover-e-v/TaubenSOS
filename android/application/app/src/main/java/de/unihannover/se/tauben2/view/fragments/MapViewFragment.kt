@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
-import de.unihannover.se.tauben2.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,39 +13,40 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.heatmaps.Gradient
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
-import com.google.maps.android.heatmaps.Gradient
-import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.view.fragments.cases.CasesFragment
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
     private var mMap: GoogleMap? = null
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
-    private var selectedPosition : Marker? = null
+    private var selectedPosition: Marker? = null
 
     override fun onChanged(data: List<MapMarkable>) {
 
-        if(mMarkers.isEmpty()) {
+        if (mMarkers.isEmpty()) {
             data.forEach { mMarkers[it] = null }
             setCaseMarkers(data)
         }
         val casesToRemove: MutableMap<MapMarkable, Marker?> = mutableMapOf()
 
-        loop@ for((oldCase, oldMarker) in mMarkers) {
-            for(newCase in data) {
-                if(newCase == oldCase)
+        loop@ for ((oldCase, oldMarker) in mMarkers) {
+            for (newCase in data) {
+                if (newCase == oldCase)
                     continue@loop
             }
             casesToRemove[oldCase] = oldMarker
         }
 
-        for((oldCase, oldMarker) in casesToRemove) {
+        for ((oldCase, oldMarker) in casesToRemove) {
             oldMarker?.remove()
             mMarkers.remove(oldCase)
         }
@@ -61,7 +61,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 //        val view = inflater.inflate(R.layout.fragment_map, container, false)
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
-
 
 
 //        view.mapView.onCreate(savedInstanceState)
@@ -99,7 +98,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                             //TODO find MarkerCase
 
                             val filter = mMarkers.filter { it.value == clickedMarker }
-                            if(filter.size == 1) {
+                            if (filter.size == 1) {
                                 val case = filter.keys.toList()[0] as? Case
                                         ?: return@setOnInfoWindowClickListener
 
@@ -110,6 +109,16 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                         }
                     }
                     is LocationReportFragment -> (this.parentFragment as LocationReportFragment).setMarker()
+                    is CounterFragment -> {
+                        mMap?.setOnMarkerClickListener { clickedMarker ->
+                            val filter = mMarkers.filter { it.value == clickedMarker }
+                            if (filter.size == 1) {
+                                val populationMarker = filter.keys.toList()[0] as? PopulationMarker
+                                (this.parentFragment as CounterFragment).mSelectedMarkerID = populationMarker?.populationMarkerID
+                            }
+                            false // enables default behaviour i.e. focusing the marker and opening the info window
+                        }
+                    }
                 }
             }
         }
@@ -118,7 +127,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     }
 
     // add a marker at the middle of the map and save it in 'selectedPosition'
-    fun selectPosition (position: LatLng?) {
+    fun selectPosition(position: LatLng?) {
 
         // remove the old position if exists
         selectedPosition?.remove()
@@ -132,22 +141,22 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         selectedPosition = mMap?.addMarker(mo)
     }
 
-    fun getSelectedPosition () : LatLng? {
+    fun getSelectedPosition(): LatLng? {
         return selectedPosition?.position
     }
 
     private fun setCaseMarkers(markers: Collection<MapMarkable>) {
         mMap?.let { map ->
             markers.forEach { marker ->
-                if(mMarkers[marker] == null)
+                if (mMarkers[marker] == null)
                     mMarkers[marker] = map.addMarker(marker.getMarker())
-                    if(marker is PigeonCounter){
-                        map.addCircle(CircleOptions()
-                                .center(marker.getMarker().position)
-                                .radius(marker.radius)
-                                .strokeColor(Color.argb(40, 59, 148, 225))
-                                .fillColor(Color.argb(20, 59, 148, 225)))
-                    }
+                if (marker is PopulationMarker) {
+                    map.addCircle(CircleOptions()
+                            .center(marker.getMarker().position)
+                            .radius(marker.radius)
+                            .strokeColor(Color.argb(40, 59, 148, 225))
+                            .fillColor(Color.argb(20, 59, 148, 225)))
+                }
             }
         }
     }
@@ -159,7 +168,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         // LatLng(52.5386801, 9.9908932)
 
         // test data
-        var testlist : MutableList<WeightedLatLng> = mutableListOf()
+        var testlist: MutableList<WeightedLatLng> = mutableListOf()
         for (i in 1..1000) {
             testlist.add(WeightedLatLng(
                     LatLng(52.3050934 + (52.5386801 - 52.3050934) * Random().nextDouble(), 9.4635117 + (9.9908932 - 9.4635117) * Random().nextDouble()), 100 * Random().nextDouble()))

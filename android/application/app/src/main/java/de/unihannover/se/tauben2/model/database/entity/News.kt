@@ -8,10 +8,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "news")
-data class News (@PrimaryKey val newstitle: String,
-                var timestamp : String,
-                var writtenBy : String,
-                var newsText : String
+data class News (@PrimaryKey val newsTitle: String,
+                 var timestamp : String,
+                 var writtenBy : String,
+                 var newsText : String
 
 ) : RecyclerItem, Parcelable {
 
