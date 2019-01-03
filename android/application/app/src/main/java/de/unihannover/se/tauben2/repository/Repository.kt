@@ -150,6 +150,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: PopulationMarker) {
+            setItemUpdateTimestamps(updatedData)
             database.populationMarkerDao().insertOrUpdate(updatedData)
         }
 
@@ -167,6 +168,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         override fun saveUpdatedData(updatedData: CounterValue) {
             val marker = database.populationMarkerDao().getPopulationMarker(updatedData.populationMarkerID)
             marker.values += updatedData
+            setItemUpdateTimestamps(updatedData)
             database.populationMarkerDao().insertOrUpdate(marker)
         }
 
@@ -195,6 +197,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: Case) {
+            setItemUpdateTimestamps(updatedData)
             database.caseDao().insertOrUpdate(updatedData)
         }
 
@@ -225,6 +228,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: Case) {
+            setItemUpdateTimestamps(updatedData)
             database.caseDao().insertOrUpdate(updatedData)
         }
 
@@ -262,6 +266,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: User) {
+            setItemUpdateTimestamps(updatedData)
             database.userDao().insertOrUpdate(updatedData)
         }
 
@@ -318,6 +323,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: User) {
+            setItemUpdateTimestamps(updatedData)
             database.userDao().insertOrUpdate(updatedData)
         }
 
