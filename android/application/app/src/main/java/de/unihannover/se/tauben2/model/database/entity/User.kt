@@ -19,7 +19,10 @@ data class User(@PrimaryKey val username: String,
                 var password : String,
                 var phone : String?
 
-) : RecyclerItem, Parcelable {
+) : RecyclerItem, Parcelable, DatabaseEntity() {
+
+    override val refreshCooldown: Long
+        get() = 300000 // 5 min
 
     fun getPermission() = when {
         isAdmin -> Permission.ADMIN
@@ -28,4 +31,11 @@ data class User(@PrimaryKey val username: String,
     }
 
     override fun getType() = RecyclerItem.Type.ITEM
+
+    companion object: AllUpdatable {
+
+        override val refreshAllCooldown: Long
+            get() = 900000 * 2 // 30 min
+
+    }
 }

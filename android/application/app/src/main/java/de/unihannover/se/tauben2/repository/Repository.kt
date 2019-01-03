@@ -10,6 +10,7 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.DatabaseEntity
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
@@ -39,40 +40,36 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         const val LOGIN_USERNAME_KEY = "username"
     }
 
+    private fun <T: DatabaseEntity> setItemUpdateTimestamps(vararg items: T) {
+        items.forEach { it.lastUpdated = System.currentTimeMillis() }
+    }
+
+    private inline fun <reified T> getItemsToDelete(newItems: Collection<T>, oldItems: Collection<T>) = oldItems.minus(newItems).toTypedArray()
+
+    // TODO Maybe insert and delete in one query
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
+            database.caseDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            Case.setLastAllUpdatedToNow()
+            setItemUpdateTimestamps(*item.toTypedArray())
             database.caseDao().insertOrUpdate(item)
-            sp.edit().apply {
-                putLong("caseLastLoaded", System.currentTimeMillis())
-                apply()
-            }
         }
 
-        override fun shouldFetch(data: List<Case>?): Boolean {
-            // 15 min
-            return System.currentTimeMillis() - sp.getLong("caseLastLoaded", 0) > 900000
-        }
+        override fun shouldFetch(data: List<Case>?)= Case.shouldFetch()
 
-        override fun loadFromDb(): LiveData<List<Case>> {
-            val res = database.caseDao().getCases()
-            return res
-        }
+        override fun loadFromDb()= database.caseDao().getCases()
 
-        override fun createCall(): LiveDataRes<List<Case>> {
-            val res = service.getCases(getToken())
-            return res
-        }
+        override fun createCall()= service.getCases(getToken())
 
     }.getAsLiveData()
 
     fun getCase(id: Int) = object : NetworkBoundResource<Case, Case>(appExecutors) {
         override fun saveCallResult(item: Case) {
+            setItemUpdateTimestamps(item)
             database.caseDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: Case?): Boolean {
-            return true
-        }
+        override fun shouldFetch(data: Case?) = data?.shouldFetch() ?: true
 
         override fun loadFromDb() = database.caseDao().getCase(id)
 
@@ -82,12 +79,12 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
+            database.userDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            setItemUpdateTimestamps(*item.toTypedArray())
             database.userDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<User>?): Boolean {
-            return true
-        }
+        override fun shouldFetch(data: List<User>?) = User.shouldFetch()
 
         override fun loadFromDb() = database.userDao().getUsers()
 
@@ -98,12 +95,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun getUser(username: String) = object : NetworkBoundResource<User, User>(appExecutors) {
 
         override fun saveCallResult(item: User) {
+            setItemUpdateTimestamps(item)
             database.userDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: User?): Boolean {
-            return true
-        }
+        override fun shouldFetch(data: User?) = data?.shouldFetch() ?: true
 
         override fun loadFromDb() = database.userDao().getUser(username)
 
@@ -134,20 +130,16 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
+            database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            setItemUpdateTimestamps(*item.toTypedArray())
             database.populationMarkerDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<PopulationMarker>?): Boolean {
-            return true
-        }
+        override fun shouldFetch(data: List<PopulationMarker>?) = PopulationMarker.shouldFetch()
 
-        override fun loadFromDb(): LiveData<List<PopulationMarker>> {
-            return database.populationMarkerDao().getAllPigeonCounters()
-        }
+        override fun loadFromDb() = database.populationMarkerDao().getAllPigeonCounters()
 
-        override fun createCall(): LiveDataRes<List<PopulationMarker>> {
-            return service.getPigeonCounters(getToken())
-        }
+        override fun createCall() = service.getPigeonCounters(getToken())
 
     }.getAsLiveData()
 

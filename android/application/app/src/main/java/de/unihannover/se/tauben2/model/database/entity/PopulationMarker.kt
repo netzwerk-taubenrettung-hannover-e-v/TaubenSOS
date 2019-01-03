@@ -23,12 +23,21 @@ data class PopulationMarker(val latitude: Double,
                             val populationMarkerID: Int,
                             var radius: Double,
                             var values: List<CounterValue>
-) : MapMarkable {
+) : MapMarkable, DatabaseEntity() {
+
+    override val refreshCooldown: Long
+        get() = 1000 * 60 * 60 * 24 // 24 hours
 
     override fun getMarker(): MarkerOptions {
         val totalPigeonCount = values.fold(0) { sum, element -> sum + element.pigeonCount }
         return MarkerOptions().position(LatLng(latitude, longitude))
                 .title(description)
                 .snippet("Taubenanzahl: $totalPigeonCount")
+    }
+
+    companion object: AllUpdatable {
+        override val refreshAllCooldown: Long
+            get() = 1000 * 60 * 15 // 30 min
+
     }
 }

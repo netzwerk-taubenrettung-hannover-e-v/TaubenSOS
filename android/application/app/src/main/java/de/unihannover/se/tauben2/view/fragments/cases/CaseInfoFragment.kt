@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
@@ -57,6 +58,7 @@ class CaseInfoFragment: Fragment() {
                     return@LoadingObserver
 
                 val case = it[0]
+                Log.e("CaseInfo", "Last Update: " + getDateTimeString(case.lastUpdated))
                 mBinding.c = case
 
                 loadMedia(0, v.image_header)
