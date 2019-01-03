@@ -37,9 +37,6 @@ def create_app(config_name):
     ma.init_app(app)
     swag.init_app(app)
 
-    from api.routes import test
-    app.register_blueprint(test.bp)
-
     from api.routes import case
     app.register_blueprint(case.bp)
 
