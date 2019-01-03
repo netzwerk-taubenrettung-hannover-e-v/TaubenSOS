@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.Singleton
 
 class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 

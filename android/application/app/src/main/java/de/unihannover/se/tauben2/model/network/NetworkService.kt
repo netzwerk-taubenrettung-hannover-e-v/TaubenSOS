@@ -37,6 +37,9 @@ interface NetworkService {
     @GET("user")
     fun getUsers(@Header("Authorization") token: String): LiveDataRes<List<User>>
 
+    @GET("user/{username}")
+    fun getUser(@Header("Authorization") token: String, @Path("username") username: String): LiveDataRes<User>
+
     @POST("user")
     fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>
 

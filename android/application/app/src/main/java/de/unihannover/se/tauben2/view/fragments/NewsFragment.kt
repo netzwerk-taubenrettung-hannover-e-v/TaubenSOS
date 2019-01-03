@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.R.string.news
-import de.unihannover.se.tauben2.databinding.FragmentNewsBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
-import de.unihannover.se.tauben2.viewmodel.UserViewModel
 
 class NewsFragment : Fragment() {
 

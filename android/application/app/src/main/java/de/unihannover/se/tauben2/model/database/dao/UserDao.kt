@@ -13,4 +13,7 @@ interface UserDao : BaseDao<User> {
 
     @Query("SELECT * FROM `user`")
     fun getUsers(): LiveData<List<User>>
+
+    @Query("SELECT * FROM `user` WHERE username = :username")
+    fun getUser(username: String): LiveData<User>
 }

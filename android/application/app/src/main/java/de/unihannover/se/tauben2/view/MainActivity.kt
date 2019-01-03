@@ -13,16 +13,19 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mBottomNavigator: BottomNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -60,9 +63,15 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
     }
 
+    override fun onPause() {
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        super.onPause()
+    }
+
     private fun initBottomNavigation() {
 
-        binding.bottomNavigation.setMenuItems(
+
+        binding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
                 FragmentMenuItem(R.id.newsFragment, getString(R.string.news), R.drawable.ic_today_white_24dp),
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
@@ -88,16 +97,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setupWithNavController(navController)
 
-//        binding.bottomNavigation.setOnNavigationItemSelectedListener {
-//            NavigationUI.onNavDestinationSelected(it, navController)
-//            true
-//        }
     }
 
     override fun onBackPressed() {
-//        if(binding.bottomNavigation.isCurrentTabMore())
-//            super.onBackPressed()
-//        else
         mBottomNavigator.onBackPressed()
     }
 

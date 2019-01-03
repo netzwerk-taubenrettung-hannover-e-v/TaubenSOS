@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -21,6 +21,7 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
 import com.google.maps.android.heatmaps.Gradient
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.view.fragments.cases.CasesFragment
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -80,6 +81,8 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
                 // For showing a move to my location button
                 map.isMyLocationEnabled = true
+
+                map.setMinZoomPreference(9.5f)
 
                 // TODO Find best bound coordinates
                 val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))

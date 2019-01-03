@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments.cases
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,12 @@ import androidx.fragment.app.Fragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.fragments.MapViewFragment
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_cases.*
 import kotlinx.android.synthetic.main.fragment_cases.view.*
 
@@ -58,7 +62,9 @@ class CasesFragment : Fragment() {
             mCurrentObservedData?.removeObserver(mCurrentMapObserver)
 
             mCurrentObservedData = when (filter) {
-               Filter.MY -> viewModel.cases.filter { case -> case.rescuer == App.mCurrentUser.username }
+               Filter.MY -> viewModel.cases.filter { case ->
+                   case.rescuer == getViewModel(UserViewModel::class.java)?.getOwnerUsername()
+               }
                Filter.CLOSED -> viewModel.cases.filter { case -> case.isClosed == true }
                Filter.OPEN -> viewModel.cases.filter { case -> case.isClosed == false}
                else -> viewModel.cases

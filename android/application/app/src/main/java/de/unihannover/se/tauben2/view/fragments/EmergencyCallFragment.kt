@@ -1,18 +1,16 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.view.Singleton
 import kotlinx.android.synthetic.main.fragment_emergency_call.view.*
 
 class EmergencyCallFragment : Fragment() {

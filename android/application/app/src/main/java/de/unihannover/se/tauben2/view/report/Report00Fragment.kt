@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.view.MapViewFragment
+import de.unihannover.se.tauben2.view.fragments.MapViewFragment
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.*

@@ -9,7 +9,6 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.network.NetworkService
@@ -35,7 +34,8 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     companion object {
         private val LOG_TAG = Repository::class.java.simpleName
-        private const val TOKEN_KEY = "authToken"
+        const val LOGIN_TOKEN_KEY = "authToken"
+        const val LOGIN_USERNAME_KEY = "username"
     }
 
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
@@ -58,7 +58,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<Case>> {
-            val res = service.getCases(token())
+            val res = service.getCases(getToken())
             return res
         }
 
@@ -75,7 +75,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun loadFromDb() = database.caseDao().getCase(id)
 
-        override fun createCall() = service.getCase(token(), id)
+        override fun createCall() = service.getCase(getToken(), id)
 
     }.getAsLiveData()
 
@@ -88,15 +88,25 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return true
         }
 
-        override fun loadFromDb(): LiveData<List<User>> {
-            val res = database.userDao().getUsers()
-            return res
+        override fun loadFromDb() = database.userDao().getUsers()
+
+        override fun createCall() = service.getUsers(getToken())
+
+    }.getAsLiveData()
+
+    fun getUser(username: String) = object : NetworkBoundResource<User, User>(appExecutors) {
+
+        override fun saveCallResult(item: User) {
+            database.userDao().insertOrUpdate(item)
         }
 
-        override fun createCall(): LiveDataRes<List<User>> {
-            val res = service.getUsers(token())
-            return res
+        override fun shouldFetch(data: User?): Boolean {
+            return true
         }
+
+        override fun loadFromDb() = database.userDao().getUser(username)
+
+        override fun createCall() = service.getUser(getToken(), username)
 
     }.getAsLiveData()
 
@@ -115,7 +125,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<News>> {
-            val res = service.getNews(token())
+            val res = service.getNews(getToken())
             return res
         }
 
@@ -135,7 +145,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(): LiveDataRes<List<PigeonCounter>> {
-            return service.getPigeonCounters(token())
+            return service.getPigeonCounters(getToken())
         }
 
     }.getAsLiveData()
@@ -163,7 +173,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
-            return service.sendCase(token(), requestData)
+            return service.sendCase(getToken(), requestData)
         }
 
     }.send(case)
@@ -194,7 +204,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
             requestData.caseID?.let {
-                return service.updateCase(token(), it, requestData)
+                return service.updateCase(getToken(), it, requestData)
             }
             throw Exception("Case id must not be null!")
         }
@@ -211,7 +221,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Case): Call<Void> {
-            requestData.caseID?.let { return service.deleteCase(token(), it) }
+            requestData.caseID?.let { return service.deleteCase(getToken(), it) }
             throw Exception("Case id must not be null!")
         }
     }.send(case)
@@ -230,13 +240,13 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: User): LiveDataRes<User> {
-            return service.register(token(), requestData)
+            return service.register(getToken(), requestData)
         }
 
     }.send(user, false)
 
     /**
-     * Makes a login request, waits for its result and saves the authorization token.
+     * Makes a login request, waits for its result and saves the authorization getToken.
      * Throws Exception if login not successful
      * @param user The user who is trying to login
      */
@@ -247,7 +257,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             val response = call.execute()
             when {
                 response.isSuccessful -> {
-                    sp.edit().putString(TOKEN_KEY, response.body()?.token).apply()
+                    sp.edit()
+                            .putString(LOGIN_TOKEN_KEY, response.body()?.token)
+                            .putString(LOGIN_USERNAME_KEY, user.username)
+                            .apply()
                     Log.d(LOG_TAG, "Token saved")
                 }
                 response.code() == 401 -> throw Exception("Wrong username or password")
@@ -259,15 +272,19 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         future.get()
     }
 
+    fun getOwnerUsername() = sp.getString(LOGIN_USERNAME_KEY, null)
+
     fun logout() = object : AsyncDeleteRequest<String>(appExecutors) {
+
         override fun deleteFromDB(requestData: String) {
-            sp.edit().remove(TOKEN_KEY).apply()
+            sp.edit().remove(LOGIN_TOKEN_KEY).remove(LOGIN_USERNAME_KEY).apply()
         }
 
         override fun createCall(requestData: String): Call<Void> {
             return service.logout(requestData)
         }
-    }.send(token())
+
+    }.send(getToken())
 
     fun updatePermissions(auth: Auth) = object : AsyncDataRequest<User, Auth>(appExecutors) {
         override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
@@ -279,7 +296,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Auth): LiveDataRes<User> {
-            return service.updatePermissions(token(), requestData, requestData.username)
+            return service.updatePermissions(getToken(), requestData, requestData.username)
         }
 
     }.send(auth, false)
@@ -317,11 +334,5 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }
 
-    private fun token(): String {
-        val token = sp.getString(TOKEN_KEY, "")
-        token?.let {
-            return it
-        }
-        throw Exception("Auth token is null!")
-    }
+    private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "") ?: throw Exception("Auth getToken is null!")
 }

@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.navigation
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +12,7 @@ import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.BootingActivity
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_more.view.*
 
@@ -34,7 +36,8 @@ class MoreFragment : Fragment() {
                     getViewModel(UserViewModel::class.java)?.let { vm ->
                         vm.logout()
                         setSnackBar(v, "Logout Successful")
-                        controller.navigate(R.id.newsFragment)
+                        activity?.finish()
+                        Intent(context, BootingActivity::class.java).apply { startActivity(this) }
                     }
                     true
                 } else {

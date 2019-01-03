@@ -1,11 +1,10 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
@@ -13,6 +12,7 @@ import de.unihannover.se.tauben2.R.layout.fragment_register
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.input.InputFilterRequired.Companion.allInputsFilled
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.UserViewModel

@@ -1,6 +1,7 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import de.unihannover.se.tauben2.R.layout.fragment_login
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.BootingActivity
+import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.input.InputFilterRequired.Companion.allInputsFilled
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
@@ -41,13 +44,11 @@ class LoginFragment : Fragment() {
                     val user = User(username, false, false, pw, null)
 
                     userViewModel?.login(user)
+
+                    activity?.finish()
+                    Intent(context, BootingActivity::class.java).apply { startActivity(this) }
                     setSnackBar(view, "Login successful!")
 
-                    // TODO change in app permission
-
-                    val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
-                    controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
-                    controller.navigate(R.id.newsFragment)
                 } else {
                     setSnackBar(view, "Please fill out all the fields!")
                 }

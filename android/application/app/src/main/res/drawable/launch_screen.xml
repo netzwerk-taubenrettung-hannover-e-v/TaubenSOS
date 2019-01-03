@@ -5,12 +5,14 @@
 
     <item android:drawable="@drawable/gradient"/>
 
-    <item>
+    <!-- TODO He can't find the app drawable resources -->
+    <!--<item>-->
 
-        <bitmap
-            android:src="@drawable/ic_logo_144dp"
-            android:gravity="center"/>
-
-    </item>
+        <!--<bitmap-->
+            <!--android:gravity="center"-->
+            <!--android:src="@drawable/ic_logo_48dp"-->
+            <!--/>-->
+        <!---->
+    <!--</item>-->
 
 </layer-list>

@@ -3,8 +3,6 @@ package de.unihannover.se.tauben2.view.report
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.MapViewFragment
+import de.unihannover.se.tauben2.view.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report00.view.*
 import kotlinx.android.synthetic.main.fragment_report_location.*

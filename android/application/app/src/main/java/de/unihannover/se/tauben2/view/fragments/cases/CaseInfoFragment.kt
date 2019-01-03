@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments.cases
 
 import android.app.Activity
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +18,13 @@ import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
 import de.unihannover.se.tauben2.view.report.ReportActivity
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 
 
@@ -36,18 +40,20 @@ class CaseInfoFragment: Fragment() {
         val v = mBinding.root
         setHasOptionsMenu(true)
 
-        context?.let {
+        context?.also {
             mPicassoInstance = Picasso.Builder(it.applicationContext)
                     .addRequestHandler(PicassoVideoRequestHandler()).build()
         }
 
-        //TODO observe
-        mBinding.currentUser = App.mCurrentUser
+        getViewModel(UserViewModel::class.java)?.owner?.observe(this, Observer {
+            if(it != null && it.status.isSuccessful())
+                mBinding.currentUser = it.data
+        })
 
         multiLet(arguments?.getParcelable<Case>("case"), getViewModel(CaseViewModel::class.java)) { argumentCase, caseViewModel ->
 
-            caseViewModel.cases.filter { it.caseID == argumentCase.caseID }.observe(this, LoadingObserver( {
-                if(it.size != 1)
+            caseViewModel.cases.filter { it.caseID == argumentCase.caseID }.observe(this, LoadingObserver({
+                if (it.size != 1)
                     return@LoadingObserver
 
                 val case = it[0]
@@ -73,13 +79,17 @@ class CaseInfoFragment: Fragment() {
                 mToolbarMenu?.run { setOptionsMenuDeadItems(this) }
 
                 v.btn_state_next.setOnClickListener {
-                    case.nextState(App.mCurrentUser)
-                    caseViewModel.updateCase(case, listOf())
+                    mBinding.currentUser?.also { user ->
+                        case.nextState(user)
+                        caseViewModel.updateCase(case, listOf())
+                    }
                 }
 
                 v.btn_state_prev.setOnClickListener {
-                    case.previousState(App.mCurrentUser)
-                    caseViewModel.updateCase(case, listOf())
+                    mBinding.currentUser?.also { user ->
+                        case.previousState(user)
+                        caseViewModel.updateCase(case, listOf())
+                    }
                 }
 
             }))

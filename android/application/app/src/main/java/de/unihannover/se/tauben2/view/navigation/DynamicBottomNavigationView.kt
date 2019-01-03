@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.model.database.Permission
 import java.util.*
 
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): BottomNavigationView(context, attrs) {
@@ -54,12 +55,12 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 //        }
     }
 
-    fun setMenuItems(vararg items: FragmentMenuItem) {
+    fun setMenuItems(permission: Permission, vararg items: FragmentMenuItem) {
         menu.clear()
-        val permissibleItems = items.filter { it.hasPermission(App.CURRENT_PERMISSION) }
+        val permissibleItems = items.filter { it.hasPermission(permission) }
 
         permissibleItems.slice(0 until mSize-1).forEach {
-            if(it.hasPermission(App.CURRENT_PERMISSION)){
+            if(it.hasPermission(permission)){
                 addMenuItem(item = it)
             }
         }

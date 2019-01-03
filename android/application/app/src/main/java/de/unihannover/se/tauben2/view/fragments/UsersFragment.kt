@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.recycler.UsersRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 
