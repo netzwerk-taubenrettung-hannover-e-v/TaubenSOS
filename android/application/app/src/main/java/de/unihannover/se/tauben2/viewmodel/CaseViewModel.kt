@@ -8,9 +8,12 @@ class CaseViewModel(context: Context) : BaseViewModel(context) {
 
     val cases: LiveDataRes<List<Case>> = repository.getCases()
 
+    fun getCase(caseId: Int) = repository.getCase(caseId)
+
     fun sendCase(case: Case, pictures: List<ByteArray>) = repository.sendCase(case, pictures)
 
     fun deleteCase(case: Case) = repository.deleteCase(case)
 
     fun updateCase(case: Case, mediaItems: List<ByteArray>) = repository.updateCase(case.apply { media = listOf() }, mediaItems)
+
 }

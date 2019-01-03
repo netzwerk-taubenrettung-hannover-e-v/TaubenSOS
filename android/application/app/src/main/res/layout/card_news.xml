@@ -9,7 +9,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_case_view"
+        android:id="@+id/card_news_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -22,6 +22,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <ImageButton
+                android:id="@+id/news_more_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_more_horiz_24px" />
 
             <TextView
                 android:id="@+id/written_by"

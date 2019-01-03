@@ -127,4 +127,10 @@
     <string name="maximum_reached">Maximum amount reached.</string>
     <string name="written_by_text">Written by: </string>
 
+    <string name="nav_item1">Edit </string>
+    <string name="nav_item2">Delete </string>
+
+    <string name="nav1_clicked">Edit clicked</string>
+    <string name="nav2_clicked">Delete clicked</string>
+
 </resources>

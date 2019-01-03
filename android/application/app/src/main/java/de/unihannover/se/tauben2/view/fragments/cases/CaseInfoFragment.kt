@@ -51,13 +51,10 @@ class CaseInfoFragment: Fragment() {
                 mBinding.currentUser = it.data
         })
 
-        multiLet(arguments?.getParcelable<Case>("case"), getViewModel(CaseViewModel::class.java)) { argumentCase, caseViewModel ->
+        multiLet(arguments?.getParcelable<Case>("case")?.caseID, getViewModel(CaseViewModel::class.java)) { caseID, caseViewModel ->
 
-            caseViewModel.cases.filter { it.caseID == argumentCase.caseID }.observe(this, LoadingObserver({
-                if (it.size != 1)
-                    return@LoadingObserver
+            caseViewModel.getCase(caseID).observe(this, LoadingObserver({case ->
 
-                val case = it[0]
                 Log.e("CaseInfo", "Last Update: " + getDateTimeString(case.lastUpdated))
                 mBinding.c = case
 

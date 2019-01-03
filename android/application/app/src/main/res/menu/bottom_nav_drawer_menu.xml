@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav1"
+            android:icon="@drawable/ic_baseline_edit_24px"
+            android:title="@string/nav_item1" />
+        <item
+            android:id="@+id/nav2"
+            android:icon="@drawable/ic_baseline_delete_24px"
+            android:title="@string/nav_item2" />
+    </group>
+</menu>
