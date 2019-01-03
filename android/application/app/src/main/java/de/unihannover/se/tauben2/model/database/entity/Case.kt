@@ -51,7 +51,7 @@ data class Case(@PrimaryKey var caseID: Int?,
 ) : RecyclerItem, MapMarkable, Parcelable, DatabaseEntity() {
 
     override val refreshCooldown: Long
-        get() = 900000 * 2 // 30 min
+        get() = 0//900000 * 2 // 30 min
 
 
     fun getPigeonBreed() = PigeonBreed.fromString(breed)
