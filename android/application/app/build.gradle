@@ -77,4 +77,7 @@ dependencies {
     // Google Maps Utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
+    //Graph library
+    implementation 'com.jjoe64:graphview:4.2.2'
+
 }

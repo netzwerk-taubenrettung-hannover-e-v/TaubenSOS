@@ -12,6 +12,10 @@
         android:name="de.unihannover.se.tauben2.view.fragments.CounterFragment"
         android:label="CounterFragment" />
     <custom_fragment
+        android:id="@+id/counterInfoFragment"
+        android:name="de.unihannover.se.tauben2.view.fragments.CounterInfoFragment"
+        android:label="CounterInfoFragment" />
+    <custom_fragment
         android:id="@+id/casesFragment"
         android:name="de.unihannover.se.tauben2.view.fragments.cases.CasesFragment"
         android:label="CasesFragment" >

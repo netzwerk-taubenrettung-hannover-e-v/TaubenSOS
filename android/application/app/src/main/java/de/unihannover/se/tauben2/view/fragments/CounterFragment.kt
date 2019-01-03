@@ -28,7 +28,7 @@ import java.util.*
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
 
-class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class CounterFragment : Fragment() {
 
     private var selectedDate: Calendar = Calendar.getInstance()
 
@@ -47,84 +47,40 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         val view = inflater.inflate(fragment_counter, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-        val datePickerDialog = context?.let {
-            DatePickerDialog(it, this,
-                    selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH),
-                    selectedDate.get(Calendar.DAY_OF_MONTH))
-        }
-        val timePickerDialog = context?.let {
-            TimePickerDialog(it, this,
-                    selectedDate.get(Calendar.HOUR_OF_DAY),
-                    selectedDate.get(Calendar.MINUTE), true)
-        }
 
-        view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
+        view.cancel_marker_button.hide()
+        view.confirm_marker_button.hide()
 
         // OnClickListeners:
         view.set_position_button.setOnClickListener {
             mapsFragment.selectPosition(null)
+            mapsFragment.focusSelectedPosition()
+            mapsFragment.chooseRadius()
+            view.confirm_marker_button.show()
+            view.cancel_marker_button.show()
         }
 
-        view.plus_button.setOnClickListener {
-            val value = (counter_value.text.toString().toIntOrNull() ?: 0) + 1
-            counter_value.setText(value.toString())
+        view.cancel_marker_button.setOnClickListener {
+            mapsFragment.unfocusSelectedPosition()
+            mapsFragment.removeCircle()
+            mapsFragment.removeSelectedPosition()
+            view.confirm_marker_button.hide()
+            view.cancel_marker_button.hide()
         }
 
-        view.minus_button.setOnClickListener {
-            val value = (counter_value.text.toString().toIntOrNull() ?: 0) - 1
-            counter_value.setText(value.toString())
-        }
-
-        view.changedate_button.setOnClickListener {
-            timePickerDialog?.show()
-            datePickerDialog?.show()
-        }
-
-        view.resetdate_button.setOnClickListener {
-            setCurrentTimestamp()
-        }
-
-        view.infoButtonCounter.setOnClickListener {
-            //Pop up for more info
-            val alertDialogBuilder = AlertDialog.Builder(
-                    context)
-
-            alertDialogBuilder.setTitle("Tauben zählen")
-
-            alertDialogBuilder
-                    .setMessage(R.string.tauben_zählen_info)
-
-            val alertDialog = alertDialogBuilder.create()
-
-            alertDialog.show()
-        }
-
-        view.send_count_button.setOnClickListener {
-
-            if (mapsFragment.getSelectedPosition() == null) {
-                // Error MSG: No location selected
-                setSnackBar(view, "Bitte Position auf der Karte eintragen.")
-            } else {
-                if (counter_value.text.toString().toInt() == 0) {
-                    // Warning MSG: Counter at 0
-                    setSnackBar(view, "Bitte Taubenanzahl eintragen.")
-                } else {
-                    Log.d("COUNTINFO", selectedDate.toString())
-                    Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
-                    Log.d("COUNTINFO", counter_value.text.toString())
-
-                    mapsFragment.getSelectedPosition()?.run {
-                        val count = counter_value.text.toString().toInt()
-                        sendMarker(latitude, longitude, selectedDate.timeInMillis / 1000, count)
-                    }
-
-                    // Reset Page
-                    counter_value.setText("0")
-                    setCurrentTimestamp()
-                    // Success MSG
-                    setSnackBar(view, "Taubenanzahl erfolgreich eigetragen.")
+        view.confirm_marker_button.setOnClickListener {
+            var position = mapsFragment.getSelectedPosition()
+            var circle = mapsFragment.getCircle()
+            position?.let { pos ->
+                circle?.let { circle ->
+                    sendMarker(pos.latitude, pos.longitude, circle.radius)
                 }
             }
+            mapsFragment.unfocusSelectedPosition()
+            mapsFragment.removeCircle()
+            mapsFragment.removeSelectedPosition()
+            view.confirm_marker_button.hide()
+            view.cancel_marker_button.hide()
         }
 
         mCurrentMapObserver = LoadingObserver(successObserver = mapsFragment)
@@ -134,17 +90,17 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
         return view
     }
 
-    private fun sendMarker(latitude: Double, longitude: Double, timestamp: Long, count: Int) {
+    private fun sendMarker(latitude: Double, longitude: Double, radius: Double) {
         val vm = getViewModel(PopulationMarkerViewModel::class.java)
         vm?.let {
 
             if (mSelectedMarkerID != null) {
-                it.postCounterValue(CounterValue(count, mSelectedMarkerID ?: return, timestamp))
+                it.postCounterValue(CounterValue(23, mSelectedMarkerID ?: return, 456))
                 mSelectedMarkerID = null
             } else
             // TODO implement drawing radius, adding description text in ui
-                it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, 400.0,
-                        listOf(CounterValue(count, -1, timestamp))))
+                it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, radius,
+                        listOf(CounterValue(32, -1, 123))))
 
         }
     }
@@ -164,27 +120,5 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
 
     override fun onStart() {
         super.onStart()
-        setCurrentTimestamp()
-    }
-
-    private fun refreshTextView() {
-        view?.current_timestamp_value?.text =
-                SimpleDateFormat("dd.MM.yy, HH:mm", Locale.GERMANY).format(selectedDate.timeInMillis)
-    }
-
-    private fun setCurrentTimestamp() {
-        selectedDate = Calendar.getInstance()
-        refreshTextView()
-    }
-
-    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
-        selectedDate.set(year, month, day)
-        refreshTextView()
-    }
-
-    override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
-        selectedDate.set(Calendar.HOUR_OF_DAY, hour)
-        selectedDate.set(Calendar.MINUTE, minute)
-        refreshTextView()
     }
 }
