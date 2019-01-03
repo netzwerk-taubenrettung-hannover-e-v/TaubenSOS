@@ -1,0 +1,18 @@
+Retrieve all existing news of the feed or only newly posted news
+---
+tags:
+  - feed
+parameters: 
+  - in: body
+    name: lastUpdate
+    description: request all news that have been updated since this time (unix). When you leave out this parameter all news will be returned
+    required: false
+    type: string
+    format: date-time
+responses:
+  200:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/Feed"

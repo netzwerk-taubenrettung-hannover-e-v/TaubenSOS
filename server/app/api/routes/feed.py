@@ -1,5 +1,6 @@
 from flask import (Blueprint, request, jsonify)
-
+from datetime import datetime
+from marshmallow import utils
 from api.models.feed import (Feed, feed_schema, feeds_schema)
 
 bp = Blueprint("feed", __name__, url_prefix="/api")
@@ -10,7 +11,14 @@ def read_all():
 	file: ../../docs/feed/read_all.yml
 	"""
 	if request.method == "GET":
-		news = Feed.all()
+		if request.get_data():
+			data = request.get_json()
+			if data.get("lastUpdate") is not None:
+				news = Feed.get_newly_posted_news(convert_timestamp(int(data.get("lastUpdate"))))
+			else:
+				news = Feed.all()
+		else:
+			news = Feed.all()
 		result = [make_json(Feed=u) for u in news]
 		return jsonify(result)
 
@@ -56,6 +64,9 @@ def delete_news(feedID):
 			return jsonify({"message": "The feed to be deleted could not be found"}), 404
 		feed.delete()
 		return jsonify({"message": "The feed has been deleted"}), 204
+
+def convert_timestamp(unix):
+	return utils.rfcformat(datetime.fromtimestamp(unix))
 
 def make_json(Feed):
 	result = feed_schema.dump(Feed).data

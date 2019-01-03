@@ -10,12 +10,14 @@ class Feed(db.Model):
 	title = db.Column(db.String(50), nullable=False)
 	text = db.Column(db.String, nullable=False)
 	timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	eventStart = db.Column(db.DateTime, nullable=True)
 
-	def __init__(self, author, title, text, timestamp):
+	def __init__(self, author, title, text, timestamp, eventStart):
 		self.author = author
 		self.title = title
 		self.text = text
 		self.timestamp = timestamp
+		self.eventStart = eventStart
 
 	def save(self):
 		db.session.add(self)
@@ -41,17 +43,25 @@ class Feed(db.Model):
 	def get(feedID):
 		return Feed.query.get(feedID)
 
+	@staticmethod
+	def get_newly_posted_news(lastUpdate):
+		return db.session.query(Feed).filter(Feed.timestamp > lastUpdate)
+
 class FeedSchema(ma.Schema):
 	feedID = ma.Integer(dump_only=True)
 	author = ma.String(required=True, validate=user.User.exists)
 	title = ma.String(required=True)
 	text = ma.String(missing=None)
 	timestamp = ma.DateTime("rfc", missing=None)
+	eventStart = ma.DateTime("rfc", missing=None)
 
 	@post_dump
 	def wrap(self, data):
-		d = utils.from_rfc(data["timestamp"])
-		data["timestamp"] = d.strftime("%s")
+		timestamp = utils.from_rfc(data["timestamp"])
+		data["timestamp"] = timestamp.strftime("%s")
+		if data.get("eventStart") is not None:
+			eventStart = utils.from_rfc(data["eventStart"])
+			data["eventStart"] = eventStart.strftime("%s")
 		return data
 
 	@pre_load
@@ -59,6 +69,9 @@ class FeedSchema(ma.Schema):
 		if data.get("timestamp") is not None:
 			d = datetime.fromtimestamp(int(data["timestamp"]))
 			data["timestamp"] = utils.rfcformat(d)
+		if data.get("eventStart") is not None:
+			e = datetime.fromtimestamp(int(data["eventStart"]))
+			data["eventStart"] = utils.rfcformat(e)
 		return data
 
 	@post_load
