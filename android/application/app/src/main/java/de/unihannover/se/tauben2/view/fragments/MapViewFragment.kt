@@ -14,6 +14,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.heatmaps.Gradient
+import com.google.maps.android.SphericalUtil
+
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
 import de.unihannover.se.tauben2.R
@@ -22,6 +24,8 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
 import de.unihannover.se.tauben2.view.fragments.cases.CasesFragment
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -29,6 +33,10 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     private var mMap: GoogleMap? = null
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
     private var selectedPosition: Marker? = null
+    private var circle: Circle? = null
+
+    private val hanBounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
+
 
     override fun onChanged(data: List<MapMarkable>) {
 
@@ -82,12 +90,12 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.isMyLocationEnabled = true
 
                 map.setMinZoomPreference(9.5f)
-
                 // TODO Find best bound coordinates
-                val bounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
-                map.setLatLngBoundsForCameraTarget(bounds)
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
+
+                map.setLatLngBoundsForCameraTarget(hanBounds)
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(hanBounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 setCaseMarkers(mMarkers.keys)
+
 
 
 
@@ -110,13 +118,19 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                     }
                     is LocationReportFragment -> (this.parentFragment as LocationReportFragment).setMarker()
                     is CounterFragment -> {
-                        mMap?.setOnMarkerClickListener { clickedMarker ->
+                        /*mMap?.setOnMarkerClickListener { clickedMarker ->
                             val filter = mMarkers.filter { it.value == clickedMarker }
                             if (filter.size == 1) {
                                 val populationMarker = filter.keys.toList()[0] as? PopulationMarker
                                 (this.parentFragment as CounterFragment).mSelectedMarkerID = populationMarker?.populationMarkerID
                             }
                             false // enables default behaviour i.e. focusing the marker and opening the info window
+                        }*/
+
+                        map.setOnMarkerClickListener {
+                            val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                            controller.navigate(R.id.counterInfoFragment)
+                            false
                         }
                     }
                 }
@@ -128,7 +142,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
     // add a marker at the middle of the map and save it in 'selectedPosition'
     fun selectPosition(position: LatLng?) {
-
         // remove the old position if exists
         selectedPosition?.remove()
 
@@ -145,7 +158,69 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         return selectedPosition?.position
     }
 
-    private fun setCaseMarkers(markers: Collection<MapMarkable>) {
+    fun focusSelectedPosition() {
+        mMap?.let { map ->
+            selectedPosition?.let { pos ->
+                var bounds: LatLngBounds = LatLngBounds(pos.position, pos.position)
+                map.setLatLngBoundsForCameraTarget(bounds)
+            }
+        }
+    }
+
+    fun getCircle(): Circle? {
+        return circle
+    }
+
+    fun chooseRadius() {
+        mMap?.let { map ->
+            selectedPosition?.let { pos ->
+                var visRegion: VisibleRegion = map.projection.visibleRegion
+                var left: LatLng = visRegion.farLeft
+                var right: LatLng = visRegion.farRight
+                var dist: Double = SphericalUtil.computeDistanceBetween(left, right)
+
+                if (circle == null) {
+                    circle = map.addCircle(CircleOptions()
+                            .center(pos.position)
+                            .radius(dist / 2.5)
+                            .strokeColor(Color.argb(40, 59, 148, 225))
+                            .fillColor(Color.argb(20, 59, 148, 225)))
+                }
+
+
+                map.setOnCameraMoveListener {
+                    visRegion = map.projection.visibleRegion
+                    left = visRegion.farLeft
+                    right = visRegion.farRight
+                    dist = SphericalUtil.computeDistanceBetween(left, right)
+                    circle?.let { circle ->
+                        circle.radius = dist / 2.5
+                    }
+                }
+            }
+        }
+    }
+
+    fun unfocusSelectedPosition() {
+        mMap?.let { map ->
+            map.setLatLngBoundsForCameraTarget(hanBounds)
+        }
+    }
+
+    fun removeCircle() {
+        circle?.let {
+            it.remove()
+            circle = null
+        }
+    }
+
+    fun removeSelectedPosition() {
+        selectedPosition?.let {
+            it.remove()
+        }
+    }
+
+    fun setCaseMarkers(markers: Collection<MapMarkable>) {
         mMap?.let { map ->
             markers.forEach { marker ->
                 if (mMarkers[marker] == null)
@@ -161,7 +236,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
     }
 
-    private fun addHeatMap() {
+    fun addHeatMap() {
 
         // Bounds
         // LatLng(52.3050934, 9.4635117)
