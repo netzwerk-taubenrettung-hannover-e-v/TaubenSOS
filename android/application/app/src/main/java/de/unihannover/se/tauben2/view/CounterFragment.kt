@@ -33,6 +33,8 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
     private var mCurrentObservedData: LiveDataRes<List<PopulationMarker>>? = null
     private lateinit var mCurrentMapObserver: LoadingObserver<List<PopulationMarker>>
 
+    var mSelectedMarkerID: Int? = null
+
     companion object : Singleton<CounterFragment>() {
         override fun newInstance() = CounterFragment()
     }
@@ -133,12 +135,12 @@ class CounterFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePick
     private fun sendMarker(latitude: Double, longitude: Double, timestamp: Long, count: Int) {
         val vm = getViewModel(PopulationMarkerViewModel::class.java)
         vm?.let {
-            val newMarker = true
-            // TODO get selected marker ID:
-            if (!newMarker)
-                it.postCounterValue(CounterValue(count, 4, timestamp))
-            // TODO if not selected: post new marker
-            else
+
+            if (mSelectedMarkerID != null) {
+                it.postCounterValue(CounterValue(count, mSelectedMarkerID ?: return, timestamp))
+                mSelectedMarkerID = null
+            } else
+            // TODO implement drawing radius, adding description text in ui
                 it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, 400.0,
                         listOf(CounterValue(count, -1, timestamp))))
 
