@@ -3,7 +3,6 @@ from flask import (Blueprint, request, jsonify)
 from datetime import datetime
 from marshmallow import utils
 from api.models.case import (Case, case_schema, cases_schema)
-from api.models.population import(Population, population_schema, populations_schema)
 
 bp = Blueprint("stats", __name__, url_prefix="/api")
 
@@ -48,19 +47,6 @@ def read_stats_pigeons_found_dead():
 
 		pigeonsFoundDeadStat = Case.get_pigeons_found_dead_stat(startTime, untilTime)
 		return str(pigeonsFoundDeadStat)
-
-@bp.route("/stats/population", methods=["GET"], strict_slashes=False)
-def calculate_population():
-    if request.method == "GET":
-        startTime = request.json["startTime"]
-        untilTime = request.json["untilTime"]
-        latTopLeft = request.json["latTopLeft"]
-        lonTopLeft = request.json["lonTopLeft"]
-        latBotRight = request.json["latBotRight"]
-        lonBotRight = request.json["lonBotRight"]
-
-        pigeonCountStats = Population.get_pigeon_count(startTime, untilTime, latTopLeft, lonTopLeft, latBotRight, lonBotRight)
-        return populations_schema.jsonify(pigeonCountStats)
 
 def convert_timestamp(unix):
 	return utils.rfcformat(datetime.fromtimestamp(unix))

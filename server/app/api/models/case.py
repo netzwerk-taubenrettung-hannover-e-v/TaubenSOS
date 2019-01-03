@@ -10,8 +10,6 @@ class Case(db.Model):
     priority = db.Column(db.Integer, nullable=False)
     reporter = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
     rescuer = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
-    isCarrierPigeon = db.Column(db.Boolean, nullable=False)
-    isWeddingPigeon = db.Column(db.Boolean, nullable=False)
     breed = db.Column(db.String(20), db.ForeignKey("breed"), nullable=True)
     additionalInfo = db.Column(db.String, nullable=True)
     phone = db.Column(db.String(20), nullable=False)
@@ -23,13 +21,11 @@ class Case(db.Model):
     injury = db.relationship("Injury", cascade="all, delete-orphan", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", cascade="all, delete-orphan", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, reporter, rescuer, isCarrierPigeon, isWeddingPigeon, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media):
+    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media):
         self.timestamp = timestamp
         self.priority = priority
         self.reporter = reporter
         self.rescuer = rescuer
-        self.isCarrierPigeon = isCarrierPigeon
-        self.isWeddingPigeon = isWeddingPigeon
         self.breed = breed
         self.additionalInfo = additionalInfo
         self.phone = phone
@@ -93,11 +89,9 @@ class Case(db.Model):
 class CaseSchema(ma.Schema):
     caseID = ma.Integer(dump_only=True)
     timestamp = ma.DateTime("rfc", missing=None)
-    priority = ma.Integer(required=True, validate=validate.Range(min=1, max=5))
+    priority = ma.Integer(required=True, validate=validate.Range(min=1, max=3))
     reporter = ma.String(missing=None, validate=user.User.exists)
     rescuer = ma.String(missing=None, validate=user.User.exists)
-    isCarrierPigeon = ma.Boolean(missing=False)
-    isWeddingPigeon = ma.Boolean(missing=False)
     breed = ma.String(missing=None, validate=breed.Breed.exists)
     additionalInfo = ma.String(missing=None)
     phone = ma.String(required=True)
