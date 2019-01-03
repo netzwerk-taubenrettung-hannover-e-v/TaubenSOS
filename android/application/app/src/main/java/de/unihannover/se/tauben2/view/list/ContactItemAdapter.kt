@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.R.id.infoButtonContact
 import kotlinx.android.synthetic.main.card_contact.view.*
 import kotlinx.android.synthetic.main.card_contact2.view.*
 

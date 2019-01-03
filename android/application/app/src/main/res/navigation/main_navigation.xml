@@ -29,8 +29,12 @@
         android:label="CasesInfoFragment" />
     <custom_fragment
         android:id="@+id/graphsFragment"
+        android:name="de.unihannover.se.tauben2.view.statistics.StatisticMenuFragment"
+        android:label="GraphsFragment"/>
+    <custom_fragment
+        android:id="@+id/statisticFragment"
         android:name="de.unihannover.se.tauben2.view.statistics.StatisticFragment"
-        android:label="GraphsFragment" />
+        android:label="StatisticFragment" />
     <custom_fragment
         android:id="@+id/report00Fragment"
         android:name="de.unihannover.se.tauben2.view.report.Report00Fragment"
