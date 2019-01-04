@@ -8,7 +8,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.util.Patterns
 import android.webkit.URLUtil
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -16,8 +18,11 @@ import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
+import kotlinx.android.synthetic.main.phone_alert_dialog.view.*
 
 open class ReportFragment : Fragment() {
 
@@ -34,17 +39,10 @@ open class ReportFragment : Fragment() {
 
     protected lateinit var mCreatedCase: Case
 
-
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCreatedCase = (activity as ReportActivity).case ?: Case.getCleanInstance().apply {
-            context?.let { cxt ->
-                if(ContextCompat.checkSelfPermission(cxt, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                    phone = (cxt.applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number
-                }
-            }
-        }
+        mCreatedCase = (activity as ReportActivity).case ?: Case.getCleanInstance()
 
     }
 
@@ -56,27 +54,23 @@ open class ReportFragment : Fragment() {
 
     protected fun sendCaseToServer() {
 
-        val caseViewModel = getViewModel(CaseViewModel::class.java)
+        getViewModel(CaseViewModel::class.java)?.let {
+            // New Case
+            if (mCreatedCase.caseID == null) {
+                mCreatedCase.setToCurrentTime()
+                Log.d("SENT CASE", "case sent: $mCreatedCase")
+                val mediaFiles = readAsRaw(mCreatedCase.media)
+                it.sendCase(mCreatedCase, mediaFiles)
+            }
+            // Edit Case
+            else {
+                mCreatedCase.media = mCreatedCase.media.filter { url -> !URLUtil.isValidUrl(url) }
+                Log.d(LOG_TAG, mCreatedCase.media.toString())
 
-        mCreatedCase?.let { case ->
-            caseViewModel?.let {
-                // New Case
-                if (case.caseID == null) {
-                    case.setToCurrentTime()
-                    Log.d("SENT CASE", "case sent: $case")
-                    val mediaFiles = readAsRaw(case.media)
-                    it.sendCase(case, mediaFiles)
-                }
-                // Edit Case
-                else {
-                    case.media = case.media.filter { url -> !URLUtil.isValidUrl(url) }
-                    Log.d(LOG_TAG, case.media.toString())
-
-                    val mediaFiles = readAsRaw(case.media)
-                    it.updateCase(case, mediaFiles)
-                    // existing images inside the case are already saved as URLs!
-                    Log.d("EDIT CASE", "case edited: $case")
-                }
+                val mediaFiles = readAsRaw(mCreatedCase.media)
+                it.updateCase(mCreatedCase, mediaFiles)
+                // existing images inside the case are already saved as URLs!
+                Log.d("EDIT CASE", "case edited: $mCreatedCase")
             }
         }
     }
@@ -150,6 +144,12 @@ open class ReportFragment : Fragment() {
                 (activity as ReportActivity).prev_btn.text = getString(R.string.back)
                 (activity as ReportActivity).prev_btn.icon = ContextCompat.getDrawable(activity as ReportActivity, R.drawable.ic_keyboard_arrow_left_white_24dp)
             }
+        }
+    }
+
+    protected fun setSnackBar(snackTitle: String) {
+        view?.let {
+            setSnackBar(it, snackTitle,(activity as ReportActivity).report_bottom_bar)
         }
     }
 

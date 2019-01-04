@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view.fragments.cases
+package de.unihannover.se.tauben2.view.main.fragments.cases
 
 import android.app.Activity
 import android.content.Intent
@@ -18,9 +18,11 @@ import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
+import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.SquareImageView
+import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
 import de.unihannover.se.tauben2.view.report.ReportActivity
@@ -75,7 +77,8 @@ class CaseInfoFragment: Fragment() {
                     adapter = RecyclerStringAdapter(R.layout.injuries_item, R.id.chip_injury, injuryList)
                 }
 
-                mToolbarMenu?.run { setOptionsMenuDeadItems(this) }
+                if(BootingActivity.getOwnerPermission() != Permission.GUEST)
+                    mToolbarMenu?.run { setOptionsMenuDeadItems(this) }
 
                 v.btn_state_next.setOnClickListener {
                     mBinding.currentUser?.also { user ->
@@ -166,12 +169,16 @@ class CaseInfoFragment: Fragment() {
     }
 
     private fun setOptionsMenuItems(menu: Menu) {
+        val permission = BootingActivity.getOwnerPermission()
         menu.apply{
-            findItem(R.id.toolbar_call_button)?.isVisible = true
+            if(permission == Permission.ADMIN || permission == Permission.AUTHORISED) {
+                findItem(R.id.toolbar_call_button)?.isVisible = true
+                findItem(R.id.toolbar_delete)?.isVisible = true
+                setOptionsMenuDeadItems(menu)
+            }
             findItem(R.id.toolbar_edit)?.isVisible = true
-            findItem(R.id.toolbar_delete)?.isVisible = true
+            findItem(R.id.toolbar_report_button)?.isVisible = false
         }
-        setOptionsMenuDeadItems(menu)
     }
 
     private fun setOptionsMenuDeadItems(menu: Menu) {

@@ -38,6 +38,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         private val LOG_TAG = Repository::class.java.simpleName
         const val LOGIN_TOKEN_KEY = "authToken"
         const val LOGIN_USERNAME_KEY = "username"
+        const val GUEST_PHONE = "phone"
     }
 
     private fun <T: DatabaseEntity> setItemUpdateTimestamps(vararg items: T) {
@@ -197,6 +198,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: Case) {
+            sp.edit().putString(GUEST_PHONE, updatedData.phone).apply()
             setItemUpdateTimestamps(updatedData)
             database.caseDao().insertOrUpdate(updatedData)
         }
@@ -304,6 +306,12 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     }
 
     fun getOwnerUsername() = sp.getString(LOGIN_USERNAME_KEY, null)
+
+    fun getGuestPhone() = sp.getString(GUEST_PHONE, null)
+
+    fun setGuestPhone(phone: String) {
+        sp.edit().putString(GUEST_PHONE, phone).apply()
+    }
 
     fun logout() = object : AsyncDeleteRequest<String>(appExecutors) {
 

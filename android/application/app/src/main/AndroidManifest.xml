@@ -37,7 +37,7 @@
             android:required="false" />
 
         <activity
-            android:name=".view.BootingActivity"
+            android:name=".view.main.BootingActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher">
@@ -49,7 +49,7 @@
         </activity>
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.main.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >

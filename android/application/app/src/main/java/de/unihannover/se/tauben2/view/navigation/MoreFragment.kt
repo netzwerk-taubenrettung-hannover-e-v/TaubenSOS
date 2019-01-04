@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.BootingActivity
+import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_more.view.*
 

@@ -64,7 +64,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
                 addMenuItem(item = it)
             }
         }
-        if(permissibleItems.size > mSize) {
+        if(permissibleItems.size > mSize-1) {
             createOverflowMenu(permissibleItems.slice(mSize-1 until permissibleItems.size))
         }
 //        setOnNavigationItemSelectedListener {

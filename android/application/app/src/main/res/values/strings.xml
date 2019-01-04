@@ -132,5 +132,9 @@
 
     <string name="nav1_clicked">Edit clicked</string>
     <string name="nav2_clicked">Delete clicked</string>
+    <string name="select_injuries">Please select at least one injury.</string>
+    <string name="could_not_read_phone">I\'m afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
+    <string name="enter_phone">Enter phone number</string>
+    <string name="okay">Okay</string>
 
 </resources>

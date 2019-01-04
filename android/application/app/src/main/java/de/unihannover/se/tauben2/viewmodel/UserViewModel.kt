@@ -20,6 +20,10 @@ class UserViewModel(context: Context) : BaseViewModel(context) {
     }
 
     fun getOwnerUsername() = repository.getOwnerUsername()
+    fun getGuestPhone() = repository.getGuestPhone()
+    fun setGuestPhone(phone: String) {
+        repository.setGuestPhone(phone)
+    }
 
     fun register(user: User) = repository.register(user)
     fun login(user: User) = repository.login(user)

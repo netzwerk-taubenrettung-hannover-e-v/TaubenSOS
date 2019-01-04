@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view.fragments
+package de.unihannover.se.tauben2.view.main.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -22,15 +22,14 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import java.util.*
-import de.unihannover.se.tauben2.view.fragments.cases.CasesFragment
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 //import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
-import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
-    private var mMap: GoogleMap? = null
+    var mMap: GoogleMap? = null
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
     private var selectedPosition: Marker? = null
     private var circle: Circle? = null
@@ -101,7 +100,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
                 when (this.parentFragment) {
                     is GraphsFragment -> addHeatMap()
-                    is CasesFragment -> {
+                    is CasesAdminFragment -> {
                         mMap?.setOnInfoWindowClickListener { clickedMarker ->
                             //TODO find MarkerCase
 

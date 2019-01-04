@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view.fragments
+package de.unihannover.se.tauben2.view.main.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog

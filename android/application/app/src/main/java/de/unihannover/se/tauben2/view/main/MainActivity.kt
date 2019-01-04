@@ -1,6 +1,7 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.main
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,19 +14,19 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
-import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
-import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     // For navigation //
     private lateinit var mNavHostFragment: NavHostFragment
     private lateinit var mBottomNavigator: BottomNavigator
+    private var mNavigateTo: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
                 FragmentMenuItem(R.id.newsFragment, getString(R.string.news), R.drawable.ic_today_white_24dp),
+                FragmentMenuItem(R.id.casesUserFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, onlyThatPermission = true),
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.graphsFragment, getString(R.string.graphs), R.drawable.ic_chart, Permission.AUTHORISED),
@@ -95,6 +98,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setupWithNavController(navController)
 
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mNavigateTo?.let {
+            Navigation.findNavController(this, R.id.nav_host).navigate(it)
+            mNavigateTo = null
+        }
     }
 
     override fun onBackPressed() {
@@ -113,10 +125,19 @@ class MainActivity : AppCompatActivity() {
         if (item?.itemId == toolbar_report_button) {
 
             val intent = Intent(this, ReportActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK && requestCode == 0) {
+            mNavigateTo = if(BootingActivity.getOwnerPermission() == Permission.GUEST)
+                R.id.casesUserFragment
+            else
+                R.id.casesFragment
+        }
     }
 
     // sets the gradient for the status bar
@@ -152,7 +173,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i(getString(R.string.error), getString(R.string.record_permission_denied))
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }

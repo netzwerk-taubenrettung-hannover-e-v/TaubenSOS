@@ -1,6 +1,5 @@
-package de.unihannover.se.tauben2.view
+package de.unihannover.se.tauben2.view.main
 
-import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

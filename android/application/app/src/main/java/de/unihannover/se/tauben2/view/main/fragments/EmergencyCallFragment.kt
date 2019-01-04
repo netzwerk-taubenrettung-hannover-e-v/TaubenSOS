@@ -1,4 +1,4 @@
-package de.unihannover.se.tauben2.view.fragments
+package de.unihannover.se.tauben2.view.main.fragments
 
 import android.content.Intent
 import android.content.pm.PackageManager

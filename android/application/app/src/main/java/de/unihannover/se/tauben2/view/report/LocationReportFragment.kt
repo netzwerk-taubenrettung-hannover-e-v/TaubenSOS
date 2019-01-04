@@ -14,11 +14,10 @@ import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.fragments.MapViewFragment
+import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
-import kotlinx.android.synthetic.main.fragment_report00.view.*
 import kotlinx.android.synthetic.main.fragment_report_location.*
+import kotlinx.android.synthetic.main.fragment_report_location.view.*
 
 class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
@@ -78,7 +77,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
    override fun canGoForward (): Boolean {
         if (saveLocation()) return true
-        else setSnackBar(view!!, "please select a location")
+        else setSnackBar("please select a location")
         return false
    }
 

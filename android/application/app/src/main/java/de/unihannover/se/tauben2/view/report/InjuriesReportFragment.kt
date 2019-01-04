@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentReportInjuriesBinding
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.setSnackBar
 import kotlinx.android.synthetic.main.fragment_report_injuries.*
 
 class InjuriesReportFragment : ReportFragment() {
@@ -39,7 +38,7 @@ class InjuriesReportFragment : ReportFragment() {
                 }
             }
         }
-        setSnackBar(view!!, "please select at least one injury")
+        setSnackBar(getString(R.string.select_injuries))
         return false
     }
 

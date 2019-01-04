@@ -5,27 +5,35 @@
 
     <custom_fragment
         android:id="@+id/newsFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.NewsFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.NewsFragment"
         android:label="NewsFragment" />
     <custom_fragment
         android:id="@+id/counterFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.CounterFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.CounterFragment"
         android:label="CounterFragment" />
     <custom_fragment
         android:id="@+id/counterInfoFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.CounterInfoFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.CounterInfoFragment"
         android:label="CounterInfoFragment" />
     <custom_fragment
         android:id="@+id/casesFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.cases.CasesFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment"
         android:label="CasesFragment" >
         <action
             android:id="@+id/action_casesFragment_to_casesInfoFragment"
             app:destination="@+id/casesInfoFragment" />
     </custom_fragment>
     <custom_fragment
+        android:id="@+id/casesUserFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.cases.CasesUserFragment"
+        android:label="CasesUserFragment" >
+        <action
+            android:id="@+id/action_casesFragment_to_casesInfoFragment"
+            app:destination="@+id/casesInfoFragment" />
+    </custom_fragment>
+    <custom_fragment
         android:id="@+id/casesInfoFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.cases.CaseInfoFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.cases.CaseInfoFragment"
         android:label="CasesInfoFragment" />
     <custom_fragment
         android:id="@+id/graphsFragment"
@@ -36,44 +44,24 @@
         android:name="de.unihannover.se.tauben2.view.statistics.StatisticFragment"
         android:label="StatisticFragment" />
     <custom_fragment
-        android:id="@+id/report00Fragment"
-        android:name="de.unihannover.se.tauben2.view.report.Report00Fragment"
-        android:label="Report00Fragment" >
-        <action
-            android:id="@+id/action_report00Fragment_to_report01Fragment"
-            app:destination="@+id/report01Fragment" />
-    </custom_fragment>
-    <custom_fragment
-        android:id="@+id/report01Fragment"
-        android:name="de.unihannover.se.tauben2.view.report.Report01Fragment"
-        android:label="Report01Fragment" >
-        <action
-            android:id="@+id/action_report01Fragment_to_report02Fragment"
-            app:destination="@id/report02Fragment" />
-    </custom_fragment>
-    <custom_fragment
-        android:id="@+id/report02Fragment"
-        android:name="de.unihannover.se.tauben2.view.report.Report02Fragment"
-        android:label="Report02Fragment" />
-    <custom_fragment
         android:id="@+id/membersFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.UsersFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.UsersFragment"
         android:label="MembersFragment" />
     <custom_fragment
         android:id="@+id/emergencyCallFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.EmergencyCallFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.EmergencyCallFragment"
         android:label="EmergencyCallFragment" />
     <custom_fragment
         android:id="@+id/contactFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.ContactFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.ContactFragment"
         android:label="ContactFragment" />
     <custom_fragment
         android:id="@+id/loginFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.LoginFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.LoginFragment"
         android:label="LoginFragment" />
     <custom_fragment
         android:id="@+id/registerFragment"
-        android:name="de.unihannover.se.tauben2.view.fragments.RegisterFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.RegisterFragment"
         android:label="RegisterFragment" />
     <custom_fragment
         android:id="@+id/moreFragment"
