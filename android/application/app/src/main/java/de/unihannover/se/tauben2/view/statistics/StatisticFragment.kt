@@ -19,9 +19,14 @@ import kotlinx.android.synthetic.main.fragment_statistic.view.*
 import kotlinx.android.synthetic.main.statistic_data.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 class StatisticFragment : Fragment() {
+
+    // is dis bad?
+    private lateinit var fragmentView : View
 
     private var selectedDateFrom: Calendar = Calendar.getInstance()
     private var selectedDateTo: Calendar = Calendar.getInstance()
@@ -31,9 +36,9 @@ class StatisticFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_statistic, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
 
-        createListeners()
+        createDateSelectListeners()
         selectedDateFrom.add(Calendar.MONTH, -1)
 
         val datePickerDialogFrom = context?.let {
@@ -48,10 +53,10 @@ class StatisticFragment : Fragment() {
                     selectedDateTo.get(Calendar.DAY_OF_MONTH))
         }
 
-        view.from_button.setOnClickListener { datePickerDialogFrom?.show() }
-        view.to_button.setOnClickListener { datePickerDialogTo?.show() }
+        fragmentView.from_button.setOnClickListener { datePickerDialogFrom?.show() }
+        fragmentView.to_button.setOnClickListener { datePickerDialogTo?.show() }
 
-        view.collapse_button.setOnClickListener {
+        fragmentView.collapse_button.setOnClickListener {
 
             val appbar = appbar as AppBarLayout
             val expand = appbar.height - appbar.bottom != 0
@@ -59,16 +64,14 @@ class StatisticFragment : Fragment() {
             appbar.setExpanded(expand)
 
             if(expand)
-                view.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
+                fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
             else
-                view.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_down)
+                fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_down)
         }
 
-        createLineChart(view, view.population_linechart)
-        createLineChart(view, view.reported_linechart)
+        refreshCharts()
 
-
-        return view
+        return fragmentView
     }
 
     override fun onStart() {
@@ -76,53 +79,103 @@ class StatisticFragment : Fragment() {
         refreshButtonLabel()
     }
 
+    // DATE SELECTION
+
     private fun refreshButtonLabel() {
-        view?.from_button?.text =
+        fragmentView.from_button.text =
                 SimpleDateFormat("dd.MM.yy", Locale.GERMANY).format(selectedDateFrom.timeInMillis)
-        view?.to_button?.text =
+        fragmentView.to_button.text =
                 SimpleDateFormat("dd.MM.yy", Locale.GERMANY).format(selectedDateTo.timeInMillis)
     }
 
-    private fun createListeners () {
+    private fun createDateSelectListeners () {
         fromListener = DatePickerDialog.OnDateSetListener {_, year, month, day ->
             selectedDateFrom.set(year, month, day)
             refreshButtonLabel()
+            refreshCharts()
         }
         toListener = DatePickerDialog.OnDateSetListener {_, year, month, day ->
             selectedDateTo.set(year, month, day)
             refreshButtonLabel()
+            refreshCharts()
         }
     }
 
     // CHARTS
 
-    private fun createLineChart (view : View, chart : LineChart) {
+    private fun refreshCharts() {
+        createPopulationLineChart()
+        createReportedDovesLineChart()
+    }
 
-        val testData = ArrayList<Entry>()
-        var randNumber = Math.random() * 500
-        for (i in 0..100) {
-            randNumber *= (0.8 + (Math.random() * 0.4))
-            testData.add(Entry(i.toFloat(), randNumber.toFloat()))
-        }
-
-        val dataSet = LineDataSet(testData, null)
-
-        // Styling DataSet
-        val color = ContextCompat.getColor(view.context, R.color.colorPrimaryDark)
-        dataSet.color = color
-        dataSet.setCircleColor(color)
-
-        val lineData = LineData(dataSet)
-
-        chart.data = lineData
-
-        // Styling Graph
-        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chart.description.isEnabled = false
-        chart.legend.isEnabled = false
-
+    private fun resetLineChart(chart : LineChart) {
+        chart.fitScreen()
+        chart.data?.clearValues()
+        chart.xAxis.valueFormatter = null
+        chart.notifyDataSetChanged()
+        chart.clear()
         chart.invalidate()
     }
 
+    private fun setLineChartStyle (chart : LineChart, dataSet : LineDataSet) {
+
+        val color = ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark)
+        dataSet.color = color
+        dataSet.setCircleColor(color)
+
+        chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
+        chart.xAxis.labelRotationAngle = -60f
+        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
+    }
+
+    private fun createPopulationLineChart () {
+
+        val chart = fragmentView.population_linechart
+        resetLineChart(chart)
+
+        // Get Values
+        val dataSet = LineDataSet(getExampleData(), null)
+
+        setLineChartStyle(chart, dataSet)
+
+        chart.data = LineData(dataSet)
+        chart.invalidate()
+    }
+
+    private fun createReportedDovesLineChart () {
+
+        val chart = fragmentView.reported_linechart
+        resetLineChart(chart)
+
+        // Get Values
+        val dataSet = LineDataSet(getExampleData(), null)
+
+        setLineChartStyle(chart, dataSet)
+
+        chart.data = LineData(dataSet)
+        chart.invalidate()
+    }
+
+    private fun getExampleData() : ArrayList<Entry> {
+
+        val testData = ArrayList<Entry>()
+        var randNumber = Math.random() * 500
+
+        val amountOfDays = TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt()
+
+        for (i in 0..amountOfDays) {
+
+            randNumber += 30 * when (randNumber.toInt()) {
+                in 450..500 -> -Math.random()
+                in 0..50 -> Math.random()
+                else -> (-1.0 + (Math.random() * 2))
+            }
+            testData.add(Entry(i.toFloat(), randNumber.toFloat()))
+        }
+
+        return testData
+    }
 
 }
