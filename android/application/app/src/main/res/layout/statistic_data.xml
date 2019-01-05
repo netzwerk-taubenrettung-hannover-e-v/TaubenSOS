@@ -8,7 +8,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/population_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Population:"
@@ -17,12 +17,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+        android:id="@+id/population_linechart"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/population_title" />
+
+    <TextView
+        android:id="@+id/reported_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reported Doves:"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/population_linechart" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/reported_linechart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reported_title" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
