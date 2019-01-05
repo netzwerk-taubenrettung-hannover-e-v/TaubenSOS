@@ -1,0 +1,26 @@
+Update an existing marker
+---
+tags:
+  - populationMarker
+parameters:
+  - in: path
+    name: populationMarkerID
+    description: The ID of the marker to be updated
+    required: true
+    type: integer
+    format: int32
+  - in: body
+    name: body
+    description: The updated marker object. You can leave out the lastUpdate parameter it will be set to the current time automatically.
+    required: true
+    schema:
+      $ref: "#/definitions/PopulationMarker"
+responses:
+  200:
+    description: The marker has been successfully updated
+    schema:
+      $ref: "#/definitions/PopulationMarker"
+  400:
+    description: There was an error with your request
+  404:
+    description: The marker to be updated could not be found

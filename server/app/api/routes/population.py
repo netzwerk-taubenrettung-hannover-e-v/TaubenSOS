@@ -77,6 +77,9 @@ def delete_marker(populationMarkerID):
 
 @bp.route("/population/<populationMarkerID>", methods=["PUT"], strict_slashes=False)
 def change_marker(populationMarkerID):
+	"""
+	file: ../../docs/population/update_marker.yml
+	"""
 	if request.method == "PUT":
 		populationMarker = PopulationMarker.get(populationMarkerID)
 		if populationMarker is None:
