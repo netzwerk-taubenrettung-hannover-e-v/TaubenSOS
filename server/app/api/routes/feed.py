@@ -49,6 +49,7 @@ def update_news(feedID):
 		errors = feed_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
+		json["timestamp"] = datetime.utcnow()
 		feed.update(**json)
 		result = make_json(Feed=feed)
 		return jsonify(result), 200

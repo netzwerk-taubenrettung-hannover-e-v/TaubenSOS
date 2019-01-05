@@ -11,7 +11,7 @@ parameters:
     format: int32
   - in: body
     name: body
-    description: The updated feed object
+    description: The updated feed object. When you leave out the timestamp it will be set to the current time.
     required: true
     schema:
       $ref: "#/definitions/Feed"

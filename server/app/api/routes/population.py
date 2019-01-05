@@ -85,6 +85,7 @@ def change_marker(populationMarkerID):
 		errors = populationMarker_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
+		json["lastUpdate"] = datetime.utcnow()
 		PopulationMarker.update(populationMarker, **json)
 		result = make_json_marker(populationMarker=populationMarker)
 		return jsonify(result), 200
