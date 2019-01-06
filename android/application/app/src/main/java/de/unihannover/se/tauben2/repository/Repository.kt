@@ -9,10 +9,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
-import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.DatabaseEntity
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.entity.*
 import de.unihannover.se.tauben2.model.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -41,7 +38,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         const val GUEST_PHONE = "phone"
     }
 
-    private fun <T: DatabaseEntity> setItemUpdateTimestamps(vararg items: T) {
+    private fun <T : DatabaseEntity> setItemUpdateTimestamps(vararg items: T) {
         items.forEach { it.lastUpdated = System.currentTimeMillis() }
     }
 
@@ -56,11 +53,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             database.caseDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<Case>?)= Case.shouldFetch()
+        override fun shouldFetch(data: List<Case>?) = Case.shouldFetch()
 
-        override fun loadFromDb()= database.caseDao().getCases()
+        override fun loadFromDb() = database.caseDao().getCases()
 
-        override fun createCall()= service.getCases(getToken())
+        override fun createCall() = service.getCases(getToken())
 
     }.getAsLiveData()
 
@@ -108,13 +105,13 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    /*fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
+    fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
         override fun saveCallResult(item: List<News>) {
-           database.newsDao().insertOrUpdate(item)
+            database.newsDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<News>?): Boolean {
-            return true
+            return News.shouldFetch()
         }
 
         override fun loadFromDb(): LiveData<List<News>> {
@@ -127,11 +124,27 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             return res
         }
 
-    }.getAsLiveData()*/
+    }.getAsLiveData()
+
+    fun sendNews(news: News) = object : AsyncDataRequest<News, News>(appExecutors) {
+        override fun fetchUpdatedData(resultData: News): LiveDataRes<News> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: News) {
+            database.newsDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: News): LiveDataRes<News> {
+            return service.sendNews(getToken(), requestData)
+        }
+
+    }.send(news, enableRefetching = false)
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
-            database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value
+                    ?: listOf()))
             setItemUpdateTimestamps(*item.toTypedArray())
             database.populationMarkerDao().insertOrUpdate(item)
         }
@@ -156,7 +169,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: PopulationMarker): LiveDataRes<PopulationMarker> {
-            return service.postNewMarker(requestData)
+            return service.postNewMarker(getToken(), requestData)
         }
 
     }.send(marker, enableRefetching = false)
@@ -174,7 +187,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: CounterValue): LiveDataRes<CounterValue> {
-            return service.postCounterValue(requestData, requestData.populationMarkerID)
+            return service.postCounterValue(getToken(), requestData, requestData.populationMarkerID)
         }
 
     }.send(value, enableRefetching = false)
@@ -374,5 +387,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }
 
-    private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "") ?: throw Exception("Auth getToken is null!")
+    private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "")
+            ?: throw Exception("Auth getToken is null!")
 }

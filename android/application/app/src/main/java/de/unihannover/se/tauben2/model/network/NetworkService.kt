@@ -36,8 +36,11 @@ interface NetworkService {
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
 
-    @GET("news")
+    @GET("feed")
     fun getNews(@Header("Authorization") token: String): LiveDataRes<List<News>>
+
+    @POST("feed")
+    fun sendNews(@Header("Authorization") token: String, @Body news: News): LiveDataRes<News>
 
 
     @GET("user")
@@ -66,9 +69,9 @@ interface NetworkService {
             : LiveDataRes<List<PopulationMarker>>
 
     @POST("population/{markerId}")
-    fun postCounterValue(@Body value: CounterValue,
+    fun postCounterValue(@Header("Authorization") token: String, @Body value: CounterValue,
                          @Path("markerId") markerId: Int): LiveDataRes<CounterValue>
 
     @POST("population")
-    fun postNewMarker(@Body marker: PopulationMarker): LiveDataRes<PopulationMarker>
+    fun postNewMarker(@Header("Authorization") token: String, @Body marker: PopulationMarker): LiveDataRes<PopulationMarker>
 }

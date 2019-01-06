@@ -8,12 +8,23 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "news")
-data class News (@PrimaryKey val newsTitle: String,
-                 var timestamp : String,
-                 var writtenBy : String,
-                 var newsText : String
-
-) : RecyclerItem, Parcelable {
+data class News(@PrimaryKey
+                val feedID: Int,
+                val author: String,
+                var eventStart: Long,
+                var text: String,
+                var timestamp: Long,
+                var title: String
+) : RecyclerItem, Parcelable, DatabaseEntity() {
+    override val refreshCooldown: Long
+        get() = 0
 
     override fun getType() = RecyclerItem.Type.ITEM
+
+    companion object : AllUpdatable {
+
+        override val refreshAllCooldown: Long
+            get() = 900000 * 2 // 30 min
+
+    }
 }
