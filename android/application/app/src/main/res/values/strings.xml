@@ -119,7 +119,7 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
     <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet,
         pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk/
-        fledgling on the ground. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
+        fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
     <string name="other">Other</string>
     <string name="no_specification">No specification</string>
     <string name="cancel">Cancel</string>
