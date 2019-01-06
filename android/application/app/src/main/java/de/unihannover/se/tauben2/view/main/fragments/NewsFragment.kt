@@ -1,18 +1,27 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.navigation.BottomNavigationDrawerFragment
 import de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
+import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.fragment_news.view.*
 
 class NewsFragment : Fragment() {
 
@@ -35,6 +44,10 @@ class NewsFragment : Fragment() {
 
         loadNews()
 
+        view.create_news_button.setOnClickListener {
+            Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.createNewsFragment, NewsFragment.bundle)
+        }
+
         return view
     }
 
@@ -49,6 +62,13 @@ class NewsFragment : Fragment() {
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+
+        }
+        return true
     }
 
 }

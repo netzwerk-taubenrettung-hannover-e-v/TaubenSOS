@@ -137,4 +137,8 @@
     <string name="enter_phone">Enter phone number</string>
     <string name="okay">Okay</string>
 
+    <string name="news_title_input_hint">Please enter the title here.</string>
+    <string name="news_text_input_hint">Please enter the text here.</string>
+
+
 </resources>
