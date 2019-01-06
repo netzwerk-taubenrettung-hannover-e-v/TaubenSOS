@@ -119,6 +119,7 @@ open class ReportFragment : Fragment() {
         }
     }
 
+
     protected open fun canGoForward(): Boolean {
         return true
     }

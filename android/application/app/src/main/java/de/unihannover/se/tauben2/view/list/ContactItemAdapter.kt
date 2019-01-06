@@ -97,7 +97,7 @@ class ContactItemAdapter(private val context: Context,
             val alertDialogBuilder = AlertDialog.Builder(
                     context)
 
-            alertDialogBuilder.setTitle("Anruf")
+            alertDialogBuilder.setTitle(R.string.call)
 
             alertDialogBuilder
                     .setMessage(R.string.contact_info)
