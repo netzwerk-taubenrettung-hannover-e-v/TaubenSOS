@@ -20,10 +20,17 @@
     <string name="tauben_zählen_info">Bitte wähle Standort, Datum, Uhrzeit
         und Anzahl der Tauben, die du beobachtet hast. Diese Werte werden in die Statistik
         übernommen.</string>
-    <string name="contact_info">Hier kannst du anrufen, falls du mehr Infos möchtest oder ein
-        Notfall vorliegt. Alternative Nummer bla</string>
-    <string name="taube_melden_info">Ein gebrochener Flügel wäre z.B. in der Mitte zwischen gut
-        und schlecht, …?</string>
+    <string name="call">Call us</string>
+    <string name="contact_info">You can call us to get more info or if you found a pigeon which is in urge need for help.</string>
+    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can
+        be differently colored, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons,
+        adults have a white spot on their neck, yellow beak, blue eyes.
+        Fledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons
+        dont accompany with feral pigeons.\n\nFeral pigeon: can look very differrently, beak is usually dark grey,
+        legs and eyes are orange-red. Fledglings have
+        brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their
+        head, sometimes rings on their feet. </string>
+
     <string name="search_location">Search location</string>
 
     <string name="priority">Priority: %s</string>
@@ -112,7 +119,7 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
     <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet,
         pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk/
-        fledgling on the ground. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
+        fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
     <string name="other">Other</string>
     <string name="no_specification">No specification</string>
     <string name="cancel">Cancel</string>
