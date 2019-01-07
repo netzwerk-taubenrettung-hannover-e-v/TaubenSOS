@@ -84,7 +84,7 @@ def get_media_for_case(caseID):
 @bp.route("/case/<int:caseID>/media", methods=["POST"], strict_slashes=False)
 def add_medium_to_case(caseID):
 	"""
-	#file: ../../docs/case/add_medium.yml
+	file: ../../docs/case/add_medium.yml
 	"""
 	case = Case.get(caseID)
 	if case is None:
@@ -110,7 +110,7 @@ def add_medium_to_case(caseID):
 @bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["PUT"], strict_slashes=False)
 def update_medium_for_case(caseID, mediaID):
 	"""
-	#file: ../../docs/case/update_medium.yml
+	file: ../../docs/case/update_medium.yml
 	"""
 	medium = Medium.get(caseID, mediaID)
 	if medium is None:
@@ -142,7 +142,7 @@ def update_medium_for_case(caseID, mediaID):
 @bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["GET"], strict_slashes=False)
 def get_medium_for_case(caseID, mediaID):
 	"""
-	#file: ../../docs/case/get_medium.yml
+	file: ../../docs/case/get_medium.yml
 	"""
 	medium = Medium.get(caseID, mediaID)
 	if medium is None:
@@ -152,7 +152,7 @@ def get_medium_for_case(caseID, mediaID):
 @bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["DELETE"], strict_slashes=False)
 def remove_medium_from_case(caseID, mediaID):
 	"""
-	#file: ../../docs/case/remove_medium.yml
+	file: ../../docs/case/remove_medium.yml
 	"""
 	medium = Medium.get(caseID, mediaID)
 	if medium is None:
@@ -164,9 +164,9 @@ def remove_medium_from_case(caseID, mediaID):
 	return "", 204, {"Content-Type": "application/json"}
 
 @bp.route("/case/<int:caseID>/media/<int:mediaID>/thumbnail", methods=["GET"], strict_slashes=False)
-def get_thumbnail_for_medium(caseID, mediaID):
+def get_thumbnail_for_video(caseID, mediaID):
 	"""
-	#file: ../../docs/case/get_thumbnail.yml
+	file: ../../docs/case/get_thumbnail.yml
 	"""
 	medium = Medium.get(caseID, mediaID)
 	if medium is None:

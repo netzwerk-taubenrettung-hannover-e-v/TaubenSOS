@@ -1,0 +1,25 @@
+Retrieve a medium associated with a case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case of which the specified medium is to be retrieved
+    required: true
+    type: integer
+    format: int64
+  - in: path
+    name: mediaID
+    description: The ID of the medium to be retrieved
+    required: true
+    type: integer
+    format: int64
+responses:
+  200:
+    description: OK
+    schema:
+      type: string
+      format: binary
+  404:
+    description: The medium to be shown could not be found
