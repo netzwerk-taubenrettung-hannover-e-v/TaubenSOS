@@ -1,89 +1,185 @@
-from flask import (Blueprint, request, jsonify)
-import boto3, uuid
+from flask import Blueprint, request, jsonify
+import boto3, uuid, os, filetype, tempfile, cv2
 
-from api.models.case import (Case, case_schema, cases_schema)
-from api.models.injury import (Injury, injury_schema)
-from api.models.medium import (Medium, medium_schema)
+from api.models.case import Case, case_schema, cases_schema
+from api.models.injury import Injury, injury_schema
+from api.models.medium import Medium, medium_schema, media_schema
 
 bp = Blueprint("case", __name__, url_prefix="/api")
 
-bucket_location = boto3.client("s3").get_bucket_location(Bucket="tauben2")
-s3 = boto3.client("s3", region_name=bucket_location["LocationConstraint"])
+media_bucket_name = os.getenv("AWS_S3_MEDIA_BUCKET_NAME", default="media")
+media_bucket_location = boto3.client("s3").get_bucket_location(Bucket=media_bucket_name)
+s3 = boto3.client("s3", region_name=media_bucket_location["LocationConstraint"])
 
 @bp.route("/case", methods=["GET"], strict_slashes=False)
 def read_cases():
 	"""
 	file: ../../docs/case/read_all.yml
 	"""
-	if request.method == "GET":
-		cases = Case.all()
-		result = [generate_media_urls(Case=c, ClientMethod="get_object") for c in cases]
-		return jsonify(result)
+	cases = Case.all()
+	return cases_schema.jsonify(cases), 200
 
 @bp.route("/case", methods=["POST"], strict_slashes=False)
 def create_case():
 	"""
 	file: ../../docs/case/create.yml
 	"""
-	if request.method == "POST":
-		json = request.get_json()
-		if json.get("media") is not None:
-			json.get("media")[:] = [medium_schema.dump(Medium("photos/" + str(uuid.uuid4()) + "-" + m)).data for m in json.get("media")]
-		case, errors = case_schema.load(json)
-		if errors:
-			return jsonify(errors), 400
-		else:
-			case.save()
-			result = generate_media_urls(Case=case, ClientMethod="put_object")
-			return jsonify(result), 201
+	json = request.get_json()
+	case, errors = case_schema.load(json)
+	if errors:
+		return jsonify(errors), 400
+	case.save()
+	return case_schema.jsonify(case), 201
 
-@bp.route("/case/<caseID>", methods=["GET"], strict_slashes=False)
+@bp.route("/case/<int:caseID>", methods=["GET"], strict_slashes=False)
 def read_case(caseID):
 	"""
 	file: ../../docs/case/read.yml
 	"""
-	if request.method == "GET":
-		case = Case.get(caseID)
-		if case is None:
-			return jsonify({"message": "The case to be shown could not be found"}), 404
-		result = generate_media_urls(Case=case, ClientMethod="get_object")
-		return jsonify(result)
+	case = Case.get(caseID)
+	if case is None:
+		return jsonify({"message": "The case to be shown could not be found"}), 404
+	return case_schema.jsonify(case), 200
 
-@bp.route("/case/<caseID>", methods=["PUT"], strict_slashes=False)
+@bp.route("/case/<int:caseID>", methods=["PUT"], strict_slashes=False)
 def update_case(caseID):
 	"""
 	file: ../../docs/case/update.yml
 	"""
-	if request.method == "PUT":
-		json = request.get_json()
-		if json.get("media") is not None:
-			json.get("media")[:] = [medium_schema.dump(Medium("photos/" + str(uuid.uuid4()) + "-" + m)).data for m in json.get("media")]
-		case = Case.get(caseID)
-		if case is None:
-			return jsonify({"message": "The case to be updated could not be found"}), 404
-		errors = case_schema.validate(json, partial=True)
-		if errors:
-			return jsonify(errors), 400
-		case.update(**json)
-		result = generate_media_urls(Case=case, ClientMethod="put_object")
-		return jsonify(result), 200
+	case = Case.get(caseID)
+	if case is None:
+		return jsonify({"message": "The case to be updated could not be found"}), 404
+	json = request.get_json()
+	errors = case_schema.validate(json, partial=True)
+	if errors:
+		return jsonify(errors), 400
+	case.update(**json)
+	return case_schema.jsonify(case), 200
 
-
-@bp.route("/case/<caseID>", methods=["DELETE"], strict_slashes=False)
+@bp.route("/case/<int:caseID>", methods=["DELETE"], strict_slashes=False)
 def delete_case(caseID):
 	"""
 	file: ../../docs/case/delete.yml
 	"""
-	if request.method == "DELETE":
-		case = Case.get(caseID)
-		if case is None:
-			return jsonify({"message": "The case to be deleted could not be found"}), 404
-		case.delete()
-		for m in case.media:
-			s3.delete_object(Bucket="tauben2", Key=m.uri)
-		return "", 204, {"Content-Type": "application/json"}
+	case = Case.get(caseID)
+	if case is None:
+		return jsonify({"message": "The case to be deleted could not be found"}), 404
+	for medium in case.media:
+		s3.delete_object(Bucket=media_bucket_name, Key=medium.uri)
+		if medium.thumbnail is not None:
+			s3.delete_object(Bucket=media_bucket_name, Key=medium.thumbnail)
+	case.delete()
+	return "", 204, {"Content-Type": "application/json"}
 
-def generate_media_urls(Case, ClientMethod):
-	result = case_schema.dump(Case).data
-	result.get("media")[:] = [s3.generate_presigned_url(ClientMethod=ClientMethod, Params={"Bucket": "tauben2", "Key": m.get("uri")}, ExpiresIn=600) for m in result.get("media")]
-	return result
+@bp.route("/case/<int:caseID>/media", methods=["GET"], strict_slashes=False)
+def get_media_for_case(caseID):
+	"""
+	file: ../../docs/case/get_media.yml
+	"""
+	case = Case.get(caseID)
+	if case is None:
+		return jsonify(message="The case you referred to could not be found"), 404
+	return media_schema.jsonify(case.media), 200
+
+@bp.route("/case/<int:caseID>/media", methods=["POST"], strict_slashes=False)
+def add_medium_to_case(caseID):
+	"""
+	#file: ../../docs/case/add_medium.yml
+	"""
+	case = Case.get(caseID)
+	if case is None:
+		return jsonify(message="The case to add media to could not be found"), 404
+	if not request.data:
+		return jsonify(message="Empty body"), 400
+	if request.content_length > request.max_content_length:
+		return jsonify(message="Object to be added is too large"), 413
+	data = request.get_data()
+	medium = Medium(caseID=caseID, mimeType=filetype.guess_mime(data))
+	if filetype.image(data) is not None:
+		medium.uri = "photos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
+	elif filetype.video(data) is not None:
+		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
+		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
+		s3.put_object(Body=generate_thumbnail_for_video(data), Bucket=media_bucket_name, Key=medium.thumbnail)
+	else:
+		return jsonify(message="Media format not supported"), 415
+	s3.put_object(Body=data, Bucket=media_bucket_name, Key=medium.uri)
+	medium.save()
+	return medium_schema.jsonify(medium), 200
+
+@bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["PUT"], strict_slashes=False)
+def update_medium_for_case(caseID, mediaID):
+	"""
+	#file: ../../docs/case/update_medium.yml
+	"""
+	medium = Medium.get(caseID, mediaID)
+	if medium is None:
+		return jsonify(message="The medium to be updated could not be found"), 404
+	if not request.data:
+		return jsonify(message="Empty body"), 400
+	if request.content_length > request.max_content_length:
+		return jsonify(message="Object you were about to upload is too large"), 413
+	data = request.get_data()
+	old_uri = medium.uri
+	old_thumbnail = medium.thumbnail
+	if filetype.image(data) is not None:
+		medium.uri = "photos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
+		medium.thumbnail = None
+	elif filetype.video(data) is not None:
+		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
+		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
+		s3.put_object(Body=generate_thumbnail_for_video(data), Bucket=media_bucket_name, Key=medium.thumbnail)
+	else:
+		return jsonify(message="Media format not supported"), 415
+	medium.mimeType = filetype.guess_mime(data)
+	s3.delete_object(Bucket=media_bucket_name, Key=old_uri)
+	if old_thumbnail is not None:
+		s3.delete_object(Bucket=media_bucket_name, Key=old_thumbnail)
+	s3.put_object(Body=data, Bucket=media_bucket_name, Key=medium.uri)
+	medium.update()
+	return medium_schema.jsonify(medium), 200
+
+@bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["GET"], strict_slashes=False)
+def get_medium_for_case(caseID, mediaID):
+	"""
+	#file: ../../docs/case/get_medium.yml
+	"""
+	medium = Medium.get(caseID, mediaID)
+	if medium is None:
+		return jsonify(message="The medium to be shown could not be found"), 404
+	return s3.get_object(Bucket=media_bucket_name, Key=medium.uri).get("Body").read(), 200, {"Content-Type": medium.mimeType}
+
+@bp.route("/case/<int:caseID>/media/<int:mediaID>", methods=["DELETE"], strict_slashes=False)
+def remove_medium_from_case(caseID, mediaID):
+	"""
+	#file: ../../docs/case/remove_medium.yml
+	"""
+	medium = Medium.get(caseID, mediaID)
+	if medium is None:
+		return jsonify(message="The medium to be removed could not be found"), 404
+	s3.delete_object(Bucket=media_bucket_name, Key=medium.uri)
+	if medium.thumbnail is not None:
+		s3.delete_object(Bucket=media_bucket_name, Key=medium.thumbnail)
+	medium.delete()
+	return "", 204, {"Content-Type": "application/json"}
+
+@bp.route("/case/<int:caseID>/media/<int:mediaID>/thumbnail", methods=["GET"], strict_slashes=False)
+def get_thumbnail_for_medium(caseID, mediaID):
+	"""
+	#file: ../../docs/case/get_thumbnail.yml
+	"""
+	medium = Medium.get(caseID, mediaID)
+	if medium is None:
+		return jsonify(message="The medium to show the thumbnail for could not be found"), 404
+	if medium.thumbnail is None:
+		return jsonify(message="The medium you referred to is not a video and thus does not have a thumbnail associated with it"), 404
+	return s3.get_object(Bucket=media_bucket_name, Key=medium.thumbnail).get("Body").read(), 200, {"Content-Type": "image/png"}
+
+def generate_thumbnail_for_video(video):
+	with tempfile.NamedTemporaryFile() as fp:
+		fp.write(video)
+		vcap = cv2.VideoCapture(fp.name)
+		ret, img = vcap.read()
+		ret, buf = cv2.imencode(".png", img)
+		vcap.release()
+		return buf.tostring()

@@ -21,7 +21,7 @@ class Case(db.Model):
     injury = db.relationship("Injury", cascade="all, delete-orphan", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", cascade="all, delete-orphan", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media):
+    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media=[]):
         self.timestamp = timestamp
         self.priority = priority
         self.reporter = reporter
@@ -45,8 +45,6 @@ class Case(db.Model):
         for key, value in kwargs.items():
             if key == "injury":
                 value = injury.injury_schema.load(value).data
-            elif key == "media":
-                value = medium.media_schema.load(value).data + self.media
             setattr(self, key, value)
         db.session.commit()
 
@@ -101,7 +99,7 @@ class CaseSchema(ma.Schema):
     wasNotFound = ma.Boolean(missing=None)
     isClosed = ma.Boolean(missing=False)
     injury = ma.Nested(injury.InjurySchema, required=True)
-    media = ma.Nested(medium.MediumSchema, missing=[], many=True)
+    media = ma.Nested(medium.MediumSchema, many=True, dump_only=True)
 
     @post_dump
     def wrap(self, data):
