@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class News(@PrimaryKey
                 val feedID: Int?,
                 val author: String,
-                var eventStart: Long,
+                var eventStart: Long?,
                 var text: String,
                 var timestamp: Long?,
                 var title: String
@@ -20,6 +20,10 @@ data class News(@PrimaryKey
         get() = 0
 
     override fun getType() = RecyclerItem.Type.ITEM
+
+    fun setToCurrentTime() {
+        timestamp = System.currentTimeMillis() / 1000
+    }
 
     companion object : AllUpdatable {
 

@@ -15,6 +15,7 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_create_news.*
 import kotlinx.android.synthetic.main.fragment_create_news.view.*
 
@@ -42,18 +43,18 @@ class CreateNewsFragment : Fragment(){
     protected fun sendNewsToServer() {
 
         getViewModel(NewsViewModel::class.java)?.let {
-            // New News
 
-            mCreatedNews = News(null, "test", 123555, txt_news_body.text.toString(), 25884, txt_news_title.text.toString())
-            if (mCreatedNews.feedID == null) {
+            val userViewModel = getViewModel(UserViewModel::class.java)
+
+            if(userViewModel?.getOwnerUsername()!=null) {
+                mCreatedNews = News(null, userViewModel.getOwnerUsername(), null, txt_news_body.text.toString(), null, txt_news_title.text.toString())
+                mCreatedNews.setToCurrentTime()
                 Log.d("SENT NEWS", "news sent: $mCreatedNews")
                 it.sendNews(mCreatedNews)
             }
-            /*// Edit News
-            else {
-                it.updateNews(mCreatedNews)
-                Log.d("EDIT CASE", "case edited: $mCreatedCase")
-            }*/
+            else{
+                //TODO: Show error message
+            }
         }
     }
 }
