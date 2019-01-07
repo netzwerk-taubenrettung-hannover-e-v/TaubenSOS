@@ -13,6 +13,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCreateNewsBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
@@ -33,14 +34,13 @@ class CreateNewsFragment : Fragment(){
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_news, container, false)
         val view = mBinding.root
         view.btn_send_news.setOnClickListener {
-            sendNewsToServer()
+            sendNewsToServer(view)
             Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.newsFragment, CreateNewsFragment.bundle)
         }
-
         return view
     }
 
-    protected fun sendNewsToServer() {
+    protected fun sendNewsToServer(view : View) {
 
         getViewModel(NewsViewModel::class.java)?.let {
 
@@ -51,9 +51,11 @@ class CreateNewsFragment : Fragment(){
                 mCreatedNews.setToCurrentTime()
                 Log.d("SENT NEWS", "news sent: $mCreatedNews")
                 it.sendNews(mCreatedNews)
+                setSnackBar(view, "send", null)
             }
             else{
                 //TODO: Show error message
+                setSnackBar(view, "an error occurred", null)
             }
         }
     }
