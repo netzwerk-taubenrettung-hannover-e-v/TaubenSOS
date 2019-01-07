@@ -1,17 +1,18 @@
 package de.unihannover.se.tauben2.view.statistics
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.fragment_statistic.*
 import com.google.android.material.appbar.AppBarLayout
@@ -21,6 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import com.github.mikephil.charting.utils.ColorTemplate
+import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 
 
 class StatisticFragment : Fragment() {
@@ -38,6 +41,14 @@ class StatisticFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
 
+
+        // Set Area on Map
+        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
+        fragmentView.set_area_button.setOnClickListener {
+            mapsFragment.markArea()
+        }
+
+        // Set DatePicker
         createDateSelectListeners()
         selectedDateFrom.add(Calendar.MONTH, -1)
 
@@ -104,8 +115,10 @@ class StatisticFragment : Fragment() {
     // CHARTS
 
     private fun refreshCharts() {
-        createPopulationLineChart()
-        createReportedDovesLineChart()
+        createLineChart(fragmentView.population_linechart, getExampleLineChartData())
+        createLineChart(fragmentView.reported_linechart, getExampleLineChartData())
+        createPieChart(fragmentView.injury_piechart, getInjuryData())
+        createPieChart(fragmentView.breed_piechart, getBreedData())
     }
 
     private fun resetLineChart(chart : LineChart) {
@@ -117,48 +130,53 @@ class StatisticFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun setLineChartStyle (chart : LineChart, dataSet : LineDataSet) {
+    private fun createLineChart (chart : LineChart, data : ArrayList<Entry>) {
 
+        resetLineChart(chart)
+
+        val dataSet = LineDataSet(data, null)
+
+        // Style
         val color = ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark)
         dataSet.color = color
         dataSet.setCircleColor(color)
+        dataSet.setDrawFilled(true)
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
 
         chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
         chart.xAxis.labelRotationAngle = -60f
         chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-    }
-
-    private fun createPopulationLineChart () {
-
-        val chart = fragmentView.population_linechart
-        resetLineChart(chart)
-
-        // Get Values
-        val dataSet = LineDataSet(getExampleData(), null)
-
-        setLineChartStyle(chart, dataSet)
+        chart.axisRight.isEnabled = false
 
         chart.data = LineData(dataSet)
         chart.invalidate()
     }
 
-    private fun createReportedDovesLineChart () {
+    private fun createPieChart (chart : PieChart, data :ArrayList<PieEntry>) {
 
-        val chart = fragmentView.reported_linechart
-        resetLineChart(chart)
+        val dataSet = PieDataSet(data, null)
 
-        // Get Values
-        val dataSet = LineDataSet(getExampleData(), null)
+        // Style
+        val colors = ArrayList<Int>()
+        for (c in ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c)
+        dataSet.colors = colors
 
-        setLineChartStyle(chart, dataSet)
+        chart.isDrawHoleEnabled = false
+        chart.setUsePercentValues(true)
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
+        chart.setEntryLabelColor(Color.BLACK)
 
-        chart.data = LineData(dataSet)
+        chart.data = PieData(dataSet)
         chart.invalidate()
     }
 
-    private fun getExampleData() : ArrayList<Entry> {
+    // generate example data
+
+    private fun getExampleLineChartData() : ArrayList<Entry> {
 
         val testData = ArrayList<Entry>()
         var randNumber = Math.random() * 500
@@ -172,7 +190,47 @@ class StatisticFragment : Fragment() {
                 in 0..50 -> Math.random()
                 else -> (-1.0 + (Math.random() * 2))
             }
+            // testData.add(XAxis, YAxis)
             testData.add(Entry(i.toFloat(), randNumber.toFloat()))
+        }
+
+        return testData
+    }
+
+    private fun getInjuryData() : ArrayList<PieEntry> {
+
+        val testData = ArrayList<PieEntry>()
+
+        val injuries = arrayOf("Foot or Leg",
+                "Wings",
+                "Head or eye",
+                "Paralysed or flightless",
+                "Open wound",
+                "Strapped feet",
+                "Fledling",
+                "Other")
+
+        for (i in 0 until 8) {
+            // testdata.add(AMOUNT, LABEL)
+            testData.add(PieEntry((Math.abs(Math.random() * 10)).toFloat(), injuries[i]))
+        }
+
+        return testData
+    }
+
+    private fun getBreedData () : ArrayList<PieEntry> {
+
+        val testData = ArrayList<PieEntry>()
+
+        val breed = arrayOf("Carrier",
+                "Common wood",
+                "Feral",
+                "Fancy",
+                "No specification")
+
+        for (i in 0 until 5) {
+            // testdata.add(AMOUNT, LABEL)
+            testData.add(PieEntry((Math.abs(Math.random() * 10)).toFloat(), breed[i]))
         }
 
         return testData

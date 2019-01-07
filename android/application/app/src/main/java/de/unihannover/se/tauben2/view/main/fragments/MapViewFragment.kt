@@ -33,6 +33,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
     private var selectedPosition: Marker? = null
     private var circle: Circle? = null
+    private var selectedArea: Polygon? = null
 
     private val hanBounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
 
@@ -235,7 +236,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
     }
 
-    fun addHeatMap() {
+    private fun addHeatMap() {
 
         // Bounds
         // LatLng(52.3050934, 9.4635117)
@@ -253,7 +254,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         val startPoints = floatArrayOf(0.2f, 1f)
         val gradient = Gradient(colors, startPoints)
 
-        var mProvider = HeatmapTileProvider.Builder()
+        val mProvider = HeatmapTileProvider.Builder()
                 .weightedData(testlist)
                 .gradient(gradient)
                 .radius(50)
@@ -262,5 +263,23 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
         var mOverlay = mMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
         //mOverlay?.remove()
+    }
+
+    fun markArea () {
+
+        mMap?.let {
+            val northeast = it.projection.visibleRegion.latLngBounds.northeast
+            val southwest = it.projection.visibleRegion.latLngBounds.southwest
+            val northwest = LatLng(it.projection.visibleRegion.latLngBounds.northeast.latitude, it.projection.visibleRegion.latLngBounds.southwest.longitude)
+            val southeast = LatLng(it.projection.visibleRegion.latLngBounds.southwest.latitude, it.projection.visibleRegion.latLngBounds.northeast.longitude)
+
+            selectedArea?.let(Polygon::remove)
+
+            selectedArea = it.addPolygon(PolygonOptions()
+                    .add(northwest, northeast, southeast, southwest)
+                    .strokeWidth(2F)
+                    .strokeColor(R.color.colorPrimaryDark))
+
+        }
     }
 }
