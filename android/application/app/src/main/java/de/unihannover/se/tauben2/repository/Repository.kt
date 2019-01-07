@@ -192,6 +192,17 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.send(value, enableRefetching = false)
 
+    fun deleteMarker(marker: PopulationMarker) = object : AsyncDeleteRequest<PopulationMarker>(appExecutors) {
+        override fun deleteFromDB(requestData: PopulationMarker) {
+            database.populationMarkerDao().delete(requestData)
+        }
+
+        override fun createCall(requestData: PopulationMarker): Call<Void> {
+            return service.deleteMarker(getToken(), requestData.populationMarkerID)
+        }
+
+    }.send(marker)
+
     /**
      * Sends case to server and inserts the answer from the server into the local database
      * @param case Case which is sent to the server for creating it. Make sure that all attributes

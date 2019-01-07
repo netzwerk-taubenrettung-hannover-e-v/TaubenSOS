@@ -74,4 +74,7 @@ interface NetworkService {
 
     @POST("population")
     fun postNewMarker(@Header("Authorization") token: String, @Body marker: PopulationMarker): LiveDataRes<PopulationMarker>
+
+    @DELETE("population/{id}")
+    fun deleteMarker(@Header("Authorization") token: String, @Path("id") id: Int): Call<Void>
 }

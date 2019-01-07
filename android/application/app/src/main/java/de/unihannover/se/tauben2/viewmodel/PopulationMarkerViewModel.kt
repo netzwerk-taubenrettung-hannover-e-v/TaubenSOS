@@ -9,4 +9,5 @@ class PopulationMarkerViewModel(context: Context) : BaseViewModel(context) {
     val populationMarkers: LiveDataRes<List<PopulationMarker>> = repository.getPigeonCounters()
     fun postCounterValue(value: CounterValue) = repository.postCounterValue(value)
     fun postNewMarker(marker: PopulationMarker) = repository.postNewMarker(marker)
+    fun deleteMarker(marker: PopulationMarker) = repository.deleteMarker(marker)
 }
