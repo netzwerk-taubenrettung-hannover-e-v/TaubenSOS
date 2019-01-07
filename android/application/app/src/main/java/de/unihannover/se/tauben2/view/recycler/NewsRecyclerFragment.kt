@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.navigation.BottomNavigationDrawerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.card_news.*
+import kotlinx.android.synthetic.main.card_news.view.*
 
 class NewsRecyclerFragment : RecyclerFragment<News>() {
 
@@ -16,16 +17,16 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
     private lateinit var news: News
 
     override fun onBindData(binding: ViewDataBinding, data: News) {
-        val vm = getViewModel(NewsViewModel::class.java)
+        //val vm = getViewModel(NewsViewModel::class.java)
 
         if (binding is CardNewsBinding) {
             binding.n = data
-        }
+            binding.root.news_more_button.setOnClickListener {
+                val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
+                bottomNavDrawerFragment.show(activity!!.supportFragmentManager, bottomNavDrawerFragment.tag)
+            }
 
-        /*news_more_button.setOnClickListener {
-            val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
-            bottomNavDrawerFragment.show(activity!!.supportFragmentManager, bottomNavDrawerFragment.tag)
-        }*/
+        }
     }
 }
 

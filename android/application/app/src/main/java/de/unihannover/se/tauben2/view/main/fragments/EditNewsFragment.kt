@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentCreateNewsBinding
+import de.unihannover.se.tauben2.databinding.FragmentEditNewsBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.Singleton
@@ -19,22 +20,22 @@ import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_create_news.*
 import kotlinx.android.synthetic.main.fragment_create_news.view.*
 
-class CreateNewsFragment : Fragment(){
+class EditNewsFragment : Fragment(){
 
-    companion object: Singleton<CreateNewsFragment>() {
-        override fun newInstance() = CreateNewsFragment()
+    companion object: Singleton<EditNewsFragment>() {
+        override fun newInstance() = EditNewsFragment()
     }
 
-    private lateinit var mBinding: FragmentCreateNewsBinding
+    private lateinit var mBinding: FragmentEditNewsBinding
     private lateinit var mCreatedNews: News
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_news, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_news, container, false)
         val view = mBinding.root
         view.btn_send_news.setOnClickListener {
             sendNewsToServer()
-            Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.newsFragment, CreateNewsFragment.bundle)
+            Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.newsFragment, EditNewsFragment.bundle)
         }
 
         return view

@@ -14,8 +14,10 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.navigation.BottomNavigationDrawerFragment
 import de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
+import kotlinx.android.synthetic.main.card_news.view.*
 import kotlinx.android.synthetic.main.fragment_news.view.*
 
 class NewsFragment : Fragment() {
@@ -42,7 +44,6 @@ class NewsFragment : Fragment() {
         view.create_news_button.setOnClickListener {
             Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.createNewsFragment, NewsFragment.bundle)
         }
-
         return view
     }
 
