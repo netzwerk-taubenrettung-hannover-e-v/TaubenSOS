@@ -19,14 +19,13 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
         val vm = getViewModel(NewsViewModel::class.java)
 
         if (binding is CardNewsBinding) {
-            //binding.c = data
-            //bitte erst testen ob es kompiliert bevor ihr etwas pusht danke
+            binding.n = data
         }
 
-        news_more_button.setOnClickListener {
+        /*news_more_button.setOnClickListener {
             val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
             bottomNavDrawerFragment.show(activity!!.supportFragmentManager, bottomNavDrawerFragment.tag)
-        }
+        }*/
     }
 }
 

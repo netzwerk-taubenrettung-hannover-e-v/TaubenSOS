@@ -33,7 +33,7 @@ class NewsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_news, container, false)
-        recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment) as NewsRecyclerFragment
+        recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment_news) as NewsRecyclerFragment
 
         mCurrentObserver = LoadingObserver(successObserver = recyclerFragment)
 
@@ -50,10 +50,10 @@ class NewsFragment : Fragment() {
 
         getViewModel(NewsViewModel::class.java)?.let { viewModel ->
 
-            // Remove old Observers
+            // Remove old Observer
             mCurrentObservedData?.removeObserver(mCurrentObserver)
 
-            //mCurrentObservedData = viewModel.news
+            mCurrentObservedData = viewModel.news
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
         }

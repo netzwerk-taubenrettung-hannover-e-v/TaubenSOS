@@ -9,11 +9,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "news")
 data class News(@PrimaryKey
-                val feedID: Int,
+                val feedID: Int?,
                 val author: String,
                 var eventStart: Long,
                 var text: String,
-                var timestamp: Long,
+                var timestamp: Long?,
                 var title: String
 ) : RecyclerItem, Parcelable, DatabaseEntity() {
     override val refreshCooldown: Long

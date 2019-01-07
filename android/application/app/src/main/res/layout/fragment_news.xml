@@ -11,7 +11,7 @@
         android:background="#eee">
 
         <fragment
-            android:id="@+id/recycler_fragment"
+            android:id="@+id/recycler_fragment_news"
             android:name="de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
