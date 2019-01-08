@@ -5,19 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.view.navigation.BottomNavigationDrawerFragment
 import de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.card_news.view.*
+import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.fragment_news.view.*
 
 class NewsFragment : Fragment() {
@@ -35,6 +39,7 @@ class NewsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_news, container, false)
+
         recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment_news) as NewsRecyclerFragment
 
         mCurrentObserver = LoadingObserver(successObserver = recyclerFragment)

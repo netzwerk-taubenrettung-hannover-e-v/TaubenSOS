@@ -13,4 +13,7 @@ interface NewsDao : BaseDao<News> {
 
     @Query("SELECT * FROM `news`")
     fun getNews(): LiveData<List<News>>
+
+    @Query("SELECT * FROM 'news' WHERE feedID = :feedID")
+    fun getNewsPost(feedID: Int): LiveData<News>
 }

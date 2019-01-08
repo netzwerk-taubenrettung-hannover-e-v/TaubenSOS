@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+    <data>
+        <import type="de.unihannover.se.tauben2.ExtensionsKt" />
+        <variable name="n" type="de.unihannover.se.tauben2.model.database.entity.News"/>
+    </data>
+
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/linearLayout"
@@ -27,6 +33,7 @@
                     android:id="@+id/txt_news_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@{n.title}"
                     android:hint="@string/news_text_input_hint" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,6 +48,7 @@
                     android:id="@+id/txt_news_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@{n.text}"
                     android:hint="@string/news_text_input_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>

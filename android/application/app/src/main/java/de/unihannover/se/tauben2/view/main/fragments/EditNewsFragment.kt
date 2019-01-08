@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.databinding.FragmentCreateNewsBinding
 import de.unihannover.se.tauben2.databinding.FragmentEditNewsBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.News
@@ -35,17 +37,30 @@ class EditNewsFragment : Fragment(){
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_news, container, false)
         val view = mBinding.root
         view.btn_send_news.setOnClickListener {
-            editNewsToServer(view)
+            sendNewsToServer(view)
             Navigation.findNavController(it.context as Activity, R.id.nav_host).navigate(R.id.newsFragment, EditNewsFragment.bundle)
         }
+
+        /*lateinit var viewModel: NewsViewModel
+        activity.let {
+            if(it!=null){
+                viewModel = ViewModelProviders.of(it).get(NewsViewModel::class.java)
+            }
+        }*/
+
+        /*viewModel.newsPost.value?.data.let{
+            mBinding.n = it
+        }*/
 
         return view
     }
 
-    protected fun editNewsToServer(view : View) {
+
+
+    private fun sendNewsToServer(view : View) {
 
         getViewModel(NewsViewModel::class.java)?.let {
-
+            mBinding.newsText
             val userViewModel = getViewModel(UserViewModel::class.java)
 
             if(userViewModel?.getOwnerUsername()!=null) {
@@ -53,11 +68,10 @@ class EditNewsFragment : Fragment(){
                 mCreatedNews.setToCurrentTime()
                 Log.d("SENT NEWS", "news sent: $mCreatedNews")
                 it.sendNews(mCreatedNews)
-                setSnackBar(view, "send", null)
+                setSnackBar(view, "Newspost successfully updated", null)
             }
             else{
-                //TODO: Show error message
-                setSnackBar(view, "an error occurred", null)
+                setSnackBar(view, "Error: not logged in", null)
             }
         }
     }

@@ -105,6 +105,26 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
+
+    fun getNewsPost(feedID: Int) = object : NetworkBoundResource<News, News>(appExecutors) {
+        override fun saveCallResult(item: News) {
+            database.newsDao().insertOrUpdate(item)
+        }
+
+        override fun shouldFetch(data: News?): Boolean {
+            return News.shouldFetch()
+        }
+
+        override fun loadFromDb(): LiveData<News> {
+            return database.newsDao().getNewsPost(feedID)
+        }
+
+        override fun createCall(): LiveDataRes<News> {
+            return service.getNewsPost(getToken(), feedID)
+        }
+
+    }.getAsLiveData()
+
     fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
         override fun saveCallResult(item: List<News>) {
             database.newsDao().insertOrUpdate(item)
@@ -397,6 +417,18 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             })
         }
     }
+
+    fun deleteNews(news: News) = object : AsyncDeleteRequest<News>(appExecutors) {
+        override fun deleteFromDB(requestData: News) {
+            database.newsDao().delete(requestData)
+        }
+
+        override fun createCall(requestData: News): Call<Void> {
+            requestData.feedID?.let { return service.deleteNews(getToken(), it) }
+            throw Exception("Feed id must not be null!")
+        }
+    }.send(news)
+
 
     private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "")
             ?: throw Exception("Auth getToken is null!")

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
@@ -40,7 +41,7 @@ class CreateNewsFragment : Fragment(){
         return view
     }
 
-    protected fun sendNewsToServer(view : View) {
+    private fun sendNewsToServer(view : View) {
 
         getViewModel(NewsViewModel::class.java)?.let {
 
@@ -51,11 +52,10 @@ class CreateNewsFragment : Fragment(){
                 mCreatedNews.setToCurrentTime()
                 Log.d("SENT NEWS", "news sent: $mCreatedNews")
                 it.sendNews(mCreatedNews)
-                setSnackBar(view, "send", null)
+                setSnackBar(view, "Newspost successfully created", null)
             }
             else{
-                //TODO: Show error message
-                setSnackBar(view, "an error occurred", null)
+                setSnackBar(view, "Error: not logged in", null)
             }
         }
     }
