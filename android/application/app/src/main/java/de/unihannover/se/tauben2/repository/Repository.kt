@@ -16,6 +16,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 
@@ -45,7 +46,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     private inline fun <reified T> getItemsToDelete(newItems: Collection<T>, oldItems: Collection<T>) = oldItems.minus(newItems).toTypedArray()
 
     // TODO Maybe insert and delete in one query
-    fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
+    fun getCases(loadClosed: Boolean = false) = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
             database.caseDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
             Case.setLastAllUpdatedToNow()
@@ -57,7 +58,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun loadFromDb() = database.caseDao().getCases()
 
-        override fun createCall() = service.getCases(getToken())
+        override fun createCall(): LiveDataRes<List<Case>> {
+            val firstStart = sp.getBoolean("FIRST_START", true)
+            if (firstStart && loadClosed) {
+                sp.edit().putBoolean("FIRST_START", false).apply()
+                return service.getStats(getToken(), 0)
+            }
+            if (loadClosed) {
+                val c = Calendar.getInstance()
+                c.add(Calendar.DATE, -1)
+
+                return service.getStats(getToken(), c.timeInMillis / 1000)
+            }
+            return service.getCases(getToken())
+        }
 
     }.getAsLiveData()
 
@@ -428,7 +442,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             throw Exception("Feed id must not be null!")
         }
     }.send(news)
-
 
     private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "")
             ?: throw Exception("Auth getToken is null!")

@@ -32,6 +32,9 @@ interface NetworkService {
     fun deleteCase(@Header("Authorization") token: String,
                    @Path("id") id: Int): Call<Void>
 
+    @GET("stats")
+    fun getStats(@Header("Authorization") token: String, @Body timeStamp: Long): LiveDataRes<List<Case>>
+
     @PUT
     fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 

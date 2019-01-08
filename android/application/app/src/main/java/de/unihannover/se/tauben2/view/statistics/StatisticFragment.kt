@@ -9,33 +9,46 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import de.unihannover.se.tauben2.R
-import kotlinx.android.synthetic.main.fragment_statistic.*
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.appbar.AppBarLayout
+import de.unihannover.se.tauben2.LiveDataRes
+import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import kotlinx.android.synthetic.main.fragment_statistic.*
 import kotlinx.android.synthetic.main.fragment_statistic.view.*
 import kotlinx.android.synthetic.main.statistic_data.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-import com.github.mikephil.charting.utils.ColorTemplate
-import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 
 
-class StatisticFragment : Fragment() {
+class StatisticFragment : Fragment(), Observer<List<Case>> {
+    override fun onChanged(cases: List<Case>?) {
+        Log.d("KEK", cases.toString())
+    }
 
     // is dis bad?
-    private lateinit var fragmentView : View
+    private lateinit var fragmentView: View
 
     private var selectedDateFrom: Calendar = Calendar.getInstance()
     private var selectedDateTo: Calendar = Calendar.getInstance()
 
     private lateinit var fromListener: DatePickerDialog.OnDateSetListener
     private lateinit var toListener: DatePickerDialog.OnDateSetListener
+
+    private lateinit var mCurrentObserver: LoadingObserver<List<Case>>
+    private var mCurrentObservedData: LiveDataRes<List<Case>>? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -74,15 +87,30 @@ class StatisticFragment : Fragment() {
 
             appbar.setExpanded(expand)
 
-            if(expand)
+            if (expand)
                 fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
             else
                 fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_down)
         }
-
         refreshCharts()
 
+        mCurrentObserver = LoadingObserver(this)
+        loadCases()
+
         return fragmentView
+    }
+
+    private fun loadCases() {
+
+        getViewModel(CaseViewModel::class.java)?.let { viewModel ->
+
+            // Remove old Observers
+            mCurrentObservedData?.removeObserver(mCurrentObserver)
+
+            mCurrentObservedData = viewModel.cases
+
+            mCurrentObservedData?.observe(this, mCurrentObserver)
+        }
     }
 
     override fun onStart() {
@@ -99,13 +127,13 @@ class StatisticFragment : Fragment() {
                 SimpleDateFormat("dd.MM.yy", Locale.GERMANY).format(selectedDateTo.timeInMillis)
     }
 
-    private fun createDateSelectListeners () {
-        fromListener = DatePickerDialog.OnDateSetListener {_, year, month, day ->
+    private fun createDateSelectListeners() {
+        fromListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             selectedDateFrom.set(year, month, day)
             refreshButtonLabel()
             refreshCharts()
         }
-        toListener = DatePickerDialog.OnDateSetListener {_, year, month, day ->
+        toListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             selectedDateTo.set(year, month, day)
             refreshButtonLabel()
             refreshCharts()
@@ -121,7 +149,7 @@ class StatisticFragment : Fragment() {
         createPieChart(fragmentView.breed_piechart, getBreedData())
     }
 
-    private fun resetLineChart(chart : LineChart) {
+    private fun resetLineChart(chart: LineChart) {
         chart.fitScreen()
         chart.data?.clearValues()
         chart.xAxis.valueFormatter = null
@@ -130,7 +158,7 @@ class StatisticFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun createLineChart (chart : LineChart, data : ArrayList<Entry>) {
+    private fun createLineChart(chart: LineChart, data: ArrayList<Entry>) {
 
         resetLineChart(chart)
 
@@ -154,7 +182,7 @@ class StatisticFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun createPieChart (chart : PieChart, data :ArrayList<PieEntry>) {
+    private fun createPieChart(chart: PieChart, data: ArrayList<PieEntry>) {
 
         val dataSet = PieDataSet(data, null)
 
@@ -176,7 +204,7 @@ class StatisticFragment : Fragment() {
 
     // generate example data
 
-    private fun getExampleLineChartData() : ArrayList<Entry> {
+    private fun getExampleLineChartData(): ArrayList<Entry> {
 
         val testData = ArrayList<Entry>()
         var randNumber = Math.random() * 500
@@ -197,7 +225,7 @@ class StatisticFragment : Fragment() {
         return testData
     }
 
-    private fun getInjuryData() : ArrayList<PieEntry> {
+    private fun getInjuryData(): ArrayList<PieEntry> {
 
         val testData = ArrayList<PieEntry>()
 
@@ -218,7 +246,7 @@ class StatisticFragment : Fragment() {
         return testData
     }
 
-    private fun getBreedData () : ArrayList<PieEntry> {
+    private fun getBreedData(): ArrayList<PieEntry> {
 
         val testData = ArrayList<PieEntry>()
 
