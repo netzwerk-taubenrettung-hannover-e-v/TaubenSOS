@@ -27,11 +27,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/current_timestamp_value"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/current_timestamp_title"
             app:layout_constraintStart_toEndOf="@+id/current_timestamp_title"
@@ -49,24 +51,9 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/current_timestamp_value"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/changedate_button"
+            app:layout_constraintStart_toEndOf="@+id/current_timestamp_value"
             app:layout_constraintTop_toTopOf="@+id/current_timestamp_value"
             app:layout_constraintVertical_bias="0.517" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/changedate_button"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:maxLines="1"
-            android:text="change"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/resetdate_button"
-            app:layout_constraintEnd_toStartOf="@+id/resetdate_button"
-            app:layout_constraintStart_toEndOf="@+id/current_timestamp_value"
-            app:layout_constraintTop_toTopOf="@+id/resetdate_button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/plus_button"
@@ -178,8 +165,7 @@
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            />
+            android:layout_height="200dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

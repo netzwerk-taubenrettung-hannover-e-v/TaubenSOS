@@ -9,11 +9,14 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
+import android.util.TimeUtils
 import android.view.*
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -31,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_counter_info.*
 import kotlinx.android.synthetic.main.fragment_counter_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,7 +44,7 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 
-class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var selectedDate: Calendar = Calendar.getInstance()
     private var mPopulationMarker : PopulationMarker? = null
@@ -58,11 +62,6 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
                     selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH),
                     selectedDate.get(Calendar.DAY_OF_MONTH))
         }
-//        val timePickerDialog = context?.let {
-//            TimePickerDialog(it, this,
-//                    selectedDate.get(Calendar.HOUR_OF_DAY),
-//                    selectedDate.get(Calendar.MINUTE), true)
-//        }
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
 
@@ -75,26 +74,29 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
 
                     val dataList : MutableList<Entry> = mutableListOf()
 
-                    val first = mPopulationMarker?.values?.firstOrNull()?.let {value ->
+                    val first = mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.firstOrNull()?.let {value ->
                         Calendar.getInstance().apply {
                             timeInMillis = value.timestamp*1000
                         }
                     }
 
-                    val last = mPopulationMarker?.values?.lastOrNull()?.let { value ->
+                    val last = mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.lastOrNull()?.let { value ->
                         Calendar.getInstance().apply {
                             timeInMillis = value.timestamp*1000
                         }
                     }
 
-                    mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.forEachIndexed { index, counterValue ->
-                        dataList.add(Entry(index.toFloat(), counterValue.pigeonCount.toFloat()))
+                    mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.forEach { value ->
+                        first?.let {
+                            val index = TimeUnit.MILLISECONDS.toDays(value.timestamp * 1000 - first.timeInMillis)
+                            dataList.add(Entry(index.toFloat(), value.pigeonCount.toFloat()))
+                        }
                     }
 
                     val dataSet = LineDataSet(dataList, "")
+                    dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
                     val lineData = LineData(dataSet)
                     view.chart.apply {
-                        clear()
                         xAxis.position = XAxis.XAxisPosition.BOTTOM
                         xAxis.labelRotationAngle = -60f
 
@@ -113,19 +115,6 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
             })
         }
 
-        //var dataList = mutableListOf<Entry>()
-
-
-        //val calender : Calendar = Calendar(mPopulationMarker.values.first().timestamp))
-        /*mPopulationMarker?.let {marker -> val start : Calendar = Calendar.getInstance()
-            start.timeInMillis = marker.values.first().timestamp
-            val end : Calendar = Calendar.getInstance()
-            start.timeInMillis = marker.values.last().timestamp
-            view.chart.xAxis.valueFormatter = AxisDateFormatter(start, end)
-        }*/
-
-        //view.chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
-
         //OnClickListeners
         view.plus_button.setOnClickListener {
             val value = (counter_value.text.toString().toIntOrNull() ?: 0) + 1
@@ -137,8 +126,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
             counter_value.setText(value.toString())
         }
 
-        view.changedate_button.setOnClickListener {
-//            timePickerDialog?.show()
+        view.current_timestamp_value.setOnClickListener {
             datePickerDialog?.show()
         }
 
@@ -172,13 +160,6 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
 
         return view
     }
-
-    /*private fun refreshChartData(chart : LineChart){
-        var dataSet = LineDataSet(dataList, "")
-        var lineData = LineData(dataSet)
-        chart.data = lineData
-        chart.invalidate()
-    }*/
 
     override fun onStart() {
         super.onStart()
@@ -247,9 +228,4 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
         refreshTextView()
     }
 
-    override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
-//        selectedDate.set(Calendar.HOUR_OF_DAY, hour)
-//        selectedDate.set(Calendar.MINUTE, minute)
-//        refreshTextView()
-    }
 }
