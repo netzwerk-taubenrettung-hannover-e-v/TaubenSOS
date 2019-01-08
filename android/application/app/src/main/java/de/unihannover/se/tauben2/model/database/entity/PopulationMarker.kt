@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.model.database.entity
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -21,11 +22,11 @@ import kotlinx.android.parcel.RawValue
  */
 @Parcelize
 @TypeConverters(CounterValueConverter::class)
-@Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "populationMarkerID"])
+@Entity(tableName = "population")
 data class PopulationMarker(val latitude: Double,
                             val longitude: Double,
                             var description: String,
-                            val populationMarkerID: Int,
+                            @PrimaryKey val populationMarkerID: Int,
                             var radius: Double,
 
                             var values: List<CounterValue>
@@ -37,13 +38,12 @@ data class PopulationMarker(val latitude: Double,
     override fun getMarker(): MarkerOptions {
         val totalPigeonCount = values.fold(0) { sum, element -> sum + element.pigeonCount }
         return MarkerOptions().position(LatLng(latitude, longitude))
-                .title(description)
-                .snippet("Taubenanzahl: $totalPigeonCount")
+                .title("Taubenanzahl: $totalPigeonCount")
     }
 
     companion object: AllUpdatable {
         override val refreshAllCooldown: Long
-            get() = 1000 * 60 * 15 // 30 min
+            get() = 0 //1000 * 60 * 15 // 30 min
 
     }
 }
