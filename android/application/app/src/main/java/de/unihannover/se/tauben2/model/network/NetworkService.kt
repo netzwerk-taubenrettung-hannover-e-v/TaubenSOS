@@ -45,6 +45,10 @@ interface NetworkService {
     @POST("feed")
     fun sendNews(@Header("Authorization") token: String, @Body news: News): LiveDataRes<News>
 
+    @PUT("feed/{id}")
+    fun updateNews(@Header("Authorization") token: String, @Path("id") id: Int,
+                   @Body news: News): LiveDataRes<News>
+
     @GET("feed/{feedID}")
     fun getNewsPost(@Header("Authorization") token: String, @Path("feedID") feedID: Int): LiveDataRes<News>
 

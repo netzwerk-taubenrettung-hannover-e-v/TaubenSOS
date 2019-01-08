@@ -132,8 +132,8 @@
     <string name="record_video">Record video</string>
     <string name="what_kind_of_media">What kind of media would you like to add?</string>
     <string name="maximum_reached">Maximum amount reached.</string>
-    <string name="written_by_text">Written by: </string>
-
+    <string name="written_by_text">Written by: %s</string>
+    <string name="starts_on">Event starts on %s</string>
     <string name="nav_item1">Edit </string>
     <string name="nav_item2">Delete </string>
 
@@ -147,6 +147,8 @@
     <string name="news_title_input_hint">Please enter the title here.</string>
     <string name="news_text_input_hint">Please enter the text here.</string>
     <string name="date">Date:</string>
+    <string name="enter_content">Enter your news content</string>
+    <string name="enter_title">Enter the title</string>
 
 
 </resources>

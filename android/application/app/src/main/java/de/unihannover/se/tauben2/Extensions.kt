@@ -94,6 +94,7 @@ private fun getLongDatePattern() = (DateFormat.getLongDateFormat(App.context) as
 private fun getTimePattern() = (DateFormat.getTimeFormat(App.context) as SimpleDateFormat).toLocalizedPattern()
 
 fun getDateString(time: Long) = SimpleDateFormat(getDatePattern(), Locale.getDefault()).format(time)
+fun getLongDateString(time: Long) = SimpleDateFormat(getLongDatePattern(), Locale.getDefault()).format(time)
 fun getDateTimeString(time: Long) = SimpleDateFormat(getDatePattern() + ", " + getTimePattern(), Locale.getDefault()).format(time)
 
 fun getLongDurationString(time: Long): String {

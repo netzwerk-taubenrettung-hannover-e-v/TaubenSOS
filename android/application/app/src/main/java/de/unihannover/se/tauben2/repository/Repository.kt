@@ -175,6 +175,24 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.send(news, enableRefetching = false)
 
+    fun updateNews(news: News) = object : AsyncDataRequest<News, News>(appExecutors) {
+        override fun fetchUpdatedData(resultData: News): LiveDataRes<News> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: News) {
+            setItemUpdateTimestamps(updatedData)
+            database.newsDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: News): LiveDataRes<News> {
+            requestData.feedID?.let {
+                return service.updateNews(getToken(), it, requestData)
+            }
+            throw Exception("Case id must not be null!")
+        }
+    }.send(news, false)
+
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
             database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value

@@ -27,8 +27,9 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
 
     override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_news
 
-    private lateinit var news: News
-
+    override fun onChanged(t: List<News>?) {
+        super.onChanged(t?.sortedBy { it.eventStart })
+    }
 
     override fun onBindData(binding: ViewDataBinding, data: News) {
         val vm = getViewModel(NewsViewModel::class.java)
@@ -46,12 +47,7 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
                 }*/
 
 
-            binding.root.let{v->
-                data.timestamp.let{
-                    if(it!=null) {
-                        v.timestamp.text = getDateTimeString(it*1000)
-                    }
-                }
+            binding.root.let{ v->
                 if(BootingActivity.getOwnerPermission() == Permission.GUEST){
                     v.news_edit_button.visibility = GONE
                     v.news_delete_button.visibility = GONE
@@ -60,7 +56,10 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
                     v.news_edit_button.visibility = VISIBLE
                     v.news_delete_button.visibility = VISIBLE
                     v.news_edit_button.setOnClickListener {
-                        Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.editNewsFragment)
+                        val bundle = Bundle().apply {
+                            putInt("news", data.feedID ?: -1)
+                        }
+                        Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.editNewsFragment, bundle)
                     }
                     v.news_delete_button.setOnClickListener {
                         vm?.deleteNews(data)

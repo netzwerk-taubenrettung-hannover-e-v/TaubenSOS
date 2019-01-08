@@ -48,7 +48,7 @@ class CreateNewsFragment : Fragment(){
             val userViewModel = getViewModel(UserViewModel::class.java)
 
             if(userViewModel?.getOwnerUsername()!=null) {
-                mCreatedNews = News(null, userViewModel.getOwnerUsername(), null, txt_news_body.text.toString(), null, txt_news_title.text.toString())
+                mCreatedNews = News(null, userViewModel.getOwnerUsername(), System.currentTimeMillis()/1000, txt_news_body.text.toString(), -1, txt_news_title.text.toString())
                 mCreatedNews.setToCurrentTime()
                 Log.d("SENT NEWS", "news sent: $mCreatedNews")
                 it.sendNews(mCreatedNews)

@@ -20,6 +20,7 @@ class BootingActivity : AppCompatActivity() {
 
         private var owner: User? = null
 
+        @JvmStatic
         fun getOwnerPermission() = owner?.getPermission() ?: Permission.GUEST
 
     }
