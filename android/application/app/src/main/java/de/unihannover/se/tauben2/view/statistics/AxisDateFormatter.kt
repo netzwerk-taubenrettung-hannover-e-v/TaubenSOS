@@ -2,6 +2,8 @@ package de.unihannover.se.tauben2.view.statistics
 
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import de.unihannover.se.tauben2.getDateString
+import de.unihannover.se.tauben2.getDateTimeString
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -20,7 +22,7 @@ class AxisDateFormatter(private val startDate: Calendar, private val endDate: Ca
         val currentDate = startDate.clone() as Calendar
 
         for (i in 0 until dates.size) {
-            dates[i] = SimpleDateFormat("dd.MM.yy", Locale.GERMANY).format(currentDate.timeInMillis)
+            dates[i] = getDateString(currentDate.timeInMillis)
             currentDate.add(Calendar.DATE, 1)
         }
 
