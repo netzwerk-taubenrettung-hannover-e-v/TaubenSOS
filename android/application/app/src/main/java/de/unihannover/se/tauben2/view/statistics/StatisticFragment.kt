@@ -33,9 +33,6 @@ import kotlin.collections.ArrayList
 
 
 class StatisticFragment : Fragment(), Observer<List<Case>> {
-    override fun onChanged(cases: List<Case>?) {
-        Log.d("KEK", cases.toString())
-    }
 
     // is dis bad?
     private lateinit var fragmentView: View
@@ -100,6 +97,15 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         return fragmentView
     }
 
+    override fun onStart() {
+        super.onStart()
+        refreshButtonLabel()
+    }
+
+    override fun onChanged(cases: List<Case>?) {
+        Log.d("KEK", cases.toString())
+    }
+
     private fun loadCases() {
 
         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
@@ -111,11 +117,6 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        refreshButtonLabel()
     }
 
     // DATE SELECTION
@@ -169,7 +170,7 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         dataSet.color = color
         dataSet.setCircleColor(color)
         dataSet.setDrawFilled(true)
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
 
         chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
         chart.xAxis.labelRotationAngle = -60f
@@ -219,7 +220,9 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
                 else -> (-1.0 + (Math.random() * 2))
             }
             // testData.add(XAxis, YAxis)
-            testData.add(Entry(i.toFloat(), randNumber.toFloat()))
+            if (i % 2 == 0) {
+                testData.add(Entry(i.toFloat(), randNumber.toFloat()))
+            }
         }
 
         return testData
