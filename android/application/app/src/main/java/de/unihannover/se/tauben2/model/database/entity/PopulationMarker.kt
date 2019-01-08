@@ -12,6 +12,7 @@ import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
+import kotlin.math.roundToInt
 
 
 /**
@@ -36,9 +37,11 @@ data class PopulationMarker(val latitude: Double,
         get() = 1000 * 60 * 60 * 24 // 24 hours
 
     override fun getMarker(): MarkerOptions {
-        val totalPigeonCount = values.fold(0) { sum, element -> sum + element.pigeonCount }
-        return MarkerOptions().position(LatLng(latitude, longitude))
-                .title("Taubenanzahl: $totalPigeonCount")
+        val totalPigeonCount = if(values.isNotEmpty())
+            (values.fold(0) { sum, element -> sum + element.pigeonCount }.toDouble()/values.size*100).roundToInt()/100.0
+        else -1.0
+        val mo = MarkerOptions().position(LatLng(latitude, longitude))
+        return if(totalPigeonCount == -1.0) mo.title("Click to add values") else mo.title("Average: $totalPigeonCount")
     }
 
     companion object: AllUpdatable {
