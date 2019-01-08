@@ -99,8 +99,9 @@ class CounterFragment : Fragment() {
                 mSelectedMarkerID = null
             } else
             // TODO implement drawing radius, adding description text in ui
+
                 it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, radius,
-                        listOf(CounterValue(32, -1, 123))))
+                        listOf<CounterValue>()))
 
         }
     }

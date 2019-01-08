@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -94,6 +95,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
                 map.setLatLngBoundsForCameraTarget(hanBounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(hanBounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
+                map.clear()
                 setCaseMarkers(mMarkers.keys)
 
 
@@ -127,9 +129,16 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                             false // enables default behaviour i.e. focusing the marker and opening the info window
                         }*/
 
-                        map.setOnMarkerClickListener {
-                            val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
-                            controller.navigate(R.id.counterInfoFragment)
+                        map.setOnMarkerClickListener {clickedMarker ->
+                            val filter = mMarkers.filter { it.value == clickedMarker }
+                            if (filter.size == 1) {
+                                val populationMarker = filter.keys.toList()[0] as? PopulationMarker
+                                val bundle = Bundle()
+                                bundle.putParcelable("marker", populationMarker)
+                                val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                                controller.navigate(R.id.counterInfoFragment, bundle)
+                            }
+
                             false
                         }
                     }

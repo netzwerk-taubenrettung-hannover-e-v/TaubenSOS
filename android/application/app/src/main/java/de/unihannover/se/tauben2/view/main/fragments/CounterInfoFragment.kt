@@ -1,17 +1,26 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import de.unihannover.se.tauben2.R
 //import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
@@ -23,6 +32,17 @@ import java.util.*
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
+import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.CounterValue
+import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.multiLet
+import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
+import de.unihannover.se.tauben2.view.report.ReportActivity
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
+import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,11 +55,17 @@ import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private var selectedDate: Calendar = Calendar.getInstance()
+    private var mPopulationMarker : PopulationMarker? = null
+
+    private var mToolbarMenu: Menu? = null
+
+    private var dataList : MutableList<Entry> = mutableListOf<Entry>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_counter_info, container, false)
+        setHasOptionsMenu(true)
 
         val datePickerDialog = context?.let {
             DatePickerDialog(it, this,
@@ -54,43 +80,39 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
 
-        //These are test dates for the population counter graph
-        val calendar = Calendar.getInstance()
-        val d1 = calendar.time
-        calendar.add(Calendar.MONTH, 2)
-        val d2 = calendar.time
-        calendar.add(Calendar.MONTH, 2)
-        val d3 = calendar.time
-        calendar.add(Calendar.MONTH, 2)
-        val d4 = calendar.time
-        calendar.add(Calendar.MONTH, 2)
-        val d5 = calendar.time
+        arguments?.let {args ->
+            mPopulationMarker = args.getParcelable<PopulationMarker>("marker")
+        }
 
-        val series = LineGraphSeries<DataPoint>(arrayOf<DataPoint>(
-                DataPoint(d1, 7.0),
-                DataPoint(d2, 5.0),
-                DataPoint(d3, 6.0),
-                DataPoint(d4, 12.0),
-                DataPoint(d5, 20.0)))
+        //var dataList = mutableListOf<Entry>()
 
-        //Graph View Configuration
-        series.isDrawBackground = true
-        series.isDrawDataPoints = true
-        view.graph.addSeries(series)
+        mPopulationMarker?.let {marker ->
+            var i = 0
+            for(value in marker.values){
+                dataList.add(Entry(i.toFloat(), value.pigeonCount.toFloat()))
+                i++
+            }
+        }
 
-        view.graph.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
-        view.graph.gridLabelRenderer.numHorizontalLabels = 3
-        view.graph.gridLabelRenderer.padding = 32
-        view.graph.gridLabelRenderer.setHumanRounding(false)
+        var dataSet = LineDataSet(dataList, "")
+        var lineData = LineData(dataSet)
+        view.chart.data = lineData
+        view.chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        //val calender : Calendar = Calendar(mPopulationMarker.values.first().timestamp))
+        /*mPopulationMarker?.let {marker -> val start : Calendar = Calendar.getInstance()
+            start.timeInMillis = marker.values.first().timestamp
+            val end : Calendar = Calendar.getInstance()
+            start.timeInMillis = marker.values.last().timestamp
+            view.chart.xAxis.valueFormatter = AxisDateFormatter(start, end)
+        }*/
 
-        view.graph.viewport.isScalable = false
-        view.graph.viewport.isXAxisBoundsManual = true
-        view.graph.viewport.setMinX(d1.time.toDouble())
-        view.graph.viewport.setMaxX(d5.time.toDouble())
-        view.graph.viewport.isYAxisBoundsManual = true
-        view.graph.viewport.setMinY(0.0)
-        view.graph.viewport.setMaxY(40.0)
+        //view.chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
+        view.chart.xAxis.labelRotationAngle = -60f
 
+        view.chart.description.isEnabled = false
+        view.chart.legend.isEnabled = false
+
+        view.chart.invalidate()
 
         //OnClickListeners
         view.plus_button.setOnClickListener {
@@ -129,34 +151,74 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
 
         view.send_count_button.setOnClickListener {
 
-            /*if (mapsFragment.getSelectedPosition() == null) {
-                // Error MSG: No location selected
-                setSnackBar(view, "Bitte Position auf der Karte eintragen.")
-            } else {
-                if (counter_value.text.toString().toInt() == 0) {
-                    // Warning MSG: Counter at 0
-                    setSnackBar(view, "Bitte Taubenanzahl eintragen.")
-                } else {
-                    Log.d("COUNTINFO", selectedDate.toString())
-                    Log.d("COUNTINFO", mapsFragment.getSelectedPosition()!!.toString())
-                    Log.d("COUNTINFO", counter_value.text.toString())
-
-                    // Reset Page
-                    counter_value.setText("0")
-                    setCurrentTimestamp()
-                    // Success MSG
-                    setSnackBar(view, "Taubenanzahl erfolgreich eigetragen.")
+            val vm = getViewModel(PopulationMarkerViewModel::class.java)
+            vm?.let {vm ->
+                mPopulationMarker?.let {marker ->
+                    vm.postCounterValue(CounterValue(counter_value.text.toString().toInt(), marker.populationMarkerID, selectedDate.timeInMillis / 1000))
+                    //dataList.add(Entry(dataList.size.toFloat(), counter_value.text.toString().toFloat()))
+                    //refreshChartData(view.chart)
                 }
             }
-            */
         }
 
         return view
     }
 
+    /*private fun refreshChartData(chart : LineChart){
+        var dataSet = LineDataSet(dataList, "")
+        var lineData = LineData(dataSet)
+        chart.data = lineData
+        chart.invalidate()
+    }*/
+
     override fun onStart() {
         super.onStart()
         setCurrentTimestamp()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        mToolbarMenu = menu
+        mToolbarMenu?.let { setOptionsMenuItems(it) }
+    }
+
+    private fun setOptionsMenuItems(menu: Menu) {
+        val permission = BootingActivity.getOwnerPermission()
+        menu.apply{
+            if(permission == Permission.ADMIN || permission == Permission.AUTHORISED) {
+                findItem(R.id.toolbar_delete)?.isVisible = true
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val result = super.onOptionsItemSelected(item)
+
+        when(item?.itemId){
+            R.id.toolbar_delete -> {
+                context?.let { cxt ->
+                    androidx.appcompat.app.AlertDialog.Builder(cxt)
+                            .setTitle("Do you want to delete this marker?")
+                            .setMessage("There is no point of return.")
+                            .setPositiveButton(R.string.delete) { _, _ ->
+                                //TODO Delete Marker
+                                val vm = getViewModel(PopulationMarkerViewModel::class.java)
+                                vm?.let {vm ->
+                                    mPopulationMarker?.let {marker ->
+                                        vm.deleteMarker(marker)
+                                        //dataList.add(Entry(dataList.size.toFloat(), counter_value.text.toString().toFloat()))
+                                        //refreshChartData(view.chart)
+                                    }
+                                }
+                                val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                                controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
+                                controller.navigate(R.id.counterFragment)
+                            }.setNegativeButton(R.string.cancel) { di, _ ->
+                                di.cancel()
+                            }.show()
+                }
+            }
+        }
+        return result
     }
 
     private fun refreshTextView() {
@@ -179,5 +241,4 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
         selectedDate.set(Calendar.MINUTE, minute)
         refreshTextView()
     }
-
 }

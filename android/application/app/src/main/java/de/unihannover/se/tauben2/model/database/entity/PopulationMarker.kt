@@ -1,5 +1,7 @@
 package de.unihannover.se.tauben2.model.database.entity
 
+import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.TypeConverters
 import com.google.android.gms.maps.model.LatLng
@@ -7,6 +9,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 
 /**
@@ -15,6 +19,7 @@ import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
  * @param longitude longitude coordinate
  * @param values list of CounterValue instances at the given Marker
  */
+@Parcelize
 @TypeConverters(CounterValueConverter::class)
 @Entity(tableName = "population", primaryKeys = ["latitude", "longitude", "populationMarkerID"])
 data class PopulationMarker(val latitude: Double,
@@ -22,8 +27,9 @@ data class PopulationMarker(val latitude: Double,
                             var description: String,
                             val populationMarkerID: Int,
                             var radius: Double,
+
                             var values: List<CounterValue>
-) : MapMarkable, DatabaseEntity() {
+) : MapMarkable, DatabaseEntity(), Parcelable {
 
     override val refreshCooldown: Long
         get() = 1000 * 60 * 60 * 24 // 24 hours

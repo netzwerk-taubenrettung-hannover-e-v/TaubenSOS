@@ -19,7 +19,7 @@ class BottomNavigator(
 
     private val mBackStack: MutableList<Destination> = mutableListOf()
 
-    private val mToRemove = listOf(R.id.casesInfoFragment)
+    private val mToRemove = listOf(R.id.casesInfoFragment, R.id.counterInfoFragment)
 
 //    private val mActionsList = listOf(R.id.action_report00Fragment_to_report01Fragment,
 //            R.id.action_report01Fragment_to_report02Fragment,
