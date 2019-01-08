@@ -13,8 +13,10 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.Injury
 import de.unihannover.se.tauben2.model.database.PigeonBreed
+import de.unihannover.se.tauben2.model.database.converter.Media
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 /**
  * represents the case of an injured pigeon
@@ -46,7 +48,7 @@ data class Case(@PrimaryKey var caseID: Int?,
                 @Embedded
                 var injury: Injury?,
 
-                var media: List<String>
+                var media: List<Media>
 
 ) : RecyclerItem, MapMarkable, Parcelable, DatabaseEntity() {
 
