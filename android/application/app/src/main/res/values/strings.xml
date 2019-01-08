@@ -146,6 +146,7 @@
 
     <string name="news_title_input_hint">Please enter the title here.</string>
     <string name="news_text_input_hint">Please enter the text here.</string>
+    <string name="date">Date:</string>
 
 
 </resources>

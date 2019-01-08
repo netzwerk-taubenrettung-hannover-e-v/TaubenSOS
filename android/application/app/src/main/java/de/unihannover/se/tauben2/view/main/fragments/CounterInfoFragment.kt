@@ -1,48 +1,36 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
 
+//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+//import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import de.unihannover.se.tauben2.R
-//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.*
+import de.unihannover.se.tauben2.model.CounterValue
+import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
-//import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
+import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
+import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
+import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter_info.*
 import kotlinx.android.synthetic.main.fragment_counter_info.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.jjoe64.graphview.series.LineGraphSeries
-import com.jjoe64.graphview.series.DataPoint
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
-import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.CounterValue
-import de.unihannover.se.tauben2.model.database.Permission
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.multiLet
-import de.unihannover.se.tauben2.view.main.BootingActivity
-import de.unihannover.se.tauben2.view.navigation.BottomNavigator
-import de.unihannover.se.tauben2.view.report.ReportActivity
-import de.unihannover.se.tauben2.viewmodel.CaseViewModel
-import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
-import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,8 +47,6 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
 
     private var mToolbarMenu: Menu? = null
 
-    private var dataList : MutableList<Entry> = mutableListOf<Entry>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -72,32 +58,64 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
                     selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH),
                     selectedDate.get(Calendar.DAY_OF_MONTH))
         }
-        val timePickerDialog = context?.let {
-            TimePickerDialog(it, this,
-                    selectedDate.get(Calendar.HOUR_OF_DAY),
-                    selectedDate.get(Calendar.MINUTE), true)
-        }
+//        val timePickerDialog = context?.let {
+//            TimePickerDialog(it, this,
+//                    selectedDate.get(Calendar.HOUR_OF_DAY),
+//                    selectedDate.get(Calendar.MINUTE), true)
+//        }
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
 
-        arguments?.let {args ->
-            mPopulationMarker = args.getParcelable<PopulationMarker>("marker")
+        arguments?.getInt("marker")?.let { markerID ->
+            getViewModel(PopulationMarkerViewModel::class.java)?.populationMarkers?.filter { it.populationMarkerID == markerID  }?.observe(this, androidx.lifecycle.Observer {
+                if(it?.status?.isSuccessful() == true) {
+                    if(it.data?.size == 1) {
+                        mPopulationMarker = it.data[0]
+                    }
+
+                    val dataList : MutableList<Entry> = mutableListOf()
+
+                    val first = mPopulationMarker?.values?.firstOrNull()?.let {value ->
+                        Calendar.getInstance().apply {
+                            timeInMillis = value.timestamp*1000
+                        }
+                    }
+
+                    val last = mPopulationMarker?.values?.lastOrNull()?.let { value ->
+                        Calendar.getInstance().apply {
+                            timeInMillis = value.timestamp*1000
+                        }
+                    }
+
+                    mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.forEachIndexed { index, counterValue ->
+                        dataList.add(Entry(index.toFloat(), counterValue.pigeonCount.toFloat()))
+                    }
+
+                    val dataSet = LineDataSet(dataList, "")
+                    val lineData = LineData(dataSet)
+                    view.chart.apply {
+                        clear()
+                        xAxis.position = XAxis.XAxisPosition.BOTTOM
+                        xAxis.labelRotationAngle = -60f
+
+                        multiLet(first, last) {f, l ->
+                            xAxis.valueFormatter = AxisDateFormatter(f, l)
+                        }
+                        xAxis.setDrawGridLines(false)
+
+                        description.isEnabled = false
+                        legend.isEnabled = false
+
+                        data = lineData
+                        invalidate()
+                    }
+                }
+            })
         }
 
         //var dataList = mutableListOf<Entry>()
 
-        mPopulationMarker?.let {marker ->
-            var i = 0
-            for(value in marker.values){
-                dataList.add(Entry(i.toFloat(), value.pigeonCount.toFloat()))
-                i++
-            }
-        }
 
-        var dataSet = LineDataSet(dataList, "")
-        var lineData = LineData(dataSet)
-        view.chart.data = lineData
-        view.chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         //val calender : Calendar = Calendar(mPopulationMarker.values.first().timestamp))
         /*mPopulationMarker?.let {marker -> val start : Calendar = Calendar.getInstance()
             start.timeInMillis = marker.values.first().timestamp
@@ -107,12 +125,6 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
         }*/
 
         //view.chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
-        view.chart.xAxis.labelRotationAngle = -60f
-
-        view.chart.description.isEnabled = false
-        view.chart.legend.isEnabled = false
-
-        view.chart.invalidate()
 
         //OnClickListeners
         view.plus_button.setOnClickListener {
@@ -126,7 +138,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
         }
 
         view.changedate_button.setOnClickListener {
-            timePickerDialog?.show()
+//            timePickerDialog?.show()
             datePickerDialog?.show()
         }
 
@@ -152,13 +164,10 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
         view.send_count_button.setOnClickListener {
 
             val vm = getViewModel(PopulationMarkerViewModel::class.java)
-            vm?.let {vm ->
-                mPopulationMarker?.let {marker ->
-                    vm.postCounterValue(CounterValue(counter_value.text.toString().toInt(), marker.populationMarkerID, selectedDate.timeInMillis / 1000))
-                    //dataList.add(Entry(dataList.size.toFloat(), counter_value.text.toString().toFloat()))
-                    //refreshChartData(view.chart)
-                }
+            mPopulationMarker?.let {marker ->
+                vm?.postCounterValue(CounterValue(counter_value.text.toString().toInt(), marker.populationMarkerID, selectedDate.timeInMillis / 1000))
             }
+            counter_value.setText("0")
         }
 
         return view
@@ -202,12 +211,10 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
                             .setPositiveButton(R.string.delete) { _, _ ->
                                 //TODO Delete Marker
                                 val vm = getViewModel(PopulationMarkerViewModel::class.java)
-                                vm?.let {vm ->
-                                    mPopulationMarker?.let {marker ->
-                                        vm.deleteMarker(marker)
-                                        //dataList.add(Entry(dataList.size.toFloat(), counter_value.text.toString().toFloat()))
-                                        //refreshChartData(view.chart)
-                                    }
+                                mPopulationMarker?.let {marker ->
+                                    vm?.deleteMarker(marker)
+                                    //dataList.add(Entry(dataList.size.toFloat(), counter_value.text.toString().toFloat()))
+                                    //refreshChartData(view.chart)
                                 }
                                 val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
                                 controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
@@ -222,12 +229,16 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
     }
 
     private fun refreshTextView() {
-        view?.current_timestamp_value?.text =
-                SimpleDateFormat("dd.MM.yy, HH:mm", Locale.GERMANY).format(selectedDate.timeInMillis)
+        view?.current_timestamp_value?.text = getDateString(selectedDate.timeInMillis)
     }
 
     private fun setCurrentTimestamp() {
-        selectedDate = Calendar.getInstance()
+        selectedDate = Calendar.getInstance().apply {
+            set(Calendar.HOUR, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
         refreshTextView()
     }
 
@@ -237,8 +248,8 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener, Time
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
-        selectedDate.set(Calendar.HOUR_OF_DAY, hour)
-        selectedDate.set(Calendar.MINUTE, minute)
-        refreshTextView()
+//        selectedDate.set(Calendar.HOUR_OF_DAY, hour)
+//        selectedDate.set(Calendar.MINUTE, minute)
+//        refreshTextView()
     }
 }

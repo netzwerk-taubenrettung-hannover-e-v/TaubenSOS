@@ -2,38 +2,37 @@ package de.unihannover.se.tauben2.view.main.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.heatmaps.Gradient
 import com.google.maps.android.SphericalUtil
-
+import com.google.maps.android.heatmaps.Gradient
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
+import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
-import java.util.*
-import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
+import java.util.*
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
     var mMap: GoogleMap? = null
-    private val mMarkers: MutableMap<MapMarkable, Marker?> = mutableMapOf()
+    private val mMarkers: MutableMap<MapMarkable, Pair<Marker, Circle?>?> = mutableMapOf()
     private var selectedPosition: Marker? = null
-    private var circle: Circle? = null
+    var circle: Circle? = null
     private var selectedArea: Polygon? = null
 
     private val hanBounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
@@ -43,9 +42,9 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
         if (mMarkers.isEmpty()) {
             data.forEach { mMarkers[it] = null }
-            setCaseMarkers(data)
+            setMarkers(data)
         }
-        val casesToRemove: MutableMap<MapMarkable, Marker?> = mutableMapOf()
+        val casesToRemove: MutableMap<MapMarkable, Pair<Marker, Circle?>?> = mutableMapOf()
 
         loop@ for ((oldCase, oldMarker) in mMarkers) {
             for (newCase in data) {
@@ -56,11 +55,12 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
 
         for ((oldCase, oldMarker) in casesToRemove) {
-            oldMarker?.remove()
+            oldMarker?.first?.remove()
+            oldMarker?.second?.remove()
             mMarkers.remove(oldCase)
         }
 
-        setCaseMarkers(data)
+        setMarkers(data)
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
@@ -96,7 +96,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.setLatLngBoundsForCameraTarget(hanBounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(hanBounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 map.clear()
-                setCaseMarkers(mMarkers.keys)
+                setMarkers(mMarkers.keys)
 
 
 
@@ -107,7 +107,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                         mMap?.setOnInfoWindowClickListener { clickedMarker ->
                             //TODO find MarkerCase
 
-                            val filter = mMarkers.filter { it.value == clickedMarker }
+                            val filter = mMarkers.filter { it.value?.first == clickedMarker }
                             if (filter.size == 1) {
                                 val case = filter.keys.toList()[0] as? Case
                                         ?: return@setOnInfoWindowClickListener
@@ -120,26 +120,14 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                     }
                     is LocationReportFragment -> (this.parentFragment as LocationReportFragment).setMarker()
                     is CounterFragment -> {
-                        /*mMap?.setOnMarkerClickListener { clickedMarker ->
-                            val filter = mMarkers.filter { it.value == clickedMarker }
-                            if (filter.size == 1) {
-                                val populationMarker = filter.keys.toList()[0] as? PopulationMarker
-                                (this.parentFragment as CounterFragment).mSelectedMarkerID = populationMarker?.populationMarkerID
-                            }
-                            false // enables default behaviour i.e. focusing the marker and opening the info window
-                        }*/
 
-                        map.setOnMarkerClickListener {clickedMarker ->
-                            val filter = mMarkers.filter { it.value == clickedMarker }
+                        map.setOnInfoWindowClickListener { clickedMarker ->
+                            val filter = mMarkers.filter { it.value?.first == clickedMarker }
                             if (filter.size == 1) {
-                                val populationMarker = filter.keys.toList()[0] as? PopulationMarker
-                                val bundle = Bundle()
-                                bundle.putParcelable("marker", populationMarker)
-                                val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
-                                controller.navigate(R.id.counterInfoFragment, bundle)
+                                val populationMarker = filter.keys.toList()[0] as PopulationMarker
+                                val bundle = Bundle().apply { putInt("marker", populationMarker.populationMarkerID) }
+                                Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.counterInfoFragment, bundle)
                             }
-
-                            false
                         }
                     }
                 }
@@ -170,14 +158,10 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     fun focusSelectedPosition() {
         mMap?.let { map ->
             selectedPosition?.let { pos ->
-                var bounds: LatLngBounds = LatLngBounds(pos.position, pos.position)
+                val bounds: LatLngBounds = LatLngBounds(pos.position, pos.position)
                 map.setLatLngBoundsForCameraTarget(bounds)
             }
         }
-    }
-
-    fun getCircle(): Circle? {
-        return circle
     }
 
     fun chooseRadius() {
@@ -229,21 +213,25 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
     }
 
-    fun setCaseMarkers(markers: Collection<MapMarkable>) {
+    private fun setMarkers(markers: Collection<MapMarkable>) {
         mMap?.let { map ->
             markers.forEach { marker ->
-                if (mMarkers[marker] == null)
-                    mMarkers[marker] = map.addMarker(marker.getMarker())
-                if (marker is PopulationMarker) {
-                    map.addCircle(CircleOptions()
-                            .center(marker.getMarker().position)
-                            .radius(marker.radius)
-                            .strokeColor(Color.argb(40, 59, 148, 225))
-                            .fillColor(Color.argb(20, 59, 148, 225)))
+                if (mMarkers[marker] == null) {
+                    var c: Circle? = null
+                    if (marker is PopulationMarker) {
+
+                        c = map.addCircle(CircleOptions()
+                                .center(marker.getMarker().position)
+                                .radius(marker.radius)
+                                .strokeColor(App.getColor(R.color.colorPrimaryDarkTransparent))
+                                .fillColor(App.getColor(R.color.colorPrimaryTransparent)))
+                    }
+                    mMarkers[marker]= Pair(map.addMarker(marker.getMarker()), c)
                 }
             }
         }
     }
+
 
     private fun addHeatMap() {
 
