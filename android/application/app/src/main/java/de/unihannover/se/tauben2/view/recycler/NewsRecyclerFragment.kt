@@ -1,13 +1,18 @@
 package de.unihannover.se.tauben2.view.recycler
 
 import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardNewsBinding
+import de.unihannover.se.tauben2.getDateTimeString
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.News
@@ -23,6 +28,7 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
     override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_news
 
     private lateinit var news: News
+
 
     override fun onBindData(binding: ViewDataBinding, data: News) {
         val vm = getViewModel(NewsViewModel::class.java)
@@ -41,6 +47,11 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
 
 
             binding.root.let{v->
+                data.timestamp.let{
+                    if(it!=null) {
+                        v.timestamp.text = getDateTimeString(it*1000)
+                    }
+                }
                 if(BootingActivity.getOwnerPermission() == Permission.GUEST){
                     v.news_edit_button.visibility = GONE
                     v.news_delete_button.visibility = GONE

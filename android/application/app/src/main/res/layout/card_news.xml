@@ -65,8 +65,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="363dp"
-                android:text="@{String.format(@string/written_by_text, n.author)}"
-                app:layout_constraintEnd_toStartOf="@+id/news_more_button"
+                android:text="@{@string/written_by_text + ' ' + n.author}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{String.valueOf(n.timestamp)}"
+                android:text=""
                 android:textColor="@color/colorGray"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
