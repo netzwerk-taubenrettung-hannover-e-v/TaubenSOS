@@ -51,4 +51,12 @@
         android:id="@+id/registerFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.RegisterFragment"
         android:label="RegisterFragment" />
+    <fragment
+        android:id="@+id/imprintFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.ImprintFragment"
+        android:label="ImprintFragment" />
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.PrivacyFragment"
+        android:label="PrivacyFragment" />
 </navigation>

@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <data>
+        <import type="de.unihannover.se.tauben2.view.main.BootingActivity" />
+        <import type="de.unihannover.se.tauben2.model.database.Permission" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout_main"
         android:layout_width="match_parent"

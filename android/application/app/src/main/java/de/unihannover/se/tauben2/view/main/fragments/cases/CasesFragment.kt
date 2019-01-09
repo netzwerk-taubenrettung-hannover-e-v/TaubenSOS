@@ -67,6 +67,10 @@ abstract class CasesFragment: Fragment() {
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
             mCurrentObservedData?.observe(this, mCurrentMapObserver)
+
+            if(mCurrentObservedData?.value?.data?.isEmpty() == true) {
+                view?.layout_main?.visibility = View.GONE
+            }
         }
     }
 

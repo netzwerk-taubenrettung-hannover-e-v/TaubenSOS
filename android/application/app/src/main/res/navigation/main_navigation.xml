@@ -64,6 +64,14 @@
         android:name="de.unihannover.se.tauben2.view.main.fragments.RegisterFragment"
         android:label="RegisterFragment" />
     <custom_fragment
+        android:id="@+id/imprintFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.ImprintFragment"
+        android:label="ImprintFragment" />
+    <custom_fragment
+        android:id="@+id/privacyFragment"
+        android:name="de.unihannover.se.tauben2.view.main.fragments.PrivacyFragment"
+        android:label="PrivacyFragment" />
+    <custom_fragment
         android:id="@+id/createNewsFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.CreateNewsFragment"
         android:label="CreateNewsFragment" />
