@@ -27,10 +27,6 @@ class CounterFragment : Fragment() {
 
     var mSelectedMarkerID: Int? = null
 
-    companion object : Singleton<CounterFragment>() {
-        override fun newInstance() = CounterFragment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
