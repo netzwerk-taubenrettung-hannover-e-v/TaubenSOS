@@ -18,11 +18,9 @@ Creates a new case.
     Name | Description | Optional | Type | Default | Example
     --- | --- | :---: | --- | :---: | ---:
     timestamp | A UNIX timestamp. | YES | String | Current time. | "1543397014"
-    priority | An integer between 1 and 5 representing the case's severity. | NO | Integer | — | 5
+    priority | An integer between 1 and 3 representing the case's severity. | NO | Integer | — | 3
     reporter | The pigeon reporter's username. | YES | String | null | "Pigeonator"
     rescuer | The pigeon rescuer's username. | YES | String | null | "Taubenfreund24"
-    ~~isCarrierPigeon~~ | ~~Is the bird a carrier pigeon?~~ | ~~NO~~ | ~~Boolean~~ | — | ~~true~~
-    ~~isWeddingPigeon~~ | ~~Is the bird a wedding pigeon?~~ | ~~NO~~ | ~~Boolean~~ | — | ~~false~~
     breed | The pigeon's breed. May be one of the following options: Carrier Pigeon, Fancy Pigeon, Feral Pigeon, Common Wood Pigeon | YES | String | — | "Common Wood Pigeon"
     additionalInfo | Additional info on the pigeon's condition/location. | YES | String | null | "Taube liegt unter der Brücke."
     phone | The rescuer's mobile number. | NO | String | — | "015237342956"
@@ -54,6 +52,7 @@ Creates a new case.
     ```json
     {
         "additionalInfo": "Taube liegt unter der Brücke.",
+        "breed": "Carrier Pigeon",
         "caseID": 20180001,
         "injury": {
             "fledgling": false,
@@ -62,20 +61,20 @@ Creates a new case.
             "openWound": false,
             "other": false,
             "paralyzedOrFlightless": false,
+            "strappedFeet": true,
             "wing": false
         },
-        "isCarrierPigeon": true,
         "isClosed": false,
-        "isWeddingPigeon": false,
         "latitude": 52.3744,
         "longitude": 9.73886,
         "media": [],
         "phone": "015237342956",
-        "priority": 5,
+        "priority": 1,
         "reporter": null,
         "rescuer": null,
         "timestamp": "1543397014",
-        "wasFoundDead": null
+        "wasFoundDead": null,
+        "wasNotFound": null
     }
     ```
 
@@ -83,6 +82,6 @@ Creates a new case.
   * Code: `400 BAD REQUEST`
     ```json
     {
-        "priority": "Must be between 1 and 5."
+        "priority": "Must be between 1 and 3."
     }
     ```
