@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer

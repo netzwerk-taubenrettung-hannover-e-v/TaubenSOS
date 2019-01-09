@@ -14,9 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
@@ -31,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
 
     // For navigation //
     private lateinit var mNavHostFragment: NavHostFragment
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // Fixing later map loading delay
         Thread {
@@ -72,8 +70,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
 
+        if(BootingActivity.getOwnerPermission() == Permission.GUEST)
+            mBinding.bottomNavigation.setSize(4)
 
-        binding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
+        mBinding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
                 FragmentMenuItem(R.id.newsFragment, getString(R.string.news), R.drawable.ic_today_white_24dp),
                 FragmentMenuItem(R.id.casesUserFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, onlyThatPermission = true),
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
@@ -90,13 +90,13 @@ class MainActivity : AppCompatActivity() {
 
         val navController = (nav_host as NavHostFragment).navController
         mNavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-        mBottomNavigator = BottomNavigator(this, mNavHostFragment.childFragmentManager, R.id.nav_host, binding.bottomNavigation)
+        mBottomNavigator = BottomNavigator(this, mNavHostFragment.childFragmentManager, R.id.nav_host, mBinding.bottomNavigation)
 
         navController.navigatorProvider.addNavigator(mBottomNavigator)
 
         navController.setGraph(R.navigation.main_navigation)
 
-        binding.bottomNavigation.setupWithNavController(navController)
+        mBinding.bottomNavigation.setupWithNavController(navController)
 
 
     }
