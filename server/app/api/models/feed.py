@@ -7,7 +7,7 @@ class Feed(db.Model):
 	__tablename__ = "feed"
 	feedID = db.Column(db.Integer, primary_key=True)
 	author = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
-	title = db.Column(db.String(50), nullable=False)
+	title = db.Column(db.String(128), nullable=False)
 	text = db.Column(db.String, nullable=False)
 	timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	eventStart = db.Column(db.DateTime, nullable=True)
@@ -50,7 +50,7 @@ class Feed(db.Model):
 class FeedSchema(ma.Schema):
 	feedID = ma.Integer(dump_only=True)
 	author = ma.String(required=True, validate=user.User.exists)
-	title = ma.String(required=True)
+	title = ma.String(required=True, validate=validate.Length(max=128))
 	text = ma.String(missing=None)
 	timestamp = ma.DateTime("rfc", missing=None)
 	eventStart = ma.DateTime("rfc", missing=None)

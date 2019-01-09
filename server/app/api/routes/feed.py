@@ -11,16 +11,16 @@ def read_all():
 	file: ../../docs/feed/read_all.yml
 	"""
 	if request.method == "GET":
-		if request.get_data():
-			data = request.get_json()
-			if data.get("lastUpdate") is not None:
-				news = Feed.get_newly_posted_news(convert_timestamp(int(data.get("lastUpdate"))))
-			else:
-				news = Feed.all()
+		data = request.args.get("lastUpdate")
+		if data is not None:
+			try:
+				lastUpdate = convert_timestamp(int(data))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			news = Feed.get_newly_posted_news(convert_timestamp(lastUpdate))
 		else:
 			news = Feed.all()
-		result = [make_json(Feed=u) for u in news]
-		return jsonify(result)
+		return feeds_schema.jsonify(news), 200
 
 @bp.route("/feed", methods=["POST"], strict_slashes=False)
 def create_news():
@@ -34,9 +34,9 @@ def create_news():
 			return jsonify(errors), 400
 		else:
 			feed.save()
-			return jsonify(make_json(Feed=feed)), 201
+			return feed_schema.jsonify(feed), 201
 
-@bp.route("/feed/<feedID>", methods=["PUT"], strict_slashes=False)
+@bp.route("/feed/<int:feedID>", methods=["PUT"], strict_slashes=False)
 def update_news(feedID):
 	"""
 	file: ../../docs/feed/update_news.yml
@@ -45,16 +45,15 @@ def update_news(feedID):
 		json = request.get_json()
 		feed = Feed.get(feedID)
 		if feed is None:
-			return jsonify({"message": "The news to be updated could not be found"}), 404
+			return jsonify(message="The news to be updated could not be found"), 404
 		errors = feed_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
 		json["timestamp"] = datetime.utcnow()
 		feed.update(**json)
-		result = make_json(Feed=feed)
-		return jsonify(result), 200
+		return feed_schema.jsonify(feed), 200
 
-@bp.route("/feed/<feedID>", methods=["DELETE"], strict_slashes=False)
+@bp.route("/feed/<int:feedID>", methods=["DELETE"], strict_slashes=False)
 def delete_news(feedID):
 	"""
 	file: ../../docs/feed/delete_news.yml
@@ -62,13 +61,9 @@ def delete_news(feedID):
 	if request.method == "DELETE":
 		feed = Feed.get(feedID)
 		if feed is None:
-			return jsonify({"message": "The feed to be deleted could not be found"}), 404
+			return jsonify(message="The feed to be deleted could not be found"), 404
 		feed.delete()
-		return jsonify({"message": "The feed has been deleted"}), 204
+		return "", 204 , {"Content-Type": "application/json"}
 
 def convert_timestamp(unix):
 	return utils.rfcformat(datetime.fromtimestamp(unix))
-
-def make_json(Feed):
-	result = feed_schema.dump(Feed).data
-	return result

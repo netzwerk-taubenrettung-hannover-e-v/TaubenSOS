@@ -12,14 +12,30 @@ def get_closed_cases():
 	file: ../../docs/stats/read_closed_cases.yml
 	"""
 	if request.method == "GET":
-		data = request.get_json()
-		if data.get("lastUpdate") is not None:
-			cases = Case.get_newly_closed_cases(convert_timestamp(int(data.get("lastUpdate"))))
+		untilTime = request.args.get("untilTime")
+		fromTime = request.args.get("fromTime")
+		if untilTime is not None and fromTime is not None:
+			try:
+				untilTime = convert_timestamp(int(untilTime))
+				fromTime = convert_timestamp(int(fromTime))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			cases = Case.get_closed_cases(fromTime=fromTime, untilTime=untilTime)
+		elif untilTime is not None:
+			try:
+				untilTime = convert_timestamp(int(untilTime))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			cases = Case.get_closed_cases(untilTime=untilTime)
+		elif fromTime is not None:
+			try:
+				fromTime = convert_timestamp(int(fromTime))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			cases = Case.get_closed_cases(fromTime=fromTime)
 		else:
-			cases = Case.get_all_closed_cases()
-		result = [make_json_case(case = c) for c in cases]
-		return jsonify(result)
-	
+			cases = Case.get_closed_cases()
+		return cases_schema.jsonify(cases), 200
 
 @bp.route("/stats/pigeonsSaved", methods=["GET"], strict_slashes=False)
 def read_stats_pigeons_saved():
@@ -50,7 +66,3 @@ def read_stats_pigeons_found_dead():
 
 def convert_timestamp(unix):
 	return utils.rfcformat(datetime.fromtimestamp(unix))
-
-def make_json_case(case):
-	result = case_schema.dump(case).data
-	return result

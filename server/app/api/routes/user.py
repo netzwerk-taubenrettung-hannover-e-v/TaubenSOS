@@ -11,8 +11,7 @@ def read_all():
 	"""
 	if request.method == "GET":
 		users = User.all()
-		result = [make_json(User=u) for u in users]
-		return jsonify(result)
+		return users_schema.jsonify(users), 200
 
 @bp.route("/user", methods=["POST"], strict_slashes=False)
 def create_user():
@@ -26,7 +25,7 @@ def create_user():
 			return jsonify(errors), 400
 		else:
 			user.save()
-			return jsonify(make_json(User=user)), 201
+			return user_schema.jsonify(user), 201
 
 @bp.route("/user/<username>", methods=["DELETE"], strict_slashes=False)
 def delete_user(username):
@@ -36,9 +35,9 @@ def delete_user(username):
 	if request.method == "DELETE":
 		user = User.get(username)
 		if user is None:
-			return jsonify({"message": "The user to be deleted could not be found"}), 404
+			return jsonify(message="The user to be deleted could not be found"), 404
 		user.delete()
-		return jsonify({"message": "The user has been deleted"}), 204
+		return "", 204, {"Content-Type": "application/json"}
 
 @bp.route("/user/<username>", methods=["PUT"], strict_slashes=False)
 def update_user(username):
@@ -49,12 +48,12 @@ def update_user(username):
 		json = request.get_json()
 		user = User.get(username)
 		if user is None:
-			return jsonify({"message": "The user to be updated could not be found"}), 404
+			return jsonify(message="The user to be updated could not be found"), 404
 		errors = user_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
 		user.update(**json)
-		return jsonify(make_json(User=user)), 200
+		return user_schema.jsonify(user), 200
 
 @bp.route("user/<username>", methods=["GET"], strict_slashes=False)
 def read_user(username):
@@ -64,10 +63,5 @@ def read_user(username):
 	if request.method == "GET":
 		user = User.get(username)
 		if user is None:
-			return jsonify({"message": "The user to be shown could not be found"}), 404
-		result = make_json(User=user)
-		return jsonify(result)
-
-def make_json(User):
-	result = user_schema.dump(User).data
-	return result
+			return jsonify(message="The user to be shown could not be found"), 404
+		return user_schema.jsonify(user), 200

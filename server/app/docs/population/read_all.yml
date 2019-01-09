@@ -3,12 +3,12 @@ Retrieve all existing markers or only retrieve newly updated ones
 tags:
   - populationMarker
 parameters:
-  - in: body
+  - in: query
     name: lastUpdate
-    description: request all markers that have been updated since this (unix)time. When you leave out this parameter all markers will be returned
+    description: "request all markers that have been updated since this (unix)time. Usage: /api/population?lastUpdate=1234566789. When you leave out this parameter all markers will be returned"
     required: false
-    type: string
-    format: date-time
+    type: integer
+    format: int32
 responses:
   200:
     description: OK

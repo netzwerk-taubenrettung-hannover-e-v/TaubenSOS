@@ -3,12 +3,18 @@ Retrieve all closed cases or only retrieve newly closed ones
 tags:
   - stats
 parameters:
-  - in: body
-    name: lastUpdate
-    description: request all cases that have been opened since this (unix)time and are closed now. When you leave out this parameter you will get all closed cases.
+  - in: query
+    name: fromTime
+    description: "request all cases that have been opened since this (unix)time and are closed now. Usage: /api/population?fromTime=1234566789. When you leave out this parameter you will get all closed cases."
     required: false
-    type: string
-    format: date-time
+    type: integer
+    format: int32
+  - in: query
+    name: untilTime
+    description: "request all cases that have been opened until this (unix)time and are closed now. Usage: /api/population?untilTime=123456789. When you leave out the parameter all closed cases until the current time will be returned. You can also specify both parameters. Usage: /api/population?fromTime=123456678&untilTime=12345678"
+    required: false
+    type: integer
+    format: int32
 responses:
   200:
     description: OK

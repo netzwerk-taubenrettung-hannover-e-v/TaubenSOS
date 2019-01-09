@@ -64,13 +64,16 @@ class Case(db.Model):
         return Case.query.get(caseID)
 
     @staticmethod
-    def get_newly_closed_cases(lastUpdate):
-        return db.session.query(Case).filter(db.and_(Case.timestamp > lastUpdate, Case.isClosed == True))
+    def get_closed_cases(fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp > fromTime, Case.timestamp < untilTime, Case.isClosed == True))
+        elif fromTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp > fromTime, Case.isClosed == True))
+        elif untilTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp < untilTime, Case.isClosed == True))
+        else:
+            return db.session.query(Case).filter(Case.isClosed == True)
 
-    @staticmethod
-    def get_all_closed_cases():
-        return db.session.query(Case).filter(Case.isClosed == True)
-    
     @staticmethod
     def get_pigeons_saved_stat(startTime, untilTime):
         return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == False)).count()
