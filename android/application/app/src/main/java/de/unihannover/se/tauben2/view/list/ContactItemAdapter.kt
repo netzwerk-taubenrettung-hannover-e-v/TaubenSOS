@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.R.id.infoButtonContact
 import kotlinx.android.synthetic.main.card_contact.view.*
 import kotlinx.android.synthetic.main.card_contact2.view.*
 
@@ -71,12 +70,11 @@ class ContactItemAdapter(private val context: Context,
         contactButton.text = curItem.buttonLabel
         contactButton.icon = context.getDrawable(curItem.buttonIconId)
         contactButton.id = curItem.buttonId
-        if(isInfoButton){
+        if(isInfoButton) {
             val contactInfoButton = holder.infoButton
             addInfoOnClickListener(context, contactInfoButton)
-        }else{
-            addOnclickListeners(context, contactButton)
         }
+        addOnclickListeners(context, contactButton)
 
         return cardView
     }
@@ -99,7 +97,7 @@ class ContactItemAdapter(private val context: Context,
             val alertDialogBuilder = AlertDialog.Builder(
                     context)
 
-            alertDialogBuilder.setTitle("Anruf")
+            alertDialogBuilder.setTitle(R.string.call)
 
             alertDialogBuilder
                     .setMessage(R.string.contact_info)

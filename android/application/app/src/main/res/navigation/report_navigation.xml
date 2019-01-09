@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/fragment_report_media">
+
+    <custom_fragment
+        android:id="@+id/fragment_report_media"
+        android:name="de.unihannover.se.tauben2.view.report.MediaReportFragment"
+        android:label="Insert Media">
+        <action
+            android:id="@+id/action_fragment_report_media_to_fragment_report_location"
+            app:destination="@id/fragment_report_location" />
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/fragment_report_location"
+        android:name="de.unihannover.se.tauben2.view.report.LocationReportFragment"
+        android:label="Set Your Location">
+        <action
+            android:id="@+id/action_fragment_report_location_to_fragment_report_injuries"
+            app:destination="@id/fragment_report_injuries" />
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/fragment_report_injuries"
+        android:name="de.unihannover.se.tauben2.view.report.InjuriesReportFragment"
+        android:label="Specify Injuries">
+        <action
+            android:id="@+id/action_fragment_report_injuries_to_fragment_report_priority"
+            app:destination="@id/fragment_report_priority" />
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/fragment_report_priority"
+        android:name="de.unihannover.se.tauben2.view.report.PriorityReportFragment"
+        android:label="Estimate the Priority">
+        <action
+            android:id="@+id/action_fragment_report_priority_to_fragment_report_breed"
+            app:destination="@id/fragment_report_breed" />
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/fragment_report_breed"
+        android:name="de.unihannover.se.tauben2.view.report.BreedReportFragment"
+        android:label="Identify the Breed">
+        <action
+            android:id="@+id/action_fragment_report_breed_to_fragment_report_comment"
+            app:destination="@id/fragment_report_comment" />
+    </custom_fragment>
+    <custom_fragment
+        android:id="@+id/fragment_report_comment"
+        android:name="de.unihannover.se.tauben2.view.report.CommentReportFragment"
+        android:label="Share Additional Informations">
+    </custom_fragment>
+
+</navigation>

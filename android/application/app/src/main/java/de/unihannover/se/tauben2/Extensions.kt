@@ -2,17 +2,20 @@ package de.unihannover.se.tauben2
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.text.format.DateFormat
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.viewmodel.ViewModelFactory
@@ -58,6 +61,10 @@ fun <X> LiveDataRes<List<X>>.filter(func: (X) -> Boolean): LiveDataRes<List<X>> 
     result
 }
 
+fun <T1: Any, T2: Any, R: Any> multiLet(p1: T1?, p2: T2?, block: (T1, T2)->R?): R? {
+    return if (p1 != null && p2 != null) block(p1, p2) else null
+}
+
 fun setSnackBar(root: View, snackTitle: String, anchorView: View? = null) {
     val snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_SHORT)
     if(anchorView == null)
@@ -87,6 +94,7 @@ private fun getLongDatePattern() = (DateFormat.getLongDateFormat(App.context) as
 private fun getTimePattern() = (DateFormat.getTimeFormat(App.context) as SimpleDateFormat).toLocalizedPattern()
 
 fun getDateString(time: Long) = SimpleDateFormat(getDatePattern(), Locale.getDefault()).format(time)
+fun getLongDateString(time: Long) = SimpleDateFormat(getLongDatePattern(), Locale.getDefault()).format(time)
 fun getDateTimeString(time: Long) = SimpleDateFormat(getDatePattern() + ", " + getTimePattern(), Locale.getDefault()).format(time)
 
 fun getLongDurationString(time: Long): String {
@@ -115,5 +123,13 @@ fun getLowSpaceDurationString(time: Long): String {
         return App.context.resources.getQuantityString(R.plurals.hour, hours, hours)
     val days   = (hours / 24.0).toInt()
     return App.context.resources.getQuantityString(R.plurals.day, days, days)
+}
 
+fun getDpValue(dpValue: Int): Int {
+    val d = App.context.resources.displayMetrics.density
+    return (dpValue * d).toInt()
+}
+
+fun MaterialButton.setRightIcon(end: Drawable?) {
+    TextViewCompat.setCompoundDrawablesRelative(this, null, null, end, null)
 }

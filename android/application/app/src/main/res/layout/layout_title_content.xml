@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="title" type="java.lang.String" />
+        <variable name="content" type="java.lang.String" />
+    </data>
+
+    <merge>
+        <TextView android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:text="@{title}"
+            />
+
+        <TextView android:id="@+id/text_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:text="@{content}"
+            />
+    </merge>
+</layout>

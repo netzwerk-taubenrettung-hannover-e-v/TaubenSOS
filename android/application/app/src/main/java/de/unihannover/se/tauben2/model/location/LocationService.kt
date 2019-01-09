@@ -66,7 +66,8 @@ class LocationService(context: Context): LocationCallback() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocProvider.lastLocation.addOnSuccessListener {
-                listener.onLocationChanged(it)
+                if(it != null)
+                    listener.onLocationChanged(it)
             }
         }
     }

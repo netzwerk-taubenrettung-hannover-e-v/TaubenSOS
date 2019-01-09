@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="de.unihannover.se.tauben2.ExtensionsKt" />
+        <variable name="c" type="de.unihannover.se.tauben2.model.database.entity.Case" />
+        <variable name="currentUser" type="de.unihannover.se.tauben2.model.database.entity.User" />
+    </data>
+
+
+    <FrameLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/layout_coordinator"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/btn_state_prev"
+                >
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    >
+
+                    <LinearLayout android:id="@+id/layout_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        >
+
+                        <LinearLayout android:id="@+id/layout_media"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp"
+                            >
+                            <de.unihannover.se.tauben2.view.SquareImageView
+                                android:id="@+id/image_media_0"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:adjustViewBounds="true"
+                                android:layout_weight="1"
+                                android:background="@color/White"
+                                android:scaleType="centerCrop"
+                                />
+                            <de.unihannover.se.tauben2.view.SquareImageView
+                                android:id="@+id/image_media_1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:adjustViewBounds="true"
+                                android:layout_weight="1"
+                                android:background="@color/White"
+                                android:scaleType="centerCrop"
+                                />
+                            <de.unihannover.se.tauben2.view.SquareImageView
+                                android:id="@+id/image_media_2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:layout_weight="1"
+                                android:background="@color/White"
+                                android:scaleType="centerCrop"
+                                />
+                        </LinearLayout>
+
+                        <TextView android:id="@+id/text_title_injuries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:text="@string/injuries"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_injuries"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            />
+
+                        <include layout="@layout/layout_title_content"
+                            app:title="@{@string/additional_information}"
+                            app:content="@{c.additionalInfo}"
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/colorLightGray"
+                            android:layout_margin="8dp"/>
+
+                        <include layout="@layout/layout_title_content"
+                            app:title="@{@string/in_progress_by}"
+                            app:content="@{c.rescuer ?? @string/no_rescuer}"
+                            />
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    >
+                    <!--app:layout_behavior="de.unihannover.se.tauben2.view.MapAppBarBehavior"-->
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        app:layout_scrollFlags="scroll"
+                        >
+
+                        <ImageView
+                            android:id="@+id/image_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:foreground="@{c.statusColorTransparent, default=@color/colorPrimaryDarkTransparent}"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="16dp"
+                            android:gravity="bottom"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:id="@+id/text_subtitle_top"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                android:textColor="@color/White"
+                                android:text="@{@string/case_id(c.caseID) + `, `+ @string/priority(c.priority), default=20180000}" />
+
+                            <TextView
+                                android:id="@+id/text_title"
+                                style="@style/TextAppearance.MaterialComponents.Headline4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:textColor="@color/White"
+                                android:text="@{c.pigeonBreed.title, default=`Carrier Pigeon`}"
+                                />
+
+                            <TextView
+                                android:id="@+id/text_subtitle_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                android:textColor="@color/White"
+                                android:text="@{@string/before(ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000)) + ` (` + ExtensionsKt.getDateTimeString(c.timestamp * 1000) + `)`, default=`01.01.1970`}"
+                                />
+                        </LinearLayout>
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                </com.google.android.material.appbar.AppBarLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <!--<com.google.android.material.button.MaterialButton-->
+                <!--android:id="@+id/btn_state_take"-->
+                <!--style="@style/Widget.MaterialComponents.Button.TextButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:text="@string/take_over"-->
+                <!--android:textColor="@color/colorPrimaryDark"-->
+                <!--app:layout_constraintEnd_toStartOf="@id/btn_state_prev"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--android:visibility="@{c.rescuer == null ? View.GONE : (c.isClosed() ? View.GONE : View.VISIBLE)}"-->
+                <!--/>-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_state_prev"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{c.isClosed() ? @string/reopen_case : @string/take_over}"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toStartOf="@id/btn_state_next"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="@{c.rescuer == null || (c.rescuer.equals(currentUser.username) &amp;&amp; !c.isClosed()) ? View.INVISIBLE : View.VISIBLE}"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_state_next"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{c.rescuer == null ? @string/take_case : @string/finish_case}"
+                android:visibility="@{c.isClosed() ? View.GONE : View.VISIBLE}"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/image_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+    </FrameLayout>
+</layout>

@@ -2,10 +2,19 @@ package de.unihannover.se.tauben2.viewmodel
 
 import android.content.Context
 import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.model.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.Case
 
-class CaseViewModel(context: Context): BaseViewModel(context) {
+class CaseViewModel(context: Context) : BaseViewModel(context) {
+    val cases: LiveDataRes<List<Case>> = repository.getCases(false)
 
-    val cases: LiveDataRes<List<Case>> = repository.getCases()
-    fun sendCase(case: Case) = repository.sendCase(case)
+    fun getCases(loadClosed: Boolean = false): LiveDataRes<List<Case>> = repository.getCases(loadClosed)
+
+    fun getCase(caseId: Int) = repository.getCase(caseId)
+
+    fun sendCase(case: Case, pictures: List<ByteArray>) = repository.sendCase(case, pictures)
+
+    fun deleteCase(case: Case) = repository.deleteCase(case)
+
+    fun updateCase(case: Case, mediaItems: List<ByteArray>) = repository.updateCase(case.apply { media = listOf() }, mediaItems)
+
 }

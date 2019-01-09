@@ -8,11 +8,12 @@ import android.view.Menu
 import android.view.View
 import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.model.database.Permission
 import java.util.*
 
-class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): BottomNavigationView(context, attrs) {
+class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int): BottomNavigationView(context, attrs, defStyleAttr) {
+
 
     private var mRootView: View = View.inflate(context, R.layout.dynamic_bottom_navigation_view, this)
 
@@ -22,14 +23,16 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 
     private var menuSize: Int = menu.size()
 
-    constructor(context: Context): this(context, null)
+    constructor(context: Context): this(context, null, 0)
+
+    constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
 
     init {
         if(attrs != null) {
 
             val tarr = context.obtainStyledAttributes(attrs, R.styleable.DynamicBottomNavigationView)
 
-            mSize = tarr.getInteger(R.styleable.DynamicBottomNavigationView_size, 5)
+            setSize(tarr.getInteger(R.styleable.DynamicBottomNavigationView_size, mSize))
 
             tarr.recycle()
         }
@@ -54,16 +57,16 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
 //        }
     }
 
-    fun setMenuItems(vararg items: FragmentMenuItem) {
+    fun setMenuItems(permission: Permission, vararg items: FragmentMenuItem) {
         menu.clear()
-        val permissibleItems = items.filter { it.hasPermission(App.CURRENT_PERMISSION) }
+        val permissibleItems = items.filter { it.hasPermission(permission) }
 
         permissibleItems.slice(0 until mSize-1).forEach {
-            if(it.hasPermission(App.CURRENT_PERMISSION)){
+            if(it.hasPermission(permission)){
                 addMenuItem(item = it)
             }
         }
-        if(permissibleItems.size > mSize) {
+        if(permissibleItems.size > mSize-1) {
             createOverflowMenu(permissibleItems.slice(mSize-1 until permissibleItems.size))
         }
 //        setOnNavigationItemSelectedListener {
@@ -114,4 +117,10 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?): Botto
     }
 
     fun hasOverflowMenu() = menuSize > mSize
+
+    fun getSize() = mSize
+
+    fun setSize(size: Int) {
+        mSize = size
+    }
 }

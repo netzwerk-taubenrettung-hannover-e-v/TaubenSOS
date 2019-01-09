@@ -19,7 +19,7 @@ class BottomNavigator(
 
     private val mBackStack: MutableList<Destination> = mutableListOf()
 
-    private val mToRemove = listOf(R.id.casesInfoFragment)
+    private val mToRemove = listOf(R.id.casesInfoFragment, R.id.counterInfoFragment, R.id.editNewsFragment)
 
 //    private val mActionsList = listOf(R.id.action_report00Fragment_to_report01Fragment,
 //            R.id.action_report01Fragment_to_report02Fragment,
@@ -30,7 +30,11 @@ class BottomNavigator(
     override fun navigate(destination: Destination, args: Bundle?,
                           navOptions: NavOptions?, navigatorExtras: Navigator.Extras?): NavDestination? {
 
-        replaceFragment(destination, args =  args)
+        val removeOldFragment= if(mBackStack.isNotEmpty())
+            mToRemove.contains(mBackStack.last().id)
+        else
+            false
+        replaceFragment(destination, removeOldFragment, args)
 
         return destination
 
@@ -40,8 +44,7 @@ class BottomNavigator(
         if(mBackStack.size == 1)
             activity.finish()
         else {
-
-            val removed = mBackStack.removeAt(mBackStack.size-1)
+            val removed = mBackStack.removeAt(mBackStack.lastIndex)
             val destination = mBackStack[mBackStack.size-1]
             replaceFragment(destination, mToRemove.contains(removed.id))
             bottomNavigationView.setSelectedItem(destination.id)
@@ -84,7 +87,7 @@ class BottomNavigator(
         transaction.commit()
     }
 
-    fun popFromBackStack(amount: Int) {
+    fun popFromBackStack(amount: Int = 1) {
         if(mBackStack.size < amount)
             return
         val transaction = manager.beginTransaction()

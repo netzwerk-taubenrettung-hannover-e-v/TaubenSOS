@@ -2,13 +2,18 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <import type="de.unihannover.se.tauben2.view.main.BootingActivity" />
+        <import type="de.unihannover.se.tauben2.model.database.Permission" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MainActivity" >
+        tools:context=".view.main.MainActivity" >
 
         <include
             android:id="@+id/toolbar"
@@ -23,7 +28,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored" />
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            android:fitsSystemWindows="true"
+            />
 
         <fragment
             android:layout_width="0dp"
@@ -36,28 +43,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
         />
-
-    <!--<fragment-->
-            <!--android:id="@+id/main_fragment"-->
-            <!--android:name="de.unihannover.se.tauben2.view.NewsFragment"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--app:layout_constraintBottom_toTopOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/toolbar" />-->
-
-        <!--<de.unihannover.se.tauben2.view.main_navigation.DynamicBottomNavigationView-->
-            <!--android:id="@+id/bottom_navigation"-->
-            <!--android:background="@drawable/gradient"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--style="@style/Widget.MaterialComponents.BottomNavigationView.Colored" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

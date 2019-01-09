@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#80d5e2</color>
+    <color name="colorPrimaryTransparent">#8080d5e2</color>
     <color name="colorPrimaryDark">#0a7ba5</color>
+    <color name="colorPrimaryDarkTransparent">#800a7ba5</color>
     <color name="colorAccent">#1e39a5</color>
 
+    <color name="colorLightGray">#eeeeee</color>
     <color name="White">#FFFFFF</color>
-    <color name="Gray">#CACACA</color>
+    <color name="Gray">#cacaca</color>
     <color name="errorColor">#b00020</color>
 
-    <color name="Green">#00BF20</color>
-    <color name="Yellow">#FFE600</color>
-    <color name="Red">#EC1C24</color>
+    <color name="colorGreen">#00c853</color>
+    <color name="colorGreenTransparent">#8000c853</color>
+    <color name="colorYellow">#ffea00</color>
+    <color name="colorYellowTransparent">#80ffea00</color>
+    <color name="colorRed">#d50000</color>
+    <color name="colorRedTransparent">#80d50000</color>
+    <color name="colorGray">#9e9e9e</color>
+    <color name="colorGrayTransparent">#809e9e9e</color>
 
 </resources>

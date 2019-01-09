@@ -31,6 +31,11 @@ androidExtensions {
     experimental = true
 }
 
+// Chart Library
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     ext.android_support_version = '27.1.1'
 
@@ -76,5 +81,11 @@ dependencies {
 
     // Google Maps Utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
+    // Chart Library
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+
+    //Graph library
+    implementation 'com.jjoe64:graphview:4.2.2'
 
 }
