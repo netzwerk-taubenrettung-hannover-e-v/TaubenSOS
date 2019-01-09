@@ -19,10 +19,14 @@ import com.google.android.material.appbar.AppBarLayout
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.database.Injury
+import de.unihannover.se.tauben2.model.database.PigeonBreed
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_statistic.*
 import kotlinx.android.synthetic.main.fragment_statistic.view.*
 import kotlinx.android.synthetic.main.statistic_data.view.*
@@ -32,7 +36,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
-class StatisticFragment : Fragment(), Observer<List<Case>> {
+class StatisticFragment : Fragment() {
 
     // is dis bad?
     private lateinit var fragmentView: View
@@ -43,9 +47,13 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
     private lateinit var fromListener: DatePickerDialog.OnDateSetListener
     private lateinit var toListener: DatePickerDialog.OnDateSetListener
 
-    private lateinit var mCurrentObserver: LoadingObserver<List<Case>>
-    private var mCurrentObservedData: LiveDataRes<List<Case>>? = null
+    private var populationData: List<PopulationMarker>? = null
+    private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationMarker>>? = null
+    private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PopulationMarker>>
 
+    private var reportData: List<Case>? = null
+    private var mCurrentObservedReportData: LiveDataRes<List<Case>>? = null
+    private lateinit var mCurrentReportObserver: LoadingObserver<List<Case>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,7 +99,15 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         }
         refreshCharts()
 
-        mCurrentObserver = LoadingObserver(this)
+        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer {
+            populationData = it
+            refreshCharts()
+        })
+        mCurrentReportObserver = LoadingObserver(successObserver = Observer {
+            reportData = it
+            refreshCharts()
+        })
+
         loadCases()
 
         return fragmentView
@@ -102,20 +118,17 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         refreshButtonLabel()
     }
 
-    override fun onChanged(cases: List<Case>?) {
-        Log.d("KEK", cases.toString())
-    }
-
     private fun loadCases() {
 
+        getViewModel(PopulationMarkerViewModel::class.java)?.let { viewModel ->
+            mCurrentObservedPopulationData?.removeObserver(mCurrentPopulationObserver)
+            mCurrentObservedPopulationData = viewModel.populationMarkers
+            mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
+        }
         getViewModel(CaseViewModel::class.java)?.let { viewModel ->
-
-            // Remove old Observers
-            mCurrentObservedData?.removeObserver(mCurrentObserver)
-
-            mCurrentObservedData = viewModel.cases
-
-            mCurrentObservedData?.observe(this, mCurrentObserver)
+            mCurrentObservedReportData?.removeObserver(mCurrentReportObserver)
+            mCurrentObservedReportData = viewModel.cases
+            mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
         }
     }
 
@@ -144,8 +157,8 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
     // CHARTS
 
     private fun refreshCharts() {
-        createLineChart(fragmentView.population_linechart, getExampleLineChartData())
-        createLineChart(fragmentView.reported_linechart, getExampleLineChartData())
+        createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
+        createLineChart(fragmentView.reported_linechart, getReportLineChartData())
         createPieChart(fragmentView.injury_piechart, getInjuryData())
         createPieChart(fragmentView.breed_piechart, getBreedData())
     }
@@ -203,7 +216,7 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         chart.invalidate()
     }
 
-    // generate example data
+    // GET CHART DATA
 
     private fun getExampleLineChartData(): ArrayList<Entry> {
 
@@ -226,6 +239,87 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
         }
 
         return testData
+    }
+
+    private fun getPopulationLineChartData(): ArrayList<Entry> {
+
+        var overall = 0
+        var countedDays = 0
+
+        val data = ArrayList<Entry>()
+        val currentDate = selectedDateFrom.clone() as Calendar
+
+        while (currentDate != selectedDateTo) {
+
+            var counter = 0
+
+            populationData?.forEach {
+                it.values.forEach {value ->
+
+                    val date = Calendar.getInstance().apply { timeInMillis = value.timestamp * 1000 }
+
+                    if (date.get(Calendar.DAY_OF_YEAR) == currentDate.get(Calendar.DAY_OF_YEAR) &&
+                            date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)) {
+                        counter += value.pigeonCount
+                    }
+                }
+            }
+
+            if (counter != 0) {
+                data.add(Entry((TimeUnit.MILLISECONDS.toDays(Math.abs(currentDate.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat(), counter.toFloat()))
+                overall += counter
+                countedDays++
+            }
+
+            currentDate.add(Calendar.DATE, 1)
+        }
+
+        var average = 0
+        if (countedDays > 0) average = overall/countedDays
+        fragmentView.population_total.text = "in average: $average doves"
+
+        return data
+    }
+
+    var breeds = listOf<PigeonBreed>()
+    var injuries = listOf<Injury?>()
+
+
+    private fun getReportLineChartData(): ArrayList<Entry> {
+
+        var overall = 0
+
+        val data = ArrayList<Entry>()
+        val currentDate = selectedDateFrom.clone() as Calendar
+
+        while (currentDate != selectedDateTo) {
+
+            var counter = 0
+
+            reportData?.forEach {
+
+                val date = Calendar.getInstance().apply { timeInMillis = it.timestamp * 1000 }
+                if (date.get(Calendar.DAY_OF_YEAR) == currentDate.get(Calendar.DAY_OF_YEAR) &&
+                        date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)) {
+                    counter++
+                }
+
+                breeds += it.getPigeonBreed()
+                injuries += it.injury
+            }
+
+            if (counter != 0) {
+                data.add(Entry((TimeUnit.MILLISECONDS.toDays(Math.abs(currentDate.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat(), counter.toFloat()))
+                overall += counter
+            }
+
+            currentDate.add(Calendar.DATE, 1)
+        }
+
+        val average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
+        fragmentView.reported_total.text = "in average: $average doves/day"
+
+        return data
     }
 
     private fun getInjuryData(): ArrayList<PieEntry> {
@@ -251,20 +345,33 @@ class StatisticFragment : Fragment(), Observer<List<Case>> {
 
     private fun getBreedData(): ArrayList<PieEntry> {
 
-        val testData = ArrayList<PieEntry>()
+        val data = ArrayList<PieEntry>()
 
-        val breed = arrayOf("Carrier",
-                "Common wood",
-                "Feral",
-                "Fancy",
-                "No specification")
+        var breedEntries = mutableListOf<PieEntry>()
 
-        for (i in 0 until 5) {
-            // testdata.add(AMOUNT, LABEL)
-            testData.add(PieEntry((Math.abs(Math.random() * 10)).toFloat(), breed[i]))
+        breeds.forEach {pb ->
+
+
+            var entry : PieEntry? = null
+            breedEntries.forEach {
+                if (pb.getTitle() == it.label) {
+                    entry = it
+                }
+            }
+            entry?.let {
+                val value = it.value + 1
+                breedEntries.remove(it)
+                breedEntries.add(PieEntry(value, pb.getTitle()))
+            } ?: run {
+                breedEntries.add(PieEntry(1F, pb.getTitle()))
+            }
         }
 
-        return testData
+        breedEntries.forEach {
+            data.add(it)
+        }
+
+        return data
     }
 
 }
