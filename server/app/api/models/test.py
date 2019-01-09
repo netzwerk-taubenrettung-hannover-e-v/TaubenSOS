@@ -1,4 +1,4 @@
-from api import db
+from api import db, ma
 
 class Test(db.Model):
     __tablename__ = "test"
@@ -20,6 +20,17 @@ class Test(db.Model):
         return "<Test: {}>".format(self.string)
 
     @staticmethod
-    def get_all():
+    def all():
         return Test.query.all()
 
+    @staticmethod
+    def get(number):
+        return Test.query.get(number)
+
+class TestSchema(ma.ModelSchema):
+    class Meta:
+        model = Test
+        sqla_session = db.session
+
+test_schema = TestSchema()
+tests_schema = TestSchema(many=True)

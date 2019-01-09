@@ -1,0 +1,18 @@
+Create a new case
+---
+tags:
+  - case
+parameters:
+  - in: body
+    name: body
+    description: The case to be created
+    required: true
+    schema:
+      $ref: '#/definitions/Case'
+responses:
+  201:
+    description: A new case has been successfully created
+    schema:
+      $ref: "#/definitions/Case"
+  400:
+    description: There was an error with your request

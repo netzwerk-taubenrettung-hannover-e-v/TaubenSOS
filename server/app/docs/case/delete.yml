@@ -1,0 +1,16 @@
+Delete an existing case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case to be deleted
+    required: true
+    type: integer
+    format: int64
+responses:
+  204:
+    description: The case has been successfully deleted
+  404:
+    description: The case to be deleted could not be found

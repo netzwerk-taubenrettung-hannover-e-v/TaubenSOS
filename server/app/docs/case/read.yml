@@ -1,0 +1,18 @@
+Find case by ID
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case to be retrieved
+    required: true
+    type: integer
+    format: int64
+responses:
+  200:
+    description: OK
+    schema:
+      $ref: "#/definitions/Case"
+  404:
+    description: The case to be shown could not be found
