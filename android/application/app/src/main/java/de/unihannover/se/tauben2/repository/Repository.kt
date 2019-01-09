@@ -46,7 +46,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     private inline fun <reified T> getItemsToDelete(newItems: Collection<T>, oldItems: Collection<T>) = oldItems.minus(newItems).toTypedArray()
 
     // TODO Maybe insert and delete in one query
-    fun getCases(loadClosed: Boolean = false) = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
+    fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
             database.caseDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
             Case.setLastAllUpdatedToNow()
@@ -59,21 +59,30 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         override fun loadFromDb() = database.caseDao().getCases()
 
         override fun createCall(): LiveDataRes<List<Case>> {
-            val firstStart = sp.getBoolean("FIRST_START", true)
-            if (firstStart && loadClosed) {
-                sp.edit().putBoolean("FIRST_START", false).apply()
-                return service.getStats(getToken(), 0)
-            }
-            if (loadClosed) {
-                val c = Calendar.getInstance()
-                c.add(Calendar.DATE, -1)
-
-                return service.getStats(getToken(), c.timeInMillis / 1000)
-            }
             return service.getCases(getToken())
         }
 
     }.getAsLiveData()
+
+    fun loadCasesSince(since: Long) = object : AsyncDataRequest<List<Case>, Long>(appExecutors) {
+        override fun fetchUpdatedData(resultData: List<Case>): LiveDataRes<List<Case>> {
+            throw Exception("re-fetching disabled don't force it")
+        }
+
+        override fun saveUpdatedData(updatedData: List<Case>) {
+            database.caseDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: Long): LiveDataRes<List<Case>> {
+            /*val firstStart = sp.getBoolean("FIRST_START", true)
+            if (firstStart) {
+                sp.edit().putBoolean("FIRST_START", false).apply()
+                return service.getStats(getToken(), 0)
+            }*/
+            return service.getStats(getToken(), since)
+        }
+
+    }.send(since)
 
     fun getCase(id: Int) = object : NetworkBoundResource<Case, Case>(appExecutors) {
         override fun saveCallResult(item: Case) {
