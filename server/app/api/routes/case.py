@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-import boto3, uuid, os, filetype, tempfile, cv2
+import boto3, uuid, os, filetype, tempfile, cv2, threading
 
 from api.models.case import Case, case_schema, cases_schema
 from api.models.injury import Injury, injury_schema
@@ -38,7 +38,7 @@ def read_case(caseID):
 	"""
 	case = Case.get(caseID)
 	if case is None:
-		return jsonify({"message": "The case to be shown could not be found"}), 404
+		return jsonify(message="The case to be shown could not be found"), 404
 	return case_schema.jsonify(case), 200
 
 @bp.route("/case/<int:caseID>", methods=["PUT"], strict_slashes=False)
@@ -48,7 +48,7 @@ def update_case(caseID):
 	"""
 	case = Case.get(caseID)
 	if case is None:
-		return jsonify({"message": "The case to be updated could not be found"}), 404
+		return jsonify(message="The case to be updated could not be found"), 404
 	json = request.get_json()
 	errors = case_schema.validate(json, partial=True)
 	if errors:
@@ -63,7 +63,7 @@ def delete_case(caseID):
 	"""
 	case = Case.get(caseID)
 	if case is None:
-		return jsonify({"message": "The case to be deleted could not be found"}), 404
+		return jsonify(message="The case to be deleted could not be found"), 404
 	for medium in case.media:
 		s3.delete_object(Bucket=media_bucket_name, Key=medium.uri)
 		if medium.thumbnail is not None:
@@ -100,10 +100,10 @@ def add_medium_to_case(caseID):
 	elif filetype.video(data) is not None:
 		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
 		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
-		s3.put_object(Body=generate_thumbnail_for_video(data), Bucket=media_bucket_name, Key=medium.thumbnail)
+		threading.Thread(target=generate_thumbnail_for_video, args=(data, medium.thumbnail)).start()
 	else:
 		return jsonify(message="Media format not supported"), 415
-	s3.put_object(Body=data, Bucket=media_bucket_name, Key=medium.uri)
+	threading.Thread(target=s3.put_object, kwargs=dict(Body=data, Bucket=media_bucket_name, Key=medium.uri)).start()
 	medium.save()
 	return medium_schema.jsonify(medium), 200
 
@@ -128,14 +128,14 @@ def update_medium_for_case(caseID, mediaID):
 	elif filetype.video(data) is not None:
 		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
 		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
-		s3.put_object(Body=generate_thumbnail_for_video(data), Bucket=media_bucket_name, Key=medium.thumbnail)
+		threading.Thread(target=generate_thumbnail_for_video, args=(data, medium.thumbnail)).start()
 	else:
 		return jsonify(message="Media format not supported"), 415
 	medium.mimeType = filetype.guess_mime(data)
 	s3.delete_object(Bucket=media_bucket_name, Key=old_uri)
 	if old_thumbnail is not None:
 		s3.delete_object(Bucket=media_bucket_name, Key=old_thumbnail)
-	s3.put_object(Body=data, Bucket=media_bucket_name, Key=medium.uri)
+	threading.Thread(target=s3.put_object, kwargs=dict(Body=data, Bucket=media_bucket_name, Key=medium.uri)).start()
 	medium.update()
 	return medium_schema.jsonify(medium), 200
 
@@ -175,11 +175,11 @@ def get_thumbnail_for_video(caseID, mediaID):
 		return jsonify(message="The medium you referred to is not a video and thus does not have a thumbnail associated with it"), 404
 	return s3.get_object(Bucket=media_bucket_name, Key=medium.thumbnail).get("Body").read(), 200, {"Content-Type": "image/png"}
 
-def generate_thumbnail_for_video(video):
+def generate_thumbnail_for_video(video, uri):
 	with tempfile.NamedTemporaryFile() as fp:
 		fp.write(video)
 		vcap = cv2.VideoCapture(fp.name)
 		ret, img = vcap.read()
 		ret, buf = cv2.imencode(".png", img)
+		s3.put_object(Body=buf.tostring(), Bucket=media_bucket_name, Key=uri)
 		vcap.release()
-		return buf.tostring()
