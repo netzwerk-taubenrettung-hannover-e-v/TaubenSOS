@@ -22,6 +22,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.view.main.fragments.TextPageFragment
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
@@ -85,7 +86,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d("KEK", "KEK")
                 },
                 FragmentMenuItem(R.id.loginFragment, getString(R.string.login), R.drawable.ic_person_black_24dp, onlyThatPermission = true),
-                FragmentMenuItem(R.id.registerFragment, getString(R.string.register), R.drawable.ic_person_add_black_24dp, onlyThatPermission = true)
+                FragmentMenuItem(R.id.registerFragment, getString(R.string.register), R.drawable.ic_person_add_black_24dp, onlyThatPermission = true),
+                FragmentMenuItem(R.id.imprintFragment, getString(R.string.imprint_title), R.drawable.ic_building),
+                FragmentMenuItem(R.id.privacyFragment, getString(R.string.privacy_title), R.drawable.ic_security)
         )
 
         val navController = (nav_host as NavHostFragment).navController

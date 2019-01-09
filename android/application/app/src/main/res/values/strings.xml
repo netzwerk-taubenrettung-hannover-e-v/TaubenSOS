@@ -149,6 +149,9 @@
     <string name="date">Date:</string>
     <string name="enter_content">Enter your news content</string>
     <string name="enter_title">Enter the title</string>
+    <string name="imprint_title">Imprint</string>
+    <string name="imprint_content">Imprint needed</string>
+    <string name="privacy_title">Privacy</string>
 
 
 </resources>

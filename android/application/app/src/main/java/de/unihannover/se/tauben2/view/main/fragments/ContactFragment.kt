@@ -23,11 +23,6 @@ class ContactFragment : Fragment() {
             ContactItem("Visit our website", "Website",
                     R.drawable.ic_public_white_24dp, R.id.contact_button_website, null))
 
-
-    companion object : Singleton<ContactFragment>() {
-        override fun newInstance() = ContactFragment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
