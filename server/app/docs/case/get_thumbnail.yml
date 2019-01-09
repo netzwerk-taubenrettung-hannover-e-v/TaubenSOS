@@ -1,0 +1,27 @@
+Retrieve a video's thumbnail
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case the video is associated with
+    required: true
+    type: integer
+    format: int64
+  - in: path
+    name: mediaID
+    description: The ID of the video of which the thumbnail is to be retrieved
+    required: true
+    type: integer
+    format: int64
+responses:
+  200:
+    description: OK
+    schema:
+      type: string
+      format: binary
+  404:
+    description: |
+      - The medium to show the thumbnail for could not be found
+      - The medium you referred to is not a video and thus does not have a thumbnail associated with it

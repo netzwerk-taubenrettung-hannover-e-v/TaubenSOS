@@ -1,0 +1,18 @@
+Retrieve all existing markers or only retrieve newly updated ones
+---
+tags:
+  - populationMarker
+parameters:
+  - in: body
+    name: lastUpdate
+    description: request all markers that have been updated since this (unix)time. When you leave out this parameter all markers will be returned
+    required: false
+    type: string
+    format: date-time
+responses:
+  200:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/PopulationMarker"

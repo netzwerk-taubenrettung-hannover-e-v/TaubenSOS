@@ -1,0 +1,16 @@
+Delete an existing marker
+---
+tags:
+  - populationMarker
+parameters:
+  - in: path
+    name: populationMarkerID
+    description: The ID of the marker to be deleted
+    required: true
+    type: integer
+    format: int64
+responses:
+  204:
+    description: The marker has been successfully deleted
+  404:
+    description: The marker to be deleted could not be found

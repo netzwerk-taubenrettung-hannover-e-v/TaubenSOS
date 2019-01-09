@@ -1,0 +1,16 @@
+Delete existing news in the feed
+---
+tags:
+  - feed
+parameters:
+  - in: path
+    name: feedID
+    description: The ID of the news to be deleted
+    required: true
+    type: integer
+    format: int32
+responses:
+  204:
+    description: The news has been successfully deleted
+  404:
+    description: The news to be deleted could not be found

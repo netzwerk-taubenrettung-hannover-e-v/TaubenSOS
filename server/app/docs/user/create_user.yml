@@ -1,0 +1,18 @@
+Create a new user
+---
+tags:
+  - user
+parameters:
+  - in: body
+    name: body
+    description: The user to be created
+    required: true
+    schema:
+      $ref: '#/definitions/User'
+responses:
+  201:
+    description: A new user has been successfully created
+    schema:
+      $ref: "#/definitions/User"
+  400:
+    description: The user could not be created. Check your parameters.

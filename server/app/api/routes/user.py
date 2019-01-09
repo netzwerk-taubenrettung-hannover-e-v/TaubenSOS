@@ -1,42 +1,73 @@
-from flask import (Blueprint, request)
+from flask import (Blueprint, request, jsonify)
 
 from api.models.user import (User, user_schema, users_schema)
-import hashlib
 
 bp = Blueprint("user", __name__, url_prefix="/api")
 
 @bp.route("/user", methods=["GET"], strict_slashes=False)
-def read_users():
-    if request.method == "GET":
-        users = User.all()
-        return users_schema.jsonify(users)
+def read_all():
+	"""
+	file: ../../docs/user/read_all.yml
+	"""
+	if request.method == "GET":
+		users = User.all()
+		result = [make_json(User=u) for u in users]
+		return jsonify(result)
 
 @bp.route("/user", methods=["POST"], strict_slashes=False)
-def sign_up():
+def create_user():
+	"""
+	file: ../../docs/user/create_user.yml
+	"""
 	if request.method == "POST":
-		username = request.json["username"]
-		password = request.json["password"]
-		phone = request.json["phone"]
+		json = request.get_json()
+		user, errors = user_schema.load(json)
+		if errors:
+			return jsonify(errors), 400
+		else:
+			user.save()
+			return jsonify(make_json(User=user)), 201
 
-		passwordHashed = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-		user = User(username=username, password=passwordHashed, phone=phone, isAdmin=False, isActivated=False)
-		user.save()
-
-		return user_schema.jsonify(user), 201
-
-@bp.route("/user/<username>", methods=["GET", "PUT", "DELETE"], strict_slashes=False)
-def read_or_update_user(username):
-	if request.method == "GET":
-		user = User.get(username)
-		return user_schema.jsonify(user)
-	if request.method == "PUT":
-		user = User.get(username)
-		user.isAdmin = request.json["isAdmin"]
-		user.isActivated = request.json["isActivated"]
-		user.save()
-		return user_schema.jsonify(user), 200
+@bp.route("/user/<username>", methods=["DELETE"], strict_slashes=False)
+def delete_user(username):
+	"""
+	file: ../../docs/user/delete_user.yml
+	"""
 	if request.method == "DELETE":
 		user = User.get(username)
+		if user is None:
+			return jsonify({"message": "The user to be deleted could not be found"}), 404
 		user.delete()
-		return 200
+		return jsonify({"message": "The user has been deleted"}), 204
+
+@bp.route("/user/<username>", methods=["PUT"], strict_slashes=False)
+def update_user(username):
+	"""
+	file: ../../docs/user/update_user.yml
+	"""
+	if request.method == "PUT":
+		json = request.get_json()
+		user = User.get(username)
+		if user is None:
+			return jsonify({"message": "The user to be updated could not be found"}), 404
+		errors = user_schema.validate(json, partial=True)
+		if errors:
+			return jsonify(errors), 400
+		user.update(**json)
+		return jsonify(make_json(User=user)), 200
+
+@bp.route("user/<username>", methods=["GET"], strict_slashes=False)
+def read_user(username):
+	"""
+	file: ../../docs/user/read_user.yml
+	"""
+	if request.method == "GET":
+		user = User.get(username)
+		if user is None:
+			return jsonify({"message": "The user to be shown could not be found"}), 404
+		result = make_json(User=user)
+		return jsonify(result)
+
+def make_json(User):
+	result = user_schema.dump(User).data
+	return result

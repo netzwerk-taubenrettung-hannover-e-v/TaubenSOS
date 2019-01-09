@@ -1,0 +1,18 @@
+Retrieve information about the media associated with an existing case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case to retrieve the associated media for
+    required: true
+    type: integer
+    format: int64
+responses:
+  200:
+    description: OK
+    schema:
+      $ref: "#/definitions/Medium"
+  404:
+    description: The case you referred to could not be found

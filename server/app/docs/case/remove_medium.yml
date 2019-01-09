@@ -1,0 +1,22 @@
+Remove a medium from a case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case of which the specified medium is to be removed
+    required: true
+    type: integer
+    format: int64
+  - in: path
+    name: mediaID
+    description: The ID of the medium to be removed
+    required: true
+    type: integer
+    format: int64
+responses:
+  204:
+    description: The medium has been successfully deleted
+  404:
+    description: The medium to be removed could not be found

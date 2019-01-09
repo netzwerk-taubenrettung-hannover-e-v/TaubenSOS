@@ -1,0 +1,26 @@
+Update an existing news in the feed
+---
+tags:
+  - feed
+parameters:
+  - in: path
+    name: feedID
+    description: The ID of the news in the feed to be updated
+    required: true
+    type: integer
+    format: int32
+  - in: body
+    name: body
+    description: The updated feed object. When you leave out the timestamp it will be set to the current time.
+    required: true
+    schema:
+      $ref: "#/definitions/Feed"
+responses:
+  200:
+    description: The news in the feed has been successfully updated
+    schema:
+      $ref: "#/definitions/Feed"
+  400:
+    description: There was an error with your request
+  404:
+    description: The news to be updated could not be found

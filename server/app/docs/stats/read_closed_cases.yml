@@ -1,0 +1,18 @@
+Retrieve all closed cases or only retrieve newly closed ones
+---
+tags:
+  - stats
+parameters:
+  - in: body
+    name: lastUpdate
+    description: request all cases that have been opened since this (unix)time and are closed now. When you leave out this parameter you will get all closed cases.
+    required: false
+    type: string
+    format: date-time
+responses:
+  200:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/Case"

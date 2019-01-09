@@ -1,0 +1,18 @@
+Create a news in the feed
+---
+tags:
+  - feed
+parameters:
+  - in: body
+    name: body
+    description: The feed to be created
+    required: true
+    schema:
+      $ref: '#/definitions/Feed'
+responses:
+  201:
+    description: The news for the feed has been successfully created
+    schema:
+      $ref: "#/definitions/Feed"
+  400:
+    description: There was an error with your request

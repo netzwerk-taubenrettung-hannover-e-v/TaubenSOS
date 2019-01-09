@@ -1,4 +1,4 @@
-from api import db, ma
+from api import db, ma, spec
 from datetime import datetime
 from marshmallow import post_dump, pre_load, post_load, utils, validate
 
@@ -56,3 +56,5 @@ class PopulationValueSchema(ma.Schema):
 
 populationValue_schema = PopulationValueSchema()
 populationValues_schema = PopulationValueSchema(many=True)
+
+spec.definition("PopulationValue", schema=PopulationValueSchema)

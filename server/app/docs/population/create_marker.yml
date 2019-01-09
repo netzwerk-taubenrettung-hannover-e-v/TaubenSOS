@@ -1,0 +1,18 @@
+Create a new marker
+---
+tags:
+  - populationMarker
+parameters:
+  - in: body
+    name: body
+    description: The marker to be created
+    required: true
+    schema:
+      $ref: '#/definitions/PopulationMarker'
+responses:
+  201:
+    description: A new marker has been successfully created
+    schema:
+      $ref: "#/definitions/PopulationMarker"
+  400:
+    description: There was an error with your request

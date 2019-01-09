@@ -1,0 +1,17 @@
+Get an existing user
+---
+tags:
+  - user
+parameters:
+  - in: path
+    name: username
+    description: The name of the user to be read
+    required: true
+    type: string
+responses:
+  200:
+    description: The user has been successfully read
+    schema:
+      $ref: "#/definitions/User"
+  404:
+    description: The user to be read could not be found

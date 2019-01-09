@@ -1,0 +1,30 @@
+Add media to an exisiting case
+---
+tags:
+  - case
+parameters:
+  - in: path
+    name: caseID
+    description: The ID of the case to add media to
+    required: true
+    type: integer
+    format: int64
+  - in: body
+    name: body
+    description: The image or video to be added
+    required: true
+    type: string
+    format: binary
+responses:
+  200:
+    description: OK
+    schema:
+      $ref: "#/definitions/Medium"
+  400:
+    description: The body of your request appears to be empty
+  404:
+    description: The case to add media to could not be found
+  413:
+    description: The object to be added is too large
+  415:
+    description: Media format not supported
