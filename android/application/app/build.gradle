@@ -82,10 +82,14 @@ dependencies {
     // Google Maps Utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
+    // Google Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+
     // Chart Library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
-    //Graph library
+    // Graph Library
     implementation 'com.jjoe64:graphview:4.2.2'
-
 }
+
+apply plugin: 'com.google.gms.google-services'
