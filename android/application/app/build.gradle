@@ -84,6 +84,7 @@ dependencies {
 
     // Google Firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     // Chart Library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
