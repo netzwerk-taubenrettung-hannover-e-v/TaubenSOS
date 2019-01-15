@@ -64,25 +64,34 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun loadCasesSince(since: Long) = object : AsyncDataRequest<List<Case>, Long>(appExecutors) {
-        override fun fetchUpdatedData(resultData: List<Case>): LiveDataRes<List<Case>> {
-            throw Exception("re-fetching disabled don't force it")
+    fun getPopulationStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                           latSW: Double, lonSW: Double) = object :
+            NetworkBoundResource<List<PopulationStat>, List<PopulationStat>>(appExecutors) {
+        override fun saveCallResult(item: List<PopulationStat>) {
+            // set boundaries for database query
+            item.forEach {
+                it.latNE = latNE
+                it.lonNE = lonNE
+                it.latSW = latSW
+                it.lonSW = lonSW
+            }
+            database.populationStatDao().insertOrUpdate(item)
         }
 
-        override fun saveUpdatedData(updatedData: List<Case>) {
-            database.caseDao().insertOrUpdate(updatedData)
+        override fun shouldFetch(data: List<PopulationStat>?) = true
+
+
+        override fun loadFromDb(): LiveData<List<PopulationStat>> =
+                database.populationStatDao().getPopulationStats(fromTime, untilTime, latNE, lonNE,
+                        latSW, lonSW)
+
+
+        override fun createCall(): LiveDataRes<List<PopulationStat>> {
+            return service.getPopulationStats(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
+                    lonSW)
         }
 
-        override fun createCall(requestData: Long): LiveDataRes<List<Case>> {
-            /*val firstStart = sp.getBoolean("FIRST_START", true)
-            if (firstStart) {
-                sp.edit().putBoolean("FIRST_START", false).apply()
-                return service.getStats(getToken(), 0)
-            }*/
-            return service.getStats(getToken(), since)
-        }
-
-    }.send(since)
+    }.getAsLiveData()
 
     fun getCase(id: Int) = object : NetworkBoundResource<Case, Case>(appExecutors) {
         override fun saveCallResult(item: Case) {
@@ -310,7 +319,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             case.media.filter { it.toDelete }.forEachIndexed { index, m ->
 
                 // if not enough new local media items exists then delete old server media items
-                if(mediaItems.size <= index)
+                if (mediaItems.size <= index)
 
                     appExecutors.networkIO().execute {
                         service.deleteCaseMedia(getToken(), resultData.getMediaURL(m.mediaID))
@@ -464,7 +473,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     MediaType.parse("application/octet"), mediaItem)
 
             // enqueue a new call for each mediaItem
-            val call  = if(url.endsWith("media"))
+            val call = if (url.endsWith("media"))
                 service.uploadCaseMedia(getToken(), url, parsedPicture)
             else
                 service.updateCaseMedia(getToken(), url, parsedPicture)

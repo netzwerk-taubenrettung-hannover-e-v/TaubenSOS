@@ -7,11 +7,6 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 class CaseViewModel(context: Context) : BaseViewModel(context) {
     val cases: LiveDataRes<List<Case>> = repository.getCases()
 
-    fun loadCasesSince(since: Long): LiveDataRes<List<Case>> {
-        repository.loadCasesSince(since)
-        return cases
-    }
-
     fun getCase(caseId: Int) = repository.getCase(caseId)
 
     fun sendCase(case: Case, pictures: List<ByteArray>) = repository.sendCase(case, pictures)

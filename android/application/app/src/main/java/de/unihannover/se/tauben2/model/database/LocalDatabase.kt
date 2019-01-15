@@ -15,7 +15,8 @@ import de.unihannover.se.tauben2.model.database.entity.*
  * class with capability to create and retrieve a RoomDatabase singleton object which represents
  * the local SQLite Database
  */
-@Database(entities = [Case::class, InjuryEntity::class, User::class, PopulationMarker::class, News::class], exportSchema = false, version = 1)
+@Database(entities = [Case::class, InjuryEntity::class, User::class, PopulationMarker::class,
+    News::class, PopulationStat::class], exportSchema = false, version = 1)
 @TypeConverters(ListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
@@ -49,5 +50,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun newsDao(): NewsDao
 
     abstract fun populationMarkerDao(): PopulationMarkerDao
+
+    abstract fun populationStatDao(): PopulationStatDao
 
 }

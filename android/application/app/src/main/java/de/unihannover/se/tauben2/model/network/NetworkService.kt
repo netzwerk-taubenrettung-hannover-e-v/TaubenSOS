@@ -4,10 +4,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.Token
-import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.News
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.entity.*
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -32,8 +29,23 @@ interface NetworkService {
     fun deleteCase(@Header("Authorization") token: String,
                    @Path("id") id: Int): Call<Void>
 
-    @GET("stats")
-    fun getStats(@Header("Authorization") token: String, @Body timeStamp: Long): LiveDataRes<List<Case>>
+    @GET("stats/population")
+    fun getPopulationStats(@Header("Authorization") token: String,
+                           @Query("fromTime") fromTime: Long,
+                           @Query("untilTime") untilTime: Long,
+                           @Query("latNE") latNE: Double,
+                           @Query("lonNE") lonNE: Double,
+                           @Query("latSW") latSW: Double,
+                           @Query("lonSW") lonSW: Double): LiveDataRes<List<PopulationStat>>
+
+    @GET("stats/pigeonNumbers")
+    fun getPigeonNumberStats(@Header("Authorization") token: String,
+                             @Query("fromTime") fromTime: Long,
+                             @Query("untilTime") untilTime: Long,
+                             @Query("latNE") latNE: Double,
+                             @Query("lonNE") lonNE: Double,
+                             @Query("latSW") latSW: Double,
+                             @Query("lonSW") lonSW: Double) // TODO return type
 
     @POST
     fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>
