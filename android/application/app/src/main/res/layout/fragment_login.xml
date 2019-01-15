@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:labelFor="@+id/edit_login_username"
-        android:text="@string/nutzername"
+        android:text="@string/username"
         app:layout_constraintStart_toStartOf="@+id/edit_login_username"
         app:layout_constraintTop_toBottomOf="@+id/loginTitle" />
 
@@ -55,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:labelFor="@+id/edit_login_password"
-        android:text="@string/passwort"
+        android:text="@string/password"
         app:layout_constraintStart_toStartOf="@+id/edit_login_username"
         app:layout_constraintTop_toBottomOf="@+id/edit_login_username" />
 
