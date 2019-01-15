@@ -93,6 +93,8 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.setMinZoomPreference(9.5f)
                 // TODO Find best bound coordinates
 
+                map.uiSettings.isRotateGesturesEnabled = false
+                map.uiSettings.isTiltGesturesEnabled = false
                 map.setLatLngBoundsForCameraTarget(hanBounds)
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(hanBounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 map.clear()
