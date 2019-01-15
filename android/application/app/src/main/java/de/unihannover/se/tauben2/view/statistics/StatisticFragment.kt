@@ -76,10 +76,20 @@ class StatisticFragment : Fragment() {
                     selectedDateFrom.get(Calendar.DAY_OF_MONTH))
         }
 
+
+
         val datePickerDialogTo = context?.let {
             DatePickerDialog(it, toListener,
                     selectedDateTo.get(Calendar.YEAR), selectedDateTo.get(Calendar.MONTH),
                     selectedDateTo.get(Calendar.DAY_OF_MONTH))
+        }
+
+        datePickerDialogFrom?.let {
+            it.datePicker.maxDate = System.currentTimeMillis()
+        }
+
+        datePickerDialogTo?.let {
+            it.datePicker.maxDate = System.currentTimeMillis()
         }
 
         fragmentView.from_button.setOnClickListener { datePickerDialogFrom?.show() }

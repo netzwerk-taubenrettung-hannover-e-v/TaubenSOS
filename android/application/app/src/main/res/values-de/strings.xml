@@ -97,4 +97,10 @@
         <item quantity="one">%d Tag</item>
         <item quantity="other">%d Tagen</item>
     </plurals>
+    <string name="news" translatable="false">Neues</string>
+    <string name="priorities">Stufe 1 (gut): leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Küken auf de Boden (diese brauchen drinend HIlfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
+    <string name="report_explanation" translatable="false">"Um der verletzten Taube bestmöglich zu helfen, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden der verletzten Taube, kannst du den Status des Falls jederzeit einsehen und die Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notruftelefon bei den Kontaktinfos erreichen."</string>
+    <string name="permission_denied" translatable="false">Erlaubnis wurde von Nutzer verweigert</string>
+    <string name="permission_granted">Erlaubnis wurde von Nutzer erteilt</string>
+    <string name="permission">Erlaubnis</string>
 </resources>
