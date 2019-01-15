@@ -82,4 +82,5 @@
     <string name="additional_information_help">Kannst du uns weitere Informationen zu Standort oder Zustand der Taube mitteilen?</string>
     <string name="graphs">Statistiken</string>
     <string name="news" translatable="false">Neues</string>
+    <string name="priorities">Stufe 1 (gut): leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Küken auf de Boden (diese brauchen drinend HIlfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
 </resources>
