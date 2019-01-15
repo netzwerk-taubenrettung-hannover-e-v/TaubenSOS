@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "573120387779",
+    "firebase_url": "https://tauben2.firebaseio.com",
+    "project_id": "tauben2",
+    "storage_bucket": "tauben2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573120387779:android:81b0e404e50e9c5b",
+        "android_client_info": {
+          "package_name": "de.unihannover.se.tauben2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "573120387779-68i8e5mun5o1rlkb24jc6rksb30cktgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvXJ0LJmjaoBlODinRDWeSf9YeDDF7FDM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

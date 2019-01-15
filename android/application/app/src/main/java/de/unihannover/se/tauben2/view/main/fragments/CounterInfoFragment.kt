@@ -63,6 +63,10 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     selectedDate.get(Calendar.DAY_OF_MONTH))
         }
 
+        datePickerDialog?.let {
+            it.datePicker.maxDate = System.currentTimeMillis()
+        }
+
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
 
         arguments?.getInt("marker")?.let { markerID ->

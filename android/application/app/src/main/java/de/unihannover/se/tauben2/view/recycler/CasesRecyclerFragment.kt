@@ -26,7 +26,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
     private val locationObserver = Observer<Location?> {
         mLocation = it
-        if(!alreadyLoaded) {
+        if (!alreadyLoaded) {
             notifyDataSetChanged()
             alreadyLoaded = true
         }
@@ -43,22 +43,24 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     }
 
     override fun onBindData(binding: ViewDataBinding, data: Case) {
-        if(binding is CardCaseBinding) {
+        if (binding is CardCaseBinding) {
             binding.c = data
             mLocation?.let { location ->
                 val caseLoc = Location("")
                 caseLoc.latitude = data.latitude
                 caseLoc.longitude = data.longitude
-                val res = ((Math.round(location.distanceTo(caseLoc)/10))/100.0).toString() + " km"
+                val res = ((Math.round(location.distanceTo(caseLoc) / 10)) / 100.0).toString() + " km"
                 binding.root.distance_text_card_value.text = res
             }
 
 
             val squareImgV = binding.root.image_card
+
             data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV)
 
-            if(squareImgV is SquareImageView && data.media.isNotEmpty()){
+            if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
                 activity?.let {
+                    // TODO Load full sized image only on Zoom
                     squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix))
                 }
             }

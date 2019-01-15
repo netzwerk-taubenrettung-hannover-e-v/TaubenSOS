@@ -186,7 +186,7 @@
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:layout_margin="8dp"-->
-                <!--android:text="@string/take_over"-->
+                <!--android:text="@string/take_case"-->
                 <!--android:textColor="@color/colorPrimaryDark"-->
                 <!--app:layout_constraintEnd_toStartOf="@id/btn_state_prev"-->
                 <!--app:layout_constraintBottom_toBottomOf="parent"-->
@@ -199,11 +199,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@{c.isClosed() ? @string/reopen_case : @string/take_over}"
+                android:text="@{c.isClosed() ? @string/reopen_case : @string/take_case}"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toStartOf="@id/btn_state_next"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="@{c.rescuer == null || (c.rescuer.equals(currentUser.username) &amp;&amp; !c.isClosed()) ? View.INVISIBLE : View.VISIBLE}"
+                android:visibility="@{c.rescuer == null || (c.rescuer.equals(currentUser.username) &amp;&amp; !c.isClosed()) || currentUser == null ? View.INVISIBLE : View.VISIBLE}"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@{c.rescuer == null ? @string/take_case : @string/finish_case}"
-                android:visibility="@{c.isClosed() ? View.GONE : View.VISIBLE}"
+                android:visibility="@{c.isClosed() || currentUser == null ? View.GONE : View.VISIBLE}"
                 android:backgroundTint="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
