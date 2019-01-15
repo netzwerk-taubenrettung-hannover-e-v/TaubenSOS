@@ -3,12 +3,9 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
@@ -16,7 +13,6 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -59,9 +55,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
 
             val squareImgV = binding.root.image_card
-            Picasso.get().load(if(data.media.isEmpty()) null else data.media[0])
-                    .placeholder(R.drawable.ic_logo_48dp)
-                    .into(squareImgV)
+            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV)
 
             if(squareImgV is SquareImageView && data.media.isNotEmpty()){
                 activity?.let {

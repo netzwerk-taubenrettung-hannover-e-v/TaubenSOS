@@ -35,9 +35,14 @@ interface NetworkService {
     @GET("stats")
     fun getStats(@Header("Authorization") token: String, @Body timeStamp: Long): LiveDataRes<List<Case>>
 
-    @PUT
-    fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
+    @POST
+    fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
+    @PUT
+    fun updateCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>
+
+    @DELETE
+    fun deleteCaseMedia(@Header("Authorization") token: String, @Url deleteUrl: String): Call<Void>
 
     @GET("feed")
     fun getNews(@Header("Authorization") token: String): LiveDataRes<List<News>>
@@ -67,7 +72,6 @@ interface NetworkService {
     @PUT("user/{username}")
     fun updatePermissions(@Header("Authorization") token: String, @Body auth: Auth,
                           @Path("username") username: String): LiveDataRes<User>
-
 
     @POST("auth/login")
     fun login(@Body user: User): Call<Token>

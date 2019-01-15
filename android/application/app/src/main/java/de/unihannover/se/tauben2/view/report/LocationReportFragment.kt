@@ -41,10 +41,6 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         val view = inflater.inflate(layoutId, container, false)
         mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-        }
-
         setBtnListener(R.id.fragment_report_injuries, R.id.fragment_report_media)
 
         view.set_position_button.setOnClickListener {

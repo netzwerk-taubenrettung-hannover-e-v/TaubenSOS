@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 private const val BASE_AMAZON_URL = "https://tauben2.eu-central-1.elasticbeanstalk.com/api/"
 private const val BASE_HEROKU_URL = "https://tauben2.herokuapp.com/api/"
-private const val USE_AMAZON = true
+private const val USE_AMAZON = false
 
 class App : Application() {
 
@@ -30,6 +30,8 @@ class App : Application() {
                 else
                     context.resources.getColor(colorRes)
 
+        fun getBaseURL() = if(USE_AMAZON) BASE_AMAZON_URL else BASE_HEROKU_URL
+
     }
 
     override fun onCreate() {
@@ -37,7 +39,7 @@ class App : Application() {
 
         context = this
 
-        val retrofit = Retrofit.Builder().baseUrl(if(USE_AMAZON) BASE_AMAZON_URL else BASE_HEROKU_URL)
+        val retrofit = Retrofit.Builder().baseUrl(getBaseURL())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(LiveDataCallAdapterFactory()).build()
 

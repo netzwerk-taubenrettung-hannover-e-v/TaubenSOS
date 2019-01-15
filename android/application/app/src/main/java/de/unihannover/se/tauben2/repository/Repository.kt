@@ -264,7 +264,12 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // amazon upload urls
-            val urls = resultData.media
+            val urls = mutableListOf<String>()
+
+            while (urls.size != mediaItems.size) {
+                urls.add(resultData.getMediaUploadURL())
+            }
+
             appExecutors.networkIO().execute {
                 uploadPictures(mediaItems, urls)
             }
@@ -292,10 +297,25 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun updateCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
         override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // amazon upload urls
-            var urls = resultData.media
-            while (urls.size != mediaItems.size) {
-                urls = urls.takeLast(urls.size - 1)
+            val urls = mutableListOf<String>()
+            case.media.filter { it.toDelete }.forEachIndexed { index, m ->
+
+                // if not enough new local media items exists then delete old server media items
+                if(mediaItems.size <= index)
+
+                    appExecutors.networkIO().execute {
+                        service.deleteCaseMedia(getToken(), resultData.getMediaURL(m.mediaID))
+                    }
+                // else replace old server media items with new local media items
+                else
+                    urls.add(resultData.getMediaURL(m.mediaID))
             }
+
+            while (urls.size != mediaItems.size) {
+                urls.add(resultData.getMediaUploadURL())
+//                urls = urls.takeLast(urls.size - 1).toMutableList()
+            }
+
             if (urls.isNotEmpty()) {
                 appExecutors.networkIO().execute {
                     uploadPictures(mediaItems, urls)
@@ -312,7 +332,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {
             requestData.caseID?.let {
-                return service.updateCase(getToken(), it, requestData)
+                return service.updateCase(getToken(), it, requestData.copy(media = listOf()))
             }
             throw Exception("Case id must not be null!")
         }
@@ -435,7 +455,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     MediaType.parse("application/octet"), mediaItem)
 
             // enqueue a new call for each mediaItem
-            val call = service.uploadCasePicture(url, parsedPicture)
+            val call  = if(url.endsWith("media"))
+                service.uploadCaseMedia(getToken(), url, parsedPicture)
+            else
+                service.updateCaseMedia(getToken(), url, parsedPicture)
+
             call.enqueue(object : Callback<Void> {
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.d(LOG_TAG, "File upload failed!")

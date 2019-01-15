@@ -7,7 +7,9 @@ import android.text.format.DateFormat
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.PopupWindow
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
@@ -17,11 +19,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.design_layout_snackbar_include.view.*
 import retrofit2.Response
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.min
@@ -132,4 +136,16 @@ fun getDpValue(dpValue: Int): Int {
 
 fun MaterialButton.setRightIcon(end: Drawable?) {
     TextViewCompat.setCompoundDrawablesRelative(this, null, null, end, null)
+}
+
+fun loadMedia(url: String?, @DrawableRes placeHolderDrawable: Int?, intoView: ImageView, fit: Boolean = true) {
+    var loaded = Picasso.get().load(url)
+    placeHolderDrawable?.let { loaded = loaded.placeholder(it) }
+    return if(fit) loaded.centerCrop().fit().into(intoView) else loaded.into(intoView)
+}
+
+fun loadMedia(file: File, @DrawableRes placeHolderDrawable: Int?, intoView: ImageView, fit: Boolean = true) {
+    var loaded = Picasso.get().load(file)
+    placeHolderDrawable?.let { loaded = loaded.placeholder(it) }
+    return if(fit) loaded.centerCrop().fit().into(intoView) else loaded.into(intoView)
 }

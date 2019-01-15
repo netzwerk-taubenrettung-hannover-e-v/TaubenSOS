@@ -19,7 +19,6 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,6 +29,7 @@ import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
@@ -81,7 +81,7 @@ class MediaReportFragment : ReportFragment() {
         val alertBuilder = AlertDialog.Builder(context).apply {
             setTitle(getString(R.string.what_kind_of_media))
             setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))){ _, i ->
-                if(mCreatedCase.media.size > 3) {
+                if(mLocalMediaUrls.size > 3) {
                     setSnackBar(getString(R.string.maximum_reached))
                     return@setItems
                 }
@@ -98,7 +98,8 @@ class MediaReportFragment : ReportFragment() {
 
         createBlankImages(v)
 
-        loadMedia()
+        loadServerMedia()
+        loadLocalMedia()
 
         return v
     }
@@ -201,7 +202,7 @@ class MediaReportFragment : ReportFragment() {
                 suffix, /* suffix */
                 storageDir /* directory */
         ).apply {
-            mCreatedCase.media += absolutePath.getFileName()
+            mLocalMediaUrls.add(absolutePath.getFileName())
         }
     }
 
@@ -210,53 +211,84 @@ class MediaReportFragment : ReportFragment() {
         if(resultCode == RESULT_OK) {
             when(requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
-                    compressImage(mCreatedCase.media.last(), 80, 1000, 1000)
+                    compressImage(mLocalMediaUrls.last(), 80, 1000, 1000)
                 }
             }
-            loadMedia()
+            loadLocalMedia()
         }
     }
 
-    private fun loadMedia() {
+    private fun loadLocalMedia(indexShift: Int = mCreatedCase.media.filter { !it.toDelete }.size) {
+        mLocalMediaUrls.forEachIndexed { i, url ->
+            if(v.image_layout.childCount <= i + indexShift)
+                return@forEachIndexed
 
-        for (i in 0 until v.image_layout.childCount) {
+            val layout = (v.image_layout.getChildAt(i + indexShift) as ConstraintLayout)
 
-            val layout = (v.image_layout.getChildAt(i) as ConstraintLayout)
-            val image = layout.getChildAt(0) as ImageView
+            val image = layout.getChildAt(0) as SquareImageView
+            val mediaLink = context?.getFileStreamPath(url)?.absolutePath
 
-            layout.visibility = View.INVISIBLE
+            val suffix = mediaLink?.split(".")?.last()
 
-            if (image is SquareImageView && i < mCreatedCase.media.size) {
-
-                val mediaLink = if (URLUtil.isValidUrl(mCreatedCase.media[i])) mCreatedCase.media[i]
-                else context?.getFileStreamPath(mCreatedCase.media[i])?.absolutePath
-
-                val suffix = mediaLink?.split(".")?.last()
-                if(suffix != "jpg") {
+            if(suffix != "jpg") {
 //                    MediaMetadataRetriever().apply {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
-                    picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-                } else {
-                    if (URLUtil.isValidUrl(mediaLink)) Picasso.get().load(mediaLink).into(image)
-                    else Picasso.get().load(File(mediaLink)).into(image)
-                }
+                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
+            } else
+                loadMedia(File(mediaLink), null, image, false)
+
+//            image.setImageResource(R.drawable.ic_logo_48dp)
+            layout.visibility = View.VISIBLE
+
+        }
+    }
 
 
-                layout.visibility = View.VISIBLE
-            }
+    private fun loadServerMedia(indexShift: Int = 0) {
+
+        mCreatedCase.media.filter { !it.toDelete }.forEachIndexed { i, media ->
+            if(v.image_layout.childCount <= i + indexShift)
+                return@forEachIndexed
+
+            val layout = (v.image_layout.getChildAt(i + indexShift) as ConstraintLayout)
+//            layout.visibility = View.INVISIBLE
+
+            val image = layout.getChildAt(0) as SquareImageView
+
+            if(media.getType().isVideo()) {
+//                    MediaMetadataRetriever().apply {
+//                        setDataSource(mediaLink, hashMapOf<String, String>())
+//                    }
+//                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
+            } else
+                mCreatedCase.loadMediaFromServerInto(media, image, null, false)
+
+
+            layout.visibility = View.VISIBLE
         }
     }
 
     private fun deleteImage(image: SquareImageView) {
         for (i in 0 until v.image_layout.childCount) {
-            if ((v.image_layout.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
-                // TODO remove this and do it properly
-                if (!URLUtil.isValidUrl(mCreatedCase.media[i]))
-                    (mCreatedCase.media as MutableList<String>).removeAt(i)
+            val imageView = (v.image_layout.getChildAt(i) as ConstraintLayout).getChildAt(0) as SquareImageView
+            imageView.setImageDrawable(null)
+            if (imageView == image) {
+
+                val notDeleteServerMedia = mCreatedCase.media.filter { !it.toDelete }.size
+                if(notDeleteServerMedia > i) {
+                    // Delete from Server
+                    mCreatedCase.media[i].toDelete = true
+                }
+                else {
+                    // Delete from local urls
+                    // TODO delete local cached file
+                    mLocalMediaUrls.removeAt(i + notDeleteServerMedia)
+                }
             }
         }
-        loadMedia()
+        loadServerMedia()
+        loadLocalMedia()
     }
 
     private fun createBlankImages(view: View) {

@@ -1,7 +1,9 @@
 package de.unihannover.se.tauben2.model.database.entity
 
 import android.os.Parcelable
+import android.widget.ImageView
 import android.widget.SeekBar
+import androidx.annotation.DrawableRes
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -10,13 +12,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.Injury
 import de.unihannover.se.tauben2.model.database.PigeonBreed
-import de.unihannover.se.tauben2.model.database.converter.Media
+import de.unihannover.se.tauben2.model.database.Media
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 
 /**
  * represents the case of an injured pigeon
@@ -55,6 +57,27 @@ data class Case(@PrimaryKey var caseID: Int?,
     override val refreshCooldown: Long
         get() = 0//900000 * 2 // 30 min
 
+
+    fun getMediaUploadURL() = App.getBaseURL() + "case/$caseID/media"
+
+    fun getMediaURL(mediaId: Int) = mediaId.let { getMediaUploadURL() + "/$mediaId" }
+
+    fun getImageURL(media: Media?) = media?.let {
+            if(media.getType().isVideo())
+                getMediaURL(it.mediaID) + "/thumbnail"
+            else
+                getMediaURL(it.mediaID)
+        }
+
+    fun getMediaURLs(): List<String> {
+        val result = mutableListOf<String>()
+        media.forEach { getMediaURL(it.mediaID).let { url -> result.add(url) } }
+        return result
+    }
+
+    fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo_48dp, fit: Boolean = true) {
+        loadMedia(media?.mediaID?.let {  getMediaURL(it) }, placeHolder, imageView, fit)
+    }
 
     fun getPigeonBreed() = PigeonBreed.fromString(breed)
 

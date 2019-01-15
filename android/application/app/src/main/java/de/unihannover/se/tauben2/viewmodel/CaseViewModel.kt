@@ -15,6 +15,6 @@ class CaseViewModel(context: Context) : BaseViewModel(context) {
 
     fun deleteCase(case: Case) = repository.deleteCase(case)
 
-    fun updateCase(case: Case, mediaItems: List<ByteArray>) = repository.updateCase(case.apply { media = listOf() }, mediaItems)
+    fun updateCase(case: Case, mediaItems: List<ByteArray>) = repository.updateCase(case, mediaItems)
 
 }

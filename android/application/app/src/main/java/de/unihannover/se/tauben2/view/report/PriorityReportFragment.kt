@@ -16,11 +16,9 @@ class PriorityReportFragment : ReportFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val binding = DataBindingUtil.inflate<FragmentReportPriorityBinding>(inflater, layoutId, container, false)
+        
+        binding.createdCase = mCreatedCase
 
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-            binding.createdCase = it
-        }
         setBtnListener(R.id.fragment_report_breed, R.id.fragment_report_injuries)
 
         return binding.root

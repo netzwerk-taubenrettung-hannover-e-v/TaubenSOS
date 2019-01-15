@@ -19,6 +19,7 @@ import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.model.database.Media
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.SquareImageView
@@ -102,21 +103,20 @@ class CaseInfoFragment: Fragment() {
 
     private fun loadMedia(index: Int, target: ImageView) {
         mBinding.c?.also { case ->
-            var media: String? = null
+            var media: Media? = null
 
             if(case.media.size <= index) {
-                Picasso.get().load(media).into(target)
+                case.loadMediaFromServerInto(media, target, null)
                 return
             }
 
             media = case.media[index]
 
             //TODO Thumbnail loading don't work
-            if(media.contains("VIDEO"))
+            if(media.mimeType == "video/mp4")
                 mPicassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + media)?.into(target)
             else
-                Picasso.get().load(media).into(target)
-
+                case.loadMediaFromServerInto(media, target, null)
         }
 
     }
