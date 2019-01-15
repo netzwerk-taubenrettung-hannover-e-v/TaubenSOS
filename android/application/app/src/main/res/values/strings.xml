@@ -6,34 +6,27 @@
     <string name="call">Give us a call!</string>
     <string name="contact_info">You can give us a call to get more information or if you found a pigeon which is in urgent need for help.</string>
     <string name="breed_report_info" translatable="false">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differrent, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
-
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
-
     <string name="long_duration">%d days, %02d hours, %02d minutes</string>
     <string name="short_duration">%d hours, %02d minutes, %02d seconds</string>
-
     <plurals name="second">
         <item quantity="one">%02d second</item>
         <item quantity="other">%02d seconds</item>
     </plurals>
-
     <plurals name="minute">
         <item quantity="one">%02d minute</item>
         <item quantity="other">%02d minutes</item>
     </plurals>
-
     <plurals name="hour">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-
     <plurals name="day">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
-
     <string name="no_rescuer">No rescuer</string>
     <string name="take_case">Take case</string>
     <string name="finish_case">Finish case</string>
@@ -72,7 +65,7 @@
     <string name="graphs">Stats</string>
     <string name="cases">Cases</string>
     <string name="counter" translatable="false">Population</string>
-    <string name="news">News</string>
+    <string name="news" translatable="false">Events</string>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
@@ -83,7 +76,6 @@
     <string name="edit">Edit</string>
     <string name="call_reporter">Call reporter</string>
     <string name="report_explanation" translatable="false">In order to provide the injured dove with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
-
     <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
     <string name="priorities" translatable="false">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet,
         pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk/
@@ -98,18 +90,16 @@
     <string name="take_photo">Take photo</string>
     <string name="record_video">Record video</string>
     <string name="what_kind_of_media">What kind of media would you like to add?</string>
-    <string name="maximum_reached">Maximum amount reached.</string>
-    <string name="written_by_text">Written by: %s</string>
+    <string name="maximum_reached">Maximum number reached.</string>
+    <string name="written_by_text">Created by %s</string>
     <string name="starts_on">Event starts on %s</string>
-
     <string name="select_injuries">Please select at least one injury.</string>
-    <string name="could_not_read_phone">I\'m afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
-    <string name="enter_phone">Enter phone number</string>
+    <string name="could_not_read_phone">We\'re afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
+    <string name="enter_phone">Please enter your phone number:</string>
     <string name="okay" translatable="false">Okay</string>
-
     <string name="news_text_input_hint">Please enter the text here.</string>
     <string name="date">Date:</string>
-    <string name="enter_content">Enter your content here</string>
+    <string name="enter_content">Enter your content here.</string>
     <string name="enter_title">Enter the title</string>
     <string name="imprint_title">Legal Notice</string>
     <string name="privacy_title">Privacy Policy</string>
@@ -121,6 +111,4 @@
     <string name="registrierung_erklaerung">Your sign-up has to get approved by an admin.</string>
     <string name="tauben_zählen_info">Please select the location, date and count of the observed pigeons.</string>
     <string name="emergency_phone_text" translatable="false">Erreicht ihr mal niemanden unter der angegebenen Nummer, haben wir noch eine alternative Nummer unter der +49 157 80641268. In Hannover gibt es außerdem die Möglichkeit im Notfall zur Klinik der TiHo <a href="http://www.google.com">Google</a> zu fahren und Stadttauben abzugeben. Wer nicht mobil ist, kann auch über die Feuerwehr (112) die Tierrettung rufen.</string>
-
-
 </resources>

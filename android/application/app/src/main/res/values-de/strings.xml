@@ -8,9 +8,9 @@
     <string name="passwort_wiederholen">Passwort erneut eingeben:</string>
     <string name="registrierung_beantragen">Registrierung beantragen</string>
     <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem Verein möglich und muss von einem Vereinsmitglied autorisiert werden.</string>
-    <string name="call">Rufen Sie uns gerne an!</string>
+    <string name="call">Ruf uns gerne an!</string>
     <string name="tauben_zählen_info">Bitte wähle Standort, Datum und die Anzahl der Tauben aus, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
-    <string name="contact_info">Sie können uns für weitere Informationen oder wenn Sie ein verletztes Tier melden möchten gerne telefonisch kontaktieren.</string>
+    <string name="contact_info">Du kannst uns für weitere Informationen oder wenn du ein verletztes Tier melden möchtest gerne telefonisch kontaktieren.</string>
     <string name="priority">Priorität: %s</string>
     <string name="priority_blank">Priorität:</string>
     <string name="before">Vor %s</string>
@@ -18,7 +18,7 @@
     <string name="short_duration">%d Stunden, %02d Minuten, %02d Sekunden</string>
     <string name="take_case">Fall übernehmen</string>
     <string name="finish_case">Fall abschließen</string>
-    <string name="reopen_case">Erneut öffnen</string>
+    <string name="reopen_case">Wieder eröffnen</string>
     <string name="in_progress_by">In Bearbeitung von</string>
     <string name="injuries">Verletzungen</string>
     <string name="submitted_before">Eingereicht vor:</string>
@@ -65,21 +65,36 @@
     <string name="record_video">Video aufnehmen</string>
     <string name="what_kind_of_media">Welche Medien möchtest du hinzufügen?</string>
     <string name="maximum_reached">Maximale Anzahl erreicht.</string>
-    <string name="written_by_text">Erstellt von: %s</string>
-    <string name="starts_on">Event startet am</string>
+    <string name="written_by_text">Erstellt von %s</string>
+    <string name="starts_on">Event startet am %s</string>
     <string name="select_injuries">Wähle mindestens eine Verletzung.</string>
-    <string name="enter_phone">Bitte stelle uns deine Mobilnummer zur Verfügung.</string>
+    <string name="enter_phone">Bitte stelle uns deine Mobilnummer zur Verfügung:</string>
     <string name="news_text_input_hint">Hier den Text eingeben.</string>
     <string name="date">Datum:</string>
-    <string name="enter_content">Inhalt hier einfügen</string>
+    <string name="enter_content">Inhalt hier einfügen.</string>
     <string name="enter_title">Titel eingeben</string>
     <string name="imprint_title">Impressum</string>
     <string name="privacy_title">Datenschutzerklärung</string>
-    <string name="could_not_read_phone">Leider konnten wir deine Mobilnummer nicht automatisch bestimmen. Bitte g</string>
+    <string name="could_not_read_phone">Leider konnten wir deine Mobilnummer nicht automatisch bestimmen. Bitte gib sie daher manuell ein, damit wir dich erreichen können.</string>
     <string name="no_rescuer">Nicht in Bearbeitung</string>
     <string name="injury_foot_leg">Fuß/Bein</string>
     <string name="change_state_alive">Als lebendig melden</string>
-    <string name="additional_information_help">Kannst du uns weitere Informationen zu Standort oder Zustand der Taube mitteilen?</string>
+    <string name="additional_information_help">Kannst du weitere Angaben zu Standort oder Zustand der Taube machen?</string>
     <string name="graphs">Statistiken</string>
-    <string name="news" translatable="false">Neues</string>
+    <plurals name="second">
+        <item quantity="one">%02d Sekunde</item>
+        <item quantity="other">%02d Sekunden</item>
+    </plurals>
+    <plurals name="minute">
+        <item quantity="one">%02d Minute</item>
+        <item quantity="other">%02d Minuten</item>
+    </plurals>
+    <plurals name="hour">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <plurals name="day">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tagen</item>
+    </plurals>
 </resources>
