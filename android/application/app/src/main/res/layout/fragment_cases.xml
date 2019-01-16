@@ -45,7 +45,7 @@
                             android:layout_marginTop="8dp"
                             android:background="@drawable/background_map_button"
                             android:textColor="#B3000000"
-                            android:text="All cases"
+                            android:text="@string/all_cases"
                             android:textSize="25dp"
                             app:cornerRadius="2dp"/>
 

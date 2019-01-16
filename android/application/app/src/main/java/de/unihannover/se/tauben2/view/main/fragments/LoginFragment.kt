@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.iid.FirebaseInstanceId
 import de.unihannover.se.tauben2.R.layout.fragment_login
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
@@ -37,9 +38,16 @@ class LoginFragment : Fragment() {
                 if (allInputsFilled(view as ViewGroup)) {
                     val username = view.edit_login_username.text.toString()
                     val pw = edit_login_password.text.toString()
-                    val user = User(username, false, false, pw, null)
+                    val user = User(username, false, false, pw, null, null)
 
-                    userViewModel?.login(user)
+                    FirebaseInstanceId.getInstance().instanceId.apply {
+                        addOnSuccessListener { result ->
+                            userViewModel?.login(user.apply { registrationToken = result.token })
+                        }
+                        addOnFailureListener {
+                            userViewModel?.login(user)
+                        }
+                    }
 
                     activity?.finish()
                     Intent(context, BootingActivity::class.java).apply { startActivity(this) }

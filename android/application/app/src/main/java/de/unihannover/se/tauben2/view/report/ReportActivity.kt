@@ -84,11 +84,11 @@ class ReportActivity : FragmentActivity() {
     fun onFragmentChange () {
         val step = currentPosition + 1
         val label = mNavHostFragment.navController.currentDestination?.label
-        step_indicator.text = "Step $step: $label"
+        step_indicator.text  = baseContext.getString(R.string.step, step, label)
     }
 
     private fun editCase () {
-        toolbar_title.text = "Edit Case #${case?.caseID}"
+        toolbar_title.text = baseContext.getString(R.string.edit_case, case?.caseID)
     }
 
     // STEP INDICATOR

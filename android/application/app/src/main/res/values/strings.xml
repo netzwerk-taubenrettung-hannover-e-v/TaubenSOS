@@ -32,7 +32,7 @@
     <string name="finish_case">Finish case</string>
     <string name="reopen_case">Re-open case</string>
     <string name="in_progress_by">In progress by</string>
-    <string name="injuries">Injuries</string>
+    <string name="injuries">Injuries:</string>
     <string name="case_id" translatable="false">ID: %s</string>
     <string name="submitted_before">Submitted before:</string>
     <string name="distance">Distance:</string>
@@ -70,8 +70,8 @@
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
     <string name="register">Sign-up</string>
-    <string name="permission_denied">Permission has been denied by user</string>
-    <string name="permission_granted">Permission has been granted by user</string>
+    <string name="permission_denied" translatable="false">Permission has been denied by user</string>
+    <string name="permission_granted" translatable="false">Permission has been granted by user</string>
     <string name="permission">Permission</string>
     <string name="edit">Edit</string>
     <string name="call_reporter">Call reporter</string>
@@ -108,5 +108,30 @@
     <string name="registrierung_beantragen">Request sign-up</string>
     <string name="registrierung_erklaerung">Your sign-up has to get approved by an admin.</string>
     <string name="tauben_zählen_info">Please select the location, date and count of the observed pigeons.</string>
-    <string name="emergency_phone_text" translatable="false">Erreicht ihr mal niemanden unter der angegebenen Nummer, haben wir noch eine alternative Nummer unter der +49 157 80641268. In Hannover gibt es außerdem die Möglichkeit im Notfall zur Klinik der TiHo <a href="http://www.google.com">Google</a> zu fahren und Stadttauben abzugeben. Wer nicht mobil ist, kann auch über die Feuerwehr (112) die Tierrettung rufen.</string>
+    <string name="sample" translatable="false">sample</string>
+    <string name="all_cases">All cases</string>
+    <string name="create_marker">Create Marker</string>
+    <string name="reset">reset</string>
+    <string name="event_starts_on">Event starts on</string>
+    <string name="show_examples">show examples</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="admin" translatable="false">Admin?</string>
+    <string name="authorized">Authorized?</string>
+    <string name="population" translatable="false">Population:</string>
+    <string name="reported_doves">Reported Doves:</string>
+    <string name="breeds">Breeds:</string>
+    <string name="closed_cases">Closed cases</string>
+    <string name="my_cases">My cases</string>
+    <string name="open_cases">Open cases</string>
+    <string name="step">Step %1$d: %2$s</string>
+    <string name="edit_case">Edit Case #%1$d</string>
+    <string name="report_step_media">Insert Media</string>
+    <string name="report_step_location">Set Your Location</string>
+    <string name="report_step_injuries">Specify Injuries</string>
+    <string name="report_step_priority">Estimate the Priority</string>
+    <string name="report_step_breed">Identify the Breed</string>
+    <string name="report_step_additional_info">Share Additional Informations</string>
+    <string name="in_average_population">in average: %1$d doves</string>
+    <string name="in_average_reports">in average: %1$.2f doves/day</string>
 </resources>

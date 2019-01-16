@@ -319,10 +319,22 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             case.media.filter { it.toDelete }.forEachIndexed { index, m ->
 
                 // if not enough new local media items exists then delete old server media items
-                if (mediaItems.size <= index)
+                if(mediaItems.isEmpty() || mediaItems.size <= index)
 
                     appExecutors.networkIO().execute {
-                        service.deleteCaseMedia(getToken(), resultData.getMediaURL(m.mediaID))
+                        val call = service.deleteCaseMedia(getToken(), resultData.getMediaURL(m.mediaID))
+
+                        call.enqueue(object : Callback<Void> {
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Log.d(LOG_TAG, "File deletion failed!")
+                                Log.d(LOG_TAG, "Reason: ${t.message}")
+                            }
+
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                Log.d(LOG_TAG, "File deletion successful!")
+                            }
+
+                        })
                     }
                 // else replace old server media items with new local media items
                 else
@@ -427,6 +439,22 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         future.get()
     }
 
+    fun updateUser(user : User) = object : AsyncDataRequest<User, User>(appExecutors) {
+        override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: User) {
+            setItemUpdateTimestamps(updatedData)
+            database.userDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: User): LiveDataRes<User> {
+            return service.updateUser(getToken(), user.username, user)
+        }
+
+    }.send(user, false)
+
     fun getOwnerUsername() = sp.getString(LOGIN_USERNAME_KEY, null)
 
     fun getGuestPhone() = sp.getString(GUEST_PHONE, null)
@@ -447,7 +475,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.send(getToken())
 
-    fun updatePermissions(auth: Auth) = object : AsyncDataRequest<User, Auth>(appExecutors) {
+    fun updatePermissions(username: String, auth: Auth) = object : AsyncDataRequest<User, Auth>(appExecutors) {
         override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
         }
@@ -458,7 +486,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun createCall(requestData: Auth): LiveDataRes<User> {
-            return service.updatePermissions(getToken(), requestData, requestData.username)
+            return service.updatePermissions(getToken(), requestData, username)
         }
 
     }.send(auth, enableRefetching = false)

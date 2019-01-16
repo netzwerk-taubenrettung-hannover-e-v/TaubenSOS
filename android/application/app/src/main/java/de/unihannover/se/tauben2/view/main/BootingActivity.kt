@@ -18,7 +18,7 @@ class BootingActivity : AppCompatActivity() {
 
     companion object {
 
-        private var owner: User? = null
+        var owner: User? = null
 
         @JvmStatic
         fun getOwnerPermission() = owner?.getPermission() ?: Permission.GUEST

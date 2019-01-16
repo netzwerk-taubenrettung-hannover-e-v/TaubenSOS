@@ -29,7 +29,11 @@ import de.unihannover.se.tauben2.view.recycler.RecyclerStringAdapter
 import de.unihannover.se.tauben2.view.report.ReportActivity
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.fragment_case_info.*
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
+import android.widget.VideoView
+
+
 
 
 class CaseInfoFragment: Fragment() {
@@ -63,11 +67,31 @@ class CaseInfoFragment: Fragment() {
 
                 loadMedia(0, v.image_header)
 
-                for (i in 0 until v.layout_media.childCount) {
+                case.media.forEachIndexed { i, media ->
                     val image = v.layout_media.getChildAt(i)
                     if (image is SquareImageView) {
                         loadMedia(i, image)
-                        image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
+                        if(media.getType().isVideo()) {
+                            image.setOnClickListener {
+//                                val uri = Uri.parse(case.getMediaURL(case.media[i].mediaID))
+//                                view_video.apply {
+//                                    visibility = View.VISIBLE
+//                                    setVideoURI(uri)
+//                                    view_video.start()
+//                                }
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                intent.setDataAndType(Uri.parse(case.getMediaURL(media.mediaID)), "video/mp4")
+                                startActivity(intent)
+                            }
+                        } else {
+                            image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
+                            image.addImageZoomListener (
+                                {
+                                    case.loadMediaFromServerInto(case.media[i], image_expanded, fit = false)
+                                }, {
+                                    case.loadMediaFromServerInto(case.media[i], image)
+                                })
+                        }
                     }
                 }
 
@@ -112,11 +136,11 @@ class CaseInfoFragment: Fragment() {
 
             media = case.media[index]
 
-            //TODO Thumbnail loading don't work
-            if(media.mimeType == "video/mp4")
-                mPicassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + media)?.into(target)
-            else
-                case.loadMediaFromServerInto(media, target, null)
+            //TODO Thumbnail loading
+            case.loadMediaFromServerInto(media, target, null)
+//            if(media.mimeType == "video/mp4")
+//                mPicassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + case.getImageURL(media))?.into(target)
+//            else
         }
 
     }

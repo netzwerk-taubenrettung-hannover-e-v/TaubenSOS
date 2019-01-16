@@ -16,11 +16,11 @@
     <string name="before">Vor %s</string>
     <string name="long_duration">%d Tagen, %02d Stunden, %02d Minuten</string>
     <string name="short_duration">%d Stunden, %02d Minuten, %02d Sekunden</string>
-    <string name="take_case">Fall übernehmen</string>
-    <string name="finish_case">Fall abschließen</string>
+    <string name="take_case">Übernehmen</string>
+    <string name="finish_case">Abschließen</string>
     <string name="reopen_case">Wieder eröffnen</string>
     <string name="in_progress_by">In Bearbeitung von</string>
-    <string name="injuries">Verletzungen</string>
+    <string name="injuries">Verletzungen:</string>
     <string name="submitted_before">Eingereicht vor:</string>
     <string name="distance">Entfernung:</string>
     <string name="no_gps">GPS-Signal nicht verfügbar</string>
@@ -37,8 +37,8 @@
     <string name="injury_fledgling">Jungtier</string>
     <string name="injury_other">Andere (weitere Angaben später)</string>
     <string name="estimate_condition">Einschätzung des Zustands der Taube:</string>
-    <string name="good">eher gut</string>
-    <string name="poor">eher schlecht</string>
+    <string name="good">gut</string>
+    <string name="poor">schlecht</string>
     <string name="next">Weiter</string>
     <string name="back">Zurück</string>
     <string name="kind_of_pigeon">Um welche Taubenart handelt es sich?</string>
@@ -97,10 +97,30 @@
         <item quantity="one">%d Tag</item>
         <item quantity="other">%d Tagen</item>
     </plurals>
-    <string name="news" translatable="false">Neues</string>
     <string name="priorities">Stufe 1 (gut): leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Küken auf de Boden (diese brauchen drinend HIlfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
-    <string name="report_explanation" translatable="false">"Um der verletzten Taube bestmöglich zu helfen, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden der verletzten Taube, kannst du den Status des Falls jederzeit einsehen und die Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notruftelefon bei den Kontaktinfos erreichen."</string>
-    <string name="permission_denied" translatable="false">Erlaubnis wurde von Nutzer verweigert</string>
-    <string name="permission_granted">Erlaubnis wurde von Nutzer erteilt</string>
+    <string name="report_explanation">"Um der verletzten Taube bestmöglich zu helfen, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden der verletzten Taube, kannst du den Status des Falls jederzeit einsehen und die Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notruftelefon bei den Kontaktinfos erreichen."</string>
     <string name="permission">Erlaubnis</string>
+    <string name="all_cases">Alle Fälle</string>
+    <string name="my_cases">Meine Fälle</string>
+    <string name="to">Bis:</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="authorized">Authorisiert?</string>
+    <string name="breeds">Art:</string>
+    <string name="show_examples">Beispiele</string>
+    <string name="closed_cases">Geschlossene Fälle</string>
+    <string name="create_marker">Marker erstellen</string>
+    <string name="from">Von:</string>
+    <string name="event_starts_on">Event startet am</string>
+    <string name="reported_doves">gemeldete Tauben:</string>
+    <string name="open_cases">Offene Fälle</string>
+    <string name="step">Schritt %1$d: %2$s</string>
+    <string name="edit_case">Bearbeite Fall #%1$d</string>
+    <string name="report_step_injuries">Verletzungen</string>
+    <string name="report_step_priority">Zustand</string>
+    <string name="report_step_breed">Art</string>
+    <string name="report_step_additional_info">Zusätzliche Informationen</string>
+    <string name="report_step_media">Medien</string>
+    <string name="report_step_location">Standort</string>
+    <string name="in_average_population">im Durchschnitt: %1$d Tauben</string>
+    <string name="in_average_reports">im Durchschnitt: %1$.2f Tauben pro Tag</string>
 </resources>
