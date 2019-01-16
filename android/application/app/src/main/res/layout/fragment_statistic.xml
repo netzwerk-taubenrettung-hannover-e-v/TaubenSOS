@@ -43,20 +43,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/set_area_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:elevation="0dp"
-                            android:text="Set area"
-                            android:textColor="#B3000000"
-                            app:backgroundTint="#B3FFFFFF"
-                            app:cornerRadius="2dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </fragment>
@@ -90,7 +76,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="From:"
+                    android:text="@string/from"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,7 +100,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="To:"
+                    android:text="@string/to"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/from_button"
                     app:layout_constraintTop_toTopOf="parent" />

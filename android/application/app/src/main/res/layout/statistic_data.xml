@@ -10,7 +10,7 @@
         android:id="@+id/population_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Population:"
+        android:text="@string/population"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -18,7 +18,6 @@
         android:id="@+id/population_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="in total: 1234 Doves"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Reported Doves:"
+        android:text="@string/reported_doves"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/population_linechart" />
 
@@ -44,7 +43,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="in total: 1234 Doves"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/population_linechart" />
 
@@ -63,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Injuries:"
+        android:text="@string/injuries"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reported_linechart" />
@@ -83,7 +81,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Breeds:"
+        android:text="@string/breeds"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/injury_piechart" />

@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_margin="16dp"
-                android:text="Event starts on "
+                android:text="@string/event_starts_on"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_text_input_title"
                 />
