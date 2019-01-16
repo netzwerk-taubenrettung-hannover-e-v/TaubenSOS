@@ -16,7 +16,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 
@@ -79,6 +78,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun shouldFetch(data: List<PopulationStat>?) = true
+        // TODO condition based on database content?
 
 
         override fun loadFromDb(): LiveData<List<PopulationStat>> =
@@ -409,6 +409,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                             .putString(LOGIN_USERNAME_KEY, user.username)
                             .apply()
                     Log.d(LOG_TAG, "Token saved")
+
+                    // update user rights in db
+                    val userUpdateCall = service.getUserCall(getToken(), user.username)
+                    val userUpdated = userUpdateCall.execute()
+                    if (response.isSuccessful)
+                        appExecutors.diskIO().execute {
+                            database.userDao().insertOrUpdate(userUpdated.body() ?: return@execute)
+                        }
                 }
                 response.code() == 401 -> throw Exception("Wrong username or password")
                 else -> throw Exception(response.errorBody().toString())
