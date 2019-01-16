@@ -46,7 +46,7 @@ interface NetworkService {
                              @Query("latNE") latNE: Double,
                              @Query("lonNE") lonNE: Double,
                              @Query("latSW") latSW: Double,
-                             @Query("lonSW") lonSW: Double) // TODO return type
+                             @Query("lonSW") lonSW: Double): LiveDataRes<List<PigeonNumberStat>>
 
     @POST
     fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>

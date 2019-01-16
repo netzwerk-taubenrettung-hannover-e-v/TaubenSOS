@@ -5,9 +5,5 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "population_stats")
-class PopulationStat(@PrimaryKey val date: Long,
-                     val count: Int,
-                     var latNE: Double?,
-                     var lonNE: Double?,
-                     var latSW: Double?,
-                     var lonSW: Double?)
+class PopulationStat(@PrimaryKey val day: Long, val count: Int,
+                     latNE: Double?, lonNE: Double?, latSW: Double?, lonSW: Double?) : Stat(latNE, lonNE, latSW, lonSW)

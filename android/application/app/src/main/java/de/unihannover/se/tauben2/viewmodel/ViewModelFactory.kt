@@ -15,6 +15,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(context) as T
             modelClass.isAssignableFrom(MediaViewModel::class.java) -> MediaViewModel(context) as T
             modelClass.isAssignableFrom(PopulationMarkerViewModel::class.java) -> PopulationMarkerViewModel(context) as T
+            modelClass.isAssignableFrom(StatsViewModel::class.java) -> StatsViewModel(context) as T
             else -> throw IllegalArgumentException(this::class.java.simpleName + " Unknown ViewModelClass to handle")
         }
     }

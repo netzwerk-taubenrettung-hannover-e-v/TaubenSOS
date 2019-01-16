@@ -78,7 +78,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun shouldFetch(data: List<PopulationStat>?) = true
-        // TODO condition based on database content?
+        // TODO condition based on database content
 
 
         override fun loadFromDb(): LiveData<List<PopulationStat>> =
@@ -88,6 +88,35 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun createCall(): LiveDataRes<List<PopulationStat>> {
             return service.getPopulationStats(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
+                    lonSW)
+        }
+
+    }.getAsLiveData()
+
+    fun getPigeonNumberStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                             latSW: Double, lonSW: Double) = object :
+            NetworkBoundResource<List<PigeonNumberStat>, List<PigeonNumberStat>>(appExecutors) {
+        override fun saveCallResult(item: List<PigeonNumberStat>) {
+            // set boundaries for database query
+            item.forEach {
+                it.latNE = latNE
+                it.lonNE = lonNE
+                it.latSW = latSW
+                it.lonSW = lonSW
+            }
+            database.pigeonNumberStatDao().insertOrUpdate(item)
+        }
+
+        override fun shouldFetch(data: List<PigeonNumberStat>?) = true
+        // TODO condition based on database content
+
+
+        override fun loadFromDb(): LiveData<List<PigeonNumberStat>> =
+                database.pigeonNumberStatDao().getPigeonNumberStats(fromTime, untilTime, latNE, lonNE,
+                        latSW, lonSW)
+
+        override fun createCall(): LiveDataRes<List<PigeonNumberStat>> {
+            return service.getPigeonNumberStats(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
                     lonSW)
         }
 
@@ -319,7 +348,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             case.media.filter { it.toDelete }.forEachIndexed { index, m ->
 
                 // if not enough new local media items exists then delete old server media items
-                if(mediaItems.isEmpty() || mediaItems.size <= index)
+                if (mediaItems.isEmpty() || mediaItems.size <= index)
 
                     appExecutors.networkIO().execute {
                         val call = service.deleteCaseMedia(getToken(), resultData.getMediaURL(m.mediaID))
@@ -439,7 +468,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         future.get()
     }
 
-    fun updateUser(user : User) = object : AsyncDataRequest<User, User>(appExecutors) {
+    fun updateUser(user: User) = object : AsyncDataRequest<User, User>(appExecutors) {
         override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
         }

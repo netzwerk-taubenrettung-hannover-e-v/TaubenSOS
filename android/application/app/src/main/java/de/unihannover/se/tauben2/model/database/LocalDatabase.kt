@@ -16,7 +16,7 @@ import de.unihannover.se.tauben2.model.database.entity.*
  * the local SQLite Database
  */
 @Database(entities = [Case::class, InjuryEntity::class, User::class, PopulationMarker::class,
-    News::class, PopulationStat::class], exportSchema = false, version = 1)
+    News::class, PopulationStat::class, PigeonNumberStat::class], exportSchema = false, version = 1)
 @TypeConverters(ListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
@@ -52,5 +52,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun populationMarkerDao(): PopulationMarkerDao
 
     abstract fun populationStatDao(): PopulationStatDao
+
+    abstract fun pigeonNumberStatDao(): PigeonNumberStatDao
 
 }
