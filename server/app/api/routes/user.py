@@ -57,14 +57,45 @@ def update_user(username):
 		errors = user_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
-		if (json.get("isActivated") and not user.isActivated):
+		"""
+		if (user.registrationToken != json.get("registrationToken")):
+			if user.isActivated:
+				fcm.unsubscribe_from_topic("/topics/member", [user.registrationToken])
+				fcm.subscribe_to_topic("/topics/member", [json.get("registrationToken")])
+			if user.isAdmin:
+				fcm.unsubscribe_from_topic("/topics/admin", [user.registrationToken])
+				fcm.subscribe_to_topic("/topics/admin", [json.get("registrationToken")])
+		"""
+		if (user.registrationToken and json.get("isActivated") and not user.isActivated):
+			fcm.subscribe_to_topic("/topics/member", [user.registrationToken])
 			fcm.send_to_token(
-				json.get("registrationToken") or user.registrationToken,
+				user.registrationToken,
 				"Your Sign-up Request",
 				"Good news, your sign-up request has been approved! 🎉",
-				icon="ic_person_add_black_24dp")
-		elif (json.get("isAdmin") and not user.isAdmin):
-			fcm.subscribe_to_topic("/topics/admin", [json.get("registrationToken") or user.registrationToken])
+				icon="ic_supervisor")
+		elif (user.registrationToken and user.isActivated and not json.get("isActivated")):
+			fcm.unsubscribe_from_topic("/topics/member", [user.registrationToken])
+			fcm.send_to_token(
+				user.registrationToken,
+				"Your Membership Status",
+				"Regrettably, your membership has been deprived. 🥺",
+				icon="ic_supervisor")
+
+		if (user.registrationToken and json.get("isAdmin") and not user.isAdmin):
+			fcm.subscribe_to_topic("/topics/admin", [user.registrationToken])
+			fcm.send_to_token(
+				user.registrationToken,
+				"Your Membership Status",
+				"Good news, you have been promoted to admin! 🎉",
+				icon="ic_supervisor")
+		elif (user.registrationToken and user.isAdmin and not json.get("isAdmin")):
+			fcm.unsubscribe_from_topic("/topics/admin", [user.registrationToken])
+			fcm.send_to_token(
+				user.registrationToken,
+				"Your Membership Status",
+				"Regrettably, you have been demoted to member. 🥺",
+				icon="ic_supervisor")
+
 		user.update(**json)
 		return user_schema.jsonify(user), 200
 

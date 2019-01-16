@@ -52,7 +52,7 @@ class User(db.Model):
 		return db.session.query(User.query.filter(User.username == username).exists()).scalar()
 
 class UserSchema(ma.Schema):
-	username = ma.String(required=True, validate=lambda x: not User.exists(x))
+	username = ma.String(required=True)#, validate=lambda x: not User.exists(x))
 	phone = ma.String(required=True)
 	isActivated = ma.Boolean(missing=False)
 	isAdmin = ma.Boolean(missing=False)

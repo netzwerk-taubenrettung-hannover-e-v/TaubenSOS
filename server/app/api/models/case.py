@@ -21,7 +21,7 @@ class Case(db.Model):
     injury = db.relationship("Injury", cascade="all, delete-orphan", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", cascade="all, delete-orphan", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media=[]):
+    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury):
         self.timestamp = timestamp
         self.priority = priority
         self.reporter = reporter
@@ -35,13 +35,14 @@ class Case(db.Model):
         self.wasNotFound = wasNotFound
         self.isClosed = isClosed
         self.injury = injury
-        self.media = media
 
     def save(self):
         db.session.add(self)
         db.session.commit()
 
     def update(self, **kwargs):
+        kwargs.pop("caseID", None)
+        kwargs.pop("media", None)
         for key, value in kwargs.items():
             if key == "injury":
                 value = injury.injury_schema.load(value).data
