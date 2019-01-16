@@ -48,10 +48,6 @@
         android:name="de.unihannover.se.tauben2.view.main.fragments.UsersFragment"
         android:label="MembersFragment" />
     <custom_fragment
-        android:id="@+id/emergencyCallFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.EmergencyCallFragment"
-        android:label="EmergencyCallFragment" />
-    <custom_fragment
         android:id="@+id/contactFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.ContactFragment"
         android:label="ContactFragment" />

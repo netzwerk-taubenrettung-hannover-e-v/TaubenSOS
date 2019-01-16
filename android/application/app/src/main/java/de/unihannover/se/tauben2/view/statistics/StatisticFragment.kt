@@ -61,10 +61,7 @@ class StatisticFragment : Fragment() {
 
 
         // Set Area on Map
-        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-        fragmentView.set_area_button.setOnClickListener {
-            mapsFragment.markArea()
-        }
+        // val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
         // Set DatePicker
         createDateSelectListeners()
@@ -286,7 +283,7 @@ class StatisticFragment : Fragment() {
 
         var average = 0
         if (countedDays > 0) average = overall/countedDays
-        fragmentView.population_total.text = "in average: $average doves"
+        fragmentView.population_total.text = fragmentView.context.getString(R.string.in_average_population, average)
 
         return data
     }
@@ -326,8 +323,8 @@ class StatisticFragment : Fragment() {
             currentDate.add(Calendar.DATE, 1)
         }
 
-        val average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
-        fragmentView.reported_total.text = "in average: $average doves/day"
+        var average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
+        fragmentView.reported_total.text = fragmentView.context.getString(R.string.in_average_reports, average)
 
         return data
     }
