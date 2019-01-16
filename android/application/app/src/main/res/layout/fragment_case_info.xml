@@ -225,5 +225,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
+        <!--<VideoView-->
+            <!--android:id="@+id/view_video"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="invisible"-->
+            <!--/>-->
     </FrameLayout>
 </layout>

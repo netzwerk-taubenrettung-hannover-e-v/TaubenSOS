@@ -21,10 +21,6 @@ class UsersFragment : Fragment() {
     private var mCurrentObservedData: LiveDataRes<List<User>>? = null
     private lateinit var mCurrentObserver: LoadingObserver<List<User>>
 
-    companion object: Singleton<UsersFragment>() {
-        override fun newInstance() = UsersFragment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 

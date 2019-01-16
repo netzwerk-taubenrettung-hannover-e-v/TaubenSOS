@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -213,6 +214,9 @@ class MediaReportFragment : ReportFragment() {
                 REQUEST_IMAGE_CAPTURE -> {
                     compressImage(mLocalMediaUrls.last(), 80, 1000, 1000)
                 }
+                REQUEST_VIDEO_CAPTURE -> {
+
+                }
             }
             loadLocalMedia()
         }
@@ -256,13 +260,14 @@ class MediaReportFragment : ReportFragment() {
 
             val image = layout.getChildAt(0) as SquareImageView
 
+            mCreatedCase.loadMediaFromServerInto(media, image, null, false)
+
             if(media.getType().isVideo()) {
 //                    MediaMetadataRetriever().apply {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
 //                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-            } else
-                mCreatedCase.loadMediaFromServerInto(media, image, null, false)
+            }
 
 
             layout.visibility = View.VISIBLE

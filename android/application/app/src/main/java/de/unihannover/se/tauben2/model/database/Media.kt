@@ -6,7 +6,7 @@ import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Media(val mediaID: Int, val mimeType: String, var toDelete: Boolean = false): Parcelable {
+data class Media(val mediaID: Int, val mimeType: String?, var toDelete: Boolean = false): Parcelable {
 
     fun getType() = MimeType.getInstance(mimeType)
 
@@ -14,16 +14,17 @@ data class Media(val mediaID: Int, val mimeType: String, var toDelete: Boolean =
         JPEG("image", "jpeg"), PNG("image", "png"), MP4("video", "mp4"), OTHER("", "");
 
         companion object {
-            fun getInstance(mimeType: String): MimeType {
-                val splitted = mimeType.split("/")
+            fun getInstance(mimeType: String?): MimeType {
+                val splitted = mimeType?.split("/")
 
-                multiLet(splitted.firstOrNull(), splitted.lastOrNull()) { category, type ->
+                return multiLet(splitted?.firstOrNull(), splitted?.lastOrNull()) { category, type ->
                     MimeType.values().forEach {
-                        if(it.category == category && it.type == type) return@multiLet it
+                        if(it.category == category && it.type == type){
+                            return@multiLet it
+                        }
                     }
-                }
-
-                return OTHER
+                    OTHER
+                } ?: OTHER
             }
         }
 

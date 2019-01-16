@@ -16,8 +16,8 @@
     <string name="before">Vor %s</string>
     <string name="long_duration">%d Tagen, %02d Stunden, %02d Minuten</string>
     <string name="short_duration">%d Stunden, %02d Minuten, %02d Sekunden</string>
-    <string name="take_case">Fall übernehmen</string>
-    <string name="finish_case">Fall abschließen</string>
+    <string name="take_case">Übernehmen</string>
+    <string name="finish_case">Abschließen</string>
     <string name="reopen_case">Wieder eröffnen</string>
     <string name="in_progress_by">In Bearbeitung von</string>
     <string name="injuries">Verletzungen</string>
@@ -37,8 +37,8 @@
     <string name="injury_fledgling">Jungtier</string>
     <string name="injury_other">Andere (weitere Angaben später)</string>
     <string name="estimate_condition">Einschätzung des Zustands der Taube:</string>
-    <string name="good">eher gut</string>
-    <string name="poor">eher schlecht</string>
+    <string name="good">gut</string>
+    <string name="poor">schlecht</string>
     <string name="next">Weiter</string>
     <string name="back">Zurück</string>
     <string name="kind_of_pigeon">Um welche Taubenart handelt es sich?</string>

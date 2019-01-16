@@ -76,7 +76,7 @@ data class Case(@PrimaryKey var caseID: Int?,
     }
 
     fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo_48dp, fit: Boolean = true) {
-        loadMedia(media?.mediaID?.let {  getMediaURL(it) }, placeHolder, imageView, fit)
+        loadMedia(media?.let { getImageURL(it) }, placeHolder, imageView, fit)
     }
 
     fun getPigeonBreed() = PigeonBreed.fromString(breed)
@@ -91,7 +91,7 @@ data class Case(@PrimaryKey var caseID: Int?,
             get() = 900000 // 15 min
 
         @Ignore
-        fun getCleanInstance() = Case(null, null, null, 0.0, 0.0, null, null, -1, -1,
+        fun getCleanInstance() = Case(null, null, null, 0.0, 0.0, null, null, 1, -1,
                 "", null, null, null, Injury(false, false, false,
                 false, false, false, false, false), listOf())
 

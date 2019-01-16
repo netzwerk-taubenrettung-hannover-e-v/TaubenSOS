@@ -21,8 +21,25 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private var mShortAnimationDuration: Int = 0
 
+    private var mImageZoomListeners: MutableSet<ImageZoomListener> = mutableSetOf()
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
 
+    fun addImageZoomListener(imageZoomListener: ImageZoomListener) {
+        mImageZoomListeners.add(imageZoomListener)
+    }
+
+    fun addImageZoomListener(onImageZoom : () -> Unit, onImageZoomExit : () -> Unit) {
+        mImageZoomListeners.add(object : ImageZoomListener{
+            override fun onImageZoomExit() {
+                onImageZoomExit()
+            }
+
+            override fun onImageZoom() {
+                onImageZoom()
+            }
+        })
+    }
 
     fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
         this.setOnClickListener {
@@ -33,6 +50,7 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun zoomImageFromThumb(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
+        mImageZoomListeners.forEach { it.onImageZoom() }
         val thumbView = this
         val imageRes = drawable
 
@@ -131,16 +149,23 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                         thumbView.alpha = 1f
                         expandedImageView.visibility = View.GONE
                         mCurrentAnimator = null
+                        mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
                         thumbView.alpha = 1f
                         expandedImageView.visibility = View.GONE
                         mCurrentAnimator = null
+                        mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
                     }
                 })
                 start()
             }
         }
+    }
+
+    interface ImageZoomListener {
+        fun onImageZoom()
+        fun onImageZoomExit()
     }
 }

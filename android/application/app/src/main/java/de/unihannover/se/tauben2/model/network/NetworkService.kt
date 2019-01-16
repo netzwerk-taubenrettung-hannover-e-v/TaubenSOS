@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.model.network
 
+import androidx.room.Update
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
@@ -65,6 +66,10 @@ interface NetworkService {
 
     @GET("user/{username}")
     fun getUser(@Header("Authorization") token: String, @Path("username") username: String): LiveDataRes<User>
+
+    @PUT("user/{username}")
+    fun updateUser(@Header("Authorization") token: String, @Path("username") username: String,
+                   @Body user: User): LiveDataRes<User>
 
     @POST("user")
     fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.firebase.iid.FirebaseInstanceId
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_register
 import de.unihannover.se.tauben2.getViewModel
@@ -45,7 +46,14 @@ class RegisterFragment : Fragment() {
                 allInputsFilled(view as ViewGroup) -> {
                     val userViewModel = getViewModel(UserViewModel::class.java)
                     // TODO get phone number
-                    userViewModel?.register(User(username, false, false, pw, ""))
+                    FirebaseInstanceId.getInstance().instanceId.apply {
+                        addOnSuccessListener { result ->
+                            userViewModel?.register(User(username, false, false, pw, "", result.token))
+                        }
+                        addOnFailureListener {
+                            userViewModel?.register(User(username, false, false, pw, "", null))
+                        }
+                    }
 
                     setSnackBar(view, "Registration has been requested!")
 

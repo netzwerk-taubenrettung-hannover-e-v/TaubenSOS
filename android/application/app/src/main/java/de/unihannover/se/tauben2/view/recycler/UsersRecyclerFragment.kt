@@ -22,10 +22,10 @@ class UsersRecyclerFragment : RecyclerFragment<User>() {
         if (binding is CardUserBinding) {
             binding.c = data
             binding.cardUserIsAuthorized.setOnClickListener {
-                vm?.updatePermissions(Auth(data.username, data.isActivated, data.isAdmin))
+                vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
             }
             binding.cardUserIsAdmin.setOnClickListener {
-                vm?.updatePermissions(Auth(data.username, data.isActivated, data.isAdmin))
+                vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
             }
         }
     }
