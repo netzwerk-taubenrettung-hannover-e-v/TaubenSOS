@@ -1,5 +1,6 @@
 from api import db, ma, spec
 from api.models import populationValue
+from api.models.populationValue import PopulationValue
 from datetime import datetime
 from marshmallow import post_dump, pre_load, post_load, utils, validate
 
@@ -48,6 +49,11 @@ class PopulationMarker(db.Model):
 	@staticmethod
 	def get(populationMarkerID):
 		return PopulationMarker.query.get(populationMarkerID)
+
+	@staticmethod
+	def get_stats(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+		if fromTime is not None and untilTime is not None:
+			return db.session.query(db.func.date(PopulationValue.timestamp), db.func.sum(PopulationValue.pigeonCount)).join(PopulationMarker, PopulationMarker.populationMarkerID == PopulationValue.populationMarkerID).filter(db.and_(db.between(PopulationMarker.latitude, latSW, latNE), db.between(PopulationMarker.longitude, lonNE, lonSW), db.between(PopulationValue.timestamp, fromTime, untilTime))).group_by(db.func.date(PopulationValue.timestamp)).order_by(db.func.date(PopulationValue.timestamp)).all()
 
 class PopulationMarkerSchema(ma.Schema):
 	populationMarkerID = ma.Integer(dump_only=True)
