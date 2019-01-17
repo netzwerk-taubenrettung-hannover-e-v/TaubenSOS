@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
-import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.converter.ListConverter
+import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.dao.*
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 
@@ -18,7 +19,7 @@ import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
  * the local SQLite Database
  */
 @Database(entities = [Case::class, InjuryEntity::class, User::class, PopulationMarker::class,
-    News::class, PopulationStat::class, PigeonNumberStat::class], exportSchema = false, version = 1)
+    News::class, PopulationStat::class, PigeonNumberStat::class, InjuryStat::class], exportSchema = false, version = 1)
 @TypeConverters(ListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
@@ -56,5 +57,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun populationStatDao(): PopulationStatDao
 
     abstract fun pigeonNumberStatDao(): PigeonNumberStatDao
+
+    abstract fun injuryStatDao(): InjuryStatDao
 
 }

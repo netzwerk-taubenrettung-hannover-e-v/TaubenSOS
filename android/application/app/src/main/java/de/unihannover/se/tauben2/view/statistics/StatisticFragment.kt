@@ -3,7 +3,6 @@ package de.unihannover.se.tauben2.view.statistics
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +22,9 @@ import de.unihannover.se.tauben2.model.database.Injury
 import de.unihannover.se.tauben2.model.database.PigeonBreed
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.view.LoadingObserver
-import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
-import de.unihannover.se.tauben2.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_statistic.*
 import kotlinx.android.synthetic.main.fragment_statistic.view.*
 import kotlinx.android.synthetic.main.statistic_data.view.*
@@ -66,11 +62,11 @@ class StatisticFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
 
 
-        // for logging purposes remove later
-
-        /*val vm = getViewModel(StatsViewModel::class.java)
+        // for debugging purposes remove later
+        /*
+        val vm = getViewModel(StatsViewModel::class.java)
         vm?.let { viewModel ->
-            viewModel.getPigeonNumberStats(0, 1547725671, 52.4, 9.1,
+            viewModel.getInjuryStat(0, 1547725671, 52.4, 9.1,
                     51.3, 10.0).observeForever {
                 if (it.status == Resource.Status.SUCCESS) {
                     Log.d(LOG_TAG, it.data.toString())
