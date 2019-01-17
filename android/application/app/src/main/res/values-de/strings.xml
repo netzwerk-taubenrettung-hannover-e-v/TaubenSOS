@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tauben2</string>
-    <string name="taube_melden">Taube melden</string>
+    <string name="app_name">Tauben SOS</string>
     <string name="username">Nutzername:</string>
     <string name="password">Passwort:</string>
     <string name="login_titel">Login für Mitglieder</string>
@@ -10,7 +9,7 @@
     <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem Verein möglich und muss von einem Vereinsmitglied autorisiert werden.</string>
     <string name="call">Ruf uns gerne an!</string>
     <string name="tauben_zählen_info">Bitte wähle Standort, Datum und die Anzahl der Tauben aus, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
-    <string name="contact_info">Du kannst uns für weitere Informationen oder wenn du ein verletztes Tier melden möchtest gerne telefonisch kontaktieren.</string>
+    <string name="contact_info">Du kannst uns für weitere Informationen oder zum Melden eines verletzten Tiers gerne telefonisch kontaktieren.</string>
     <string name="priority">Priorität: %s</string>
     <string name="priority_blank">Priorität:</string>
     <string name="before">Vor %s</string>
@@ -37,7 +36,7 @@
     <string name="injury_fledgling">Jungtier</string>
     <string name="injury_other">Andere (weitere Angaben später)</string>
     <string name="estimate_condition">Einschätzung des Zustands der Taube:</string>
-    <string name="good">gut</string>
+    <string name="good">eher gut</string>
     <string name="poor">schlecht</string>
     <string name="next">Weiter</string>
     <string name="back">Zurück</string>
@@ -71,15 +70,15 @@
     <string name="enter_phone">Bitte stelle uns deine Mobilnummer zur Verfügung:</string>
     <string name="news_text_input_hint">Hier den Text eingeben.</string>
     <string name="date">Datum:</string>
-    <string name="enter_content">Inhalt hier einfügen.</string>
-    <string name="enter_title">Titel eingeben</string>
+    <string name="enter_content">Beschreibung</string>
+    <string name="enter_title">Titel</string>
     <string name="imprint_title">Impressum</string>
     <string name="privacy_title">Datenschutzerklärung</string>
     <string name="could_not_read_phone">Leider konnten wir deine Mobilnummer nicht automatisch bestimmen. Bitte gib sie daher manuell ein, damit wir dich erreichen können.</string>
     <string name="no_rescuer">Nicht in Bearbeitung</string>
     <string name="injury_foot_leg">Fuß/Bein</string>
     <string name="change_state_alive">Als lebendig melden</string>
-    <string name="additional_information_help">Kannst du weitere Angaben zu Standort oder Zustand der Taube machen?</string>
+    <string name="additional_information_help">Kannst du noch weitere Angaben zum Standort oder Zustand der Taube machen?</string>
     <string name="graphs">Statistiken</string>
     <plurals name="second">
         <item quantity="one">%02d Sekunde</item>
@@ -98,13 +97,13 @@
         <item quantity="other">%d Tagen</item>
     </plurals>
     <string name="priorities">Stufe 1 (gut): leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Küken auf de Boden (diese brauchen drinend HIlfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
-    <string name="report_explanation">"Um der verletzten Taube bestmöglich zu helfen, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden der verletzten Taube, kannst du den Status des Falls jederzeit einsehen und die Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notruftelefon bei den Kontaktinfos erreichen."</string>
+    <string name="report_explanation">Um der verletzten Taube bestmöglich helfen zu können, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden einer verletzten Taube kannst du den Status des Falls jederzeit einsehen und deine bereitgestellten Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notfalltelefon bei den Kontaktinfos erreichen.</string>
     <string name="permission">Erlaubnis</string>
     <string name="all_cases">Alle Fälle</string>
     <string name="my_cases">Meine Fälle</string>
     <string name="to">Bis:</string>
     <string name="reset">Zurücksetzen</string>
-    <string name="authorized">Authorisiert?</string>
+    <string name="authorized">Autorisiert?</string>
     <string name="breeds">Art:</string>
     <string name="show_examples">Beispiele</string>
     <string name="closed_cases">Geschlossene Fälle</string>
@@ -121,6 +120,6 @@
     <string name="report_step_additional_info">Zusätzliche Informationen</string>
     <string name="report_step_media">Medien</string>
     <string name="report_step_location">Standort</string>
-    <string name="in_average_population">im Durchschnitt: %1$d Tauben</string>
-    <string name="in_average_reports">im Durchschnitt: %1$.2f Tauben pro Tag</string>
+    <string name="in_average_population">Durchschnittlich: %1$d Tauben</string>
+    <string name="in_average_reports">Durchschnittlich: %1$.2f Tauben pro Tag</string>
 </resources>

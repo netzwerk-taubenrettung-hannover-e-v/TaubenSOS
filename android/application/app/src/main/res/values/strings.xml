@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Tauben2</string>
-    <string name="taube_melden">Report a pigeon</string>
+    <string name="app_name">Pigeon SOS</string>
     <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
     <string name="call">Give us a call!</string>
@@ -37,8 +36,8 @@
     <string name="submitted_before">Submitted before:</string>
     <string name="distance">Distance:</string>
     <string name="no_gps">No GPS available</string>
-    <string name="report_pigeon">Report pigeon</string>
-    <string name="enter_location">Enter your location:</string>
+    <string name="report_pigeon">Report a pigeon</string>
+    <string name="enter_location">Select your location:</string>
     <string name="set_position">Set position</string>
     <string name="add_media">Include up to three media files:</string>
     <string name="specify_injuries">Select up to three injuries:</string>
@@ -52,7 +51,7 @@
     <string name="injury_other">Other (more details later)</string>
     <string name="estimate_condition">Estimate the general condition of the pigeon:</string>
     <string name="good">rather good</string>
-    <string name="poor">rather poor</string>
+    <string name="poor">poor</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
     <string name="kind_of_pigeon">What kind of pigeon?</string>
@@ -83,7 +82,7 @@
     <string name="send">Send</string>
     <string name="selected_position">Selected position</string>
     <string name="delete">Delete</string>
-    <string name="change_state_dead">Report death</string>
+    <string name="change_state_dead">Report as dead</string>
     <string name="change_state_alive">Report alive</string>
     <string name="take_photo">Take photo</string>
     <string name="record_video">Record video</string>
@@ -97,23 +96,23 @@
     <string name="okay" translatable="false">Okay</string>
     <string name="news_text_input_hint">Please enter the text here.</string>
     <string name="date">Date:</string>
-    <string name="enter_content">Enter your content here.</string>
-    <string name="enter_title">Enter the title</string>
+    <string name="enter_content">Description</string>
+    <string name="enter_title">Title</string>
     <string name="imprint_title">Legal Notice</string>
     <string name="privacy_title">Privacy Policy</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
-    <string name="login_titel">Login for members</string>
+    <string name="login_titel">Member Login</string>
     <string name="passwort_wiederholen">Re-enter your password:</string>
     <string name="registrierung_beantragen">Request sign-up</string>
     <string name="registrierung_erklaerung">Your sign-up has to get approved by an admin.</string>
     <string name="tauben_zählen_info">Please select the location, date and count of the observed pigeons.</string>
-    <string name="sample" translatable="false">sample</string>
+    <string name="sample" translatable="false">Sample</string>
     <string name="all_cases">All cases</string>
     <string name="create_marker">Create Marker</string>
-    <string name="reset">reset</string>
+    <string name="reset">Reset</string>
     <string name="event_starts_on">Event starts on</string>
-    <string name="show_examples">show examples</string>
+    <string name="show_examples">Show examples</string>
     <string name="from">From:</string>
     <string name="to">To:</string>
     <string name="admin" translatable="false">Admin?</string>
@@ -126,12 +125,12 @@
     <string name="open_cases">Open cases</string>
     <string name="step">Step %1$d: %2$s</string>
     <string name="edit_case">Edit Case #%1$d</string>
-    <string name="report_step_media">Insert Media</string>
-    <string name="report_step_location">Set Your Location</string>
+    <string name="report_step_media">Add media</string>
+    <string name="report_step_location">Set your location</string>
     <string name="report_step_injuries">Specify Injuries</string>
     <string name="report_step_priority">Estimate the Priority</string>
     <string name="report_step_breed">Identify the Breed</string>
-    <string name="report_step_additional_info">Share Additional Informations</string>
-    <string name="in_average_population">in average: %1$d doves</string>
-    <string name="in_average_reports">in average: %1$.2f doves/day</string>
+    <string name="report_step_additional_info">Share additional information</string>
+    <string name="in_average_population">On average: %1$d pigeons</string>
+    <string name="in_average_reports">On average: %1$.2f pigeons/day</string>
 </resources>
