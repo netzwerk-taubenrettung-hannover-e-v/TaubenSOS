@@ -63,7 +63,7 @@
     <string name="additional_information_help">Do you have any additional information on the exact location or condition of the pigeon?</string>
     <string name="graphs">Stats</string>
     <string name="cases">Cases</string>
-    <string name="counter" translatable="false">Population</string>
+    <string name="counter">Census</string>
     <string name="news" translatable="false">Events</string>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
@@ -133,4 +133,12 @@
     <string name="report_step_additional_info">Share additional information</string>
     <string name="in_average_population">on average %1$d pigeons</string>
     <string name="in_average_reports">on average %1$.2f pigeons/day</string>
+    <string name="push_new_sign_up_request_title">New Sign-up Request</string>
+    <string name="push_new_sign_up_request_body">%s has requested to become part of the community! 🐣</string>
+    <string name="push_your_sign_up_request_title">Your Sign-up Request</string>
+    <string name="push_your_sign_up_request_body">Good news %s, your sign-up request has been approved! 🎉</string>
+    <string name="push_your_membership_status_title">Your Membership Status</string>
+    <string name="push_revoked_membership_body">Regrettably, your membership has been revoked. 😭</string>
+    <string name="push_promotion_body">Good news %s, you have been promoted to admin! 🎉</string>
+    <string name="push_demotion_body">Regrettably, you have been demoted to member. 😭</string>
 </resources>

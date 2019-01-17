@@ -79,7 +79,7 @@
     <string name="injury_foot_leg">Fuß/Bein</string>
     <string name="change_state_alive">Als lebendig melden</string>
     <string name="additional_information_help">Kannst du noch weitere Angaben zum Standort oder Zustand der Taube machen?</string>
-    <string name="graphs">Statistiken</string>
+    <string name="graphs">Statistik</string>
     <plurals name="second">
         <item quantity="one">%02d Sekunde</item>
         <item quantity="other">%02d Sekunden</item>
@@ -122,4 +122,13 @@
     <string name="report_step_location">Standort</string>
     <string name="in_average_population">durchschnittlich %1$d Tauben</string>
     <string name="in_average_reports">durchschnittlich %1$.2f Tauben pro Tag</string>
+    <string name="counter">Zählung</string>
+    <string name="push_new_sign_up_request_title">Neue Registrierungsanfrage</string>
+    <string name="push_new_sign_up_request_body">%s möchte Teil der Community werden! 🐣</string>
+    <string name="push_your_sign_up_request_title">Deine Registrierungsanfrage</string>
+    <string name="push_your_sign_up_request_body">Gute Neuigkeiten %s, deine Registrierungsanfrage wurde bestätigt! 🎉</string>
+    <string name="push_your_membership_status_title">Der Status deiner Mitgliedschaft</string>
+    <string name="push_revoked_membership_body">Leider wurde deine Mitgliedschaft widerrufen. 😭</string>
+    <string name="push_promotion_body">Gute Neuigkeiten %s, du wurdest soeben zum Admin befördert! 🎉</string>
+    <string name="push_demotion_body">Leider wurdest du degradiert, du bist nun kein Admin mehr. 😭</string>
 </resources>
