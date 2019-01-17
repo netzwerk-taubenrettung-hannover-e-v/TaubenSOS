@@ -10,6 +10,7 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 import de.unihannover.se.tauben2.model.network.NetworkService
@@ -128,15 +129,41 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
 
         override fun loadFromDb(): LiveData<List<PigeonNumberStat>> =
-                database.pigeonNumberStatDao().getPigeonNumberStats(fromTime, untilTime, latNE, lonNE,
-                        latSW, lonSW)
+                database.pigeonNumberStatDao().getPigeonNumberStats(fromTime, untilTime, latNE,
+                        lonNE, latSW, lonSW)
 
         override fun createCall(): LiveDataRes<List<PigeonNumberStat>> {
-            return service.getPigeonNumberStats(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
-                    lonSW)
+            return service.getPigeonNumberStats(getToken(), fromTime, untilTime, latNE, lonNE,
+                    latSW, lonSW)
         }
 
     }.getAsLiveData()
+
+    fun getInjuryStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                      latSW: Double, lonSW: Double) =
+            object : NetworkBoundResource<InjuryStat, List<InjuryStat>>(appExecutors) {
+                override fun saveCallResult(item: List<InjuryStat>) {
+                    // TODO change to 1 object when server api only returns 1 object
+                    val stats = item[0]
+                    stats.apply {
+                        this.fromTime = fromTime
+                        this.untilTime = untilTime
+                    }
+                    database.injuryStatDao().insertOrUpdate(stats)
+                }
+
+                override fun shouldFetch(data: InjuryStat?): Boolean = data == null
+
+                override fun loadFromDb(): LiveData<InjuryStat> {
+                    return database.injuryStatDao().getInjuryStat(fromTime, untilTime)
+                }
+
+                override fun createCall(): LiveDataRes<List<InjuryStat>> =
+                        service.getInjuryStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
+                                lonSW)
+
+
+            }.getAsLiveData()
 
     fun getCase(id: Int) = object : NetworkBoundResource<Case, Case>(appExecutors) {
         override fun saveCallResult(item: Case) {
@@ -399,7 +426,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
             while (urls.size != mediaItems.size) {
                 urls.add(resultData.getMediaUploadURL())
-//                urls = urls.takeLast(urls.size - 1).toMutableList()
             }
 
             if (urls.isNotEmpty()) {

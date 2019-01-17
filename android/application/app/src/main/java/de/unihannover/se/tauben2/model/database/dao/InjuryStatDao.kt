@@ -3,20 +3,17 @@ package de.unihannover.se.tauben2.model.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 
 /**
- * This class provides methods for accessing Pigeon Counter objects in the Local Database
+ * This class provides methods for accessing InjuryStat objects in the Local Database
  */
 @Dao
-interface InjuryStatDao : BaseDao<PopulationMarker> {
+interface InjuryStatDao : BaseDao<InjuryStat> {
 
-    /**
-     * @return LiveData of List of all PigeonCounters
-     */
-    @Query("SELECT * FROM population")
-    fun getAllPigeonCounters(): LiveData<List<PopulationMarker>>
-
-    @Query("SELECT * FROM population WHERE populationMarkerID= :id")
-    fun getPopulationMarker(id: Int): PopulationMarker
+    @Query("""
+        SELECT * FROM injury_stats
+        WHERE fromTime = :fromTime and untilTime = :untilTime
+    """)
+    fun getInjuryStat(fromTime: Long, untilTime: Long): LiveData<InjuryStat>
 }

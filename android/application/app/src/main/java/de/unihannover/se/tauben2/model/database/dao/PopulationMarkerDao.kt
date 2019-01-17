@@ -6,13 +6,13 @@ import androidx.room.Query
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 
 /**
- * This class provides methods for accessing Pigeon Counter objects in the Local Database
+ * This class provides methods for accessing PopulationMarker objects in the Local Database
  */
 @Dao
 interface PopulationMarkerDao : BaseDao<PopulationMarker> {
 
     /**
-     * @return LiveData of List of all PigeonCounters
+     * @return LiveData of List of all PopulationMarkers
      */
     @Query("SELECT * FROM population")
     fun getAllPigeonCounters(): LiveData<List<PopulationMarker>>
