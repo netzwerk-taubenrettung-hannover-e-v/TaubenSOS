@@ -22,7 +22,7 @@
     <string name="injuries">Verletzungen:</string>
     <string name="submitted_before">Eingereicht vor:</string>
     <string name="distance">Entfernung:</string>
-    <string name="no_gps">GPS-Signal nicht verfügbar</string>
+    <string name="no_gps">Kein GPS</string>
     <string name="report_pigeon">Taube melden</string>
     <string name="enter_location">Gib deinen Standort an:</string>
     <string name="set_position">Position setzen</string>
@@ -120,6 +120,6 @@
     <string name="report_step_additional_info">Zusätzliche Informationen</string>
     <string name="report_step_media">Medien</string>
     <string name="report_step_location">Standort</string>
-    <string name="in_average_population">Durchschnittlich: %1$d Tauben</string>
-    <string name="in_average_reports">Durchschnittlich: %1$.2f Tauben pro Tag</string>
+    <string name="in_average_population">durchschnittlich %1$d Tauben</string>
+    <string name="in_average_reports">durchschnittlich %1$.2f Tauben pro Tag</string>
 </resources>

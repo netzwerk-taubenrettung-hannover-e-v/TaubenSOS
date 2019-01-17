@@ -35,7 +35,7 @@
     <string name="case_id" translatable="false">ID: %s</string>
     <string name="submitted_before">Submitted before:</string>
     <string name="distance">Distance:</string>
-    <string name="no_gps">No GPS available</string>
+    <string name="no_gps">No GPS</string>
     <string name="report_pigeon">Report a pigeon</string>
     <string name="enter_location">Select your location:</string>
     <string name="set_position">Set position</string>
@@ -131,6 +131,6 @@
     <string name="report_step_priority">Estimate the Priority</string>
     <string name="report_step_breed">Identify the Breed</string>
     <string name="report_step_additional_info">Share additional information</string>
-    <string name="in_average_population">On average: %1$d pigeons</string>
-    <string name="in_average_reports">On average: %1$.2f pigeons/day</string>
+    <string name="in_average_population">on average %1$d pigeons</string>
+    <string name="in_average_reports">on average %1$.2f pigeons/day</string>
 </resources>
