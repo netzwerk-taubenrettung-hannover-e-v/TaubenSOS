@@ -56,18 +56,18 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
             val squareImgV = binding.root.image_card
 
-            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV)
+            data.loadMediaFromServerInto(if (data.media.isEmpty()) null else data.media[0], squareImgV)
 
             if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
                 activity?.let {
-                    // TODO Load full sized image only on Zoom
                     squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix))
-                    squareImgV.addImageZoomListener (
-                    {
-                        data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
-                    }, {
-                        data.loadMediaFromServerInto(data.media[0], squareImgV)
-                    })
+                    squareImgV.addImageZoomListener(
+                            {
+                                data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
+                            },
+                            {
+                                //nothing to do
+                            })
                 }
             }
 
