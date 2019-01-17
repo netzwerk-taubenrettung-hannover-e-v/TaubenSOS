@@ -1,11 +1,12 @@
 package de.unihannover.se.tauben2.model.network
 
-import androidx.room.Update
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.Token
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*

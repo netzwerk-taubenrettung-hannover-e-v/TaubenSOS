@@ -23,10 +23,12 @@ import de.unihannover.se.tauben2.model.database.Injury
 import de.unihannover.se.tauben2.model.database.PigeonBreed
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
+import de.unihannover.se.tauben2.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_statistic.*
 import kotlinx.android.synthetic.main.fragment_statistic.view.*
 import kotlinx.android.synthetic.main.statistic_data.view.*
@@ -37,6 +39,10 @@ import kotlin.collections.ArrayList
 
 
 class StatisticFragment : Fragment() {
+
+    companion object {
+        private val LOG_TAG = StatisticFragment::class.java.simpleName
+    }
 
     // is dis bad?
     private lateinit var fragmentView: View
@@ -60,6 +66,19 @@ class StatisticFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
 
 
+        // for logging purposes remove later
+
+        /*val vm = getViewModel(StatsViewModel::class.java)
+        vm?.let { viewModel ->
+            viewModel.getPigeonNumberStats(0, 1547725671, 52.4, 9.1,
+                    51.3, 10.0).observeForever {
+                if (it.status == Resource.Status.SUCCESS) {
+                    Log.d(LOG_TAG, it.data.toString())
+                }
+            }
+        }*/
+
+
         // Set Area on Map
         // val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
@@ -72,7 +91,6 @@ class StatisticFragment : Fragment() {
                     selectedDateFrom.get(Calendar.YEAR), selectedDateFrom.get(Calendar.MONTH),
                     selectedDateFrom.get(Calendar.DAY_OF_MONTH))
         }
-
 
 
         val datePickerDialogTo = context?.let {
@@ -137,6 +155,7 @@ class StatisticFragment : Fragment() {
             mCurrentObservedReportData = viewModel.cases
             mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
         }
+
     }
 
     // DATE SELECTION
@@ -261,7 +280,7 @@ class StatisticFragment : Fragment() {
             var counter = 0
 
             populationData?.forEach {
-                it.values.forEach {value ->
+                it.values.forEach { value ->
 
                     val date = Calendar.getInstance().apply { timeInMillis = value.timestamp * 1000 }
 
@@ -282,7 +301,7 @@ class StatisticFragment : Fragment() {
         }
 
         var average = 0
-        if (countedDays > 0) average = overall/countedDays
+        if (countedDays > 0) average = overall / countedDays
         fragmentView.population_total.text = fragmentView.context.getString(R.string.in_average_population, average)
 
         return data
@@ -323,7 +342,7 @@ class StatisticFragment : Fragment() {
             currentDate.add(Calendar.DATE, 1)
         }
 
-        var average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
+        val average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
         fragmentView.reported_total.text = fragmentView.context.getString(R.string.in_average_reports, average)
 
         return data
@@ -354,12 +373,12 @@ class StatisticFragment : Fragment() {
 
         val data = ArrayList<PieEntry>()
 
-        var breedEntries = mutableListOf<PieEntry>()
+        val breedEntries = mutableListOf<PieEntry>()
 
-        breeds.forEach {pb ->
+        breeds.forEach { pb ->
 
 
-            var entry : PieEntry? = null
+            var entry: PieEntry? = null
             breedEntries.forEach {
                 if (pb.getTitle() == it.label) {
                     entry = it

@@ -10,6 +10,8 @@ import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.converter.ListConverter
 import de.unihannover.se.tauben2.model.database.dao.*
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 
 /**
  * class with capability to create and retrieve a RoomDatabase singleton object which represents

@@ -10,6 +10,8 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 import de.unihannover.se.tauben2.model.network.NetworkService
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -36,6 +38,12 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         const val LOGIN_TOKEN_KEY = "authToken"
         const val LOGIN_USERNAME_KEY = "username"
         const val GUEST_PHONE = "phone"
+
+        const val STAT_MAX_PIGEON_NR_TIME = "maxPigeonNrTime"
+        const val STAT_MIN_PIGEON_NR_TIME = "minPigeonNrTime"
+
+        const val STAT_MAX_POPULATION_TIME = "maxPopulationTime"
+        const val STAT_MIN_POPULATION_TIME = "minPopulationTime"
     }
 
     private fun <T : DatabaseEntity> setItemUpdateTimestamps(vararg items: T) {
@@ -75,10 +83,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                 it.lonSW = lonSW
             }
             database.populationStatDao().insertOrUpdate(item)
+            updateSpTimeSpan(fromTime, untilTime, STAT_MIN_POPULATION_TIME, STAT_MAX_POPULATION_TIME)
         }
 
-        override fun shouldFetch(data: List<PopulationStat>?) = true
-        // TODO condition based on database content
+        override fun shouldFetch(data: List<PopulationStat>?): Boolean {
+            val maxTime = sp.getLong(STAT_MAX_POPULATION_TIME, untilTime - 1)
+            val minTime = sp.getLong(STAT_MIN_POPULATION_TIME, fromTime + 1)
+            return fromTime < minTime || untilTime > maxTime
+        }
 
 
         override fun loadFromDb(): LiveData<List<PopulationStat>> =
@@ -105,10 +117,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                 it.lonSW = lonSW
             }
             database.pigeonNumberStatDao().insertOrUpdate(item)
+            updateSpTimeSpan(fromTime, untilTime, STAT_MIN_PIGEON_NR_TIME, STAT_MAX_PIGEON_NR_TIME)
         }
 
-        override fun shouldFetch(data: List<PigeonNumberStat>?) = true
-        // TODO condition based on database content
+        override fun shouldFetch(data: List<PigeonNumberStat>?): Boolean {
+            val maxTime = sp.getLong(STAT_MAX_PIGEON_NR_TIME, Long.MIN_VALUE)
+            val minTime = sp.getLong(STAT_MIN_PIGEON_NR_TIME, Long.MAX_VALUE)
+            return fromTime < minTime || untilTime > maxTime
+        }
 
 
         override fun loadFromDb(): LiveData<List<PigeonNumberStat>> =
@@ -239,6 +255,17 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             throw Exception("Case id must not be null!")
         }
     }.send(news, false)
+
+    fun deleteNews(news: News) = object : AsyncDeleteRequest<News>(appExecutors) {
+        override fun deleteFromDB(requestData: News) {
+            database.newsDao().delete(requestData)
+        }
+
+        override fun createCall(requestData: News): Call<Void> {
+            requestData.feedID?.let { return service.deleteNews(getToken(), it) }
+            throw Exception("Feed id must not be null!")
+        }
+    }.send(news)
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
@@ -557,16 +584,19 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }
 
-    fun deleteNews(news: News) = object : AsyncDeleteRequest<News>(appExecutors) {
-        override fun deleteFromDB(requestData: News) {
-            database.newsDao().delete(requestData)
-        }
+    /**
+     * helper function for updating the timespan used for caching statistics
+     */
+    private fun updateSpTimeSpan(fromTime: Long, untilTime: Long, minLogTag: String, maxLogTag: String) {
+        val maxTime = sp.getLong(maxLogTag, fromTime)
+        val minTime = sp.getLong(minLogTag, untilTime)
 
-        override fun createCall(requestData: News): Call<Void> {
-            requestData.feedID?.let { return service.deleteNews(getToken(), it) }
-            throw Exception("Feed id must not be null!")
-        }
-    }.send(news)
+        if (fromTime <= minTime && untilTime >= maxTime)
+            sp.edit().apply {
+                putLong(maxLogTag, untilTime)
+                putLong(minLogTag, fromTime)
+            }.apply()
+    }
 
     private fun getToken() = sp.getString(LOGIN_TOKEN_KEY, "")
             ?: throw Exception("Auth getToken is null!")
