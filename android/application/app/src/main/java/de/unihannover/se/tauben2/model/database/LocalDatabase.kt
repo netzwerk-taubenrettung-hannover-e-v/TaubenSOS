@@ -9,7 +9,10 @@ import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
 import de.unihannover.se.tauben2.model.database.converter.ListConverter
 import de.unihannover.se.tauben2.model.database.converter.PermissionConverter
 import de.unihannover.se.tauben2.model.database.dao.*
-import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.model.database.entity.News
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -18,7 +21,7 @@ import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
  * class with capability to create and retrieve a RoomDatabase singleton object which represents
  * the local SQLite Database
  */
-@Database(entities = [Case::class, InjuryEntity::class, User::class, PopulationMarker::class,
+@Database(entities = [Case::class, User::class, PopulationMarker::class,
     News::class, PopulationStat::class, PigeonNumberStat::class, InjuryStat::class], exportSchema = false, version = 1)
 @TypeConverters(ListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
@@ -45,8 +48,6 @@ abstract class LocalDatabase : RoomDatabase() {
     }
 
     abstract fun caseDao(): CaseDao
-
-    abstract fun injuryDao(): InjuryDao
 
     abstract fun userDao(): UserDao
 
