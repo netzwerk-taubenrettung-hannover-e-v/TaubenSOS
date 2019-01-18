@@ -52,9 +52,9 @@ class StatisticFragment : Fragment() {
     private lateinit var northeast: LatLng
     private lateinit var southwest: LatLng
 
-    private var populationData: List<PigeonNumberStat>? = null
-    private var mCurrentObservedPopulationData: LiveDataRes<List<PigeonNumberStat>>? = null
-    private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PigeonNumberStat>>
+    private var reportData: List<PigeonNumberStat>? = null
+    private var mCurrentObservedReportData: LiveDataRes<List<PigeonNumberStat>>? = null
+    private lateinit var mCurrentReportObserver: LoadingObserver<List<PigeonNumberStat>>
 
     private var injuryData: InjuryStat? = null
     private var mCurrentObservedInjuryData: LiveDataRes<InjuryStat>? = null
@@ -63,6 +63,10 @@ class StatisticFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
+        val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment_statistic) as MapViewFragment
+        northeast = mapsFragment.getNorthEast()
+        southwest = mapsFragment.getSouthWest()
+
 
         // for debugging purposes remove later
         /*
@@ -118,7 +122,6 @@ class StatisticFragment : Fragment() {
                 fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
             } else {
 
-                val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment_statistic) as MapViewFragment
                 northeast = mapsFragment.getNorthEast()
                 southwest = mapsFragment.getSouthWest()
                 refreshCharts()
@@ -128,8 +131,14 @@ class StatisticFragment : Fragment() {
 
         mCurrentInjuryObserver = LoadingObserver(successObserver = Observer {
             injuryData = it
-            Log.d("BLUEDABE_IT", it.toString())
+            Log.d("BLUEDABE_INJURY", it.toString())
         })
+        mCurrentReportObserver = LoadingObserver(successObserver = Observer {
+            reportData = it
+            Log.d("BLUEDABE_POPULATION", it.toString())
+        })
+
+        loadCases()
 
         return fragmentView
     }
@@ -141,14 +150,16 @@ class StatisticFragment : Fragment() {
 
     private fun loadCases() {
 
-        Log.d("BLUEDABE_NORTHEAST", northeast.toString())
-
         getViewModel(StatsViewModel::class.java)?.let { viewModel ->
             mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
-            mCurrentObservedInjuryData = viewModel.getInjuryStat(0, 1547725671, 52.4, 9.1,
-                    51.3, 10.0)
-            //mCurrentObservedInjuryData = viewModel.getInjuryStat(selectedDateFrom.timeInMillis, selectedDateTo.timeInMillis, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedReportData?.removeObserver(mCurrentReportObserver)
+
+            mCurrentObservedInjuryData = viewModel.getInjuryStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
+            //mCurrentObservedInjuryData = viewModel.getInjuryStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedReportData = viewModel.getPigeonNumberStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
+
             mCurrentObservedInjuryData?.observe(this, mCurrentInjuryObserver)
+            mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
         }
     }
 
@@ -181,7 +192,7 @@ class StatisticFragment : Fragment() {
         loadCases()
 
         //createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
-        //createLineChart(fragmentView.reported_linechart, getReportLineChartData())
+        createLineChart(fragmentView.reported_linechart, getReportLineChartData())
         createPieChart(fragmentView.injury_piechart, getInjuryData())
         //createPieChart(fragmentView.breed_piechart, getBreedData())
     }
@@ -209,6 +220,7 @@ class StatisticFragment : Fragment() {
         dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
 
         chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
+        chart.axisLeft.axisMinimum = 0F
         chart.xAxis.labelRotationAngle = -60f
         chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chart.description.isEnabled = false
@@ -233,7 +245,7 @@ class StatisticFragment : Fragment() {
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-        chart.setEntryLabelColor(Color.BLACK)
+        chart.setEntryLabelColor(Color.WHITE)
 
         chart.data = PieData(dataSet)
         chart.invalidate()
@@ -266,40 +278,7 @@ class StatisticFragment : Fragment() {
 
     private fun getPopulationLineChartData(): ArrayList<Entry> {
 
-        var overall = 0
-        var countedDays = 0
-
         val data = ArrayList<Entry>()
-        val currentDate = selectedDateFrom.clone() as Calendar
-
-        while (currentDate != selectedDateTo) {
-
-            var counter = 0
-/*
-            populationData?.forEach {
-                it.values.forEach { value ->
-
-                    val date = Calendar.getInstance().apply { timeInMillis = value.timestamp * 1000 }
-
-                    if (date.get(Calendar.DAY_OF_YEAR) == currentDate.get(Calendar.DAY_OF_YEAR) &&
-                            date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)) {
-                        counter += value.pigeonCount
-                    }
-                }
-            }
-*/
-            if (counter != 0) {
-                data.add(Entry((TimeUnit.MILLISECONDS.toDays(Math.abs(currentDate.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat(), counter.toFloat()))
-                overall += counter
-                countedDays++
-            }
-
-            currentDate.add(Calendar.DATE, 1)
-        }
-
-        var average = 0
-        if (countedDays > 0) average = overall / countedDays
-        fragmentView.population_total.text = fragmentView.context.getString(R.string.in_average_population, average)
 
         return data
     }
@@ -307,35 +286,22 @@ class StatisticFragment : Fragment() {
     private fun getReportLineChartData(): ArrayList<Entry> {
 
         var overall = 0
-
+        val countedDays = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
         val data = ArrayList<Entry>()
-        val currentDate = selectedDateFrom.clone() as Calendar
 
-        while (currentDate != selectedDateTo) {
-
-            var counter = 0
-/*
-            reportData?.forEach {
-
-                val date = Calendar.getInstance().apply { timeInMillis = it.timestamp * 1000 }
-                if (date.get(Calendar.DAY_OF_YEAR) == currentDate.get(Calendar.DAY_OF_YEAR) &&
-                        date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)) {
-                    counter++
-                }
-
-                breeds += it.getPigeonBreed()
-                injuries += it.injury
-            }
-*/
-            if (counter != 0) {
-                data.add(Entry((TimeUnit.MILLISECONDS.toDays(Math.abs(currentDate.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat(), counter.toFloat()))
-                overall += counter
-            }
-
-            currentDate.add(Calendar.DATE, 1)
+        for (i in 0 until countedDays) {
+            data.add(Entry(i.toFloat(), 0F))
         }
 
-        val average = overall.toFloat() / (TimeUnit.MILLISECONDS.toDays(Math.abs(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)).toInt() + 1).toFloat()
+        reportData?.forEach { value ->
+
+            val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
+
+            data[index.toInt()] = Entry(index, value.count.toFloat())
+            overall += value.count
+        }
+
+        val average = overall.toFloat() / countedDays.toFloat()
         fragmentView.reported_total.text = fragmentView.context.getString(R.string.in_average_reports, average)
 
         return data
@@ -343,22 +309,33 @@ class StatisticFragment : Fragment() {
 
     private fun getInjuryData(): ArrayList<PieEntry> {
 
+        Log.d("BLUEDABE_INJURYDATA", injuryData.toString())
+
         val data = ArrayList<PieEntry>()
 
-        Log.d("BLUEDABE_INJURYDATA", injuryData.toString())
-        Log.d("BLUEDABE_INJURYDATAFL", injuryData?.sumFledgling.toString())
-        Log.d("BLUEDABE_INJURYDATAFO", injuryData?.sumFootOrLeg.toString())
-        Log.d("BLUEDABE_INJURYDATAHE", injuryData?.sumHeadOrEye.toString())
-
         injuryData?.let {
-            data.add(PieEntry(it.sumFootOrLeg.toFloat(), getString(R.string.injury_foot_leg)))
-            data.add(PieEntry(it.sumWing.toFloat(), getString(R.string.injury_wings)))
-            data.add(PieEntry(it.sumHeadOrEye.toFloat(), getString(R.string.injury_head_eye)))
-            data.add(PieEntry(it.sumParalyzedOrFlightless.toFloat(), getString(R.string.injury_paralyzed_flightless)))
-            data.add(PieEntry(it.sumOpenWound.toFloat(), getString(R.string.injury_open_wound)))
-            data.add(PieEntry(it.sumStrappedFeet.toFloat(), getString(R.string.injury_strings_feet)))
-            data.add(PieEntry(it.sumFledgling.toFloat(), getString(R.string.injury_fledgling)))
-            data.add(PieEntry(it.sumOther.toFloat(), getString(R.string.injury_other)))
+
+            val labels = arrayOf(getString(R.string.injury_foot_leg),
+                    getString(R.string.injury_wings),
+                    getString(R.string.injury_head_eye),
+                    getString(R.string.injury_paralyzed_flightless),
+                    getString(R.string.injury_open_wound),
+                    getString(R.string.injury_strings_feet),
+                    getString(R.string.injury_fledgling),
+                    getString(R.string.injury_other))
+
+            val values = arrayOf(it.sumFootOrLeg.toFloat(),
+                    it.sumWing.toFloat(),
+                    it.sumHeadOrEye.toFloat(),
+                    it.sumParalyzedOrFlightless.toFloat(),
+                    it.sumOpenWound.toFloat(),
+                    it.sumStrappedFeet.toFloat(),
+                    it.sumFledgling.toFloat(),
+                    it.sumOther.toFloat())
+
+            for (i in 0 until values.size) {
+                if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
+            }
         }
 
         return data
