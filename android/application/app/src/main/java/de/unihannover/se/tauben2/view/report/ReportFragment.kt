@@ -4,18 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.gms.common.util.IOUtils
-import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import kotlinx.android.synthetic.main.activity_report.*
-import kotlin.collections.ArrayList
 
 open class ReportFragment : Fragment() {
 
@@ -37,7 +33,8 @@ open class ReportFragment : Fragment() {
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCreatedCase = (activity as ReportActivity).case ?: (arguments?.getParcelable("createdCase") ?: Case.getCleanInstance())
+        mCreatedCase = (activity as ReportActivity).case ?: (arguments?.getParcelable("createdCase")
+                ?: Case.getCleanInstance())
         arguments?.getStringArrayList("localMedia")?.let { mLocalMediaUrls = it }
 
     }
@@ -65,6 +62,12 @@ open class ReportFragment : Fragment() {
                 // existing images inside the case are already saved as URLs!
                 Log.d("EDIT CASE", "case edited: $mCreatedCase")
             }
+            // before
+            context?.apply { logFilesDir(this) }
+            // delete files from internal storage
+            context?.apply { mLocalMediaUrls.deleteFiles(this) }
+            // after
+            context?.apply { logFilesDir(this) }
         }
     }
 
@@ -144,8 +147,19 @@ open class ReportFragment : Fragment() {
 
     protected fun setSnackBar(snackTitle: String) {
         view?.let {
-            setSnackBar(it, snackTitle,(activity as ReportActivity).report_bottom_bar)
+            setSnackBar(it, snackTitle, (activity as ReportActivity).report_bottom_bar)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // before
+        context?.apply { logFilesDir(this) }
+        // delete files from internal storage
+        context?.apply { mLocalMediaUrls.deleteFiles(this) }
+        // after
+        context?.apply { logFilesDir(this) }
+        Log.d(LOG_TAG, "Deleted: $mLocalMediaUrls")
     }
 
 
