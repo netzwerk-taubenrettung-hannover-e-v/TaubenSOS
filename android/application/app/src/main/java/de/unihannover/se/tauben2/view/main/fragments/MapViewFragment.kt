@@ -264,6 +264,22 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         //mOverlay?.remove()
     }
 
+    fun getNorthEast () : LatLng {
+        mMap?.let {
+            val ne = it.projection.visibleRegion.latLngBounds.northeast
+            return ne
+        }
+       return LatLng(0.0,0.0)
+    }
+
+    fun getSouthWest () : LatLng {
+        mMap?.let {
+            val sw = it.projection.visibleRegion.latLngBounds.southwest
+            return sw
+        }
+        return LatLng(0.0,0.0)
+    }
+
     fun markArea () {
 
         mMap?.let {

@@ -32,7 +32,7 @@
                 app:layout_scrollFlags="scroll">
 
                 <fragment
-                    android:id="@+id/map_fragment"
+                    android:id="@+id/map_fragment_statistic"
                     android:name="de.unihannover.se.tauben2.view.main.fragments.MapViewFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
