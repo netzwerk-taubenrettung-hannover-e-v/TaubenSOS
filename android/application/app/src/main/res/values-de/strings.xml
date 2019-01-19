@@ -131,4 +131,8 @@
     <string name="push_revoked_membership_body">Leider wurde deine Mitgliedschaft widerrufen. 😭</string>
     <string name="push_promotion_body">Gute Neuigkeiten %s, du wurdest soeben zum Admin befördert! 🎉</string>
     <string name="push_demotion_body">Leider wurdest du degradiert und bist nun kein Admin mehr. 😭</string>
+    <string name="a_delete_button">Ein Knopf zum Löschen.</string>
+    <string name="alert_user_deleted">Nutzer erfolgreich gelöscht!</string>
+    <string name="title_deleting_user">Nutzer Löschen</string>
+    <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
 </resources>
