@@ -11,15 +11,16 @@ import de.unihannover.se.tauben2.R.layout.fragment_login
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
-import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.input.InputFilterRequired.Companion.allInputsFilled
+import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 
-class LoginFragment : Fragment() {
+class
+LoginFragment : Fragment() {
 
     companion object : Singleton<LoginFragment>() {
         override fun newInstance() = LoginFragment()
@@ -34,34 +35,48 @@ class LoginFragment : Fragment() {
         view.btn_login.setOnClickListener {
 
             val userViewModel = getViewModel(UserViewModel::class.java)
-            try {
-                if (allInputsFilled(view as ViewGroup)) {
-                    val username = view.edit_login_username.text.toString()
-                    val pw = edit_login_password.text.toString()
-                    val user = User(username, false, false, pw, null, null)
 
-                    FirebaseInstanceId.getInstance().instanceId.apply {
-                        addOnSuccessListener { result ->
+            if (allInputsFilled(view as ViewGroup)) {
+                val username = view.edit_login_username.text.toString()
+                val pw = edit_login_password.text.toString()
+                val user = User(username, false, false, pw, null, null)
+
+                FirebaseInstanceId.getInstance().instanceId.apply {
+                    addOnSuccessListener { result ->
+                        try {
                             userViewModel?.login(user.apply { registrationToken = result.token })
-                        }
-                        addOnFailureListener {
-                            userViewModel?.login(user)
+                            finishLogin(view)
+
+                        } catch (e: Exception) {
+                            showLoginErrorMessage(view)
                         }
                     }
-
-                    activity?.finish()
-                    Intent(context, BootingActivity::class.java).apply { startActivity(this) }
-                    setSnackBar(view, "Login successful!")
-
-                } else {
-                    setSnackBar(view, "Please fill out all the fields!")
+                    addOnFailureListener {
+                        try {
+                            userViewModel?.login(user)
+                            finishLogin(view)
+                        } catch (e: Exception) {
+                            showLoginErrorMessage(view)
+                        }
+                    }
                 }
-            } catch (e: Exception) {
-                setSnackBar(view, "Wrong username or password!")
-            }
 
+
+            } else {
+                setSnackBar(view, "Please fill out all the fields!")
+            }
         }
 
         return view
+    }
+
+    private fun finishLogin(view: View) {
+        activity?.finish()
+        Intent(context, BootingActivity::class.java).apply { startActivity(this) }
+        setSnackBar(view, "Login successful!")
+    }
+
+    private fun showLoginErrorMessage(view: View) {
+        setSnackBar(view, "Wrong username or password or not activated!")
     }
 }
