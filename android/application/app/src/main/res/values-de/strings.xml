@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tauben SOS</string>
+    <string name="app_name">Tauben 🆘</string>
     <string name="username">Nutzername:</string>
     <string name="password">Passwort:</string>
     <string name="login_titel">Login für Mitglieder</string>
@@ -130,5 +130,5 @@
     <string name="push_your_membership_status_title">Der Status deiner Mitgliedschaft</string>
     <string name="push_revoked_membership_body">Leider wurde deine Mitgliedschaft widerrufen. 😭</string>
     <string name="push_promotion_body">Gute Neuigkeiten %s, du wurdest soeben zum Admin befördert! 🎉</string>
-    <string name="push_demotion_body">Leider wurdest du degradiert, du bist nun kein Admin mehr. 😭</string>
+    <string name="push_demotion_body">Leider wurdest du degradiert und bist nun kein Admin mehr. 😭</string>
 </resources>
