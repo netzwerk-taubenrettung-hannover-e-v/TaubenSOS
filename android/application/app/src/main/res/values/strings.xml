@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pigeon SOS</string>
+    <string name="app_name">Pigeon 🆘</string>
     <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
     <string name="call">Give us a call!</string>
@@ -63,7 +63,7 @@
     <string name="additional_information_help">Do you have any additional information on the exact location or condition of the pigeon?</string>
     <string name="graphs">Stats</string>
     <string name="cases">Cases</string>
-    <string name="counter">Census</string>
+    <string name="counter">Count</string>
     <string name="news" translatable="false">Events</string>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
