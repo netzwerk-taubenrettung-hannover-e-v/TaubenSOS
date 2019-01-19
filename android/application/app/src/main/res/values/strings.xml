@@ -141,4 +141,8 @@
     <string name="push_revoked_membership_body">Regrettably, your membership has been revoked. 😭</string>
     <string name="push_promotion_body">Good news %s, you have been promoted to admin! 🎉</string>
     <string name="push_demotion_body">Regrettably, you have been demoted to member. 😭</string>
+    <string name="a_delete_button">A delete button.</string>
+    <string name="alert_user_deleted">Deleted User successfully!</string>
+    <string name="title_deleting_user">Deleting User</string>
+    <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
 </resources>

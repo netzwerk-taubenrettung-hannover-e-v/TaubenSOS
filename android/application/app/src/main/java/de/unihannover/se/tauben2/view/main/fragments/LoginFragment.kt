@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 
-class
-LoginFragment : Fragment() {
+class LoginFragment : Fragment() {
 
     companion object : Singleton<LoginFragment>() {
         override fun newInstance() = LoginFragment()

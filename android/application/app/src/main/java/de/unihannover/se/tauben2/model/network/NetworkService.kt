@@ -35,6 +35,7 @@ interface NetworkService {
     fun deleteCase(@Header("Authorization") token: String,
                    @Path("id") id: Int): Call<Void>
 
+
     @GET("stats/population")
     fun getPopulationStats(@Header("Authorization") token: String,
                            @Query("fromTime") fromTime: Long,
@@ -71,6 +72,7 @@ interface NetworkService {
     @DELETE
     fun deleteCaseMedia(@Header("Authorization") token: String, @Url deleteUrl: String): Call<Void>
 
+
     @GET("feed")
     fun getNews(@Header("Authorization") token: String): LiveDataRes<List<News>>
 
@@ -87,6 +89,7 @@ interface NetworkService {
     @DELETE("feed/{feedID}")
     fun deleteNews(@Header("Authorization") token: String, @Path("feedID") feedID: Int): Call<Void>
 
+
     @GET("user")
     fun getUsers(@Header("Authorization") token: String): LiveDataRes<List<User>>
 
@@ -96,6 +99,9 @@ interface NetworkService {
     @PUT("user/{username}")
     fun updateUser(@Header("Authorization") token: String, @Path("username") username: String,
                    @Body user: User): LiveDataRes<User>
+
+    @DELETE("user/{username}")
+    fun deleteUser(@Header("Authorization") token: String, @Path("username") username: String): Call<Void>
 
     @GET("user/{username}")
     fun getUserCall(@Header("Authorization") token: String, @Path("username") username: String): Call<User>

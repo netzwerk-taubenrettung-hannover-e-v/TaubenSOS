@@ -209,6 +209,17 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
+    fun deleteUser(user: User) = object : AsyncDeleteRequest<User>(appExecutors) {
+        override fun deleteFromDB(requestData: User) {
+            database.userDao().delete(requestData)
+        }
+
+        override fun createCall(requestData: User): Call<Void> {
+            return service.deleteUser(getToken(), requestData.username)
+        }
+
+    }.send(user)
+
 
     fun getNewsPost(feedID: Int) = object : NetworkBoundResource<News, News>(appExecutors) {
         override fun saveCallResult(item: News) {
