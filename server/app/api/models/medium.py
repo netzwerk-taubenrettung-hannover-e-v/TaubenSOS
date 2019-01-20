@@ -3,9 +3,9 @@ from marshmallow import post_dump, post_load
 
 class Medium(db.Model):
     __tablename__ = "medium"
-    caseID = db.Column(db.Integer, db.ForeignKey("case.caseID"), nullable=False)
-    uri = db.Column(db.String(255), primary_key=True)
-    mediaID = db.Column(db.Integer, nullable=True)
+    caseID = db.Column(db.Integer, db.ForeignKey("case.caseID"), primary_key=True)
+    uri = db.Column(db.String(255), nullable=False)
+    mediaID = db.Column(db.Integer, primary_key=True)
     mimeType = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
 
@@ -35,8 +35,7 @@ class Medium(db.Model):
 
     @staticmethod
     def get(caseID, mediaID):
-        # return Medium.query.get(caseID)
-        return Medium.query.filter_by(caseID=caseID, mediaID=mediaID).first()
+        return Medium.query.get((caseID, mediaID))
 
 class MediumSchema(ma.Schema):
     mediaID = ma.Integer()

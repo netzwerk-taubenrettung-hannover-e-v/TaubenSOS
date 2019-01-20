@@ -3,10 +3,11 @@ import jwt
 import uuid
 import hashlib
 from datetime import datetime
-from flask import (Blueprint, request)
+from flask import Blueprint, request
 from flask import jsonify
-from api.models.user import (User)
-from api.models.token import (Token)
+from api.models.user import User
+from api.models.token import Token
+from . import fcm
 
 bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
@@ -63,6 +64,13 @@ def login():
 	if user is None or passwordHashed != user.password or not user.isActivated:
 		return jsonify(message="User does not exist, password is wrong or user is not activated"), 401
 
+	# subscribe to topics
+	if user.registrationToken:
+		if user.isActivated:
+			fcm.subscribe_to_topic("/topics/member", user.registrationToken)
+		if user.isAdmin:
+			fcm.subscribe_to_topic("/topics/admin", user.registrationToken)
+
 	access_token = generate_access_token(user)
 	return jsonify({"token": access_token})
 
@@ -73,6 +81,15 @@ def logout():
 	token_data = decode_access_token(access_token)
 	dbToken = Token.get(token_data['jti'])
 	dbToken.delete()
+
+	# unsubscribe from topics
+	user = User.get(token_data['username'])
+	if user is not None and user.registrationToken:
+		if user.isActivated:
+			fcm.unsubscribe_from_topic("/topics/member", user.registrationToken)
+		if user.isAdmin:
+			fcm.unsubscribe_from_topic("/topics/admin", user.registrationToken)
+	
 	return jsonify(message="Logout successful"), 200
 
 def generate_access_token(user):
