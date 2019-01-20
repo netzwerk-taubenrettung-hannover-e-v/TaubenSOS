@@ -21,7 +21,6 @@ import com.google.android.material.appbar.AppBarLayout
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
@@ -58,20 +57,16 @@ class StatisticFragment : Fragment() {
     private var datePickerDialogFrom: DatePickerDialog? = null
     private var datePickerDialogTo: DatePickerDialog? = null
 
-    private var populationData: List<PopulationStat>? = null
     private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationStat>>? = null
     private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PopulationStat>>
 
-    private var reportData: List<PigeonNumberStat>? = null
     private var mCurrentObservedReportData: LiveDataRes<List<PigeonNumberStat>>? = null
     private lateinit var mCurrentReportObserver: LoadingObserver<List<PigeonNumberStat>>
 
-    private var injuryData: InjuryStat? = null
     private var mCurrentObservedInjuryData: LiveDataRes<InjuryStat>? = null
     private lateinit var mCurrentInjuryObserver: LoadingObserver<InjuryStat>
 
 
-    private var breedData: BreedStat? = null
     private var mCurrentObservedBreedData: LiveDataRes<BreedStat>? = null
     private lateinit var mCurrentBreedObserver: LoadingObserver<BreedStat>
 
@@ -133,10 +128,18 @@ class StatisticFragment : Fragment() {
         }
 
 
-        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer { populationData = it })
-        mCurrentInjuryObserver = LoadingObserver(successObserver = Observer { injuryData = it })
-        mCurrentReportObserver = LoadingObserver(successObserver = Observer { reportData = it })
-        mCurrentBreedObserver = LoadingObserver(successObserver = Observer { breedData = it })
+        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer {
+            createLineChart(fragmentView.population_linechart, getPopulationLineChartData(it))
+        })
+        mCurrentInjuryObserver = LoadingObserver(successObserver = Observer {
+            createPieChart(fragmentView.injury_piechart, getInjuryData(it))
+        })
+        mCurrentReportObserver = LoadingObserver(successObserver = Observer {
+            createLineChart(fragmentView.reported_linechart, getReportLineChartData(it))
+        })
+        mCurrentBreedObserver = LoadingObserver(successObserver = Observer {
+            createPieChart(fragmentView.breed_piechart, getBreedData(it))
+        })
 
         loadCases()
 
@@ -156,10 +159,13 @@ class StatisticFragment : Fragment() {
             mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
             mCurrentObservedBreedData?.removeObserver(mCurrentBreedObserver)
 
-            mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
-            mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
-            mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
-            mCurrentObservedBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 54.447689, 16.107250,
+                    48.140436, 4.521094)
+            mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 54.447689, 16.107250,
+                    48.140436, 4.521094)
+            mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 54.447689, 16.107250, 48.140436, 4.521094)
+            mCurrentObservedBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 54.447689, 16.107250,
+                    48.140436, 4.521094)
 
             mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
             mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
@@ -180,15 +186,15 @@ class StatisticFragment : Fragment() {
     private fun createDateSelectListeners() {
         fromListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             selectedDateFrom.set(year, month, day)
+            setDatePicker()
             refreshButtonLabel()
             refreshCharts()
-            setDatePicker()
         }
         toListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             selectedDateTo.set(year, month, day)
+            setDatePicker()
             refreshButtonLabel()
             refreshCharts()
-            setDatePicker()
         }
     }
 
@@ -219,10 +225,7 @@ class StatisticFragment : Fragment() {
 
         loadCases()
 
-        createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
-        createLineChart(fragmentView.reported_linechart, getReportLineChartData())
-        createPieChart(fragmentView.injury_piechart, getInjuryData())
-        createPieChart(fragmentView.breed_piechart, getBreedData())
+
     }
 
     private fun resetLineChart(chart: LineChart) {
@@ -277,7 +280,7 @@ class StatisticFragment : Fragment() {
         chart.legend.isEnabled = false
         chart.setEntryLabelColor(Color.GRAY)
         chart.setEntryLabelTextSize(18F)
-        
+
         chart.data = PieData(dataSet)
         chart.invalidate()
     }
@@ -307,7 +310,7 @@ class StatisticFragment : Fragment() {
         return testData
     }
 
-    private fun getPopulationLineChartData(): ArrayList<Entry> {
+    private fun getPopulationLineChartData(populationData: List<PopulationStat>): ArrayList<Entry> {
 
         var overall = 0
         val days = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
@@ -315,7 +318,7 @@ class StatisticFragment : Fragment() {
         val data = ArrayList<Entry>()
 
         // IGNORE 0 as value
-        populationData?.forEach { value ->
+        populationData.forEach { value ->
 
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
 
@@ -334,7 +337,7 @@ class StatisticFragment : Fragment() {
         return data
     }
 
-    private fun getReportLineChartData(): ArrayList<Entry> {
+    private fun getReportLineChartData(reportData: List<PigeonNumberStat>): ArrayList<Entry> {
 
         var overall = 0
         val countedDays = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
@@ -357,7 +360,7 @@ class StatisticFragment : Fragment() {
         */
 
         // IGNORE 0 as value
-        reportData?.forEach { value ->
+        reportData.forEach { value ->
 
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
 
@@ -374,61 +377,58 @@ class StatisticFragment : Fragment() {
         return data
     }
 
-    private fun getInjuryData(): ArrayList<PieEntry> {
+    private fun getInjuryData(injuryData: InjuryStat): ArrayList<PieEntry> {
 
         Log.d("BLUEDABE_INJURYDATA", injuryData.toString())
 
         val data = ArrayList<PieEntry>()
 
-        injuryData?.let {
 
-            val labels = arrayOf(getString(R.string.injury_foot_leg),
-                    getString(R.string.injury_wings),
-                    getString(R.string.injury_head_eye),
-                    getString(R.string.injury_paralyzed_flightless),
-                    getString(R.string.injury_open_wound),
-                    getString(R.string.injury_strings_feet),
-                    getString(R.string.injury_fledgling),
-                    getString(R.string.injury_other_short))
+        val labels = arrayOf(getString(R.string.injury_foot_leg),
+                getString(R.string.injury_wings),
+                getString(R.string.injury_head_eye),
+                getString(R.string.injury_paralyzed_flightless),
+                getString(R.string.injury_open_wound),
+                getString(R.string.injury_strings_feet),
+                getString(R.string.injury_fledgling),
+                getString(R.string.injury_other_short))
 
-            val values = arrayOf(it.sumFootOrLeg.toFloat(),
-                    it.sumWing.toFloat(),
-                    it.sumHeadOrEye.toFloat(),
-                    it.sumParalyzedOrFlightless.toFloat(),
-                    it.sumOpenWound.toFloat(),
-                    it.sumStrappedFeet.toFloat(),
-                    it.sumFledgling.toFloat(),
-                    it.sumOther.toFloat())
+        val values = arrayOf(injuryData.sumFootOrLeg.toFloat(),
+                injuryData.sumWing.toFloat(),
+                injuryData.sumHeadOrEye.toFloat(),
+                injuryData.sumParalyzedOrFlightless.toFloat(),
+                injuryData.sumOpenWound.toFloat(),
+                injuryData.sumStrappedFeet.toFloat(),
+                injuryData.sumFledgling.toFloat(),
+                injuryData.sumOther.toFloat())
 
-            for (i in 0 until values.size) {
-                if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
-            }
+        for (i in 0 until values.size) {
+            if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
         }
+
 
         return data
     }
 
-    private fun getBreedData(): ArrayList<PieEntry> {
+    private fun getBreedData(breedData: BreedStat): ArrayList<PieEntry> {
 
         val data = ArrayList<PieEntry>()
 
-        breedData?.let {
 
-            val labels = arrayOf(getString(R.string.carrier_pigeon),
-                    getString(R.string.common_wood_pigeon),
-                    getString(R.string.feral_pigeon),
-                    getString(R.string.fancy_pigeon),
-                    getString(R.string.no_specification))
+        val labels = arrayOf(getString(R.string.carrier_pigeon),
+                getString(R.string.common_wood_pigeon),
+                getString(R.string.feral_pigeon),
+                getString(R.string.fancy_pigeon),
+                getString(R.string.no_specification))
 
-            val values = arrayOf(it.carrierPigeon.toFloat(),
-                    it.commonWoodPigeon.toFloat(),
-                    it.feralPigeon.toFloat(),
-                    it.fancyPigeon.toFloat(),
-                    it.undefined.toFloat())
+        val values = arrayOf(breedData.carrierPigeon.toFloat(),
+                breedData.commonWoodPigeon.toFloat(),
+                breedData.feralPigeon.toFloat(),
+                breedData.fancyPigeon.toFloat(),
+                breedData.undefined.toFloat())
 
-            for (i in 0 until values.size) {
-                if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
-            }
+        for (i in 0 until values.size) {
+            if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
         }
 
         return data
