@@ -99,7 +99,7 @@ def add_medium_to_case(caseID):
 		medium.uri = "photos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
 	elif filetype.video(data) is not None:
 		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
-		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
+		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".jpg"
 		threading.Thread(target=generate_thumbnail_for_video, args=(data, medium.thumbnail)).start()
 	else:
 		return jsonify(message="Media format not supported"), 415
@@ -127,7 +127,7 @@ def update_medium_for_case(caseID, mediaID):
 		medium.thumbnail = None
 	elif filetype.video(data) is not None:
 		medium.uri = "videos/" + str(uuid.uuid4()) + "." + filetype.guess_extension(data)
-		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".png"
+		medium.thumbnail = "thumbnails/" + str(uuid.uuid4()) + ".jpg"
 		threading.Thread(target=generate_thumbnail_for_video, args=(data, medium.thumbnail)).start()
 	else:
 		return jsonify(message="Media format not supported"), 415
@@ -173,13 +173,13 @@ def get_thumbnail_for_video(caseID, mediaID):
 		return jsonify(message="The medium to show the thumbnail for could not be found"), 404
 	if medium.thumbnail is None:
 		return jsonify(message="The medium you referred to is not a video and thus does not have a thumbnail associated with it"), 404
-	return s3.get_object(Bucket=media_bucket_name, Key=medium.thumbnail).get("Body").read(), 200, {"Content-Type": "image/png"}
+	return s3.get_object(Bucket=media_bucket_name, Key=medium.thumbnail).get("Body").read(), 200, {"Content-Type": "image/jpeg"}
 
 def generate_thumbnail_for_video(video, uri):
 	with tempfile.NamedTemporaryFile() as fp:
 		fp.write(video)
 		vcap = cv2.VideoCapture(fp.name)
 		ret, img = vcap.read()
-		ret, buf = cv2.imencode(".png", img)
+		ret, buf = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 50])
 		s3.put_object(Body=buf.tostring(), Bucket=media_bucket_name, Key=uri)
 		vcap.release()
