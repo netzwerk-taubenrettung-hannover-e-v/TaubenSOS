@@ -11,7 +11,8 @@ import kotlinx.android.parcel.Parcelize
 data class News(@PrimaryKey
                 val feedID: Int?,
                 var author: String,
-                var eventStart: Long,
+                var eventStart: Long?,
+                var eventEnd: Long?,
                 var text: String,
                 var timestamp: Long,
                 var title: String
@@ -29,6 +30,9 @@ data class News(@PrimaryKey
 
         override val refreshAllCooldown: Long
             get() = 900000 * 2 // 30 min
-
     }
+
+    fun getEventStartMillis() = eventStart?.let { it * 1000 }
+    fun getEventEndMillis() = eventEnd?.let { it * 1000 }
+
 }

@@ -15,7 +15,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 
-class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ImageView(context, attrs, defStyleAttr, defStyleRes) {
+class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ImageView(context, attrs, defStyleAttr, defStyleRes){
 
     private var mCurrentAnimator: Animator? = null
 
@@ -26,11 +26,12 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
 
     fun addImageZoomListener(imageZoomListener: ImageZoomListener) {
-        mImageZoomListeners.add(imageZoomListener)
+        if (drawable != null)
+            mImageZoomListeners.add(imageZoomListener)
     }
 
-    fun addImageZoomListener(onImageZoom: () -> Unit, onImageZoomExit: () -> Unit) {
-        mImageZoomListeners.add(object : ImageZoomListener {
+    fun addImageZoomListener(onImageZoom : () -> Unit, onImageZoomExit : () -> Unit) {
+        mImageZoomListeners.add(object : ImageZoomListener{
             override fun onImageZoomExit() {
                 onImageZoomExit()
             }
@@ -43,12 +44,14 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
         this.setOnClickListener {
-            zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
+            if(drawable == null)
+            else zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
         }
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
     private fun zoomImageFromThumb(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
+        mImageZoomListeners.forEach { it.onImageZoom() }
         val thumbView = this
         val imageRes = drawable
 
@@ -120,7 +123,6 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                     mCurrentAnimator = null
                 }
             })
-            mImageZoomListeners.forEach { it.onImageZoom() }
             start()
         }
 

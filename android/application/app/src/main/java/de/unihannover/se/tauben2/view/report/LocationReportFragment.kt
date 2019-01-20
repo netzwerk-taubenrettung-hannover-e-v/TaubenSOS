@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report_location.*
@@ -82,7 +81,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         // works but is bad
         val crosshair = ImageView(context)
 
-        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_add_white_24dp, null))
+        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_location_crosshair, null))
         crosshair.setColorFilter(Color.BLACK)
 
         crosshair.id = View.generateViewId()

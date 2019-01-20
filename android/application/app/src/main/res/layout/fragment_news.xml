@@ -22,14 +22,16 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_news_button"
             android:layout_width="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:tint="@color/White"
             app:fabSize="normal"
-            app:srcCompat="@drawable/ic_add_white_24dp" />
+            app:srcCompat="@drawable/ic_add"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:borderWidth="0dp"
+            />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

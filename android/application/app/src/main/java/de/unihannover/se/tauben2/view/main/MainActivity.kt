@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             mBinding.bottomNavigation.setSize(4)
 
         mBinding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
-                FragmentMenuItem(R.id.newsFragment, getString(R.string.news), R.drawable.ic_today_white_24dp),
+                FragmentMenuItem(R.id.newsFragment, getString(R.string.events), R.drawable.ic_today_white_24dp),
                 FragmentMenuItem(R.id.casesUserFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, onlyThatPermission = true),
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),

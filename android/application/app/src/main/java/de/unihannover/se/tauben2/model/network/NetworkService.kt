@@ -61,7 +61,7 @@ interface NetworkService {
                       @Query("latNE") latNE: Double,
                       @Query("lonNE") lonNE: Double,
                       @Query("latSW") latSW: Double,
-                      @Query("lonSW") lonSW: Double): LiveDataRes<List<InjuryStat>>
+                      @Query("lonSW") lonSW: Double): LiveDataRes<InjuryStat>
 
     @POST
     fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>

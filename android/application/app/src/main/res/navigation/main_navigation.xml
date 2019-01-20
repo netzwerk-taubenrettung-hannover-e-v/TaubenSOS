@@ -68,10 +68,6 @@
         android:name="de.unihannover.se.tauben2.view.main.fragments.PrivacyFragment"
         android:label="PrivacyFragment" />
     <custom_fragment
-        android:id="@+id/createNewsFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.CreateNewsFragment"
-        android:label="CreateNewsFragment" />
-    <custom_fragment
         android:id="@+id/editNewsFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.EditNewsFragment"
         android:label="EditNewsFragment" />

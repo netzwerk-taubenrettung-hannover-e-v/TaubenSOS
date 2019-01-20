@@ -71,7 +71,7 @@
             app:layout_constraintStart_toEndOf="@+id/textInputLayout"
             app:layout_constraintTop_toTopOf="@+id/textInputLayout"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_add_white_24dp"
+            app:srcCompat="@drawable/ic_add"
             app:tint="@color/White"
             tools:ignore="HardcodedText" />
 
