@@ -148,4 +148,5 @@
     <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
     <string name="is_event">Select for event</string>
     <string name="event_ends_on">Event ends on</string>
+    <string name="injury_other_short">Other</string>
 </resources>

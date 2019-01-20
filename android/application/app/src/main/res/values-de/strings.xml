@@ -138,4 +138,5 @@
     <string name="is_event">Für Event auswählen</string>
     <string name="event_ends_on">Event endet am</string>
     <string name="news">Neuigkeit</string>
+    <string name="injury_other_short">Andere</string>
 </resources>

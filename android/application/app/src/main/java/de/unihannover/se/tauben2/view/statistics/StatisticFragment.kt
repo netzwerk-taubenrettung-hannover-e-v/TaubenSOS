@@ -23,6 +23,7 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.StatsViewModel
@@ -41,7 +42,6 @@ class StatisticFragment : Fragment() {
         private val LOG_TAG = StatisticFragment::class.java.simpleName
     }
 
-    // is dis bad?
     private lateinit var fragmentView: View
 
     private var selectedDateFrom: Calendar = Calendar.getInstance()
@@ -56,9 +56,9 @@ class StatisticFragment : Fragment() {
     private var datePickerDialogFrom: DatePickerDialog? = null
     private var datePickerDialogTo: DatePickerDialog? = null
 
-    private var populationData: List<PopulationMarker>? = null
-    private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationMarker>>? = null
-    private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PopulationMarker>>
+    private var populationData: List<PopulationStat>? = null
+    private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationStat>>? = null
+    private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PopulationStat>>
 
     private var reportData: List<PigeonNumberStat>? = null
     private var mCurrentObservedReportData: LiveDataRes<List<PigeonNumberStat>>? = null
@@ -68,11 +68,11 @@ class StatisticFragment : Fragment() {
     private var mCurrentObservedInjuryData: LiveDataRes<InjuryStat>? = null
     private lateinit var mCurrentInjuryObserver: LoadingObserver<InjuryStat>
 
-    /*
+
     private var breedData: InjuryStat? = null
     private var mCurrentObservedBreedData: LiveDataRes<InjuryStat>? = null
     private lateinit var mCurrentBreedObserver: LoadingObserver<InjuryStat>
-    */
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -130,26 +130,11 @@ class StatisticFragment : Fragment() {
             }
         }
 
-        /*
-        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer {
-            populationData = it
-            refreshCharts()
-        })
-        */
-        mCurrentInjuryObserver = LoadingObserver(successObserver = Observer {
-            injuryData = it
-            Log.d("BLUEDABE_INJURY", it.toString())
-        })
-        mCurrentReportObserver = LoadingObserver(successObserver = Observer {
-            reportData = it
-            Log.d("BLUEDABE_REPORT", it.toString())
-        })
-        /*
-        mCurrentBreedObserver = LoadingObserver(successObserver = Observer {
-            breedData = it
-            refreshCharts()
-        })
-        */
+
+        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer { populationData = it })
+        mCurrentInjuryObserver = LoadingObserver(successObserver = Observer { injuryData = it })
+        mCurrentReportObserver = LoadingObserver(successObserver = Observer { reportData = it })
+        //mCurrentBreedObserver = LoadingObserver(successObserver = Observer { breedData = it })
 
         loadCases()
 
@@ -164,21 +149,17 @@ class StatisticFragment : Fragment() {
     private fun loadCases() {
 
         getViewModel(StatsViewModel::class.java)?.let { viewModel ->
-            //mCurrentObservedPopulationData?.removeObserver(mCurrentPopulationObserver)
+            mCurrentObservedPopulationData?.removeObserver(mCurrentPopulationObserver)
             mCurrentObservedReportData?.removeObserver(mCurrentReportObserver)
             mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
             //mCurrentObservedBreedData?.removeObserver(mCurrentBreedObserver)
 
-            // test
-            //mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
-            //mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
-
-            //mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
             mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
             mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
             //mCurrentObserverBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
 
-            //mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
+            mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
             mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
             mCurrentObservedInjuryData?.observe(this, mCurrentInjuryObserver)
             //mCurrentObservedBreedData?.observe(this, mCurrentBreedObserver)
@@ -236,7 +217,7 @@ class StatisticFragment : Fragment() {
 
         loadCases()
 
-        //createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
+        createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
         createLineChart(fragmentView.reported_linechart, getReportLineChartData())
         createPieChart(fragmentView.injury_piechart, getInjuryData())
         //createPieChart(fragmentView.breed_piechart, getBreedData())
@@ -290,7 +271,7 @@ class StatisticFragment : Fragment() {
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-        chart.setEntryLabelColor(Color.WHITE)
+        chart.setEntryLabelColor(Color.BLACK)
 
         chart.data = PieData(dataSet)
         chart.invalidate()
@@ -323,7 +304,27 @@ class StatisticFragment : Fragment() {
 
     private fun getPopulationLineChartData(): ArrayList<Entry> {
 
+        var overall = 0
+        val days = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
+        var countedDays = 0
         val data = ArrayList<Entry>()
+
+        // IGNORE 0 as value
+        populationData?.forEach { value ->
+
+            val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
+
+            if (index >= 0 && index < days) {
+                data.add(Entry(index, value.count.toFloat()))
+                overall += value.count
+                countedDays++
+            }
+
+        }
+
+        var average = 0
+        if (countedDays > 0) average = overall / countedDays
+        fragmentView.population_total.text = fragmentView.context.getString(R.string.in_average_population, average)
 
         return data
     }
@@ -334,6 +335,7 @@ class StatisticFragment : Fragment() {
         val countedDays = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
         val data = ArrayList<Entry>()
 
+        /* DONT IGNORE 0 as value
         for (i in 0 until countedDays) {
             data.add(Entry(i.toFloat(), 0F))
         }
@@ -342,8 +344,23 @@ class StatisticFragment : Fragment() {
 
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
 
-            if (index >= 0 && index < data.size) data[index.toInt()] = Entry(index, value.count.toFloat())
-            overall += value.count
+            if (index >= 0 && index < data.size) {
+                data[index.toInt()] = Entry(index, value.count.toFloat())
+                overall += value.count
+            }
+        }
+        */
+
+        // IGNORE 0 as value
+        reportData?.forEach { value ->
+
+            val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
+
+            if (index >= 0 && index < countedDays) {
+                data.add(Entry(index, value.count.toFloat()))
+                overall += value.count
+            }
+
         }
 
         val average = overall.toFloat() / countedDays.toFloat()
@@ -367,7 +384,7 @@ class StatisticFragment : Fragment() {
                     getString(R.string.injury_open_wound),
                     getString(R.string.injury_strings_feet),
                     getString(R.string.injury_fledgling),
-                    getString(R.string.injury_other))
+                    getString(R.string.injury_other_short))
 
             val values = arrayOf(it.sumFootOrLeg.toFloat(),
                     it.sumWing.toFloat(),
