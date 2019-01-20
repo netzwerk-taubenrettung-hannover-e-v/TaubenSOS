@@ -9,12 +9,12 @@ class StatsViewModel(context: Context) : BaseViewModel(context) {
                            latSW: Double, lonSW: Double): LiveDataRes<List<PopulationStat>> =
             repository.getPopulationStats(fromTime, untilTime, latNE, lonNE, latSW, lonSW)
 
-    fun getPigeonNumberStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
-                             latSW: Double, lonSW: Double) =
+    fun getReportStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                       latSW: Double, lonSW: Double) =
             repository.getPigeonNumberStats(fromTime, untilTime, latNE, lonNE, latSW, lonSW)
 
-    fun getInjuryStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
-                      latSW: Double, lonSW: Double) =
+    fun getInjuryStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                       latSW: Double, lonSW: Double) =
             repository.getInjuryStat(fromTime, untilTime, latNE, lonNE, latSW, lonSW)
 
     fun getBreedStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,

@@ -42,7 +42,7 @@
     <string name="back">Zurück</string>
     <string name="kind_of_pigeon">Um welche Taubenart handelt es sich?</string>
     <string name="carrier_pigeon">Brieftaube</string>
-    <string name="wedding_pigeon">Ziertaube</string>
+    <string name="fancy_pigeon">Ziertaube</string>
     <string name="common_wood_pigeon">Ringeltaube</string>
     <string name="feral_pigeon">Stadttaube</string>
     <string name="additional_information">Weitere Angaben</string>
@@ -138,4 +138,5 @@
     <string name="is_event">Für Event auswählen</string>
     <string name="event_ends_on">Event endet am</string>
     <string name="news">Neuigkeit</string>
+    <string name="injury_other_short">Andere</string>
 </resources>
