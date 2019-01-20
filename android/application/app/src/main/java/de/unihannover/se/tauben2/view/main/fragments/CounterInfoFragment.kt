@@ -58,7 +58,9 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         setHasOptionsMenu(true)
 
         val datePickerDialog = context?.let {
-            DatePickerDialog(it, this,
+            DatePickerDialog(it,
+                    R.style.PickerTheme,
+                    this,
                     selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH),
                     selectedDate.get(Calendar.DAY_OF_MONTH))
         }

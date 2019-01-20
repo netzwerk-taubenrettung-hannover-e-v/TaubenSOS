@@ -22,11 +22,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
-import de.unihannover.se.tauben2.model.database.Injury
-import de.unihannover.se.tauben2.model.database.PigeonBreed
-import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.multiLet
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.StatsViewModel
@@ -57,21 +53,26 @@ class StatisticFragment : Fragment() {
     private lateinit var northeast: LatLng
     private lateinit var southwest: LatLng
 
-    private var reportData: List<PigeonNumberStat>? = null
-    private var mCurrentObservedReportData: LiveDataRes<List<PigeonNumberStat>>? = null
-    private lateinit var mCurrentReportObserver: LoadingObserver<List<PigeonNumberStat>>
-
     private var datePickerDialogFrom: DatePickerDialog? = null
-    private var datePickerDialogTo : DatePickerDialog? = null
+    private var datePickerDialogTo: DatePickerDialog? = null
 
     private var populationData: List<PopulationMarker>? = null
     private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationMarker>>? = null
     private lateinit var mCurrentPopulationObserver: LoadingObserver<List<PopulationMarker>>
 
+    private var reportData: List<PigeonNumberStat>? = null
+    private var mCurrentObservedReportData: LiveDataRes<List<PigeonNumberStat>>? = null
+    private lateinit var mCurrentReportObserver: LoadingObserver<List<PigeonNumberStat>>
 
     private var injuryData: InjuryStat? = null
     private var mCurrentObservedInjuryData: LiveDataRes<InjuryStat>? = null
     private lateinit var mCurrentInjuryObserver: LoadingObserver<InjuryStat>
+
+    /*
+    private var breedData: InjuryStat? = null
+    private var mCurrentObservedBreedData: LiveDataRes<InjuryStat>? = null
+    private lateinit var mCurrentBreedObserver: LoadingObserver<InjuryStat>
+    */
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -85,7 +86,7 @@ class StatisticFragment : Fragment() {
         /*
         val vm = getViewModel(StatsViewModel::class.java)
         vm?.let { viewModel ->
-            viewModel.getInjuryStat(0, 1547725671, 52.4, 9.1,
+            viewModel.getInjuryStats(0, 1547725671, 52.4, 9.1,
                     51.3, 10.0).observeForever {
                 if (it.status == Resource.Status.SUCCESS) {
                     Log.d(LOG_TAG, it.data.toString())
@@ -93,17 +94,23 @@ class StatisticFragment : Fragment() {
             }
         }*/
 
-        // Set Area on Map
-        // val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-
         // Set DatePicker
         createDateSelectListeners()
         selectedDateFrom.add(Calendar.MONTH, -1)
 
         setDatePicker()
 
-        fragmentView.from_button.setOnClickListener { datePickerDialogFrom?.show() }
-        fragmentView.to_button.setOnClickListener { datePickerDialogTo?.show() }
+        fragmentView.from_button.setOnClickListener {
+            datePickerDialogFrom?.show()
+            datePickerDialogFrom?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark))
+            datePickerDialogFrom?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark))
+
+        }
+        fragmentView.to_button.setOnClickListener {
+            datePickerDialogTo?.show()
+            datePickerDialogTo?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark))
+            datePickerDialogTo?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark))
+        }
 
         fragmentView.collapse_button.setOnClickListener {
 
@@ -123,14 +130,26 @@ class StatisticFragment : Fragment() {
             }
         }
 
+        /*
+        mCurrentPopulationObserver = LoadingObserver(successObserver = Observer {
+            populationData = it
+            refreshCharts()
+        })
+        */
         mCurrentInjuryObserver = LoadingObserver(successObserver = Observer {
             injuryData = it
             Log.d("BLUEDABE_INJURY", it.toString())
         })
         mCurrentReportObserver = LoadingObserver(successObserver = Observer {
             reportData = it
-            Log.d("BLUEDABE_POPULATION", it.toString())
+            Log.d("BLUEDABE_REPORT", it.toString())
         })
+        /*
+        mCurrentBreedObserver = LoadingObserver(successObserver = Observer {
+            breedData = it
+            refreshCharts()
+        })
+        */
 
         loadCases()
 
@@ -145,15 +164,24 @@ class StatisticFragment : Fragment() {
     private fun loadCases() {
 
         getViewModel(StatsViewModel::class.java)?.let { viewModel ->
-            mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
+            //mCurrentObservedPopulationData?.removeObserver(mCurrentPopulationObserver)
             mCurrentObservedReportData?.removeObserver(mCurrentReportObserver)
+            mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
+            //mCurrentObservedBreedData?.removeObserver(mCurrentBreedObserver)
 
-            mCurrentObservedInjuryData = viewModel.getInjuryStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
-            //mCurrentObservedInjuryData = viewModel.getInjuryStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
-            mCurrentObservedReportData = viewModel.getPigeonNumberStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
+            // test
+            //mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
+            //mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, 52.4, 9.1, 51.3, 10.0)
 
-            mCurrentObservedInjuryData?.observe(this, mCurrentInjuryObserver)
+            //mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            //mCurrentObserverBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+
+            //mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
             mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
+            mCurrentObservedInjuryData?.observe(this, mCurrentInjuryObserver)
+            //mCurrentObservedBreedData?.observe(this, mCurrentBreedObserver)
         }
     }
 
@@ -181,18 +209,21 @@ class StatisticFragment : Fragment() {
         }
     }
 
-    private fun setDatePicker(){
-        datePickerDialogFrom = context?.let {
-            DatePickerDialog(it, fromListener,
+    private fun setDatePicker() {
+        context?.let {
+            datePickerDialogFrom = DatePickerDialog(it,
+                    R.style.PickerTheme,
+                    fromListener,
                     selectedDateFrom.get(Calendar.YEAR), selectedDateFrom.get(Calendar.MONTH),
                     selectedDateFrom.get(Calendar.DAY_OF_MONTH))
-        }
-        
-        datePickerDialogTo = context?.let {
-            DatePickerDialog(it, toListener,
+
+            datePickerDialogTo = DatePickerDialog(it,
+                    R.style.PickerTheme,
+                    toListener,
                     selectedDateTo.get(Calendar.YEAR), selectedDateTo.get(Calendar.MONTH),
                     selectedDateTo.get(Calendar.DAY_OF_MONTH))
         }
+
         datePickerDialogFrom?.datePicker?.maxDate = selectedDateTo.timeInMillis
         datePickerDialogTo?.datePicker?.maxDate = System.currentTimeMillis()
         datePickerDialogTo?.datePicker?.minDate = selectedDateFrom.timeInMillis
@@ -310,7 +341,7 @@ class StatisticFragment : Fragment() {
 
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
 
-            data[index.toInt()] = Entry(index, value.count.toFloat())
+            if (index >= 0 && index < data.size) data[index.toInt()] = Entry(index, value.count.toFloat())
             overall += value.count
         }
 
@@ -357,31 +388,26 @@ class StatisticFragment : Fragment() {
     private fun getBreedData(): ArrayList<PieEntry> {
 
         val data = ArrayList<PieEntry>()
-
-        val breedEntries = mutableListOf<PieEntry>()
 /*
-        breeds.forEach { pb ->
+        breedData?.let {
 
+            val labels = arrayOf(getString(R.string.carrier_pigeon),
+                    getString(R.string.common_wood_pigeon),
+                    getString(R.string.feral_pigeon),
+                    getString(R.string.wedding_pigeon),
+                    getString(R.string.no_specification))
 
-            var entry: PieEntry? = null
-            breedEntries.forEach {
-                if (pb.getTitle() == it.label) {
-                    entry = it
-                }
-            }
-            entry?.let {
-                val value = it.value + 1
-                breedEntries.remove(it)
-                breedEntries.add(PieEntry(value, pb.getTitle()))
-            } ?: run {
-                breedEntries.add(PieEntry(1F, pb.getTitle()))
+            val values = arrayOf(it.sumCarrierPigeon.toFloat(),
+                    it.sumWoodPigeon.toFloat(),
+                    it.sumFeralPigeon.toFloat(),
+                    it.sumFancyPigeon.toFloat(),
+                    it.sumNoSpecification.toFloat())
+
+            for (i in 0 until values.size) {
+                if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
             }
         }
 */
-        breedEntries.forEach {
-            data.add(it)
-        }
-
         return data
     }
 
