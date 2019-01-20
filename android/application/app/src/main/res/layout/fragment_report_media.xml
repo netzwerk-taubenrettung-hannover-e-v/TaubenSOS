@@ -52,7 +52,7 @@
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/image_layout"
             app:layout_constraintTop_toTopOf="@+id/image_layout"
-            app:srcCompat="@drawable/ic_add_white_24dp"
+            app:srcCompat="@drawable/ic_location_crosshair"
             app:tint="@color/White"
             />
 
