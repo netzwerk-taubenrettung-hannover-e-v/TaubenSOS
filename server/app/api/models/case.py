@@ -79,19 +79,19 @@ class Case(db.Model):
             return db.session.query(Case).filter(Case.isClosed == True)
 
     @staticmethod
-    def get_pigeon_numbers(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+    def get_pigeon_numbers(latNW, lonNW, latSE, lonSE, fromTime=None, untilTime=None):
         if fromTime is not None and untilTime is not None:
-            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" between :fromTime and :untilTime group by "day" order by "day"')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime)
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" between :fromTime and :untilTime group by "day" order by "day"')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, untilTime=untilTime)
         elif fromTime is not None:
-            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" > :fromTime group by "day" order by "day"')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime)
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" > :fromTime group by "day" order by "day"')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime)
         elif untilTime is not None:
-            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" < :untilTime group by "day" order by "day"')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, untilTime=untilTime)
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" < :untilTime group by "day" order by "day"')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, untilTime=untilTime)
         else:
-            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW group by "day" order by "day"')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE)
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE group by "day" order by "day"')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW)
         result = db.engine.execute(sql)
         res = result.fetchall()
         x = []
@@ -102,35 +102,43 @@ class Case(db.Model):
         return x
 
     @staticmethod
-    def get_breed(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+    def get_breed(latNW, lonNW, latSE, lonSE, fromTime=None, untilTime=None):
         if fromTime is not None and untilTime is not None:
-            return db.session.query(Case.breed, db.func.count(Case.caseID)).filter(db.and_(db.between(Case.timestamp, fromTime, untilTime), db.between(Case.latitude, latSW, latNE), db.between(Case.longitude, lonNE, lonSW))).group_by(Case.breed).all()
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as feralPigeon, sum(case when breed = :fancyPigeon then 1 else 0 end) as fancyPigeon, sum(case when breed = :carrierPigeon then 1 else 0 end) as carrierPigeon, sum(case when breed = :commonWoodPigeon then 1 else 0 end) as commonWoodPigeon, sum(case when breed is Null then 1 else 0 end) as undefined from "case" where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp between :fromTime and :untilTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, untilTime=untilTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
         elif fromTime is not None:
-            return db.session.query(Case.breed, db.func.count(Case.caseID)).filter(db.and_(Case.timestamp > fromTime, db.between(Case.latitude, latSW, latNE), db.between(Case.longitude, lonNE, lonSW))).group_by(Case.breed).all()
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as feralPigeon, sum(case when breed = :fancyPigeon then 1 else 0 end) as fancyPigeon, sum(case when breed = :carrierPigeon then 1 else 0 end) as carrierPigeon, sum(case when breed = :commonWoodPigeon then 1 else 0 end) as commonWoodPigeon, sum(case when breed is Null then 1 else 0 end) as undefined from "case" where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp > :fromTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
         elif untilTime is not None:
-            return db.session.query(Case.breed, db.func.count(Case.caseID)).filter(db.and_(Case.timestamp < untilTime, db.between(Case.latitude, latSW, latNE), db.between(Case.longitude, lonNE, lonSW))).group_by(Case.breed).all()
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as feralPigeon, sum(case when breed = :fancyPigeon then 1 else 0 end) as fancyPigeon, sum(case when breed = :carrierPigeon then 1 else 0 end) as carrierPigeon, sum(case when breed = :commonWoodPigeon then 1 else 0 end) as commonWoodPigeon, sum(case when breed is Null then 1 else 0 end) as undefined from "case" where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp < :untilTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, untilTime=untilTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
         else:
-            return db.session.query(Case.breed, db.func.count(Case.caseID)).filter(db.and_(db.between(Case.latitude, latSW, latNE), db.between(Case.longitude, lonNE, lonSW))).group_by(Case.breed).all()
-
-    @staticmethod
-    def get_injury(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
-        if fromTime is not None and untilTime is not None:
-            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" between :fromTime and :untilTime')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime)
-        elif fromTime is not None:
-            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" > :fromTime')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime)
-        elif untilTime is not None:
-            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW and "timestamp" < :untilTime')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, untilTime=untilTime)
-        else:
-            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonNE and :lonSW')
-            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE)
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as feralPigeon, sum(case when breed = :fancyPigeon then 1 else 0 end) as fancyPigeon, sum(case when breed = :carrierPigeon then 1 else 0 end) as carrierPigeon, sum(case when breed = :commonWoodPigeon then 1 else 0 end) as commonWoodPigeon, sum(case when breed is Null then 1 else 0 end) as undefined from "case" where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
         result = db.engine.execute(sql)
         res = result.fetchall()
-        x = []
         for i in res:
-            x.append(dict(i.items()))
+            x =dict(i.items())
+        return x
+
+    @staticmethod
+    def get_injury(latNW, lonNW, latSE, lonSE, fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" between :fromTime and :untilTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, untilTime=untilTime)
+        elif fromTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" > :fromTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime)
+        elif untilTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE and "timestamp" < :untilTime')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, untilTime=untilTime)
+        else:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSE and :latNW and "longitude" between :lonNW and :lonSE')
+            sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW)
+        result = db.engine.execute(sql)
+        res = result.fetchall()
+        for i in res:
+            x = dict(i.items())
         return x
 
 

@@ -46,17 +46,42 @@ def get_population_stats():
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
-		latNE = float(request.args.get("latNE"))
-		lonNE = float(request.args.get("lonNE"))
-		latSW = float(request.args.get("latSW"))
-		lonSW = float(request.args.get("lonSW"))
+		latNW = float(request.args.get("latNW"))
+		lonNW = float(request.args.get("lonNW"))
+		latSE = float(request.args.get("latSE"))
+		lonSE = float(request.args.get("lonSE"))
+
+		if latNW is None or lonNW is None or latSE is None or lonSE is None:
+			return jsonify(message="Provide coordinates correctly"), 400
+
 		if untilTime is not None and fromTime is not None:
 			try:
 				untilTime = convert_timestamp(int(untilTime))
 				fromTime = convert_timestamp(int(fromTime))
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
-		values = PopulationMarker.get_stats(latNE=latNE, lonNE=lonNE, latSW=latSW, lonSW=lonSW, untilTime=untilTime, fromTime=fromTime)
+			
+			values = PopulationMarker.get_stats(latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE, untilTime=untilTime, fromTime=fromTime)
+
+		elif untilTime is not None:
+			try:
+				untilTime = convert_timestamp(int(untilTime))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			
+			values = PopulationMarker.get_stats(latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE, untilTime=untilTime)
+		
+		elif fromTime is not None:
+			try:
+				fromTime = convert_timestamp(int(fromTime))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			
+			values = PopulationMarker.get_stats(latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE, fromTime=fromTime)
+
+		else:
+			values = PopulationMarker.get_stats(latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE)
+
 		return jsonify(values), 200
 
 @bp.route("/stats/pigeonNumbers", methods=["GET"], strict_slashes=False)
@@ -64,12 +89,12 @@ def read_pigeon_numbers():
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
-		latNE = float(request.args.get("latNE"))
-		lonNE = float(request.args.get("lonNE"))
-		latSW = float(request.args.get("latSW"))
-		lonSW = float(request.args.get("lonSW"))
+		latNW = float(request.args.get("latNW"))
+		lonNW = float(request.args.get("lonNW"))
+		latSE = float(request.args.get("latSE"))
+		lonSE = float(request.args.get("lonSE"))
 
-		if latNE is None or lonNE is None or latSW is None or lonSW is None:
+		if latNW is None or lonNW is None or latSE is None or lonSE is None:
 			return jsonify(message="Provide coordinates correctly"), 400
 
 		if untilTime is not None and fromTime is not None:
@@ -79,7 +104,7 @@ def read_pigeon_numbers():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			pigeonNumbers = Case.get_pigeon_numbers(fromTime=fromTime, untilTime=untilTime, latNE=latNE, lonNE=lonNE, latSW=latSW, lonSW=lonSW)
+			pigeonNumbers = Case.get_pigeon_numbers(fromTime=fromTime, untilTime=untilTime, latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE)
 
 		elif untilTime is not None:
 			try:
@@ -87,7 +112,7 @@ def read_pigeon_numbers():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			pigeonNumbers = Case.get_pigeon_numbers(untilTime=untilTime, latNE=latNE, lonNE=lonNE, latSW=latSW, lonSW=lonSW)
+			pigeonNumbers = Case.get_pigeon_numbers(untilTime=untilTime, latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE)
 
 		elif fromTime is not None:
 			try:
@@ -95,10 +120,10 @@ def read_pigeon_numbers():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			pigeonNumbers = Case.get_pigeon_numbers(fromTime=fromTime, latNE=latNE, lonNE=lonNE, latSW=latSW, lonSW=lonSW)
+			pigeonNumbers = Case.get_pigeon_numbers(fromTime=fromTime, latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE)
 
 		else:
-			pigeonNumbers = Case.get_pigeon_numbers(latNE=latNE, lonNE=lonNE, latSW=latSW, lonSW=lonSW)
+			pigeonNumbers = Case.get_pigeon_numbers(latNW=latNW, lonNW=lonNW, latSE=latSE, lonSE=lonSE)
 
 		return jsonify(pigeonNumbers), 200
 
@@ -107,12 +132,12 @@ def read_breed():
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
-		latNE = float(request.args.get("latNE"))
-		lonNE = float(request.args.get("lonNE"))
-		latSW = float(request.args.get("latSW"))
-		lonSW = float(request.args.get("lonSW"))
+		latNW = float(request.args.get("latNW"))
+		lonNW = float(request.args.get("lonNW"))
+		latSE = float(request.args.get("latSE"))
+		lonSE = float(request.args.get("lonSE"))
 
-		if latNE is None or lonNE is None or latSW is None or lonSW is None:
+		if latNW is None or lonNW is None or latSE is None or lonSE is None:
 			return jsonify(message="Provide coordinates correctly"), 400
 
 		if untilTime is not None and fromTime is not None:
@@ -122,7 +147,7 @@ def read_breed():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			breed = Case.get_breed(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, fromTime=fromTime, untilTime=untilTime)
+			breed = Case.get_breed(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, fromTime=fromTime, untilTime=untilTime)
 
 		elif untilTime is not None:
 			try:
@@ -130,7 +155,7 @@ def read_breed():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			breed = Case.get_breed(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, untilTime=untilTime)
+			breed = Case.get_breed(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, untilTime=untilTime)
 
 		elif fromTime is not None:
 			try:
@@ -138,10 +163,10 @@ def read_breed():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400
 
-			breed = Case.get_breed(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, fromTime=fromTime)
+			breed = Case.get_breed(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, fromTime=fromTime)
 
 		else:
-			breed = Case.get_breed(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW)
+			breed = Case.get_breed(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE)
 
 		return jsonify(breed), 200
 
@@ -150,12 +175,12 @@ def read_injury():
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
-		latNE = float(request.args.get("latNE"))
-		lonNE = float(request.args.get("lonNE"))
-		latSW = float(request.args.get("latSW"))
-		lonSW = float(request.args.get("lonSW"))
+		latNW = float(request.args.get("latNW"))
+		lonNW = float(request.args.get("lonNW"))
+		latSE = float(request.args.get("latSE"))
+		lonSE = float(request.args.get("lonSE"))
 
-		if latNE is None or lonNE is None or latSW is None or lonSW is None:
+		if latNW is None or lonNW is None or latSE is None or lonSE is None:
 			return jsonify(message="Provide coordinates correctly"), 400
 
 		if untilTime is not None and fromTime is not None:
@@ -165,7 +190,7 @@ def read_injury():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400	
 
-			injury = Case.get_injury(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, fromTime=fromTime, untilTime=untilTime)
+			injury = Case.get_injury(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, fromTime=fromTime, untilTime=untilTime)
 
 		elif untilTime is not None:
 			try:
@@ -173,7 +198,7 @@ def read_injury():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400	
 				
-			injury = Case.get_injury(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, untilTime=untilTime)
+			injury = Case.get_injury(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, untilTime=untilTime)
 		
 		elif fromTime is not None:
 			try:
@@ -181,10 +206,10 @@ def read_injury():
 			except ValueError:
 				return jsonify(message="Unix timestamp out of range"), 400	
 				
-			injury = Case.get_injury(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW, fromTime=fromTime)
+			injury = Case.get_injury(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE, fromTime=fromTime)
 		
 		else:
-			injury = Case.get_injury(latNE=latNE, latSW=latSW, lonNE=lonNE, lonSW=lonSW)
+			injury = Case.get_injury(latNW=latNW, latSE=latSE, lonNW=lonNW, lonSE=lonSE)
 			
 		return jsonify(injury), 200
 
