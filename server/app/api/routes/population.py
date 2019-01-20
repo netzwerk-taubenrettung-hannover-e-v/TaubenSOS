@@ -60,18 +60,23 @@ def create_value_for_marker(populationMarkerID):
 		if populationMarker is None:
 			return jsonify(message="The population marker to be added a value could not be found"), 404
 		json = request.get_json()
-		json["populationMarkerID"] = int(populationMarkerID)
-		populationValue, errors = populationValue_schema.load(data=json)
+		val = PopulationValue.get_value(populationMarkerID=populationMarkerID, timestamp=convert_timestamp_date(int(json["timestamp"])))
+		if val is not None:
+			json["timestamp"] = convert_timestamp_date(int(json["timestamp"]))
+			PopulationValue.update(val, **json)
+		else:
+			json["populationMarkerID"] = int(populationMarkerID)
+			val, errors = populationValue_schema.load(data=json)
+			if errors:
+				return jsonify(errors), 400
+			else:
+				val.save()
 		lastUpdate = datetime.utcnow()
 		lastUpdateDict = {
 			"lastUpdate": lastUpdate
 		}
 		PopulationMarker.update(populationMarker, **lastUpdateDict)
-		if errors:
-			return jsonify(errors), 400
-		else:
-			populationValue.save()
-			return populationValue_schema.jsonify(populationValue), 201
+		return populationValue_schema.jsonify(val), 201
 
 @bp.route("/population/<int:populationMarkerID>", methods=["DELETE"], strict_slashes=False)
 def delete_marker(populationMarkerID):
@@ -104,3 +109,7 @@ def change_marker(populationMarkerID):
 
 def convert_timestamp(unix):
 	return utils.rfcformat(datetime.fromtimestamp(unix))
+
+def convert_timestamp_date(unix):
+	d = datetime.fromtimestamp(unix).date()
+	return utils.rfcformat(datetime(year=d.year, month=d.month, day=d.day))

@@ -17,6 +17,11 @@ class PopulationValue(db.Model):
 		db.session.add(self)
 		db.session.commit()
 
+	def update(self, **kwargs):
+		for key, value in kwargs.items():
+			setattr(self, key, value)
+		db.session.commit()
+
 	def delete(self):
 		db.session.delete(self)
 		db.session.commit()
@@ -27,6 +32,14 @@ class PopulationValue(db.Model):
 	@staticmethod
 	def all():
 		return PopulationValue.query.all()
+	
+	@staticmethod
+	def get_value(populationMarkerID, timestamp):
+		return PopulationValue.query.get((populationMarkerID, timestamp))
+
+	@staticmethod
+	def already_has_value(populationMarkerID, timestamp):
+		return db.session.query(PopulationValue).filter(db.and_(PopulationValue.populationMarkerID == populationMarkerID, db.func.date(PopulationValue.timestamp) == db.func.date(timestamp)))
 
 	@staticmethod
 	def get_values_for_marker(populationMarkerID):
@@ -46,8 +59,8 @@ class PopulationValueSchema(ma.Schema):
 	@pre_load
 	def process_input(self, data):
 		if data.get("timestamp") is not None:
-			d = datetime.fromtimestamp(int(data["timestamp"]))
-			data["timestamp"] = utils.rfcformat(d)
+			d = datetime.fromtimestamp(int(data["timestamp"])).date()
+			data["timestamp"] = utils.rfcformat(datetime(year=d.year, month=d.month, day=d.day))
 		return data
 
 	@post_load
