@@ -26,7 +26,8 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
 
     fun addImageZoomListener(imageZoomListener: ImageZoomListener) {
-        mImageZoomListeners.add(imageZoomListener)
+        if (drawable != null)
+            mImageZoomListeners.add(imageZoomListener)
     }
 
     fun addImageZoomListener(onImageZoom : () -> Unit, onImageZoomExit : () -> Unit) {

@@ -141,15 +141,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getInjuryStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
                       latSW: Double, lonSW: Double) =
-            object : NetworkBoundResource<InjuryStat, List<InjuryStat>>(appExecutors) {
-                override fun saveCallResult(item: List<InjuryStat>) {
-                    // TODO change to 1 object when server api only returns 1 object
-                    val stats = item[0]
-                    stats.apply {
+            object : NetworkBoundResource<InjuryStat, InjuryStat>(appExecutors) {
+                override fun saveCallResult(item: InjuryStat) {
+
+                    item.apply {
                         this.fromTime = fromTime
                         this.untilTime = untilTime
                     }
-                    database.injuryStatDao().insertOrUpdate(stats)
+                    database.injuryStatDao().insertOrUpdate(item)
                 }
 
                 override fun shouldFetch(data: InjuryStat?): Boolean = data == null
@@ -158,10 +157,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     return database.injuryStatDao().getInjuryStat(fromTime, untilTime)
                 }
 
-                override fun createCall(): LiveDataRes<List<InjuryStat>> =
+                override fun createCall(): LiveDataRes<InjuryStat> =
                         service.getInjuryStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
                                 lonSW)
-
 
             }.getAsLiveData()
 
