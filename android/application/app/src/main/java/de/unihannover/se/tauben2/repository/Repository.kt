@@ -88,8 +88,8 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun shouldFetch(data: List<PopulationStat>?): Boolean {
-            val maxTime = sp.getLong(STAT_MAX_POPULATION_TIME, untilTime - 1)
-            val minTime = sp.getLong(STAT_MIN_POPULATION_TIME, fromTime + 1)
+            val maxTime = sp.getLong(STAT_MAX_POPULATION_TIME, Long.MIN_VALUE)
+            val minTime = sp.getLong(STAT_MIN_POPULATION_TIME, Long.MAX_VALUE)
             return fromTime < minTime || untilTime > maxTime
         }
 

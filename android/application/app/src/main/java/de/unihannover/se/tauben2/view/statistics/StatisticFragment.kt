@@ -20,13 +20,9 @@ import com.google.android.material.appbar.AppBarLayout
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
-import de.unihannover.se.tauben2.model.database.Injury
-import de.unihannover.se.tauben2.model.database.PigeonBreed
-import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.multiLet
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.StatsViewModel
@@ -62,7 +58,7 @@ class StatisticFragment : Fragment() {
     private lateinit var mCurrentReportObserver: LoadingObserver<List<PigeonNumberStat>>
 
     private var datePickerDialogFrom: DatePickerDialog? = null
-    private var datePickerDialogTo : DatePickerDialog? = null
+    private var datePickerDialogTo: DatePickerDialog? = null
 
     private var populationData: List<PopulationMarker>? = null
     private var mCurrentObservedPopulationData: LiveDataRes<List<PopulationMarker>>? = null
@@ -82,11 +78,11 @@ class StatisticFragment : Fragment() {
 
 
         // for debugging purposes remove later
-        /*
-        val vm = getViewModel(StatsViewModel::class.java)
+
+        /*val vm = getViewModel(StatsViewModel::class.java)
         vm?.let { viewModel ->
-            viewModel.getInjuryStat(0, 1547725671, 52.4, 9.1,
-                    51.3, 10.0).observeForever {
+            viewModel.getPopulationStats(0, 1547725671, 54.447689, 16.107250,
+                    48.140436, 4.521094).observeForever {
                 if (it.status == Resource.Status.SUCCESS) {
                     Log.d(LOG_TAG, it.data.toString())
                 }
@@ -181,13 +177,13 @@ class StatisticFragment : Fragment() {
         }
     }
 
-    private fun setDatePicker(){
+    private fun setDatePicker() {
         datePickerDialogFrom = context?.let {
             DatePickerDialog(it, fromListener,
                     selectedDateFrom.get(Calendar.YEAR), selectedDateFrom.get(Calendar.MONTH),
                     selectedDateFrom.get(Calendar.DAY_OF_MONTH))
         }
-        
+
         datePickerDialogTo = context?.let {
             DatePickerDialog(it, toListener,
                     selectedDateTo.get(Calendar.YEAR), selectedDateTo.get(Calendar.MONTH),
