@@ -22,6 +22,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -70,9 +71,9 @@ class StatisticFragment : Fragment() {
     private lateinit var mCurrentInjuryObserver: LoadingObserver<InjuryStat>
 
 
-    private var breedData: InjuryStat? = null
-    private var mCurrentObservedBreedData: LiveDataRes<InjuryStat>? = null
-    private lateinit var mCurrentBreedObserver: LoadingObserver<InjuryStat>
+    private var breedData: BreedStat? = null
+    private var mCurrentObservedBreedData: LiveDataRes<BreedStat>? = null
+    private lateinit var mCurrentBreedObserver: LoadingObserver<BreedStat>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -135,7 +136,7 @@ class StatisticFragment : Fragment() {
         mCurrentPopulationObserver = LoadingObserver(successObserver = Observer { populationData = it })
         mCurrentInjuryObserver = LoadingObserver(successObserver = Observer { injuryData = it })
         mCurrentReportObserver = LoadingObserver(successObserver = Observer { reportData = it })
-        //mCurrentBreedObserver = LoadingObserver(successObserver = Observer { breedData = it })
+        mCurrentBreedObserver = LoadingObserver(successObserver = Observer { breedData = it })
 
         loadCases()
 
@@ -153,17 +154,17 @@ class StatisticFragment : Fragment() {
             mCurrentObservedPopulationData?.removeObserver(mCurrentPopulationObserver)
             mCurrentObservedReportData?.removeObserver(mCurrentReportObserver)
             mCurrentObservedInjuryData?.removeObserver(mCurrentInjuryObserver)
-            //mCurrentObservedBreedData?.removeObserver(mCurrentBreedObserver)
+            mCurrentObservedBreedData?.removeObserver(mCurrentBreedObserver)
 
             mCurrentObservedPopulationData = viewModel.getPopulationStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
             mCurrentObservedReportData = viewModel.getReportStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
             mCurrentObservedInjuryData = viewModel.getInjuryStats(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
-            //mCurrentObserverBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
+            mCurrentObservedBreedData = viewModel.getBreedStat(selectedDateFrom.timeInMillis / 1000, selectedDateTo.timeInMillis / 1000, northeast.latitude, northeast.longitude, southwest.latitude, southwest.longitude)
 
             mCurrentObservedPopulationData?.observe(this, mCurrentPopulationObserver)
             mCurrentObservedReportData?.observe(this, mCurrentReportObserver)
             mCurrentObservedInjuryData?.observe(this, mCurrentInjuryObserver)
-            //mCurrentObservedBreedData?.observe(this, mCurrentBreedObserver)
+            mCurrentObservedBreedData?.observe(this, mCurrentBreedObserver)
         }
     }
 
@@ -221,7 +222,7 @@ class StatisticFragment : Fragment() {
         createLineChart(fragmentView.population_linechart, getPopulationLineChartData())
         createLineChart(fragmentView.reported_linechart, getReportLineChartData())
         createPieChart(fragmentView.injury_piechart, getInjuryData())
-        //createPieChart(fragmentView.breed_piechart, getBreedData())
+        createPieChart(fragmentView.breed_piechart, getBreedData())
     }
 
     private fun resetLineChart(chart: LineChart) {
@@ -274,7 +275,7 @@ class StatisticFragment : Fragment() {
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-        chart.setEntryLabelColor(Color.BLACK)
+        chart.setEntryLabelColor(Color.GRAY)
         chart.setEntryLabelTextSize(18F)
         
         chart.data = PieData(dataSet)
@@ -410,26 +411,26 @@ class StatisticFragment : Fragment() {
     private fun getBreedData(): ArrayList<PieEntry> {
 
         val data = ArrayList<PieEntry>()
-/*
+
         breedData?.let {
 
             val labels = arrayOf(getString(R.string.carrier_pigeon),
                     getString(R.string.common_wood_pigeon),
                     getString(R.string.feral_pigeon),
-                    getString(R.string.wedding_pigeon),
+                    getString(R.string.fancy_pigeon),
                     getString(R.string.no_specification))
 
-            val values = arrayOf(it.sumCarrierPigeon.toFloat(),
-                    it.sumWoodPigeon.toFloat(),
-                    it.sumFeralPigeon.toFloat(),
-                    it.sumFancyPigeon.toFloat(),
-                    it.sumNoSpecification.toFloat())
+            val values = arrayOf(it.carrierPigeon.toFloat(),
+                    it.commonWoodPigeon.toFloat(),
+                    it.feralPigeon.toFloat(),
+                    it.fancyPigeon.toFloat(),
+                    it.undefined.toFloat())
 
             for (i in 0 until values.size) {
                 if (values[i] != 0F) data.add(PieEntry(values[i], labels[i]))
             }
         }
-*/
+
         return data
     }
 
