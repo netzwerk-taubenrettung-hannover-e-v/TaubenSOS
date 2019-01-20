@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
@@ -266,13 +267,16 @@ class StatisticFragment : Fragment() {
         for (c in ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c)
         dataSet.colors = colors
+        dataSet.valueFormatter = PercentFormatter()
+        dataSet.valueTextSize = 18F
 
         chart.isDrawHoleEnabled = false
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
         chart.setEntryLabelColor(Color.BLACK)
-
+        chart.setEntryLabelTextSize(18F)
+        
         chart.data = PieData(dataSet)
         chart.invalidate()
     }
