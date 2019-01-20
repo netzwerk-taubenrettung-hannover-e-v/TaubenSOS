@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tauben 🆘</string>
+    <string name="app_name">TaubenSOS</string>
     <string name="username">Nutzername:</string>
     <string name="password">Passwort:</string>
     <string name="login_titel">Login für Mitglieder</string>
@@ -65,7 +65,7 @@
     <string name="what_kind_of_media">Welche Medien möchtest du hinzufügen?</string>
     <string name="maximum_reached">Maximale Anzahl erreicht.</string>
     <string name="written_by_text">Erstellt von %s</string>
-    <string name="starts_on">Event startet am %s</string>
+    <string name="starts_on">Event: %s - %s</string>
     <string name="select_injuries">Wähle mindestens eine Verletzung.</string>
     <string name="enter_phone">Bitte stelle uns deine Mobilnummer zur Verfügung:</string>
     <string name="news_text_input_hint">Hier den Text eingeben.</string>
@@ -135,4 +135,7 @@
     <string name="alert_user_deleted">Nutzer erfolgreich gelöscht!</string>
     <string name="title_deleting_user">Nutzer Löschen</string>
     <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
+    <string name="is_event">Für Event auswählen</string>
+    <string name="event_ends_on">Event endet am</string>
+    <string name="news">Neuigkeit</string>
 </resources>

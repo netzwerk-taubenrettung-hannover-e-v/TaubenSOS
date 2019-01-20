@@ -97,25 +97,37 @@ private fun getDatePattern() = (DateFormat.getDateFormat(App.context) as SimpleD
 private fun getLongDatePattern() = (DateFormat.getLongDateFormat(App.context) as SimpleDateFormat).toLocalizedPattern()
 private fun getTimePattern() = (DateFormat.getTimeFormat(App.context) as SimpleDateFormat).toLocalizedPattern()
 
-fun getDateString(time: Long) = SimpleDateFormat(getDatePattern(), Locale.getDefault()).format(time)
-fun getLongDateString(time: Long) = SimpleDateFormat(getLongDatePattern(), Locale.getDefault()).format(time)
-fun getDateTimeString(time: Long) = SimpleDateFormat(getDatePattern() + ", " + getTimePattern(), Locale.getDefault()).format(time)
+fun getDateString(time: Long?) : String {
+    time ?: return ""
+    return SimpleDateFormat(getDatePattern(), Locale.getDefault()).format(time)
+}
+fun getLongDateString(time: Long?): String {
+    time ?: return ""
+    return SimpleDateFormat(getLongDatePattern(), Locale.getDefault()).format(time)
+}
+fun getDateTimeString(time: Long?): String {
+    time ?: return ""
+    return SimpleDateFormat(getDatePattern() + ", " + getTimePattern(), Locale.getDefault()).format(time)
+}
 
-fun getLongDurationString(time: Long): String {
+fun getLongDurationString(time: Long?): String {
+    time ?: return ""
     val minutes = ((time / (1000 * 60)) % 60).toInt()
     val hours = ((time / (1000 * 60 * 60)) % 24).toInt()
     val days = (time / (1000 * 60 * 60 * 24)).toInt()
     return App.context.getString(R.string.long_duration, days, hours, minutes)
 }
 
-fun getShortDurationString(time: Long): String {
+fun getShortDurationString(time: Long?): String {
+    time ?: return ""
     val seconds = ((time / 1000) % 60).toInt()
     val minutes = ((time / (1000 * 60)) % 60).toInt()
     val hours = ((time / (1000 * 60 * 60)) % 24).toInt()
     return App.context.getString(R.string.short_duration, hours, minutes, seconds)
 }
 
-fun getLowSpaceDurationString(time: Long): String {
+fun getLowSpaceDurationString(time: Long?): String {
+    time ?: return ""
     val seconds = ((System.currentTimeMillis() - time) / 1000).toInt()
     if (seconds < 60)
         return App.context.resources.getQuantityString(R.plurals.second, seconds, seconds)

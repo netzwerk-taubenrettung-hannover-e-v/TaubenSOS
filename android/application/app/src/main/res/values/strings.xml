@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pigeon 🆘</string>
+    <string name="app_name">PigeonSOS</string>
     <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
     <string name="call">Give us a call!</string>
@@ -64,7 +64,8 @@
     <string name="graphs">Stats</string>
     <string name="cases">Cases</string>
     <string name="counter">Count</string>
-    <string name="news" translatable="false">Events</string>
+    <string name="events" translatable="false">Events</string>
+    <string name="news">News</string>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
@@ -89,7 +90,7 @@
     <string name="what_kind_of_media">What kind of media would you like to add?</string>
     <string name="maximum_reached">Maximum number reached.</string>
     <string name="written_by_text">Created by %s</string>
-    <string name="starts_on">Event starts on %s</string>
+    <string name="starts_on">Event: %s - %s</string>
     <string name="select_injuries">Please select at least one injury.</string>
     <string name="could_not_read_phone">We\'re afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
     <string name="enter_phone">Please enter your phone number:</string>
@@ -145,4 +146,6 @@
     <string name="alert_user_deleted">Deleted User successfully!</string>
     <string name="title_deleting_user">Deleting User</string>
     <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
+    <string name="is_event">Select for event</string>
+    <string name="event_ends_on">Event ends on</string>
 </resources>
