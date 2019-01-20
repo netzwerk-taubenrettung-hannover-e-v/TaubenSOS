@@ -5,7 +5,7 @@ class Medium(db.Model):
     __tablename__ = "medium"
     caseID = db.Column(db.Integer, db.ForeignKey("case.caseID"), primary_key=True)
     uri = db.Column(db.String(255), nullable=False)
-    mediaID = db.Column(db.Integer, primary_key=True)
+    mediaID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     mimeType = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
 
