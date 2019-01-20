@@ -78,10 +78,10 @@ class StatisticFragment : Fragment() {
 
 
         // for debugging purposes remove later
-
-        /*val vm = getViewModel(StatsViewModel::class.java)
+        /*
+        val vm = getViewModel(StatsViewModel::class.java)
         vm?.let { viewModel ->
-            viewModel.getPopulationStats(0, 1547725671, 54.447689, 16.107250,
+            viewModel.getBreedStat(0, 1547725671, 54.447689, 16.107250,
                     48.140436, 4.521094).observeForever {
                 if (it.status == Resource.Status.SUCCESS) {
                     Log.d(LOG_TAG, it.data.toString())
