@@ -16,4 +16,8 @@ class StatsViewModel(context: Context) : BaseViewModel(context) {
     fun getInjuryStats(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
                        latSW: Double, lonSW: Double) =
             repository.getInjuryStat(fromTime, untilTime, latNE, lonNE, latSW, lonSW)
+
+    fun getBreedStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                     latSW: Double, lonSW: Double) =
+            repository.getBreedStat(fromTime, untilTime, latNE, lonNE, latSW, lonSW)
 }

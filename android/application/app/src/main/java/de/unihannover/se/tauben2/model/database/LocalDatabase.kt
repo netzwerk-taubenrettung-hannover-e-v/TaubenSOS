@@ -13,6 +13,7 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -22,7 +23,7 @@ import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
  * the local SQLite Database
  */
 @Database(entities = [Case::class, User::class, PopulationMarker::class,
-    News::class, PopulationStat::class, PigeonNumberStat::class, InjuryStat::class], exportSchema = false, version = 1)
+    News::class, PopulationStat::class, PigeonNumberStat::class, InjuryStat::class, BreedStat::class], exportSchema = false, version = 1)
 @TypeConverters(ListConverter::class, PermissionConverter::class, CounterValueConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
@@ -60,5 +61,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun pigeonNumberStatDao(): PigeonNumberStatDao
 
     abstract fun injuryStatDao(): InjuryStatDao
+
+    abstract fun breedStatDao(): BreedStatDao
 
 }

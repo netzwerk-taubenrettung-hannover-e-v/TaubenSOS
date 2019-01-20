@@ -10,6 +10,7 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -159,6 +160,30 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
                 override fun createCall(): LiveDataRes<InjuryStat> =
                         service.getInjuryStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
+                                lonSW)
+
+            }.getAsLiveData()
+
+    fun getBreedStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                     latSW: Double, lonSW: Double) =
+            object : NetworkBoundResource<BreedStat, BreedStat>(appExecutors) {
+                override fun saveCallResult(item: BreedStat) {
+
+                    item.apply {
+                        this.fromTime = fromTime
+                        this.untilTime = untilTime
+                    }
+                    database.breedStatDao().insertOrUpdate(item)
+                }
+
+                override fun shouldFetch(data: BreedStat?): Boolean = data == null
+
+                override fun loadFromDb(): LiveData<BreedStat> {
+                    return database.breedStatDao().getBreedStat(fromTime, untilTime)
+                }
+
+                override fun createCall(): LiveDataRes<BreedStat> =
+                        service.getBreedStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
                                 lonSW)
 
             }.getAsLiveData()
