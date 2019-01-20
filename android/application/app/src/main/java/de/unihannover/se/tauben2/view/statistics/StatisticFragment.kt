@@ -275,7 +275,7 @@ class StatisticFragment : Fragment() {
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-        chart.setEntryLabelColor(Color.GRAY)
+        chart.setEntryLabelColor(Color.BLACK)
         chart.setEntryLabelTextSize(18F)
         
         chart.data = PieData(dataSet)
