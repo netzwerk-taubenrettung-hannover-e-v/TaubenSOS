@@ -33,9 +33,10 @@ class CounterFragment : Fragment() {
         val view = inflater.inflate(fragment_counter, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-
-        view.cancel_marker_button.hide()
-        view.confirm_marker_button.hide()
+        if(mapsFragment.circle == null){
+            view.cancel_marker_button.hide()
+            view.confirm_marker_button.hide()
+        }
 
         // OnClickListeners:
         view.set_position_button.setOnClickListener {

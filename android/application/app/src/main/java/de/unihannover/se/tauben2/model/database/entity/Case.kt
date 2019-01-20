@@ -8,6 +8,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import de.unihannover.se.tauben2.App
@@ -97,7 +99,22 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     }
 
-    override fun getMarker(): MarkerOptions = MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority.toString())).snippet(additionalInfo)
+    override fun getMarker(): MarkerOptions {
+        var bmD : BitmapDescriptor? = null
+        if(isClosed == false){
+            bmD = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+        }
+        if(isClosed == true){
+            bmD = BitmapDescriptorFactory.defaultMarker(144.9f)
+        }
+        if(rescuer != null && isClosed == false){
+            bmD = BitmapDescriptorFactory.defaultMarker(55.06f)
+        }
+        if(wasFoundDead == true){
+            bmD = BitmapDescriptorFactory.defaultMarker(190.0f)
+        }
+        return MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority.toString())).snippet(additionalInfo).icon(bmD)
+    }
 
     override fun getType() = RecyclerItem.Type.ITEM
 
