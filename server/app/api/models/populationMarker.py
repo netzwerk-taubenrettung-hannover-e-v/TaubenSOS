@@ -52,19 +52,19 @@ class PopulationMarker(db.Model):
 		return PopulationMarker.query.get(populationMarkerID)
 
 	@staticmethod
-	def get_stats(latNW, lonNW, latSE, lonSE, fromTime=None, untilTime=None):
+	def get_stats(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
 		if fromTime is not None and untilTime is not None:
-			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp between :fromTime and :untilTime group by "day" order by "day"')
-			sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime, untilTime=untilTime)
+			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp between :fromTime and :untilTime group by "day" order by "day"')
+			sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime)
 		elif fromTime is not None:
-			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp > :fromTime group by "day" order by "day"')
-			sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, fromTime=fromTime)
+			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp > :fromTime group by "day" order by "day"')
+			sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime)
 		elif untilTime is not None:
-			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE and timestamp < :untilTime group by "day" order by "day"')
-			sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW, untilTime=untilTime)
+			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp < :untilTime group by "day" order by "day"')
+			sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, untilTime=untilTime)
 		else:
-			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSE and :latNW and longitude between :lonNW and :lonSE group by "day" order by "day"')
-			sql = sql.bindparams(latSE=latSE, latNW=latNW, lonSE=lonSE, lonNW=lonNW)
+			sql = text('select date(timestamp) as "day", sum("pigeonCount") as "count" from "populationMarker" join "populationValue" using("populationMarkerID") where latitude between :latSW and :latNE and longitude between :lonSW and :lonNE group by "day" order by "day"')
+			sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE)
 		result = db.engine.execute(sql)
 		res = result.fetchall()
 		x = []
