@@ -16,8 +16,10 @@ import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentEditNewsBinding
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.view.LoadingObserver
+import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_edit_news.view.*
 import java.util.*
 
@@ -33,6 +35,8 @@ class EditNewsFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_news, container, false)
         val view = mBinding.root
+
+        (activity as MainActivity).enableBackButton()
 
         mNewsViewModel = getViewModel(NewsViewModel::class.java)
 
@@ -159,5 +163,10 @@ class EditNewsFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                 it.sendNews(news)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).disableBackButton()
     }
 }

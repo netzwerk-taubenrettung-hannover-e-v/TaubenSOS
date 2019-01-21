@@ -4,7 +4,8 @@
     <string name="login">Login</string>
     <string name="call">Give us a call!</string>
     <string name="contact_info">You can give us a call to get more information or if you found a pigeon which is in urgent need for help.</string>
-    <string name="breed_report_info" translatable="false">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differrent, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
+    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
+    <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick Not sure.</string>
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
@@ -40,7 +41,7 @@
     <string name="enter_location">Select your location:</string>
     <string name="set_position">Set position</string>
     <string name="add_media">Include up to three media files:</string>
-    <string name="specify_injuries">Select up to three injuries:</string>
+    <string name="specify_injuries">Select injuries:</string>
     <string name="injury_foot_leg">Foot or leg</string>
     <string name="injury_wings">Wings</string>
     <string name="injury_head_eye">Head or eye</string>
@@ -56,7 +57,7 @@
     <string name="back">Back</string>
     <string name="kind_of_pigeon">What kind of pigeon?</string>
     <string name="carrier_pigeon">Carrier pigeon</string>
-    <string name="wedding_pigeon">Fancy pigeon</string>
+    <string name="fancy_pigeon">Fancy pigeon</string>
     <string name="common_wood_pigeon">Common wood pigeon</string>
     <string name="feral_pigeon">Feral pigeon</string>
     <string name="additional_information">Additional information</string>
@@ -152,4 +153,6 @@
     <string name="is_event">Select for event</string>
     <string name="event_ends_on">Event ends on</string>
     <string name="more">More</string>
+    <string name="injury_other_short">Other</string>
+    <string name="population_over_the_last_year">Population over the last year:</string>
 </resources>

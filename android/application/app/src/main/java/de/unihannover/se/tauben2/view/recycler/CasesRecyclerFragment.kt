@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -10,9 +11,14 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.SquareImageView
+import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
+import kotlinx.android.synthetic.main.card_statistic.view.*
+import kotlinx.android.synthetic.main.fragment_cases.*
+import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -42,6 +48,8 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
         getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(locationObserver)
     }
 
+
+
     override fun onBindData(binding: ViewDataBinding, data: Case) {
         if (binding is CardCaseBinding) {
             binding.c = data
@@ -56,18 +64,18 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
             val squareImgV = binding.root.image_card
 
-            data.loadMediaFromServerInto(if (data.media.isEmpty()) null else data.media[0], squareImgV)
+            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV)
 
             if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
                 activity?.let {
-                    squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix))
-                    squareImgV.addImageZoomListener(
-                            {
-                                data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
-                            },
-                            {
-                                //nothing to do
-                            })
+                    // TODO Load full sized image only on Zoom
+                    squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix), activity as MainActivity)
+                    squareImgV.addImageZoomListener (
+                    {
+                        data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
+                    }, {
+                        data.loadMediaFromServerInto(data.media[0], squareImgV)
+                    })
                 }
             }
 

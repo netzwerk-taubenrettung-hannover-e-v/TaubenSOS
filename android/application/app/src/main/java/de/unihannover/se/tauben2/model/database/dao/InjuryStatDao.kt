@@ -13,7 +13,11 @@ interface InjuryStatDao : BaseDao<InjuryStat> {
 
     @Query("""
         SELECT * FROM injury_stats
-        WHERE fromTime = :fromTime and untilTime = :untilTime
     """)
-    fun getInjuryStat(fromTime: Long, untilTime: Long): LiveData<InjuryStat>
+    fun getInjuryStat(): LiveData<InjuryStat>
+
+    @Query("""
+        DELETE FROM injury_stats
+    """)
+    fun deleteOldStats()
 }

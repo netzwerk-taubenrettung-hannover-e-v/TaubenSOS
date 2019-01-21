@@ -10,6 +10,7 @@ import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.*
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -88,8 +89,8 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun shouldFetch(data: List<PopulationStat>?): Boolean {
-            val maxTime = sp.getLong(STAT_MAX_POPULATION_TIME, untilTime - 1)
-            val minTime = sp.getLong(STAT_MIN_POPULATION_TIME, fromTime + 1)
+            val maxTime = sp.getLong(STAT_MAX_POPULATION_TIME, Long.MIN_VALUE)
+            val minTime = sp.getLong(STAT_MIN_POPULATION_TIME, Long.MAX_VALUE)
             return fromTime < minTime || untilTime > maxTime
         }
 
@@ -141,27 +142,49 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getInjuryStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
                       latSW: Double, lonSW: Double) =
-            object : NetworkBoundResource<InjuryStat, List<InjuryStat>>(appExecutors) {
-                override fun saveCallResult(item: List<InjuryStat>) {
-                    // TODO change to 1 object when server api only returns 1 object
-                    val stats = item[0]
-                    stats.apply {
+            object : NetworkBoundResource<InjuryStat, InjuryStat>(appExecutors) {
+                override fun saveCallResult(item: InjuryStat) {
+                    database.injuryStatDao().deleteOldStats()
+                    item.apply {
                         this.fromTime = fromTime
                         this.untilTime = untilTime
                     }
-                    database.injuryStatDao().insertOrUpdate(stats)
+                    database.injuryStatDao().insertOrUpdate(item)
                 }
 
-                override fun shouldFetch(data: InjuryStat?): Boolean = data == null
+                override fun shouldFetch(data: InjuryStat?): Boolean = true
 
                 override fun loadFromDb(): LiveData<InjuryStat> {
-                    return database.injuryStatDao().getInjuryStat(fromTime, untilTime)
+                    return database.injuryStatDao().getInjuryStat()
                 }
 
-                override fun createCall(): LiveDataRes<List<InjuryStat>> =
+                override fun createCall(): LiveDataRes<InjuryStat> =
                         service.getInjuryStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
                                 lonSW)
 
+            }.getAsLiveData()
+
+    fun getBreedStat(fromTime: Long, untilTime: Long, latNE: Double, lonNE: Double,
+                     latSW: Double, lonSW: Double) =
+            object : NetworkBoundResource<BreedStat, BreedStat>(appExecutors) {
+                override fun saveCallResult(item: BreedStat) {
+                    database.breedStatDao().deleteOldStats()
+                    item.apply {
+                        this.fromTime = fromTime
+                        this.untilTime = untilTime
+                    }
+                    database.breedStatDao().insertOrUpdate(item)
+                }
+
+                override fun shouldFetch(data: BreedStat?): Boolean = true
+
+                override fun loadFromDb(): LiveData<BreedStat> {
+                    return database.breedStatDao().getBreedStat()
+                }
+
+                override fun createCall(): LiveDataRes<BreedStat> =
+                        service.getBreedStat(getToken(), fromTime, untilTime, latNE, lonNE, latSW,
+                                lonSW)
 
             }.getAsLiveData()
 

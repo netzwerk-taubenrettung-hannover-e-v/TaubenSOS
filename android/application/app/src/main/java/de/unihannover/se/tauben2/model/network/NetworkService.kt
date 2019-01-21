@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
 import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
 import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
@@ -61,7 +62,16 @@ interface NetworkService {
                       @Query("latNE") latNE: Double,
                       @Query("lonNE") lonNE: Double,
                       @Query("latSW") latSW: Double,
-                      @Query("lonSW") lonSW: Double): LiveDataRes<List<InjuryStat>>
+                      @Query("lonSW") lonSW: Double): LiveDataRes<InjuryStat>
+
+    @GET("stats/breed")
+    fun getBreedStat(@Header("Authorization") token: String,
+                     @Query("fromTime") fromTime: Long,
+                     @Query("untilTime") untilTime: Long,
+                     @Query("latNE") latNE: Double,
+                     @Query("lonNE") lonNE: Double,
+                     @Query("latSW") latSW: Double,
+                     @Query("lonSW") lonSW: Double): LiveDataRes<BreedStat>
 
     @POST
     fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>

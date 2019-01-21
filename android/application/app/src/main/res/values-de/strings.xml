@@ -10,7 +10,9 @@
     <string name="call">Ruf uns gerne an!</string>
     <string name="tauben_zählen_info">Bitte wähle Standort, Datum und die Anzahl der Tauben aus, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
     <string name="contact_info">Du kannst uns für weitere Informationen oder zum Melden eines verletzten Tiers gerne telefonisch kontaktieren.</string>
-    <string name="priority">Priorität: %s</string>
+   <string name="breed_report_info">Brieftaube: hat einen Ring an einem oder beiden Füßen, Gefieder kann unterschiedlich gefärbt sein, schließt sich Stadttauben an.\n\nRingeltaube:  größer als Stadttauben, erwachsene Tauben haben einen weißen Halsfleck, gelben Schnabel, blaue Augen. Jungtiere haben diese Merkmale noch nicht, aber schon den weißen Rand am Flügel. Schließen sich Stadttauben nicht an.\n\nStadttaube: kann sehr unterschiedlich aussehen, Schnabel ist in der Regel dunkelgrau, Beine und Augen orangerot. Jungtiere haben braune Augen.\n\nZiertaube: oft einfarbig oder auffällig gescheckt, lange Federn an den Füßen oder eine Haube am Kopf, hat manchmal Ringe an den Beinen.</string>
+   <string name="priority">Priorität: %s</string>
+    <string name="breed_report_explanation">Für unsere Statistik bitten wir dich, die Taubenart anzugeben. Falls du nicht genau weißt, wie die jeweiligen Arten aussehen, kannst du dir einen Erklärungstext dazu anzeigen lassen oder Nicht sicher anklicken.</string>
     <string name="priority_blank">Priorität:</string>
     <string name="before">Vor %s</string>
     <string name="long_duration">%d Tagen, %02d Stunden, %02d Minuten</string>
@@ -27,7 +29,7 @@
     <string name="enter_location">Gib deinen Standort an:</string>
     <string name="set_position">Position setzen</string>
     <string name="add_media">Füge bis zu drei Medien hinzu:</string>
-    <string name="specify_injuries">Wähle bis zu drei Verletzungen aus:</string>
+    <string name="specify_injuries">Wähle Verletzungen aus:</string>
     <string name="injury_wings">Flügel</string>
     <string name="injury_head_eye">Kopf/Auge</string>
     <string name="injury_paralyzed_flightless">Flugunfähig</string>
@@ -42,7 +44,7 @@
     <string name="back">Zurück</string>
     <string name="kind_of_pigeon">Um welche Taubenart handelt es sich?</string>
     <string name="carrier_pigeon">Brieftaube</string>
-    <string name="wedding_pigeon">Ziertaube</string>
+    <string name="fancy_pigeon">Ziertaube</string>
     <string name="common_wood_pigeon">Ringeltaube</string>
     <string name="feral_pigeon">Stadttaube</string>
     <string name="additional_information">Weitere Angaben</string>
@@ -137,9 +139,15 @@
     <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
     <string name="is_event">Für Event auswählen</string>
     <string name="event_ends_on">Event endet am</string>
+<<<<<<< HEAD
     <plurals name="news">
         <item quantity="one">Neuigkeit</item>
         <item quantity="other">News</item>
     </plurals>
     <string name="more">Mehr</string>
+=======
+    <string name="news">Neuigkeit</string>
+    <string name="injury_other_short">Andere</string>
+    <string name="population_over_the_last_year">Populationverlauf für das letzte Jahr:</string>
+>>>>>>> ffa617222b312c6c5683b2e077b6020156091662
 </resources>

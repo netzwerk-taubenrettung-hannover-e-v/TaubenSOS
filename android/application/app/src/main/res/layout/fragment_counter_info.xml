@@ -56,15 +56,14 @@
             app:layout_constraintTop_toTopOf="@+id/current_timestamp_value"
             app:layout_constraintVertical_bias="0.517" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/plus_button"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:text="+"
+            android:layout_marginEnd="32dp"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,17 +71,18 @@
             app:layout_constraintStart_toEndOf="@+id/textInputLayout"
             app:layout_constraintTop_toTopOf="@+id/textInputLayout"
             app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@color/White"
             tools:ignore="HardcodedText" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/minus_button"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="8dp"
-            android:text="-"
+            android:layout_marginEnd="32dp"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
             app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
@@ -91,6 +91,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textInputLayout"
             app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_remove_black_24dp"
+            app:tint="@color/White"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -165,14 +167,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counter_bottom_layout">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/population_over_the_last_year"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/chart"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

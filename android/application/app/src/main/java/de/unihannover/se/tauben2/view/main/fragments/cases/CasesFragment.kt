@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 abstract class CasesFragment: Fragment() {
 
+    lateinit var v : View
+
     enum class Filter {
         ALL, CLOSED, OPEN, MY
     }
@@ -33,7 +35,7 @@ abstract class CasesFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_cases, container, false)
+        v = inflater.inflate(R.layout.fragment_cases, container, false)
         recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment) as CasesRecyclerFragment
         mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
@@ -42,7 +44,7 @@ abstract class CasesFragment: Fragment() {
 
         loadCases(Filter.ALL)
 
-        return view
+        return v
     }
 
     protected fun loadCases (filter : Filter) {
@@ -73,4 +75,7 @@ abstract class CasesFragment: Fragment() {
         }
     }
 
+    fun zoomOut() : View{
+        return v.image_expanded
+    }
 }

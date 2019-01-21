@@ -30,8 +30,6 @@ class ContactFragment : Fragment() {
         val contactListAdapter = ContactItemAdapter(view.context, contactItems)
         view.contact_listview.adapter = contactListAdapter
 
-
-
         return view
     }
 }
