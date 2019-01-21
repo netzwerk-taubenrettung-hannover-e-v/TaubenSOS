@@ -20,6 +20,7 @@ import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
 import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
@@ -41,6 +42,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_counter_info, container, false)
         setHasOptionsMenu(true)
+        (activity as MainActivity).enableBackButton()
 
         val datePickerDialog = context?.let {
             DatePickerDialog(it,
@@ -220,6 +222,11 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
         selectedDate.set(year, month, day)
         refreshTextView()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).disableBackButton()
     }
 
 }

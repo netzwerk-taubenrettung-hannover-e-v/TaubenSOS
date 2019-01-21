@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.SystemClock
-import android.text.method.Touch
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -28,12 +26,7 @@ import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.view.ViewGroup
-import com.google.android.material.snackbar.Snackbar
-import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
-import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
-import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -69,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         // Toolbar Settings
         setSupportActionBar(toolbar as Toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        //supportActionBar?.setDisplayShowTitleEnabled(false)
 
         initBottomNavigation()
     }
@@ -109,7 +102,6 @@ class MainActivity : AppCompatActivity() {
 
         mBinding.bottomNavigation.setupWithNavController(navController)
 
-
     }
 
     override fun onStart() {
@@ -124,17 +116,17 @@ class MainActivity : AppCompatActivity() {
         if(!zoomMode) mBottomNavigator.onBackPressed()
         else {
             val index = mNavHostFragment.childFragmentManager.fragments.size - 1
-            var f = mNavHostFragment.childFragmentManager.fragments[index]
+            val f = mNavHostFragment.childFragmentManager.fragments[index]
             if (f is CaseInfoFragment) {
-                TouchView(f.zoomOut())
+                touchView(f.zoomOut())
             }
             if (f is CasesFragment) {
-                TouchView(f.zoomOut())
+                touchView(f.zoomOut())
             }
         }
     }
 
-    fun TouchView(view : View) {
+    private fun touchView(view : View) {
         view.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100, MotionEvent.ACTION_DOWN, 1f, 1f, 0));
         view.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100, MotionEvent.ACTION_UP, 1f, 1f, 0));
     }
@@ -153,6 +145,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ReportActivity::class.java)
             startActivityForResult(intent, 0)
         }
+
+        if (item?.itemId == android.R.id.home) onBackPressed()
 
         return super.onOptionsItemSelected(item)
     }
@@ -202,5 +196,16 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }
+
+    fun enableBackButton () {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    fun disableBackButton () {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+    }
+
 }
 

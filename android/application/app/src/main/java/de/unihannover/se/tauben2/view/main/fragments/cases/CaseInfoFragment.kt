@@ -46,6 +46,7 @@ class CaseInfoFragment: Fragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_case_info, container, false)
         val v = mBinding.root
         setHasOptionsMenu(true)
+        (activity as MainActivity).enableBackButton()
 
         context?.also {
             mPicassoInstance = Picasso.Builder(it.applicationContext)
@@ -212,6 +213,11 @@ class CaseInfoFragment: Fragment() {
         val wasFoundDead = mBinding.c?.wasFoundDead ?: false
         menu.findItem(R.id.toolbar_report_alive)?.isVisible = wasFoundDead
         menu.findItem(R.id.toolbar_report_dead)?.isVisible = !wasFoundDead
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).disableBackButton()
     }
 
 }
