@@ -35,6 +35,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 
 class StatisticFragment : Fragment() {
@@ -130,10 +132,10 @@ class StatisticFragment : Fragment() {
         }
 
         mCurrentPopulationObserver = LoadingObserver(successObserver = Observer {
-            createLineChart(fragmentView.population_linechart, getPopulationLineChartData(it))
+            createLineChart(fragmentView.population_linechart, getPopulationLineChartData(it), null)
         })
         mCurrentReportObserver = LoadingObserver(successObserver = Observer {
-            createLineChart(fragmentView.reported_linechart, getReportLineChartData(it))
+            createReportLineChart(fragmentView.reported_linechart, getReportLineChartData(it))
         })
         mCurrentInjuryObserver = LoadingObserver(successObserver = Observer {
             createPieChart(fragmentView.injury_piechart, getInjuryData(it))
@@ -234,18 +236,23 @@ class StatisticFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun createLineChart(chart: LineChart, data: ArrayList<Entry>) {
+    private fun createReportLineChart(chart: LineChart, data: ArrayList<ArrayList<Entry>>) {
+        createLineChart(chart, data[0], data[1])
+    }
+
+    private fun createLineChart(chart: LineChart, data1: ArrayList<Entry>, data2: ArrayList<Entry>?) {
 
         resetLineChart(chart)
 
-        val dataSet = LineDataSet(data, null)
+        val dataSet1 = LineDataSet(data1, null)
 
         // Style
-        val color = ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark)
-        dataSet.color = color
-        dataSet.setCircleColor(color)
-        dataSet.setDrawFilled(true)
-        dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+        val color1 = ContextCompat.getColor(fragmentView.context, R.color.colorPrimaryDark)
+        dataSet1.color = color1
+        dataSet1.setCircleColor(color1)
+        dataSet1.setDrawFilled(true)
+        dataSet1.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+
 
         chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
         chart.axisLeft.axisMinimum = 0F
@@ -255,7 +262,25 @@ class StatisticFragment : Fragment() {
         chart.legend.isEnabled = false
         chart.axisRight.isEnabled = false
 
-        chart.data = LineData(dataSet)
+        if (data2 != null) {
+
+            val dataSet2 = LineDataSet(data2, null)
+
+            val color2 = ContextCompat.getColor(fragmentView.context, R.color.Gray)
+            dataSet2.color = color2
+            dataSet2.setCircleColor(color2)
+            dataSet2.setDrawFilled(true)
+            dataSet2.fillColor = color2
+            dataSet2.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+
+            val lines = ArrayList<ILineDataSet>()
+            lines.add(dataSet1)
+            lines.add(dataSet2)
+            chart.data = LineData(lines)
+        } else {
+            chart.data = LineData(dataSet1)
+        }
+
         chart.invalidate()
     }
 
@@ -312,13 +337,16 @@ class StatisticFragment : Fragment() {
         return data
     }
 
-    private fun getReportLineChartData(reportData: List<PigeonNumberStat>): ArrayList<Entry> {
+    private fun getReportLineChartData(reportData: List<PigeonNumberStat>): ArrayList<ArrayList<Entry>> {
 
         Log.d("BLUEDABE_REPORTDATA", reportData.toString())
 
         var overall = 0
         val countedDays = TimeUnit.MILLISECONDS.toDays(selectedDateTo.timeInMillis - selectedDateFrom.timeInMillis)
-        val data = ArrayList<Entry>()
+        val data = ArrayList<ArrayList<Entry>>()
+        val all = ArrayList<Entry>()
+        val notFoundOrDead = ArrayList<Entry>()
+
 
         /* DONT IGNORE 0 as value
         for (i in 0 until countedDays) {
@@ -342,7 +370,8 @@ class StatisticFragment : Fragment() {
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()
 
             if (index >= 0 && index < countedDays) {
-                data.add(Entry(index, value.count.toFloat()))
+                all.add(Entry(index, value.count.toFloat()))
+                notFoundOrDead.add(Entry(index, value.sumFoundDead.toFloat() + value.sumNotFound.toFloat()))
                 overall += value.count
             }
 
@@ -350,6 +379,9 @@ class StatisticFragment : Fragment() {
 
         val average = overall.toFloat() / countedDays.toFloat()
         fragmentView.reported_total.text = fragmentView.context.getString(R.string.in_average_reports, average)
+
+        data.add(all)
+        data.add(notFoundOrDead)
 
         return data
     }
