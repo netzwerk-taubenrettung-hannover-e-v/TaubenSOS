@@ -13,7 +13,11 @@ interface BreedStatDao : BaseDao<BreedStat> {
 
     @Query("""
         SELECT * FROM breed_stats
-        WHERE fromTime = :fromTime and untilTime = :untilTime
     """)
-    fun getBreedStat(fromTime: Long, untilTime: Long): LiveData<BreedStat>
+    fun getBreedStat(): LiveData<BreedStat>
+
+    @Query("""
+        DELETE FROM breed_stats
+    """)
+    fun deleteOldStats()
 }

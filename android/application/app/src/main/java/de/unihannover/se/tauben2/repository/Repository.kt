@@ -144,7 +144,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                       latSW: Double, lonSW: Double) =
             object : NetworkBoundResource<InjuryStat, InjuryStat>(appExecutors) {
                 override fun saveCallResult(item: InjuryStat) {
-
+                    database.injuryStatDao().deleteOldStats()
                     item.apply {
                         this.fromTime = fromTime
                         this.untilTime = untilTime
@@ -152,10 +152,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     database.injuryStatDao().insertOrUpdate(item)
                 }
 
-                override fun shouldFetch(data: InjuryStat?): Boolean = data == null
+                override fun shouldFetch(data: InjuryStat?): Boolean = true
 
                 override fun loadFromDb(): LiveData<InjuryStat> {
-                    return database.injuryStatDao().getInjuryStat(fromTime, untilTime)
+                    return database.injuryStatDao().getInjuryStat()
                 }
 
                 override fun createCall(): LiveDataRes<InjuryStat> =
@@ -168,7 +168,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                      latSW: Double, lonSW: Double) =
             object : NetworkBoundResource<BreedStat, BreedStat>(appExecutors) {
                 override fun saveCallResult(item: BreedStat) {
-
+                    database.breedStatDao().deleteOldStats()
                     item.apply {
                         this.fromTime = fromTime
                         this.untilTime = untilTime
@@ -176,10 +176,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     database.breedStatDao().insertOrUpdate(item)
                 }
 
-                override fun shouldFetch(data: BreedStat?): Boolean = data == null
+                override fun shouldFetch(data: BreedStat?): Boolean = true
 
                 override fun loadFromDb(): LiveData<BreedStat> {
-                    return database.breedStatDao().getBreedStat(fromTime, untilTime)
+                    return database.breedStatDao().getBreedStat()
                 }
 
                 override fun createCall(): LiveDataRes<BreedStat> =
