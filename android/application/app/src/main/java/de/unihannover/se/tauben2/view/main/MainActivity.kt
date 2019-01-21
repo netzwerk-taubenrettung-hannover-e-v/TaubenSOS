@@ -5,15 +5,16 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.SystemClock
+import android.text.method.Touch
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -22,10 +23,18 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.view.main.fragments.cases.CaseInfoFragment
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import android.view.ViewGroup
+import com.google.android.material.snackbar.Snackbar
+import de.unihannover.se.tauben2.setSnackBar
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
+import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,10 +45,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mBottomNavigator: BottomNavigator
     private var mNavigateTo: Int? = null
 
+    var zoomMode: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mBinding = DataBindingUtil.setContentView(this, de.unihannover.se.tauben2.R.layout.activity_main)
 
         // Fixing later map loading delay
         Thread {
@@ -89,12 +100,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         val navController = (nav_host as NavHostFragment).navController
-        mNavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-        mBottomNavigator = BottomNavigator(this, mNavHostFragment.childFragmentManager, R.id.nav_host, mBinding.bottomNavigation)
+        mNavHostFragment = supportFragmentManager.findFragmentById(de.unihannover.se.tauben2.R.id.nav_host) as NavHostFragment
+        mBottomNavigator = BottomNavigator(this, mNavHostFragment.childFragmentManager, de.unihannover.se.tauben2.R.id.nav_host, mBinding.bottomNavigation)
 
         navController.navigatorProvider.addNavigator(mBottomNavigator)
 
-        navController.setGraph(R.navigation.main_navigation)
+        navController.setGraph(de.unihannover.se.tauben2.R.navigation.main_navigation)
 
         mBinding.bottomNavigation.setupWithNavController(navController)
 
@@ -104,18 +115,33 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mNavigateTo?.let {
-            Navigation.findNavController(this, R.id.nav_host).navigate(it)
+            Navigation.findNavController(this, de.unihannover.se.tauben2.R.id.nav_host).navigate(it)
             mNavigateTo = null
         }
     }
 
     override fun onBackPressed() {
-        mBottomNavigator.onBackPressed()
+        if(!zoomMode) mBottomNavigator.onBackPressed()
+        else {
+            val index = mNavHostFragment.childFragmentManager.fragments.size - 1
+            var f = mNavHostFragment.childFragmentManager.fragments[index]
+            if (f is CaseInfoFragment) {
+                TouchView(f.zoomOut())
+            }
+            if (f is CasesFragment) {
+                TouchView(f.zoomOut())
+            }
+        }
+    }
+
+    fun TouchView(view : View) {
+        view.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100, MotionEvent.ACTION_DOWN, 1f, 1f, 0));
+        view.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100, MotionEvent.ACTION_UP, 1f, 1f, 0));
     }
 
     // Add "Report a Dove"-Btn to the Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        menuInflater.inflate(de.unihannover.se.tauben2.R.menu.toolbar_menu, menu)
         return true
     }
 
@@ -134,9 +160,9 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == 0) {
             mNavigateTo = if (BootingActivity.getOwnerPermission() == Permission.GUEST)
-                R.id.casesUserFragment
+                de.unihannover.se.tauben2.R.id.casesUserFragment
             else
-                R.id.casesFragment
+                de.unihannover.se.tauben2.R.id.casesFragment
         }
     }
 
@@ -144,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     private fun backgroundColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.setBackgroundDrawableResource(R.drawable.gradient)
+        window.setBackgroundDrawableResource(de.unihannover.se.tauben2.R.drawable.gradient)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -152,17 +178,17 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i(getString(R.string.permission), getString(R.string.permission_denied))
+                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_denied))
                 } else {
-                    Log.i(getString(R.string.permission), getString(R.string.permission_granted))
+                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_granted))
                 }
             }
             2 -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i(getString(R.string.permission), getString(R.string.permission_denied))
+                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_denied))
                 } else {
-                    Log.i(getString(R.string.permission), getString(R.string.permission_granted))
+                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_granted))
                 }
             }
         }

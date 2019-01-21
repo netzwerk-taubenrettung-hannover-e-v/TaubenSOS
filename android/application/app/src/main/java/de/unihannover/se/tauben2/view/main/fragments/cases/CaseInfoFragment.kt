@@ -32,8 +32,7 @@ import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_case_info.*
 import kotlinx.android.synthetic.main.fragment_case_info.view.*
 import android.widget.VideoView
-
-
+import de.unihannover.se.tauben2.view.main.MainActivity
 
 
 class CaseInfoFragment: Fragment() {
@@ -84,7 +83,7 @@ class CaseInfoFragment: Fragment() {
                                 startActivity(intent)
                             }
                         } else {
-                            image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint)
+                            image.zoomImage(v.image_expanded, v.layout_main, v.layout_constraint, activity as MainActivity)
                             image.addImageZoomListener (
                                 {
                                     case.loadMediaFromServerInto(case.media[i], image_expanded, fit = false)
@@ -123,6 +122,10 @@ class CaseInfoFragment: Fragment() {
         }
 
         return v
+    }
+
+    fun zoomOut() : View{
+        return mBinding.root.image_expanded
     }
 
     private fun loadMedia(index: Int, target: ImageView) {
