@@ -135,7 +135,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:foreground="@{c.statusColorTransparent, default=@color/colorPrimaryDarkTransparent}"
+                            android:foreground="@{c.statusColorTransparent}"
                             />
 
                         <LinearLayout
@@ -152,7 +152,7 @@
                                 android:layout_height="wrap_content"
                                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/White"
-                                android:text="@{@string/case_id(c.caseID) + `, `+ @string/priority(c.priority), default=20180000}" />
+                                android:text="@{@string/case_id(c.caseID) + `, `+ @string/priority(c.priority)}" />
 
                             <TextView
                                 android:id="@+id/text_title"
@@ -162,7 +162,7 @@
                                 android:maxLines="1"
                                 android:ellipsize="end"
                                 android:textColor="@color/White"
-                                android:text="@{c.pigeonBreed.title, default=`Carrier Pigeon`}"
+                                android:text="@{c.pigeonBreed.title}"
                                 />
 
                             <TextView
@@ -171,7 +171,7 @@
                                 android:layout_height="wrap_content"
                                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:textColor="@color/White"
-                                android:text="@{@string/before(ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000)) + ` (` + ExtensionsKt.getDateTimeString(c.timestamp * 1000) + `)`, default=`01.01.1970`}"
+                                android:text="@{@string/before(ExtensionsKt.getLowSpaceDurationString(c.timestamp * 1000)) + ` (` + ExtensionsKt.getDateTimeString(c.timestamp * 1000) + `)`}"
                                 />
                         </LinearLayout>
 
@@ -225,11 +225,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
-        <!--<VideoView-->
-            <!--android:id="@+id/view_video"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:visibility="invisible"-->
-            <!--/>-->
     </FrameLayout>
 </layout>

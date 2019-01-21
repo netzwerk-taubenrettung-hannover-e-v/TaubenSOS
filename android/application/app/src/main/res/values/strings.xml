@@ -65,7 +65,10 @@
     <string name="cases">Cases</string>
     <string name="counter">Count</string>
     <string name="events" translatable="false">Events</string>
-    <string name="news">News</string>
+    <plurals name="news">
+        <item quantity="one">News</item>
+        <item quantity="other">News</item>
+    </plurals>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
@@ -148,4 +151,5 @@
     <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
     <string name="is_event">Select for event</string>
     <string name="event_ends_on">Event ends on</string>
+    <string name="more">More</string>
 </resources>

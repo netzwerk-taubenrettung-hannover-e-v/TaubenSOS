@@ -84,6 +84,8 @@
                 app:sdOverlayLayout="@id/dialOverlay"
                 app:layout_anchor="@id/recycler_fragment"
                 app:layout_anchorGravity="bottom|right|end"
+                android:theme="@style/FabTheme"
+
                 />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

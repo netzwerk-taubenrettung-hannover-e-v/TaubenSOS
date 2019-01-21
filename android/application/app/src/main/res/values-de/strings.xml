@@ -137,5 +137,9 @@
     <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
     <string name="is_event">Für Event auswählen</string>
     <string name="event_ends_on">Event endet am</string>
-    <string name="news">Neuigkeit</string>
+    <plurals name="news">
+        <item quantity="one">Neuigkeit</item>
+        <item quantity="other">News</item>
+    </plurals>
+    <string name="more">Mehr</string>
 </resources>

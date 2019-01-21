@@ -103,7 +103,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
     private val moreFragmentBundle = Bundle()
 
     private fun createOverflowMenu(items: List<FragmentMenuItem>) {
-        addMenuItem(item = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp))
+        addMenuItem(item = FragmentMenuItem(MORE_MENU_ITEM, context?.getString(R.string.more) ?: "More", R.drawable.ic_more_horiz_white_24dp))
 
         moreFragmentBundle.putParcelableArrayList("items", ArrayList(items))
         Navigation.findNavController(context as Activity, R.id.nav_host).addOnDestinationChangedListener { _, destination, _ ->

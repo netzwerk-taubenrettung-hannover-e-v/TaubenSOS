@@ -40,6 +40,8 @@ class CasesAdminFragment : CasesFragment() {
 
         view.dialOverlay.visibility = View.VISIBLE
 
+//        view.speedDial.
+
         view.speedDial.apply {
 
             visibility = View.VISIBLE
@@ -48,31 +50,31 @@ class CasesAdminFragment : CasesFragment() {
             // my cases
             addActionItem(
                     SpeedDialActionItem.Builder(R.id.cases_filter_my, R.drawable.ic_assignment_ind_white_24dp)
-                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
+                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.White, null))
                             // TODO: y u no work...
-                            // .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.Green, null))
-                            .setLabel("My Cases")
+//                             .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.White, null))
+                            .setLabel(getString(R.string.my_cases))
                             .create()
             )
             // closed cases
             addActionItem(
                     SpeedDialActionItem.Builder(R.id.cases_filter_closed, R.drawable.ic_assignment_turned_in_white_24dp)
-                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
-                            .setLabel("Closed Cases")
+                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.White, null))
+                            .setLabel(getString(R.string.closed_cases))
                             .create()
             )
             // open cases
             addActionItem(
                     SpeedDialActionItem.Builder(R.id.cases_filter_open, R.drawable.ic_assignment_late_white_24dp)
-                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
-                            .setLabel("Open Cases")
+                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.White, null))
+                            .setLabel(getString(R.string.open_cases))
                             .create()
             )
             // all cases
             addActionItem(
                     SpeedDialActionItem.Builder(R.id.cases_filter_all, R.drawable.ic_assignment_white_24dp)
-                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.Gray, null))
-                            .setLabel("All Cases")
+                            .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.White, null))
+                            .setLabel(getString(R.string.all_cases))
                             .create()
             )
 
@@ -83,7 +85,6 @@ class CasesAdminFragment : CasesFragment() {
                         view.text_currentCases.text = context.getString(R.string.my_cases)
                         loadCases(Filter.MY)
                         false
-
                     }
                     R.id.cases_filter_closed -> {
                         view.text_currentCases.text = context.getString(R.string.closed_cases)
