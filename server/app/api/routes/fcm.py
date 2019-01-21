@@ -4,7 +4,7 @@ from firebase_admin import credentials, messaging
 cert = credentials.Certificate(os.getenv("HOME") + "/.firebase_credentials")
 app = firebase_admin.initialize_app(cert)
 
-def build_android_config(title, body, icon=None):
+def build_android_config(title, body, icon=None, data=None):
     if isinstance(title, str) and isinstance(body, str):
         notification = messaging.AndroidNotification(
             title=title,
@@ -29,10 +29,10 @@ def build_android_config(title, body, icon=None):
             body_loc_key=body[0],
             body_loc_args=body[1:],
             icon=icon)
-    return messaging.AndroidConfig(notification=notification)
+    return messaging.AndroidConfig(data=data, notification=notification)
 
-def send_to_token(token, title, body, icon=None):
-    message = messaging.Message(token=token, android=build_android_config(title, body, icon=icon))
+def send_to_token(token, title, body, icon=None, data=None):
+    message = messaging.Message(token=token, android=build_android_config(title, body, icon=icon, data=data))
     try:
         response = messaging.send(message)
     except messaging.ApiCallError as e:
@@ -40,8 +40,8 @@ def send_to_token(token, title, body, icon=None):
     else:
         print(f"Successfully sent notification: {response}")
 
-def send_to_topic(topic, title, body, icon=None):
-    message = messaging.Message(topic=topic, android=build_android_config(title, body, icon=icon))
+def send_to_topic(topic, title, body, icon=None, data=None):
+    message = messaging.Message(topic=topic, android=build_android_config(title, body, icon=icon, data=data))
     try:
         response = messaging.send(message)
     except messaging.ApiCallError as e:

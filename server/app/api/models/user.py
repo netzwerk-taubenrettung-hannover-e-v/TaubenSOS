@@ -41,7 +41,7 @@ class User(db.Model):
 
 	@staticmethod
 	def all():
-		return User.query.order_by(User.username).all()
+		return User.query.order_by(User.username)
 
 	@staticmethod
 	def get(username):

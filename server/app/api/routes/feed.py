@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import utils
 from api.models.feed import Feed, feed_schema, feeds_schema
+from . import fcm
 
 bp = Blueprint("feed", __name__, url_prefix="/api")
 
@@ -22,6 +23,12 @@ def create_news():
 	feed, errors = feed_schema.load(json)
 	if errors:
 		return jsonify(errors), 400
+	fcm.send_to_topic(
+		"/topics/member",
+		["push_new_event_title", feed.title],
+		["push_new_event_body", feed.text],
+		"ic_today",
+		dict(news=feed_schema.dumps(feed)))
 	feed.save()
 	return feed_schema.jsonify(feed), 201
 
