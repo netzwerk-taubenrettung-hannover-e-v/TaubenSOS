@@ -2,7 +2,7 @@ from api import db, ma, spec
 from api.models import injury, medium, user, breed
 from api.models.breed import Breed
 from api.models.injury import Injury
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import text, bindparam
 from marshmallow import post_dump, pre_load, post_load, utils, validate
 
@@ -10,6 +10,7 @@ class Case(db.Model):
     __tablename__ = "case"
     caseID = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    lastEdited = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     priority = db.Column(db.Integer, nullable=False)
     reporter = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
     rescuer = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
@@ -50,6 +51,7 @@ class Case(db.Model):
             if key == "injury":
                 value = injury.injury_schema.load(value).data
             setattr(self, key, value)
+        self.lastEdited = datetime.utcnow()
         db.session.commit()
 
     def delete(self):
@@ -61,7 +63,13 @@ class Case(db.Model):
 
     @staticmethod
     def all():
-        return Case.query.all()
+        return Case.query.order_by(Case.caseID.desc()).all()
+
+    @staticmethod
+    def recent():
+        since = datetime.utcnow() - timedelta(hours=24)
+        except_query = Case.query.filter(Case.isClosed == True, Case.lastEdited < since)
+        return Case.query.except_(except_query).order_by(Case.caseID.desc()).all()
 
     @staticmethod
     def get(caseID):
