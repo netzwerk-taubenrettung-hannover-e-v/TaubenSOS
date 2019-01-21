@@ -66,7 +66,6 @@ class StatisticFragment : Fragment() {
     private var mCurrentObservedInjuryData: LiveDataRes<InjuryStat>? = null
     private lateinit var mCurrentInjuryObserver: LoadingObserver<InjuryStat>
 
-
     private var mCurrentObservedBreedData: LiveDataRes<BreedStat>? = null
     private lateinit var mCurrentBreedObserver: LoadingObserver<BreedStat>
 
@@ -122,7 +121,6 @@ class StatisticFragment : Fragment() {
             if (expand) {
                 fragmentView.collapse_button.setImageResource(R.drawable.ic_keyboard_arrow_up)
             } else {
-
                 northeast = mapsFragment.getNorthEast()
                 southwest = mapsFragment.getSouthWest()
                 Log.d("BLUEDABE_EXPANDED", "------------------------------------------------------------------------")
@@ -295,7 +293,6 @@ class StatisticFragment : Fragment() {
         var countedDays = 0
         val data = ArrayList<Entry>()
 
-        // IGNORE 0 as value
         populationData.forEach { value ->
 
             val index = TimeUnit.SECONDS.toDays(value.day - selectedDateFrom.timeInMillis / 1000).toFloat()

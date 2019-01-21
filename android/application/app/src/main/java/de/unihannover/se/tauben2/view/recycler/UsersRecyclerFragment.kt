@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view.recycler
 
 import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import de.unihannover.se.tauben2.R
@@ -23,8 +24,14 @@ class UsersRecyclerFragment : RecyclerFragment<User>() {
 
         this.user = data
         if (binding is CardUserBinding) {
+
             binding.c = data
+
             if (data.username != vm?.getOwnerUsername()) {
+
+                // bug without:
+                binding.cardBtnUserDelete.visibility = VISIBLE
+
                 binding.cardUserIsAuthorized.setOnClickListener {
                     vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
                 }
@@ -48,13 +55,12 @@ class UsersRecyclerFragment : RecyclerFragment<User>() {
 
                         }.show()
                     }
-
                 }
+
             } else {
                 binding.cardUserIsAuthorized.isEnabled = false
                 binding.cardUserIsAdmin.isEnabled = false
                 binding.cardBtnUserDelete.visibility = INVISIBLE
-
             }
         }
     }

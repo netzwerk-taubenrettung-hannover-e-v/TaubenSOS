@@ -55,6 +55,7 @@
     <style name="PickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/White</item>
+
     </style>
 
 </resources>

@@ -150,4 +150,5 @@
     <string name="is_event">Select for event</string>
     <string name="event_ends_on">Event ends on</string>
     <string name="injury_other_short">Other</string>
+    <string name="population_over_the_last_year">Population over the last year:</string>
 </resources>

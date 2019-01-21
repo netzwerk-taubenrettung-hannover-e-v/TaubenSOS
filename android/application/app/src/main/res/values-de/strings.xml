@@ -141,4 +141,5 @@
     <string name="event_ends_on">Event endet am</string>
     <string name="news">Neuigkeit</string>
     <string name="injury_other_short">Andere</string>
+    <string name="population_over_the_last_year">Populationverlauf für das letzte Jahr:</string>
 </resources>

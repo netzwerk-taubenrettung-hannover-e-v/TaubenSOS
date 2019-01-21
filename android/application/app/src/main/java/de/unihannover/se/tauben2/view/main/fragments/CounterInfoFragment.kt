@@ -1,22 +1,15 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
-
-//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
-//import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
-import android.util.TimeUtils
 import android.view.*
 import android.widget.DatePicker
-import android.widget.TimePicker
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -32,17 +25,9 @@ import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter_info.*
 import kotlinx.android.synthetic.main.fragment_counter_info.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-/**
- * A simple [Fragment] subclass.
- */
 
 class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
@@ -134,6 +119,8 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         view.current_timestamp_value.setOnClickListener {
             datePickerDialog?.show()
+            datePickerDialog?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimaryDark))
+            datePickerDialog?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimaryDark))
         }
 
         view.resetdate_button.setOnClickListener {
@@ -212,6 +199,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             }
         }
+
         return result
     }
 
