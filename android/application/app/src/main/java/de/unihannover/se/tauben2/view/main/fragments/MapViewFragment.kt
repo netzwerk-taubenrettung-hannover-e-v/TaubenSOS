@@ -24,6 +24,7 @@ import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
 import java.util.*
 
@@ -105,7 +106,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
                 when (this.parentFragment) {
                     is GraphsFragment -> addHeatMap()
-                    is CasesAdminFragment -> {
+                    is CasesFragment -> {
                         mMap?.setOnInfoWindowClickListener { clickedMarker ->
                             //TODO find MarkerCase
 
