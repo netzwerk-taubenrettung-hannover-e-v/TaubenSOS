@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 import java.util.*
 
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int): BottomNavigationView(context, attrs, defStyleAttr) {
@@ -78,7 +80,16 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
     }
 
     private fun addMenuItem(menu: Menu = getMenu(), item: FragmentMenuItem) {
-        menu.add(Menu.NONE, item.itemId, Menu.NONE, item.title).setIcon(item.iconId)
+        menu.add(Menu.NONE, item.itemId, Menu.NONE, item.title).setIcon(item.iconId).setOnMenuItemClickListener {
+            if(context is AppCompatActivity) {
+                (context as AppCompatActivity).apply {
+                    // TODO remove hardcoded part
+                    if(item.itemId != R.id.casesFragment)
+                        title = item.title
+                }
+            }
+            false
+        }
     }
 
     fun hasOverflowMenu() = menuSize > mSize

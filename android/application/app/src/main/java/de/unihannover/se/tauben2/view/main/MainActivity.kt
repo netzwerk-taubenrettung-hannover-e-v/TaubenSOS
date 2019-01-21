@@ -17,7 +17,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
-import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
@@ -79,10 +78,10 @@ class MainActivity : AppCompatActivity() {
             mBinding.bottomNavigation.setSize(4)
 
         mBinding.bottomNavigation.setMenuItems(BootingActivity.getOwnerPermission(),
-                FragmentMenuItem(R.id.newsFragment, resources.getQuantityString(R.plurals.news, 2), R.drawable.ic_today_white_24dp),
-                FragmentMenuItem(R.id.casesUserFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, onlyThatPermission = true),
+                FragmentMenuItem(R.id.newsFragment, resources.getQuantityString(R.plurals.news, 2), R.drawable.ic_today),
+                FragmentMenuItem(R.id.casesUserFragment, getString(R.string.cases), R.drawable.ic_assignment, onlyThatPermission = true),
                 FragmentMenuItem(R.id.counterFragment, getString(R.string.counter), R.drawable.ic_bubble_chart_white_24dp, Permission.AUTHORISED),
-                FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.casesFragment, getString(R.string.cases), R.drawable.ic_assignment, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.statisticFragment, getString(R.string.graphs), R.drawable.ic_chart, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.membersFragment, getString(R.string.users), R.drawable.ic_group_white_24dp, Permission.ADMIN),
                 FragmentMenuItem(R.id.contactFragment, getString(R.string.contact), R.drawable.ic_contact_mail_white_24dp),

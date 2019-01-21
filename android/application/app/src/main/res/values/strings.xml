@@ -2,7 +2,7 @@
     <string name="app_name">PigeonSOS</string>
     <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
-    <string name="call">Give us a call!</string>
+    <string name="call_info_title">Give us a call!</string>
     <string name="contact_info">You can give us a call to get more information or if you found a pigeon which is in urgent need for help.</string>
     <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
     <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick Not sure.</string>
@@ -159,4 +159,14 @@
     <string name="delete_case_info">The case will not be recoverable.</string>
     <string name="delete_news_question">Do you want to delete this news?</string>
     <string name="delete_news_info">The news will not be recoverable.</string>
+    <string name="no_author">past member</string>
+    <string name="logout_successful">Logout successful</string>
+    <string name="contact_by_phone">Contact us by phone:</string>
+    <string name="call">Call</string>
+    <string name="contact_by_mail">Contact us by mail:</string>
+    <string name="mail">E-Mail</string>
+    <string name="contact_by_facebook">Stay up to day:</string>
+    <string name="facebook">Facebook</string>
+    <string name="contact_by_website">Visit our website</string>
+    <string name="website">Website</string>
 </resources>

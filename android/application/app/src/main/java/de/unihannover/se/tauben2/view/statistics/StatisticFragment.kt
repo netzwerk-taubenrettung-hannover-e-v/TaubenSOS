@@ -76,6 +76,7 @@ class StatisticFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         fragmentView = inflater.inflate(R.layout.fragment_statistic, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment_statistic) as MapViewFragment
+
         northeast = mapsFragment.getNorthEast()
         southwest = mapsFragment.getNorthEast()
 

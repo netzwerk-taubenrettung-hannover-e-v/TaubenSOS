@@ -29,13 +29,19 @@ class MoreFragment : Fragment() {
             controller.currentDestination?.defaultArguments?.getParcelableArrayList<FragmentMenuItem>("items")?.let {
                 menuItems = it
             }
-            menuItems.forEach { v.more_navigation.menu.add(Menu.NONE, it.itemId, Menu.NONE, it.title).setIcon(it.iconId) }
+            menuItems.forEach {
+                v.more_navigation.menu.add(Menu.NONE, it.itemId, Menu.NONE, it.title).setIcon(it.iconId).setOnMenuItemClickListener { _ ->
+                    activity?.title = it.title
+                    false
+                }
+
+            }
 
             v.more_navigation.setNavigationItemSelectedListener {
                 if (it.itemId == R.id.button_logout) {
                     getViewModel(UserViewModel::class.java)?.let { vm ->
                         vm.logout()
-                        setSnackBar(v, "Logout Successful")
+                        setSnackBar(v, getString(R.string.logout_successful))
                         activity?.finish()
                         Intent(context, BootingActivity::class.java).apply { startActivity(this) }
                     }
@@ -46,7 +52,6 @@ class MoreFragment : Fragment() {
                 }
             }
         }
-
 
         return view
     }

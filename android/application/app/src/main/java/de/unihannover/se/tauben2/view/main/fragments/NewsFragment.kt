@@ -44,6 +44,9 @@ class NewsFragment : Fragment() {
         view.create_news_button.setOnClickListener {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.editNewsFragment)
         }
+
+        activity?.title = resources.getQuantityString(R.plurals.news, 1)
+
         return view
     }
 

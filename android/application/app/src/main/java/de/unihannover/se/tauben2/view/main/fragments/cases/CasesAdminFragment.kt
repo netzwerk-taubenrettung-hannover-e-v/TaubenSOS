@@ -4,19 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import de.unihannover.se.tauben2.*
-import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.view.LoadingObserver
-import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.view.recycler.CasesRecyclerFragment
-import de.unihannover.se.tauben2.viewmodel.CaseViewModel
-import de.unihannover.se.tauben2.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.fragment_cases.*
 import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesAdminFragment : CasesFragment() {
@@ -73,7 +65,7 @@ class CasesAdminFragment : CasesFragment() {
             )
             // all cases
             addActionItem(
-                    SpeedDialActionItem.Builder(R.id.cases_filter_all, R.drawable.ic_assignment_white_24dp)
+                    SpeedDialActionItem.Builder(R.id.cases_filter_all, R.drawable.ic_assignment)
                             .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.White, null))
                             .setLabel(getString(R.string.all_cases))
                             .create()

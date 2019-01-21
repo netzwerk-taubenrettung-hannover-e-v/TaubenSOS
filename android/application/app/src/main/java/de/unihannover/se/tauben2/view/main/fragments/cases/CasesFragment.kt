@@ -44,6 +44,8 @@ abstract class CasesFragment: Fragment() {
 
         loadCases(Filter.ALL)
 
+        activity?.setTitle(R.string.all_cases)
+
         return v
     }
 
