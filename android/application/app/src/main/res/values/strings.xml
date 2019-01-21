@@ -41,7 +41,7 @@
     <string name="enter_location">Select your location:</string>
     <string name="set_position">Set position</string>
     <string name="add_media">Include up to three media files:</string>
-    <string name="specify_injuries">Select up to three injuries:</string>
+    <string name="specify_injuries">Select injuries:</string>
     <string name="injury_foot_leg">Foot or leg</string>
     <string name="injury_wings">Wings</string>
     <string name="injury_head_eye">Head or eye</string>
