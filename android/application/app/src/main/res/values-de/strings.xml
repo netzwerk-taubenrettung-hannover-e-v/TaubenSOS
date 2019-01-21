@@ -12,6 +12,7 @@
     <string name="contact_info">Du kannst uns für weitere Informationen oder zum Melden eines verletzten Tiers gerne telefonisch kontaktieren.</string>
    <string name="breed_report_info">Brieftaube: hat einen Ring an einem oder beiden Füßen, Gefieder kann unterschiedlich gefärbt sein, schließt sich Stadttauben an.\n\nRingeltaube:  größer als Stadttauben, erwachsene Tauben haben einen weißen Halsfleck, gelben Schnabel, blaue Augen. Jungtiere haben diese Merkmale noch nicht, aber schon den weißen Rand am Flügel. Schließen sich Stadttauben nicht an.\n\nStadttaube: kann sehr unterschiedlich aussehen, Schnabel ist in der Regel dunkelgrau, Beine und Augen orangerot. Jungtiere haben braune Augen.\n\nRassetaube: oft einfarbig oder auffällig gescheckt, lange Federn an den Füßen oder eine Haube am Kopf, hat manchmal Ringe an den Beinen.</string>
    <string name="priority">Priorität: %s</string>
+    <string name="breed_report_explanation">Für unsere Statistik bitten wir dich, die Taubenart anzugeben. Falls du nicht genau weißt, wie die jeweiligen Arten aussehen, kannst du dir einen Erklärungstext dazu anzeigen lassen oder Nicht sicher anklicken.</string>
     <string name="priority_blank">Priorität:</string>
     <string name="before">Vor %s</string>
     <string name="long_duration">%d Tagen, %02d Stunden, %02d Minuten</string>

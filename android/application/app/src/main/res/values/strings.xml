@@ -5,6 +5,7 @@
     <string name="call">Give us a call!</string>
     <string name="contact_info">You can give us a call to get more information or if you found a pigeon which is in urgent need for help.</string>
     <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
+    <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick Not sure.</string>
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
