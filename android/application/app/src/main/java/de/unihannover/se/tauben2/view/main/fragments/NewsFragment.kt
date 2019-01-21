@@ -45,7 +45,7 @@ class NewsFragment : Fragment() {
             Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.editNewsFragment)
         }
 
-        activity?.title = resources.getQuantityString(R.plurals.news, 1)
+        activity?.title = resources.getQuantityString(R.plurals.news, 2)
 
         return view
     }

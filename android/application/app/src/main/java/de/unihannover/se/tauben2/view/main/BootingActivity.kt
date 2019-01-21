@@ -56,4 +56,9 @@ class BootingActivity : AppCompatActivity() {
         mUserViewModel.owner.removeObserver(mOwnerObserver)
         Intent(this, MainActivity::class.java).apply { startActivity(this) }
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
+    }
 }

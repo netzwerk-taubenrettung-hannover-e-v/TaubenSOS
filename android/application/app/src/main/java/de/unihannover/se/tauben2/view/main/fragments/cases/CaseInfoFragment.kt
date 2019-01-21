@@ -162,6 +162,8 @@ class CaseInfoFragment : Fragment() {
 
         when (item?.itemId) {
             R.id.toolbar_call_button -> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.c?.phone)))
+            R.id.toolbar_navigate -> startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("geo:0,0?q=${mBinding.c?.latitude},${mBinding.c?.longitude} (${mBinding.c?.getPigeonBreed()?.getTitle()} (${getString(R.string.priority, mBinding.c?.priority?.toString())}))")))
             R.id.toolbar_report_dead -> reportAsDead(true)
             R.id.toolbar_report_alive -> reportAsDead(false)
             R.id.toolbar_edit -> {
@@ -207,6 +209,7 @@ class CaseInfoFragment : Fragment() {
                 findItem(R.id.toolbar_delete)?.isVisible = true
                 setOptionsMenuDeadItems(menu)
             }
+            findItem(R.id.toolbar_navigate)?.isVisible = true
             findItem(R.id.toolbar_edit)?.isVisible = true
             findItem(R.id.toolbar_report_button)?.isVisible = false
         }
