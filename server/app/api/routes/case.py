@@ -16,7 +16,7 @@ def read_cases():
 	"""
 	file: ../../docs/case/read_all.yml
 	"""
-	cases = Case.recent()
+	cases = Case.recents()
 	return cases_schema.jsonify(cases), 200
 
 @bp.route("/case", methods=["POST"], strict_slashes=False)

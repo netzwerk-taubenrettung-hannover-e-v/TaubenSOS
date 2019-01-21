@@ -39,15 +39,16 @@ class Feed(db.Model):
 
 	@staticmethod
 	def all():
-		return Feed.query.all()
+		return Feed.query.order_by(Feed.timestamp.desc())
 
 	@staticmethod
 	def get(feedID):
 		return Feed.query.get(feedID)
 
 	@staticmethod
-	def get_newly_posted_news(lastUpdate):
-		return db.session.query(Feed).filter(Feed.timestamp > lastUpdate)
+	def recents():
+		except_query = Feed.query.filter(Feed.eventEnd < datetime.utcnow())
+		return Feed.query.except_(except_query).order_by(Feed.timestamp.desc())
 
 class FeedSchema(ma.Schema):
 	feedID = ma.Integer(dump_only=True)

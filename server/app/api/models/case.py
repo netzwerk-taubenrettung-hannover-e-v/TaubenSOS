@@ -63,13 +63,13 @@ class Case(db.Model):
 
     @staticmethod
     def all():
-        return Case.query.order_by(Case.caseID.desc()).all()
+        return Case.query.order_by(Case.timestamp.desc())
 
     @staticmethod
-    def recent():
+    def recents():
         since = datetime.utcnow() - timedelta(hours=24)
         except_query = Case.query.filter(Case.isClosed == True, Case.lastEdited < since)
-        return Case.query.except_(except_query).order_by(Case.caseID.desc()).all()
+        return Case.query.except_(except_query).order_by(Case.timestamp.desc())
 
     @staticmethod
     def get(caseID):
