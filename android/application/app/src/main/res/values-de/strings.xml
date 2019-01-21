@@ -139,15 +139,11 @@
     <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
     <string name="is_event">Für Event auswählen</string>
     <string name="event_ends_on">Event endet am</string>
-<<<<<<< HEAD
     <plurals name="news">
         <item quantity="one">Neuigkeit</item>
         <item quantity="other">News</item>
     </plurals>
     <string name="more">Mehr</string>
-=======
-    <string name="news">Neuigkeit</string>
     <string name="injury_other_short">Andere</string>
     <string name="population_over_the_last_year">Populationverlauf für das letzte Jahr:</string>
->>>>>>> ffa617222b312c6c5683b2e077b6020156091662
 </resources>
