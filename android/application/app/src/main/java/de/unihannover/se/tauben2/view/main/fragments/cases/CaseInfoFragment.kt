@@ -80,7 +80,7 @@ class CaseInfoFragment: Fragment() {
 //                                    view_video.start()
 //                                }
                                 val intent = Intent(Intent.ACTION_VIEW)
-                                intent.setDataAndType(Uri.parse(case.getMediaURL(media.mediaID)), "video/mp4")
+                                intent.setDataAndType(Uri.parse(case.getMediaURL(media.mediaID)), media.getType().getFullType())
                                 startActivity(intent)
                             }
                         } else {
@@ -169,8 +169,8 @@ class CaseInfoFragment: Fragment() {
             R.id.toolbar_delete -> {
                 multiLet(context, mBinding.c) { cxt, case ->
                     AlertDialog.Builder(cxt)
-                            .setTitle("Do you want to delete this case?")
-                            .setMessage("The case will not be recoverable.")
+                            .setTitle(getString(R.string.delete_case_question))
+                            .setMessage(getString(R.string.delete_case_info))
                             .setPositiveButton(R.string.delete) { _, _ ->
                                 getViewModel(CaseViewModel::class.java)?.deleteCase(case)
                                 val controller = Navigation.findNavController(context as Activity, R.id.nav_host)

@@ -36,25 +36,6 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
 
             tarr.recycle()
         }
-
-
-//        if (hasOverflowMenu()) {
-//            val overflowItems = mutableListOf<MenuItem>()
-//
-//            for(i in mSize-1 until menu.size()) {
-//                val item = menu.getItem(i)
-//                overflowItems.add(item)
-//                menu.removeItem(item.itemId)
-//            }
-//
-//            val moreItem = menu.add("More")
-//            moreItem.setIcon(R.drawable.ic_more_horiz_white_24dp)
-//
-//            val moreMenu = MoreFragment.newInstance().more_navigation.menu
-//            moreMenu.clear()
-//            overflowItems.forEach { moreMenu.add(it.itemId) }
-//
-//        }
     }
 
     fun setMenuItems(permission: Permission, vararg items: FragmentMenuItem) {
@@ -69,22 +50,6 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
         if(permissibleItems.size > mSize-1) {
             createOverflowMenu(permissibleItems.slice(mSize-1 until permissibleItems.size))
         }
-//        setOnNavigationItemSelectedListener {
-//            if(mMoreMenuItem?.itemId == it.itemId) {
-//                mMoreMenuItem?.let { moreItem ->
-//                    mStartFragmentListener?.onStartFragment(moreItem.getFragment())
-//                    return@setOnNavigationItemSelectedListener true
-//                }
-//            }
-//            for(i in 0 until permissibleItems.size) {
-//                val item = permissibleItems[i]
-//                if (item.itemId == it.itemId) {
-//                    mStartFragmentListener?.onStartFragment(item.getFragment())
-//                    return@setOnNavigationItemSelectedListener true
-//                }
-//            }
-//            return@setOnNavigationItemSelectedListener false
-//        }
     }
 
     fun setSelectedItem(id: Int) {

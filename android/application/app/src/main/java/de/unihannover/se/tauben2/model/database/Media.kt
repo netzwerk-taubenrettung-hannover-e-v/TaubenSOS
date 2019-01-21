@@ -28,6 +28,8 @@ data class Media(val mediaID: Int, val mimeType: String?, var toDelete: Boolean 
             }
         }
 
+        fun getFullType() = "$category/$type"
+
         fun isImage() = category == "image"
 
         fun isVideo() = category == "video"
