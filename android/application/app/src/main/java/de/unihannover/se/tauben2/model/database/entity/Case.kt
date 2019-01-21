@@ -77,7 +77,7 @@ data class Case(@PrimaryKey var caseID: Int?,
         return result
     }
 
-    fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo_48dp, fit: Boolean = true) {
+    fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo, fit: Boolean = true) {
         loadMedia(media?.let { getImageURL(it) }, placeHolder, imageView, fit)
     }
 

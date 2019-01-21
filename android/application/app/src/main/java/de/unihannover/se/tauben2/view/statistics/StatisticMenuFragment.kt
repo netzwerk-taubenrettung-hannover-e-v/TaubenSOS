@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.fragment_statistic_menu.view.*
 class StatisticMenuFragment : Fragment() {
 
     private val statisticItems = arrayListOf(
-            StatisticItem("test0", "test0", R.drawable.ic_logo_48dp, R.id.statisticFragment),
-            StatisticItem("test1", "test1", R.drawable.ic_logo_48dp, R.id.statisticFragment))
+            StatisticItem("test0", "test0", R.drawable.ic_logo, R.id.statisticFragment),
+            StatisticItem("test1", "test1", R.drawable.ic_logo, R.id.statisticFragment))
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

@@ -17,7 +17,7 @@
         android:adjustViewBounds="true"
         android:elevation="4dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_logo_48dp" />
+        android:src="@drawable/ic_logo" />
 
 </androidx.appcompat.widget.Toolbar>
 
