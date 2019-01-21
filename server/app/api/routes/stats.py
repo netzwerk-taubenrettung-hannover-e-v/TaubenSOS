@@ -42,7 +42,10 @@ def get_closed_cases():
 		return cases_schema.jsonify(cases), 200
 
 @bp.route("/stats/population", methods=["GET"], strict_slashes=False)
-def get_population_stats():
+def read_population_stats():
+	"""
+	file: ../../docs/stats/read_population_stats.yml
+	"""
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
@@ -86,6 +89,9 @@ def get_population_stats():
 
 @bp.route("/stats/pigeonNumbers", methods=["GET"], strict_slashes=False)
 def read_pigeon_numbers():
+	"""
+	file: ../../docs/stats/read_pigeon_numbers.yml
+	"""
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
@@ -128,7 +134,10 @@ def read_pigeon_numbers():
 		return jsonify(pigeonNumbers), 200
 
 @bp.route("/stats/breed", methods=["GET"], strict_slashes=False)
-def read_breed():
+def read_breed_stats():
+	"""
+	file: ../../docs/stats/read_breed_stats.yml
+	"""
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
@@ -171,7 +180,10 @@ def read_breed():
 		return jsonify(breed), 200
 
 @bp.route("/stats/injury", methods=["GET"], strict_slashes=False)
-def read_injury():
+def read_injury_stats():
+	"""
+	file: ../../docs/stats/read_injury_stats.yml
+	"""
 	if request.method == "GET":
 		untilTime = request.args.get("untilTime")
 		fromTime = request.args.get("fromTime")
