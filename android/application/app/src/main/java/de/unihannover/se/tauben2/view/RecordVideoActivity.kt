@@ -4,8 +4,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.otaliastudios.cameraview.*
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.activity_record_video.*
@@ -43,6 +45,8 @@ class RecordVideoActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         setTitle(R.string.record_video)
+
+        backgroundColor()
 
         cam = cameraView
         cam?.apply {
@@ -92,5 +96,12 @@ class RecordVideoActivity : AppCompatActivity() {
         super.onBackPressed()
         setResult(Activity.RESULT_CANCELED)
         finish()
+    }
+
+    // sets the gradient for the status bar
+    private fun backgroundColor() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        window.setBackgroundDrawableResource(de.unihannover.se.tauben2.R.drawable.gradient)
     }
 }

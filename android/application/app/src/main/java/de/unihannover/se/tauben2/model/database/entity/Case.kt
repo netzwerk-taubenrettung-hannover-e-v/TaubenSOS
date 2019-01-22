@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.squareup.picasso.Callback
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.loadMedia
@@ -21,6 +22,7 @@ import de.unihannover.se.tauben2.model.database.PigeonBreed
 import de.unihannover.se.tauben2.model.database.Media
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
+import java.lang.Exception
 
 /**
  * represents the case of an injured pigeon
@@ -77,8 +79,8 @@ data class Case(@PrimaryKey var caseID: Int?,
         return result
     }
 
-    fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo, fit: Boolean = true) {
-        loadMedia(media?.let { getImageURL(it) }, placeHolder, imageView, fit)
+    fun loadMediaFromServerInto(media: Media?, imageView: ImageView, @DrawableRes placeHolder: Int? = R.drawable.ic_logo, fit: Boolean = true, callback: Callback? = null) {
+        loadMedia(media?.let { getImageURL(it) }, placeHolder, imageView, fit, callback)
     }
 
     fun getPigeonBreed() = PigeonBreed.fromString(breed)

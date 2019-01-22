@@ -2,8 +2,10 @@ package de.unihannover.se.tauben2.view
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -32,6 +34,8 @@ class VideoPlayerActivity : AppCompatActivity() {
 
         setTitle(R.string.watch_video)
 
+        backgroundColor()
+
         player = ExoPlayerFactory.newSimpleInstance(this)
 
         playerView.player = player
@@ -53,5 +57,12 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         player.release()
+    }
+
+    // sets the gradient for the status bar
+    private fun backgroundColor() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+        window.setBackgroundDrawableResource(de.unihannover.se.tauben2.R.drawable.gradient)
     }
 }
