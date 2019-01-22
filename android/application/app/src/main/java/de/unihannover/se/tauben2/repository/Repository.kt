@@ -297,14 +297,16 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun sendNews(news: News) = object : AsyncDataRequest<News, News>(appExecutors) {
+    fun sendNews(news: News, updateDatabase: Boolean = true) = object : AsyncDataRequest<News, News>(appExecutors) {
         override fun fetchUpdatedData(resultData: News): LiveDataRes<News> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
         }
 
         override fun saveUpdatedData(updatedData: News) {
-            //Coming from push
-            database.newsDao().insertOrUpdate(updatedData)
+            if(updateDatabase) {
+                setItemUpdateTimestamps(updatedData)
+                database.newsDao().insertOrUpdate(updatedData)
+            }
         }
 
         override fun createCall(requestData: News): LiveDataRes<News> {
@@ -409,7 +411,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
      * the api doesn't accept are set to null
      */
-    fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+    fun sendCase(case: Case, mediaItems: List<ByteArray>, updateDatabase: Boolean = true) = object : AsyncDataRequest<Case, Case>(appExecutors) {
 
         override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // amazon upload urls
@@ -429,8 +431,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun saveUpdatedData(updatedData: Case) {
             sp.edit().putString(GUEST_PHONE, updatedData.phone).apply()
-            setItemUpdateTimestamps(updatedData)
-            database.caseDao().insertOrUpdate(updatedData)
+            if(updateDatabase) {
+                setItemUpdateTimestamps(updatedData)
+                database.caseDao().insertOrUpdate(updatedData)
+            }
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {

@@ -1,9 +1,11 @@
 package de.unihannover.se.tauben2.view
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.otaliastudios.cameraview.*
 import de.unihannover.se.tauben2.R
 import kotlinx.android.synthetic.main.activity_record_video.*
@@ -31,6 +33,17 @@ class RecordVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_video)
+
+        val tb = toolbar as Toolbar
+        setSupportActionBar(tb)
+
+        tb.setNavigationOnClickListener { onBackPressed() }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        setTitle(R.string.record_video)
+
         cam = cameraView
         cam?.apply {
             setLifecycleOwner(this@RecordVideoActivity)
@@ -73,5 +86,11 @@ class RecordVideoActivity : AppCompatActivity() {
         recording = true
 
         Log.d(LOG_TAG, "recording...")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 }

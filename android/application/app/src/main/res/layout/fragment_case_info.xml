@@ -98,7 +98,7 @@
 
                         <include layout="@layout/layout_title_content"
                             app:title="@{@string/additional_information}"
-                            app:content="@{c.additionalInfo}"
+                            app:content="@{c.additionalInfoString}"
                             />
 
                         <View

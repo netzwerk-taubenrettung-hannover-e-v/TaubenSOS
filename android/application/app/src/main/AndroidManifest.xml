@@ -28,8 +28,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.RecordVideoActivity" />
-        <activity android:name=".view.VideoPlayerActivity" />
+        <activity android:name=".view.RecordVideoActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".view.VideoPlayerActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            />
 
         <uses-library
             android:name="org.apache.http.legacy"

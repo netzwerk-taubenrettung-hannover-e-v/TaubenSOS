@@ -112,7 +112,7 @@
     <string name="create_marker">Marker erstellen</string>
     <string name="from">Von:</string>
     <string name="event_starts_on">Event startet am</string>
-    <string name="reported_doves">gemeldete Tauben:</string>
+    <string name="reported_doves">Gemeldete Tauben:</string>
     <string name="open_cases">Offene Fälle</string>
     <string name="step">Schritt %1$d: %2$s</string>
     <string name="edit_case">Bearbeite Fall #%1$d</string>
@@ -122,8 +122,8 @@
     <string name="report_step_additional_info">Zusätzliche Informationen</string>
     <string name="report_step_media">Medien</string>
     <string name="report_step_location">Standort</string>
-    <string name="in_average_population">durchschnittlich %1$d Tauben</string>
-    <string name="in_average_reports">durchschnittlich %1$.2f Tauben pro Tag</string>
+    <string name="in_average_population">durchschn. %1$d Tauben</string>
+    <string name="in_average_reports">durchschn. %1$.2f Tauben/Tag</string>
     <string name="counter">Zählung</string>
     <string name="push_new_sign_up_request_title">Neue Registrierungsanfrage</string>
     <string name="push_new_sign_up_request_body">%s möchte Teil der Community werden! 🐣</string>
@@ -180,4 +180,5 @@
     <string name="phone_number_invalid">Keine gültige Telefonnummer.</string>
     <string name="record">Aufnahme</string>
     <string name="select_location">Bitte wähle einen Standort aus.</string>
+    <string name="watch_video">Video ansehen</string>
 </resources>

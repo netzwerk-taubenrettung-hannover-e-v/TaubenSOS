@@ -3,12 +3,14 @@ package de.unihannover.se.tauben2.view
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import de.unihannover.se.tauben2.R
+import kotlinx.android.synthetic.main.activity_record_video.*
 import kotlinx.android.synthetic.main.activity_video_player.*
 
 class VideoPlayerActivity : AppCompatActivity() {
@@ -19,6 +21,16 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_player)
+
+        val tb = toolbar_video_player as Toolbar
+        setSupportActionBar(tb)
+
+        tb.setNavigationOnClickListener { onBackPressed() }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        setTitle(R.string.watch_video)
 
         player = ExoPlayerFactory.newSimpleInstance(this)
 

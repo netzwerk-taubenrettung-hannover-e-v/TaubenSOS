@@ -163,6 +163,8 @@ data class Case(@PrimaryKey var caseID: Int?,
 
     }
 
+    fun getAdditionalInfoString() = if(additionalInfo.isNullOrEmpty()) "-" else additionalInfo
+
 
 
     // Functions needed for two way data binding
