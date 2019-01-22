@@ -86,9 +86,10 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
                     }
 
                     val dataSet = LineDataSet(dataList, "")
-                    dataSet.mode = LineDataSet.Mode.LINEAR
+                    dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
                     dataSet.setDrawValues(false)
                     dataSet.setDrawFilled(true)
+
                     val lineData = LineData(dataSet)
                     view.chart.apply {
                         xAxis.position = XAxis.XAxisPosition.BOTTOM
