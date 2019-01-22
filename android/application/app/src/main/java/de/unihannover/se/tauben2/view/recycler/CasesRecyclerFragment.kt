@@ -3,7 +3,6 @@ package de.unihannover.se.tauben2.view.recycler
 import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -11,14 +10,10 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-import kotlinx.android.synthetic.main.card_statistic.view.*
-import kotlinx.android.synthetic.main.fragment_cases.*
-import kotlinx.android.synthetic.main.fragment_cases.view.*
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -29,6 +24,9 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     //TODO remove workaround
     var alreadyLoaded: Boolean = false
 
+    override fun onChanged(t: List<Case>?) {
+        super.onChanged(t?.sortedByDescending { it.timestamp })
+    }
 
     private val locationObserver = Observer<Location?> {
         mLocation = it

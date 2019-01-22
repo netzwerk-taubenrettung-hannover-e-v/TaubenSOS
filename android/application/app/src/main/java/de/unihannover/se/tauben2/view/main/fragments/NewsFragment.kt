@@ -57,7 +57,7 @@ class NewsFragment : BaseMainFragment(R.string.news_title) {
             // Remove old Observer
             mCurrentObservedData?.removeObserver(mCurrentObserver)
 
-            mCurrentObservedData = viewModel.news.filter { it.eventEnd?.let { end -> end > System.currentTimeMillis()/1000 } ?: true }
+            mCurrentObservedData = viewModel.news
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
         }

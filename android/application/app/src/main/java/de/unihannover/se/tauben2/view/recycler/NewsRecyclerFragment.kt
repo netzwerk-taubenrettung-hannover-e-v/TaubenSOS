@@ -31,7 +31,7 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
     override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_news
 
     override fun onChanged(t: List<News>?) {
-        super.onChanged(t?.sortedBy { it.eventStart ?: it.timestamp })
+        super.onChanged(t?.sortedByDescending { it.timestamp })
     }
 
     override fun onBindData(binding: ViewDataBinding, data: News) {
