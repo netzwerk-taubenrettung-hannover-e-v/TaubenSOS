@@ -8,12 +8,14 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.view.main.MainActivity
 
 class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ImageView(context, attrs, defStyleAttr, defStyleRes) {
@@ -49,6 +51,8 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup, activity: MainActivity) {
         this.setOnClickListener {
+            if(resources.getDrawable(R.drawable.ic_logo, null) == this.drawable)
+                return@setOnClickListener
             activity.zoomMode = true
             zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent, activity)
         }

@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.model.network.Resource
 import de.unihannover.se.tauben2.viewmodel.ViewModelFactory
@@ -150,10 +151,10 @@ fun MaterialButton.setRightIcon(end: Drawable?) {
     TextViewCompat.setCompoundDrawablesRelative(this, null, null, end, null)
 }
 
-fun loadMedia(url: String?, @DrawableRes placeHolderDrawable: Int?, intoView: ImageView, fit: Boolean = true) {
+fun loadMedia(url: String?, @DrawableRes placeHolderDrawable: Int?, intoView: ImageView, fit: Boolean = true, callback: Callback? = null) {
     var loaded = Picasso.get().load(url)
     placeHolderDrawable?.let { loaded = loaded.placeholder(it) }
-    return if (fit) loaded.centerCrop().fit().into(intoView) else loaded.into(intoView)
+    return if (fit) loaded.centerCrop().fit().into(intoView, callback) else loaded.into(intoView, callback)
 }
 
 fun loadMedia(file: File, @DrawableRes placeHolderDrawable: Int?, intoView: ImageView, fit: Boolean = true) {

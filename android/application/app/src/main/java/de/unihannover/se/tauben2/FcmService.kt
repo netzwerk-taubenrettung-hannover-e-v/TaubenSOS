@@ -33,16 +33,15 @@ class FcmService : FirebaseMessagingService() {
         message?.data?.apply {
             get("case")?.let {
                 val c = Gson().fromJson(it, Case::class.java)
-                c?.let {case ->
-
-                    if(database.caseDao().getCase(case.caseID ?: -1).value == null)
+                multiLet(c, BootingActivity.owner?.username){ case, username ->
+                    if(username != case.reporter)
                         database.caseDao().insertOrUpdate(case)
                 }
             }
             get("news")?.let {
                 val n = Gson().fromJson(it, News::class.java)
-                n?.let { news ->
-                    if(database.newsDao().getNewsPost(news.feedID ?: -1).value == null)
+                multiLet(n, BootingActivity.owner?.username){ news, username ->
+                    if(username != news.author)
                         database.newsDao().insertOrUpdate(news)
                 }
             }
