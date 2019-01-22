@@ -169,6 +169,11 @@
     <string name="news_title">News</string>
     <string name="change_state_not_found">Nicht gefunden</string>
     <string name="change_state_found">Doch gefunden</string>
-    <string name="push_new_case_title">Ein neuer Fall mit der Priorität %d wurde hinzugefügt! 🐦</string>
-    <string name="push_new_event_title">Ein neues Event \"%s\" wurde hinzugefügt! 📆</string>
+    <string name="push_new_case_title">Ein neuer Fall mit der Priorität %s wurde hinzugefügt! 🐦</string>
+    <string name="push_new_event_title">Eine neue News \"%s\" wurde hinzugefügt! 📆</string>
+    <string name="fill_out_all_fields">Bitte fülle alle Felder aus!</string>
+    <string name="login_successful">Login erfolgreich!</string>
+    <string name="wrong_username_password">Falscher Nutzername, Passwort oder Account nicht aktiviert!</string>
+    <string name="passwords_not_match">Passwörter stimmen nicht überein!</string>
+    <string name="registration_requested">Registration erfolgreich angefragt!</string>
 </resources>

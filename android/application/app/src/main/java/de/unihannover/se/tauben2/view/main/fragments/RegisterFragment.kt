@@ -41,7 +41,7 @@ class RegisterFragment : BaseMainFragment(R.string.register) {
 
             when {
                 pw != confirmedPw -> {
-                    setSnackBar(view, "The passwords don't match!")
+                    setSnackBar(view, getString(R.string.passwords_not_match))
                 }
                 allInputsFilled(view as ViewGroup) -> {
                     val userViewModel = getViewModel(UserViewModel::class.java)
@@ -55,13 +55,13 @@ class RegisterFragment : BaseMainFragment(R.string.register) {
                         }
                     }
 
-                    setSnackBar(view, "Registration has been requested!")
+                    setSnackBar(view, getString(R.string.registration_requested))
 
                     val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
                     controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
                     controller.navigate(R.id.newsFragment)
                 }
-                else -> setSnackBar(view, "Please fill out all the fields to register!")
+                else -> setSnackBar(view, getString(R.string.fill_out_all_fields))
             }
         }
         return view
