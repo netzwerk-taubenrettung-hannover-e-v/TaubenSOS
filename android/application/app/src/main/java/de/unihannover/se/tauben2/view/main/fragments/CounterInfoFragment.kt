@@ -8,7 +8,6 @@ import android.text.InputFilter
 import android.view.*
 import android.widget.DatePicker
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -28,7 +27,6 @@ import kotlinx.android.synthetic.main.fragment_counter_info.*
 import kotlinx.android.synthetic.main.fragment_counter_info.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerDialog.OnDateSetListener {
 
@@ -67,6 +65,7 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
 
                     val dataList : MutableList<Entry> = mutableListOf()
 
+
                     val first = mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.firstOrNull()?.let {value ->
                         Calendar.getInstance().apply {
                             timeInMillis = value.timestamp*1000
@@ -88,10 +87,14 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
 
                     val dataSet = LineDataSet(dataList, "")
                     dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+                    dataSet.setDrawValues(false)
+                    dataSet.setDrawFilled(true)
+
                     val lineData = LineData(dataSet)
                     view.chart.apply {
                         xAxis.position = XAxis.XAxisPosition.BOTTOM
                         xAxis.labelRotationAngle = -60f
+                        xAxis.setLabelCount(5, false)
 
                         multiLet(first, last) {f, l ->
                             xAxis.valueFormatter = AxisDateFormatter(f, l)
@@ -102,6 +105,7 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
                         legend.isEnabled = false
 
                         data = lineData
+
                         invalidate()
                     }
                 }

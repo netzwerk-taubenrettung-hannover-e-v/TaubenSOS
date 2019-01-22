@@ -1,11 +1,12 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.InputMethodManager
 import com.google.firebase.iid.FirebaseInstanceId
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_login
@@ -47,7 +48,7 @@ class LoginFragment : BaseMainFragment(R.string.login) {
                         try {
                             userViewModel?.login(user)
                             userViewModel?.updateRegistrationToken(user.username, UserRegistrationToken(result.token))
-                            finishLogin(view)
+                            finishLogin()
 
                         } catch (e: Exception) {
                             showLoginErrorMessage(view)
@@ -56,7 +57,7 @@ class LoginFragment : BaseMainFragment(R.string.login) {
                     addOnFailureListener {
                         try {
                             userViewModel?.login(user)
-                            finishLogin(view)
+                            finishLogin()
                         } catch (e: Exception) {
                             showLoginErrorMessage(view)
                         }
@@ -66,19 +67,30 @@ class LoginFragment : BaseMainFragment(R.string.login) {
 
             } else {
                 setSnackBar(view, getString(R.string.fill_out_all_fields))
+                closeKeyboard()
             }
         }
 
         return view
     }
 
-    private fun finishLogin(view: View) {
+    private fun finishLogin() {
         activity?.finish()
         Intent(context, BootingActivity::class.java).apply { startActivity(this) }
-        setSnackBar(view, getString(R.string.login_successful))
     }
 
     private fun showLoginErrorMessage(view: View) {
         setSnackBar(view, getString(R.string.wrong_username_password))
+        closeKeyboard()
+    }
+
+    private fun closeKeyboard () {
+        activity?.let { it ->
+            val imm : InputMethodManager = (it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            view?.let { v ->
+                imm.hideSoftInputFromWindow(v.edit_login_username.windowToken, 0)
+                imm.hideSoftInputFromWindow(v.edit_login_password.windowToken, 0)
+            }
+        }
     }
 }

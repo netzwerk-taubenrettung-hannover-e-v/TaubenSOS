@@ -145,7 +145,7 @@
     </plurals>
     <string name="more">Mehr</string>
     <string name="injury_other_short">Andere</string>
-    <string name="population_over_the_last_year">Populationverlauf für das letzte Jahr:</string>
+    <string name="population_over_the_last_year">Populationverlauf:</string>
     <string name="delete_case_question">Möchtest du diesen Fall löschen?</string>
     <string name="delete_case_info">Der Fall ist danach nicht wiederherstellbar.</string>
     <string name="delete_news_question">Möchtest du diese News löschen?</string>
@@ -184,4 +184,6 @@
     <string name="case_already_removed">Fall wurde bereits vom Server gelöscht.</string>
     <string name="reload">Neuladen</string>
     <string name="reload_successful">Erfolgreich aktualisiert</string>
+    <string name="enable_permission_camera">Die App benötigt die Kamera um Fotos oder Videos zu machen. Bitte erlaube den Zugriff auf die Kamera in den Einstellungen!</string>
+    <string name="missing_permission">Fehlende Berechtigung</string>
 </resources>

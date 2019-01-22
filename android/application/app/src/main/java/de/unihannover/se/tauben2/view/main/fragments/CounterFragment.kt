@@ -92,7 +92,7 @@ class CounterFragment : BaseMainFragment(R.string.counter) {
             // TODO implement drawing radius, adding description text in ui
 
             it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, radius,
-                    listOf()))
+                    mutableListOf()))
 
         }
     }

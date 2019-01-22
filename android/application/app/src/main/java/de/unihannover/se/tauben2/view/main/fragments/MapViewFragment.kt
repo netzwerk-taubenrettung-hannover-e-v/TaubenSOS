@@ -44,7 +44,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     var circle: Circle? = null
     private var selectedArea: Polygon? = null
 
-    private val hanBounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
+    private val hanBounds = LatLngBounds(LatLng(52.2050934, 9.4635117), LatLng(52.5386801, 9.9908932))
 
 
     override fun onStart() {
