@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
@@ -45,6 +46,8 @@ class MediaReportFragment : ReportFragment() {
     private lateinit var v: View
 
     private lateinit var picassoInstance: Picasso
+
+    private lateinit var alertBuilder: AlertDialog.Builder
 
     init {
         pagePos = PagePos.FIRST
@@ -78,7 +81,7 @@ class MediaReportFragment : ReportFragment() {
             (activity as ReportActivity).finish()
         }
 
-        val alertBuilder = AlertDialog.Builder(context).apply {
+        alertBuilder = AlertDialog.Builder(context).apply {
             setTitle(getString(R.string.what_kind_of_media))
             setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))) { _, i ->
                 if (mLocalMediaUrls.size > 3) {
@@ -93,7 +96,7 @@ class MediaReportFragment : ReportFragment() {
         }
 
         v.report_media_add_button.setOnClickListener {
-            alertBuilder.show()
+            context?.let { cxt -> requestCamera(cxt) }
         }
 
         createBlankImages(v)
@@ -127,6 +130,26 @@ class MediaReportFragment : ReportFragment() {
                         getViewModel(UserViewModel::class.java)?.setGuestPhone(mCreatedCase.phone)
                 }
             }
+            if (requestCode == 2) {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    activity?.let {
+                        if (!ActivityCompat.shouldShowRequestPermissionRationale(it, Manifest.permission.CAMERA)) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.apply {
+                                setTitle(getString(R.string.missing_permission))
+                                setMessage(getString(R.string.enable_permission_camera))
+                                setPositiveButton("Ok", null)
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+                        } else {
+                            requestPermissions(arrayOf(Manifest.permission.CAMERA), 2)
+                        }
+                    }
+                } else
+                    alertBuilder.show()
+            }
+            return
         }
     }
 
@@ -154,6 +177,15 @@ class MediaReportFragment : ReportFragment() {
                 activity?.finish()
             }
         }
+    }
+
+    private fun requestCamera(context: Context) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 2)
+        else
+            alertBuilder.show()
+
     }
 
     private fun dispatchTakeMediaIntent(isVideo: Boolean = false) {

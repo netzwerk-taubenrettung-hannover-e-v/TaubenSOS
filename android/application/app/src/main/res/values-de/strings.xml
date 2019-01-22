@@ -180,4 +180,6 @@
     <string name="phone_number_invalid">Keine gültige Telefonnummer.</string>
     <string name="record">Aufnahme</string>
     <string name="select_location">Bitte wähle einen Standort aus.</string>
+    <string name="enable_permission_camera">Die App benötigt die Kamera um Fotos oder Videos zu machen. Bitte erlaube den Zugriff auf die Kamera in den Einstellungen!</string>
+    <string name="missing_permission">Fehlende Berechtigung</string>
 </resources>
