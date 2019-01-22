@@ -175,5 +175,8 @@
     <string name="login_successful">Login erfolgreich!</string>
     <string name="wrong_username_password">Falscher Nutzername, Passwort oder Account nicht aktiviert!</string>
     <string name="passwords_not_match">Passwörter stimmen nicht überein!</string>
-    <string name="registration_requested">Registration erfolgreich angefragt!</string>
+    <string name="registration_requested">Registrierung erfolgreich angefragt!</string>
+    <string name="stop">Stopp</string>
+    <string name="phone_number_invalid">Keine gültige Telefonnummer.</string>
+    <string name="record">Aufnahme</string>
 </resources>

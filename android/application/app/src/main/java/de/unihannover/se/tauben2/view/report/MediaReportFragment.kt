@@ -33,6 +33,7 @@ import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report_media.view.*
+import kotlinx.android.synthetic.main.info_image_view.view.*
 import kotlinx.android.synthetic.main.phone_alert_dialog.view.*
 import java.io.File
 import java.io.IOException
@@ -146,7 +147,7 @@ class MediaReportFragment : ReportFragment() {
                     getViewModel(UserViewModel::class.java)?.setGuestPhone(mCreatedCase.phone)
                     alertDialog.dismiss()
                 } else
-                    layout_edit_text_phone.error = "Phone number is not valid."
+                    layout_edit_text_phone.error = context.getString(R.string.phone_number_invalid)
             }
             btn_cancel.setOnClickListener {
                 alertDialog.cancel()
@@ -361,6 +362,7 @@ class MediaReportFragment : ReportFragment() {
 
                     setMargins(4, 4, 4, 4)
                 }
+                btn_close.setOnClickListener { deleteImage(getImage()) }
             }
             view.image_layout.addView(infoImage)
 

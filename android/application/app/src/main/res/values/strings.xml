@@ -185,4 +185,7 @@
     <string name="wrong_username_password">Wrong username or password or not activated!</string>
     <string name="passwords_not_match">The passwords don\'t match!</string>
     <string name="registration_requested">Registration has been requested!</string>
+    <string name="stop">Stop</string>
+    <string name="phone_number_invalid">Phone number is not valid.</string>
+    <string name="record">Record</string>
 </resources>

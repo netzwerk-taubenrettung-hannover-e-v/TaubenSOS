@@ -49,6 +49,7 @@ class RecordVideoActivity : AppCompatActivity() {
         cam?.addCameraListener(object : CameraListener() {
             override fun onVideoTaken(result: VideoResult) {
                 Log.d(LOG_TAG, "Video taken")
+                setResult(RESULT_OK)
                 finish()
             }
 
@@ -68,7 +69,7 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val path = intent.getStringExtra("url")
         cam?.takeVideo(File(path))
-        btnRecord.text = "Stop"
+        btnRecord.text = getString(R.string.stop)
         recording = true
 
         Log.d(LOG_TAG, "recording...")

@@ -34,9 +34,8 @@ class FcmService : FirebaseMessagingService() {
             get("case")?.let {
                 database.caseDao().insertOrUpdate(Gson().fromJson(it, Case::class.java))
             }
-            get("news")?.toString()?.let {jsonString ->
-                val news = Gson().fromJson(jsonString, News::class.java)
-                database.newsDao().insertOrUpdate(news)
+            get("news")?.let {
+                database.newsDao().insertOrUpdate(Gson().fromJson(it, News::class.java))
             }
         }
     }
