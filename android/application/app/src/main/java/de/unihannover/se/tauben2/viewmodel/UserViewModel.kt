@@ -4,6 +4,7 @@ import android.content.Context
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.AbsentLiveData
 import de.unihannover.se.tauben2.model.Auth
+import de.unihannover.se.tauben2.model.UserRegistrationToken
 import de.unihannover.se.tauben2.model.database.entity.User
 
 class UserViewModel(context: Context) : BaseViewModel(context) {
@@ -30,4 +31,7 @@ class UserViewModel(context: Context) : BaseViewModel(context) {
     fun logout() = repository.logout()
     fun updatePermissions(username: String, auth: Auth) = repository.updatePermissions(username, auth)
     fun deleteUser(user: User) = repository.deleteUser(user)
+
+    fun updateUser(user: User) = repository.updateUser(user)
+    fun updateRegistrationToken(username: String, userRegistrationToken: UserRegistrationToken) = repository.updateRegistrationToken(username, userRegistrationToken)
 }

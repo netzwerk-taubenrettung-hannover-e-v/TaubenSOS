@@ -4,6 +4,7 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.Token
+import de.unihannover.se.tauben2.model.UserRegistrationToken
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
@@ -121,6 +122,10 @@ interface NetworkService {
 
     @PUT("user/{username}")
     fun updatePermissions(@Header("Authorization") token: String, @Body auth: Auth,
+                          @Path("username") username: String): LiveDataRes<User>
+
+    @PUT("user/{username}")
+    fun updateRegistrationToken(@Header("Authorization") token: String, @Body registrationToken: UserRegistrationToken,
                           @Path("username") username: String): LiveDataRes<User>
 
     @POST("auth/login")

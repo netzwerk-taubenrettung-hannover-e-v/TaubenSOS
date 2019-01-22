@@ -43,7 +43,7 @@ data class PopulationMarker(val latitude: Double,
             (values.fold(0) { sum, element -> sum + element.pigeonCount }.toDouble()/values.size*100).roundToInt()/100.0
         else -1.0
         val mo = MarkerOptions().position(LatLng(latitude, longitude))
-        return if(totalPigeonCount == -1.0) mo.title(context.getString(R.string.click_to_add_values)) else mo.title("${context.getString(R.string.click_to_add_values)} $totalPigeonCount")
+        return if(totalPigeonCount == -1.0) mo.title(context.getString(R.string.click_to_add_values)) else mo.title("${context.getString(R.string.average)} $totalPigeonCount")
     }
 
     companion object: AllUpdatable {

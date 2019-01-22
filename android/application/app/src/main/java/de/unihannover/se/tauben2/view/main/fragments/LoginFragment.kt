@@ -10,6 +10,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_login
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.model.UserRegistrationToken
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.Singleton
@@ -44,7 +45,8 @@ class LoginFragment : BaseMainFragment(R.string.login) {
                 FirebaseInstanceId.getInstance().instanceId.apply {
                     addOnSuccessListener { result ->
                         try {
-                            userViewModel?.login(user.apply { registrationToken = result.token })
+                            userViewModel?.login(user)
+                            userViewModel?.updateRegistrationToken(user.username, UserRegistrationToken(result.token))
                             finishLogin(view)
 
                         } catch (e: Exception) {
@@ -63,7 +65,7 @@ class LoginFragment : BaseMainFragment(R.string.login) {
 
 
             } else {
-                setSnackBar(view, "Please fill out all the fields!")
+                setSnackBar(view, getString(R.string.fill_out_all_fields))
             }
         }
 
@@ -73,10 +75,10 @@ class LoginFragment : BaseMainFragment(R.string.login) {
     private fun finishLogin(view: View) {
         activity?.finish()
         Intent(context, BootingActivity::class.java).apply { startActivity(this) }
-        setSnackBar(view, "Login successful!")
+        setSnackBar(view, getString(R.string.login_successful))
     }
 
     private fun showLoginErrorMessage(view: View) {
-        setSnackBar(view, "Wrong username or password or not activated!")
+        setSnackBar(view, getString(R.string.wrong_username_password))
     }
 }

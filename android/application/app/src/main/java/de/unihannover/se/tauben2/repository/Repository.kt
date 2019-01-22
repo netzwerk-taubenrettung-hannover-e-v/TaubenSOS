@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
+import de.unihannover.se.tauben2.model.UserRegistrationToken
 import de.unihannover.se.tauben2.model.database.LocalDatabase
 import de.unihannover.se.tauben2.model.database.entity.*
 import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
@@ -606,6 +607,23 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
     }.send(auth, enableRefetching = false)
+
+    fun updateRegistrationToken(username: String, userRegistrationToken: UserRegistrationToken) = object : AsyncDataRequest<User, UserRegistrationToken>(appExecutors) {
+        override fun fetchUpdatedData(resultData: User): LiveDataRes<User> {
+            throw Exception("Re-fetching is disabled, don't try to force it!")
+        }
+
+        override fun saveUpdatedData(updatedData: User) {
+            setItemUpdateTimestamps(updatedData)
+            database.userDao().insertOrUpdate(updatedData)
+        }
+
+        override fun createCall(requestData: UserRegistrationToken): LiveDataRes<User> {
+            return service.updateRegistrationToken(getToken(), requestData, username)
+        }
+
+
+    }.send(userRegistrationToken, false)
 
 
     /**
