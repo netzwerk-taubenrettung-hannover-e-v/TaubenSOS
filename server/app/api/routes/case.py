@@ -29,6 +29,7 @@ def create_case():
 	case, errors = case_schema.load(json)
 	if errors:
 		return jsonify(errors), 400
+	case.save()
 	fcm.send_to_topic(
 		"/topics/member",
 		["push_new_case_title", str(case.priority)],
@@ -39,7 +40,6 @@ def create_case():
 		None,
 		None,
 		data=dict(case=case_schema.dumps(case).data))
-	case.save()
 	return case_schema.jsonify(case), 201
 
 @bp.route("/case/<int:caseID>", methods=["GET"], strict_slashes=False)

@@ -23,13 +23,17 @@ def create_news():
 	feed, errors = feed_schema.load(json)
 	if errors:
 		return jsonify(errors), 400
+	feed.save()
 	fcm.send_to_topic(
 		"/topics/member",
 		["push_new_event_title", feed.title],
 		feed.text,
-		"ic_today",
-		dict(news=feed_schema.dumps(feed).data))
-	feed.save()
+		"ic_today")
+	fcm.send_to_topic(
+		"/topics/member",
+		None,
+		None,
+		data=dict(news=feed_schema.dumps(feed).data))
 	return feed_schema.jsonify(feed), 201
 
 @bp.route("/feed/<int:feedID>", methods=["PUT"], strict_slashes=False)
