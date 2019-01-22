@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
@@ -58,7 +59,18 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     // TODO Maybe insert and delete in one query
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
-            database.caseDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<Case>> {
+                    override fun onChanged(t: List<Case>?) {
+                        appExecutors.diskIO().execute {
+                            database.caseDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
+
             Case.setLastAllUpdatedToNow()
             setItemUpdateTimestamps(*item.toTypedArray())
             database.caseDao().insertOrUpdate(item)
