@@ -26,7 +26,7 @@ def create_news():
 	fcm.send_to_topic(
 		"/topics/member",
 		["push_new_event_title", feed.title],
-		["push_new_event_body", feed.text],
+		feed.text,
 		"ic_today",
 		dict(news=feed_schema.dumps(feed)))
 	feed.save()

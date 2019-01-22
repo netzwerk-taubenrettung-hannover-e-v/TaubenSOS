@@ -32,7 +32,7 @@ def create_case():
 	fcm.send_to_topic(
 		"/topics/member",
 		["push_new_case_title", case.priority],
-		["push_new_case_body", case.additionalInfo],
+		case.additionalInfo,
 		"ic_assignment",
 		dict(case=case_schema.dumps(case)))
 	case.save()
