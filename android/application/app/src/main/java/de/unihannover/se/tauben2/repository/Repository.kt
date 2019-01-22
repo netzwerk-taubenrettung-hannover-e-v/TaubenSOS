@@ -217,7 +217,18 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
-            database.userDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<User>> {
+                    override fun onChanged(t: List<User>?) {
+                        appExecutors.diskIO().execute {
+                            database.userDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
+
             setItemUpdateTimestamps(*item.toTypedArray())
             database.userDao().insertOrUpdate(item)
         }
@@ -346,8 +357,17 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
-            database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value
-                    ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<PopulationMarker>> {
+                    override fun onChanged(t: List<PopulationMarker>?) {
+                        appExecutors.diskIO().execute {
+                            database.populationMarkerDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
             setItemUpdateTimestamps(*item.toTypedArray())
             database.populationMarkerDao().insertOrUpdate(item)
         }
