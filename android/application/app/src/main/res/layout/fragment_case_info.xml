@@ -178,19 +178,6 @@
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <!--<com.google.android.material.button.MaterialButton-->
-                <!--android:id="@+id/btn_state_take"-->
-                <!--style="@style/Widget.MaterialComponents.Button.TextButton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="8dp"-->
-                <!--android:text="@string/take_case"-->
-                <!--android:textColor="@color/colorPrimaryDark"-->
-                <!--app:layout_constraintEnd_toStartOf="@id/btn_state_prev"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--android:visibility="@{c.rescuer == null ? View.GONE : (c.isClosed() ? View.GONE : View.VISIBLE)}"-->
-                <!--/>-->
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_state_prev"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"

@@ -19,7 +19,7 @@ class BottomNavigator(
 
     private val mBackStack: MutableList<Destination> = mutableListOf()
 
-    private val mToRemove = listOf(R.id.casesInfoFragment, R.id.counterInfoFragment, R.id.editNewsFragment)
+    private val mToRemove = listOf(R.id.casesInfoFragment, R.id.counterInfoFragment, R.id.editNewsFragment, R.id.statisticFragment)
 
     override fun navigate(destination: Destination, args: Bundle?,
                           navOptions: NavOptions?, navigatorExtras: Navigator.Extras?): NavDestination? {

@@ -167,4 +167,8 @@
     <string name="counter_info">Markerdetails</string>
     <string name="news_edit">News bearbeiten</string>
     <string name="news_title">News</string>
+    <string name="change_state_not_found">Nicht gefunden</string>
+    <string name="change_state_found">Doch gefunden</string>
+    <string name="push_new_case_title">Ein neuer Fall mit der Priorität %d wurde hinzugefügt! 🐦</string>
+    <string name="push_new_event_title">Ein neues Event \"%s\" wurde hinzugefügt! 📆</string>
 </resources>
