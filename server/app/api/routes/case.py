@@ -4,6 +4,7 @@ import boto3, uuid, os, filetype, tempfile, cv2, threading
 from api.models.case import Case, case_schema, cases_schema
 from api.models.injury import Injury, injury_schema
 from api.models.medium import Medium, medium_schema, media_schema
+from . import fcm
 
 bp = Blueprint("case", __name__, url_prefix="/api")
 
@@ -16,7 +17,7 @@ def read_cases():
 	"""
 	file: ../../docs/case/read_all.yml
 	"""
-	cases = Case.all()
+	cases = Case.recents()
 	return cases_schema.jsonify(cases), 200
 
 @bp.route("/case", methods=["POST"], strict_slashes=False)
@@ -28,6 +29,12 @@ def create_case():
 	case, errors = case_schema.load(json)
 	if errors:
 		return jsonify(errors), 400
+	fcm.send_to_topic(
+		"/topics/member",
+		["push_new_case_title", case.priority],
+		["push_new_case_body", case.additionalInfo],
+		"ic_assignment",
+		dict(case=case_schema.dumps(case)))
 	case.save()
 	return case_schema.jsonify(case), 201
 
