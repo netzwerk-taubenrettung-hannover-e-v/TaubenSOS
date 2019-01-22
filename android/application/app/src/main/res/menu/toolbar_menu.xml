@@ -27,6 +27,20 @@
         />
 
     <item
+        android:id="@+id/toolbar_report_not_found"
+        android:title="@string/change_state_not_found"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/toolbar_report_found"
+        android:title="@string/change_state_found"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/toolbar_report_dead"
         android:title="@string/change_state_dead"
         app:showAsAction="collapseActionView"

@@ -161,5 +161,9 @@
     <string name="contact_by_website">Besuche unsere Website:</string>
     <string name="website">Website</string>
     <string name="navigate">Navigieren</string>
+    <string name="change_state_not_found">Nicht gefunden</string>
+    <string name="change_state_found">Doch gefunden</string>
+    <string name="push_new_case_title">Ein neuer Fall mit der Priorität %d wurde hinzugefügt! 🐦</string>
+    <string name="push_new_event_title">Ein neues Event \"%s\" wurde hinzugefügt! 📆</string>
 
 </resources>

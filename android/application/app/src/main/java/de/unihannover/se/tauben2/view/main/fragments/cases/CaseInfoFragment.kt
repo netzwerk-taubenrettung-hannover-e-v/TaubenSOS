@@ -106,7 +106,7 @@ class CaseInfoFragment : Fragment() {
                 }
 
                 if (BootingActivity.getOwnerPermission() != Permission.GUEST)
-                    mToolbarMenu?.run { setOptionsMenuDeadItems(this) }
+                    mToolbarMenu?.run { setOptionsMenuVariableItems(this) }
 
                 v.btn_state_next.setOnClickListener {
                     mBinding.currentUser?.also { user ->
@@ -166,6 +166,10 @@ class CaseInfoFragment : Fragment() {
                     Uri.parse("geo:0,0?q=${mBinding.c?.latitude},${mBinding.c?.longitude} (${mBinding.c?.getPigeonBreed()?.getTitle()} (${getString(R.string.priority, mBinding.c?.priority?.toString())}))")))
             R.id.toolbar_report_dead -> reportAsDead(true)
             R.id.toolbar_report_alive -> reportAsDead(false)
+            R.id.toolbar_report_not_found -> reportNotFound(true)
+            R.id.toolbar_report_found -> reportNotFound(false)
+
+
             R.id.toolbar_edit -> {
                 val intent = Intent(activity, ReportActivity::class.java)
                 intent.putExtra("case", mBinding.c)
@@ -201,13 +205,23 @@ class CaseInfoFragment : Fragment() {
         }
     }
 
+    private fun reportNotFound(found: Boolean) {
+        multiLet(mBinding.c, getViewModel(CaseViewModel::class.java)) { case, viewModel ->
+            case.apply {
+                wasNotFound = found
+                media = listOf()
+            }
+            viewModel.updateCase(case, listOf())
+        }
+    }
+
     private fun setOptionsMenuItems(menu: Menu) {
         val permission = BootingActivity.getOwnerPermission()
         menu.apply {
             if (permission == Permission.ADMIN || permission == Permission.AUTHORISED) {
                 findItem(R.id.toolbar_call_button)?.isVisible = true
                 findItem(R.id.toolbar_delete)?.isVisible = true
-                setOptionsMenuDeadItems(menu)
+                setOptionsMenuVariableItems(menu)
             }
             findItem(R.id.toolbar_navigate)?.isVisible = true
             findItem(R.id.toolbar_edit)?.isVisible = true
@@ -215,10 +229,13 @@ class CaseInfoFragment : Fragment() {
         }
     }
 
-    private fun setOptionsMenuDeadItems(menu: Menu) {
+    private fun setOptionsMenuVariableItems(menu: Menu) {
         val wasFoundDead = mBinding.c?.wasFoundDead ?: false
+        val wasNotFound = mBinding.c?.wasNotFound ?: false
         menu.findItem(R.id.toolbar_report_alive)?.isVisible = wasFoundDead
         menu.findItem(R.id.toolbar_report_dead)?.isVisible = !wasFoundDead
+        menu.findItem(R.id.toolbar_report_found)?.isVisible = wasNotFound
+        menu.findItem(R.id.toolbar_report_not_found)?.isVisible = !wasNotFound
     }
 
     override fun onPause() {
