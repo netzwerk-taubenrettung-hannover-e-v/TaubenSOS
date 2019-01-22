@@ -10,7 +10,9 @@ import androidx.navigation.Navigation
 import com.google.android.gms.common.util.IOUtils
 import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.Case
+import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.viewmodel.CaseViewModel
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 
 open class ReportFragment : Fragment() {
@@ -53,6 +55,7 @@ open class ReportFragment : Fragment() {
                 mCreatedCase.setToCurrentTime()
                 Log.d("SENT CASE", "case sent: $mCreatedCase")
                 val mediaFiles = readAsRaw(mLocalMediaUrls)
+                mCreatedCase.reporter = getViewModel(UserViewModel::class.java)?.getOwnerUsername()
                 it.sendCase(mCreatedCase, mediaFiles)
             }
             // Edit Case
