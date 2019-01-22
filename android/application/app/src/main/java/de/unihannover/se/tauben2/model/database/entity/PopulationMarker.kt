@@ -32,7 +32,7 @@ data class PopulationMarker(val latitude: Double,
                             @PrimaryKey val populationMarkerID: Int,
                             var radius: Double,
 
-                            var values: List<CounterValue>
+                            var values: MutableList<CounterValue>
 ) : MapMarkable, DatabaseEntity(), Parcelable {
 
     override val refreshCooldown: Long

@@ -303,7 +303,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: News) {
-            if(updateDatabase) {
+            if (updateDatabase) {
                 setItemUpdateTimestamps(updatedData)
                 database.newsDao().insertOrUpdate(updatedData)
             }
@@ -384,8 +384,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun saveUpdatedData(updatedData: CounterValue) {
             val marker = database.populationMarkerDao().getPopulationMarker(updatedData.populationMarkerID)
-            marker.values += updatedData
+            marker.values.removeAll { it.timestamp == updatedData.timestamp }
             setItemUpdateTimestamps(updatedData)
+            marker.values.add(updatedData)
             database.populationMarkerDao().insertOrUpdate(marker)
         }
 
@@ -431,7 +432,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun saveUpdatedData(updatedData: Case) {
             sp.edit().putString(GUEST_PHONE, updatedData.phone).apply()
-            if(updateDatabase) {
+            if (updateDatabase) {
                 setItemUpdateTimestamps(updatedData)
                 database.caseDao().insertOrUpdate(updatedData)
             }
