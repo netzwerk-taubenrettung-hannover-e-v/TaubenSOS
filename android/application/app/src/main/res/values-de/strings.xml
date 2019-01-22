@@ -9,10 +9,10 @@
     <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem Verein möglich und muss von einem Vereinsmitglied autorisiert werden.</string>
     <string name="call_info_title">Ruf uns gerne an!</string>
     <string name="tauben_zählen_info">Bitte wähle Standort, Datum und die Anzahl der Tauben aus, die du beobachtet hast. Diese Werte werden in die Statistik übernommen.</string>
-    <string name="contact_info">Du kannst uns für weitere Informationen oder zum Melden eines verletzten Tiers gerne telefonisch kontaktieren.</string>
+    <string name="contact_info">Du kannst uns für weitere Informationen oder zum Melden eines verletzten Tieres gerne telefonisch kontaktieren.</string>
     <string name="breed_report_info">Brieftaube: hat einen Ring an einem oder beiden Füßen, Gefieder kann unterschiedlich gefärbt sein, schließt sich Stadttauben an.\n\nRingeltaube:  größer als Stadttauben, erwachsene Tauben haben einen weißen Halsfleck, gelben Schnabel, blaue Augen. Jungtiere haben diese Merkmale noch nicht, aber schon den weißen Rand am Flügel. Schließen sich Stadttauben nicht an.\n\nStadttaube: kann sehr unterschiedlich aussehen, Schnabel ist in der Regel dunkelgrau, Beine und Augen orangerot. Jungtiere haben braune Augen.\n\nZiertaube: oft einfarbig oder auffällig gescheckt, lange Federn an den Füßen oder eine Haube am Kopf, hat manchmal Ringe an den Beinen.</string>
     <string name="priority">Priorität: %s</string>
-    <string name="breed_report_explanation">Für unsere Statistik bitten wir dich, die Taubenart anzugeben. Falls du nicht genau weißt, wie die jeweiligen Arten aussehen, kannst du dir einen Erklärungstext dazu anzeigen lassen oder Nicht sicher anklicken.</string>
+    <string name="breed_report_explanation">Für unsere Statistik bitten wir dich, die Taubenart anzugeben. Falls du nicht genau weißt, wie die jeweiligen Arten aussehen, kannst du dir einen Erklärungstext dazu anzeigen lassen oder "Nicht sicher" anklicken.</string>
     <string name="priority_blank">Priorität:</string>
     <string name="before">Vor %s</string>
     <string name="long_duration">%d Tagen, %02d Stunden, %02d Minuten</string>
@@ -20,7 +20,7 @@
     <string name="take_case">Übernehmen</string>
     <string name="finish_case">Abschließen</string>
     <string name="reopen_case">Wieder eröffnen</string>
-    <string name="in_progress_by">In Bearbeitung von</string>
+    <string name="in_progress_by">In Bearbeitung durch</string>
     <string name="injuries">Verletzungen:</string>
     <string name="submitted_before">Eingereicht vor:</string>
     <string name="distance">Entfernung:</string>
@@ -137,7 +137,7 @@
     <string name="alert_user_deleted">Nutzer erfolgreich gelöscht!</string>
     <string name="title_deleting_user">Nutzer Löschen</string>
     <string name="desc_delete_user">Möchtest du diesen Nutzer wirklich löschen?</string>
-    <string name="is_event">Für Event auswählen</string>
+    <string name="is_event">Als Event markieren</string>
     <string name="event_ends_on">Event endet am</string>
     <plurals name="news">
         <item quantity="one">Neuigkeit</item>
