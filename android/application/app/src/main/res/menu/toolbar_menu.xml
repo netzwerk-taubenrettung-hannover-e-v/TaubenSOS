@@ -62,6 +62,14 @@
         />
 
     <item
+        android:id="@+id/toolbar_reload"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/reload"
+        app:showAsAction="always"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/toolbar_report_button"
         android:icon="@drawable/ic_healing"
         android:title="@string/report_pigeon"

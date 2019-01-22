@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.repository
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -35,7 +36,8 @@ import java.util.concurrent.Executors
  */
 class Repository(private val database: LocalDatabase, private val service: NetworkService, private val appExecutors: AppExecutors = AppExecutors.INSTANCE) {
 
-    private val sp = App.context.getSharedPreferences("tauben2", Context.MODE_PRIVATE)
+    private val sp = PreferenceManager.getDefaultSharedPreferences(App.context)
+//    private val sp = App.context.getSharedPreferences("tauben2", Context.MODE_PRIVATE)
 
     companion object {
         private val LOG_TAG = Repository::class.java.simpleName
@@ -57,7 +59,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     private inline fun <reified T> getItemsToDelete(newItems: Collection<T>, oldItems: Collection<T>) = oldItems.minus(newItems).toTypedArray()
 
     // TODO Maybe insert and delete in one query
-    fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
+    fun getCases(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
@@ -76,7 +78,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             database.caseDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<Case>?) = Case.shouldFetch()
+        override fun shouldFetch(data: List<Case>?) = if(checkCooldown) Case.shouldFetch() else true
 
         override fun loadFromDb() = database.caseDao().getCases()
 

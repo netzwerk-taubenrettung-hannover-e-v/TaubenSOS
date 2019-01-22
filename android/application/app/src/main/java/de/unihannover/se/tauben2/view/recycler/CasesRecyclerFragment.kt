@@ -12,10 +12,8 @@ import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.SquareImageView
-import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
-import java.lang.Exception
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -48,8 +46,6 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
         getViewModel(LocationViewModel::class.java)?.stopObservingCurrentLocation(locationObserver)
     }
 
-
-
     override fun onBindData(binding: ViewDataBinding, data: Case) {
         if (binding is CardCaseBinding) {
             binding.c = data
@@ -64,7 +60,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
             val squareImgV = binding.root.image_card
 
-            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV, callback = object: Callback {
+            data.loadMediaFromServerInto(data.media.firstOrNull(), squareImgV, callback = object: Callback {
                 override fun onSuccess() {
                     if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
                         activity?.let {
