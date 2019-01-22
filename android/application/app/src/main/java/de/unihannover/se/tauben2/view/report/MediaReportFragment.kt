@@ -9,8 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,11 +18,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
@@ -34,6 +28,7 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.view.InfoImageView
+import de.unihannover.se.tauben2.view.RecordVideoActivity
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
@@ -187,8 +182,14 @@ class MediaReportFragment : ReportFragment() {
                                     file
                             )
                         }
-                        takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takeMediaIntent, requestCode)
+                        if (isVideo) {
+                            val videoIntent = Intent(context, RecordVideoActivity::class.java)
+                            videoIntent.putExtra("url", file.absolutePath)
+                            startActivityForResult(videoIntent, requestCode)
+                        } else {
+                            takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takeMediaIntent, requestCode)
+                        }
                     }
                 }
             }
@@ -273,8 +274,7 @@ class MediaReportFragment : ReportFragment() {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
 //                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-            }
-            else
+            } else
                 layout.setPlayable(false)
 
 
@@ -323,7 +323,7 @@ class MediaReportFragment : ReportFragment() {
 
         (0..2).forEach {
 
-//            val image = SquareImageView(view.context).apply {
+            //            val image = SquareImageView(view.context).apply {
 //                id = View.generateViewId()
 //                scaleType = ImageView.ScaleType.CENTER_CROP
 //            }
