@@ -82,6 +82,9 @@ dependencies {
     // exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.9.3'
 
+    // CameraView
+    implementation 'com.otaliastudios:cameraview:2.0.0-beta02'
+
     // Google Play Service
     def gms_version = "16.0.0"
     implementation "com.google.android.gms:play-services-maps:$gms_version"

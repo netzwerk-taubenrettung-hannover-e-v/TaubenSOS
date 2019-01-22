@@ -7,6 +7,10 @@
     android:background="@android:color/background_dark"
     tools:context=".view.VideoPlayerActivity">
 
+    <include
+        android:id="@+id/toolbar_video_player"
+        layout="@layout/toolbar" />
+
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"

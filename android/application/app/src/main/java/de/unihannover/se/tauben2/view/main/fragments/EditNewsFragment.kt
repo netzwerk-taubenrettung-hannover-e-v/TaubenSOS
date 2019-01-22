@@ -83,10 +83,11 @@ class EditNewsFragment : BaseInfoFragment(R.string.news_edit), DatePickerDialog.
         }
 
         view.btn_send.setOnClickListener {
-            sendNewsToServer()
-
-            Navigation.findNavController(it.context as Activity, R.id.nav_host)
-                    .navigate(R.id.newsFragment)
+            if(sendNewsToServer())
+                Navigation.findNavController(it.context as Activity, R.id.nav_host)
+                        .navigate(R.id.newsFragment)
+            else
+                setSnackBar(view, getString(R.string.fill_out_all_fields))
 
         }
 
@@ -149,20 +150,25 @@ class EditNewsFragment : BaseInfoFragment(R.string.news_edit), DatePickerDialog.
         mBinding.invalidateAll()
     }
 
-    private fun sendNewsToServer() {
+    private fun sendNewsToServer(): Boolean {
 
-        multiLet(mNewsViewModel, mBinding.n){ it, news->
+        return multiLet(mNewsViewModel, mBinding.n){ it, news->
             if(view?.checkbox_is_Event?.isChecked != true) {
                 news.eventStart = null
                 news.eventEnd = null
             }
-            if(mToUpdate)
-                it.updateNews(news)
+            if(news.title.isEmpty() || news.text.isEmpty())
+                false
             else {
-                news.setToCurrentTime()
-                it.sendNews(news)
+                if(mToUpdate)
+                    it.updateNews(news)
+                else {
+                    news.setToCurrentTime()
+                    it.sendNews(news)
+                }
+            true
             }
-        }
+        } ?: false
     }
 
     override fun onPause() {

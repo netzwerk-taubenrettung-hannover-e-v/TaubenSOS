@@ -137,7 +137,7 @@
     <string name="report_step_breed">Identify the Breed</string>
     <string name="report_step_additional_info">Share additional information</string>
     <string name="in_average_population">on average %1$d pigeons</string>
-    <string name="in_average_reports">on average %1$.2f pigeons/day</string>
+    <string name="in_average_reports">On average %1$.2f pigeons/day</string>
     <string name="push_new_sign_up_request_title">New Sign-up Request</string>
     <string name="push_new_sign_up_request_body">%s has requested to become part of the community! 🐣</string>
     <string name="push_your_sign_up_request_title">Your Sign-up Request</string>
@@ -185,4 +185,9 @@
     <string name="wrong_username_password">Wrong username or password or not activated!</string>
     <string name="passwords_not_match">The passwords don\'t match!</string>
     <string name="registration_requested">Registration has been requested!</string>
+    <string name="stop">Stop</string>
+    <string name="phone_number_invalid">Phone number is not valid.</string>
+    <string name="record">Record</string>
+    <string name="select_location">Please select a location.</string>
+    <string name="watch_video">Watch video</string>
 </resources>

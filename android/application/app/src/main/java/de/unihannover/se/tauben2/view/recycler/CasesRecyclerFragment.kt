@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.squareup.picasso.Callback
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardCaseBinding
 import de.unihannover.se.tauben2.getViewModel
@@ -14,6 +15,7 @@ import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.card_case.view.*
+import java.lang.Exception
 
 class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
@@ -62,20 +64,26 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
 
             val squareImgV = binding.root.image_card
 
-            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV)
-
-            if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
-                activity?.let {
-                    // TODO Load full sized image only on Zoom
-                    squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix), activity as MainActivity)
-                    squareImgV.addImageZoomListener (
-                    {
-                        data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
-                    }, {
-                        data.loadMediaFromServerInto(data.media[0], squareImgV)
-                    })
+            data.loadMediaFromServerInto(if(data.media.isEmpty()) null else data.media[0], squareImgV, callback = object: Callback {
+                override fun onSuccess() {
+                    if (squareImgV is SquareImageView && data.media.isNotEmpty()) {
+                        activity?.let {
+                            // TODO Bug when image is not loaded and click to zoom
+//                            squareImgV.zoomImage(it.findViewById(R.id.image_expanded), it.findViewById(R.id.layout_main), it.findViewById(R.id.you_must_be_kidding_fix), activity as MainActivity)
+//                            squareImgV.addImageZoomListener (
+//                            {
+//                                data.loadMediaFromServerInto(data.media[0], it.findViewById(R.id.image_expanded), fit = false)
+//                            }, {
+//                                data.loadMediaFromServerInto(data.media[0], squareImgV)
+//                            })
+                        }
+                    }
                 }
-            }
+
+                override fun onError(e: Exception?) {
+                    // do nothing
+                }
+            })
 
             binding.root.setOnClickListener {
                 val bundle = Bundle()

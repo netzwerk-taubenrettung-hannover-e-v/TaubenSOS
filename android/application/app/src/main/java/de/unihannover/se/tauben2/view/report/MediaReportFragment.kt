@@ -9,8 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,11 +18,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
@@ -34,10 +28,12 @@ import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.view.InfoImageView
+import de.unihannover.se.tauben2.view.RecordVideoActivity
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report_media.view.*
+import kotlinx.android.synthetic.main.info_image_view.view.*
 import kotlinx.android.synthetic.main.phone_alert_dialog.view.*
 import java.io.File
 import java.io.IOException
@@ -137,7 +133,7 @@ class MediaReportFragment : ReportFragment() {
     @SuppressLint("InflateParams")
     private fun requestPhone(cxt: Context) {
         val alert = layoutInflater.inflate(R.layout.phone_alert_dialog, null)
-        val alertDialog = androidx.appcompat.app.AlertDialog.Builder(cxt).setView(alert).show().apply {
+        val alertDialog = AlertDialog.Builder(cxt).setView(alert).show().apply {
             setCanceledOnTouchOutside(false)
             setOnCancelListener {
                 activity?.finish()
@@ -151,7 +147,7 @@ class MediaReportFragment : ReportFragment() {
                     getViewModel(UserViewModel::class.java)?.setGuestPhone(mCreatedCase.phone)
                     alertDialog.dismiss()
                 } else
-                    layout_edit_text_phone.error = "Phone number is not valid."
+                    layout_edit_text_phone.error = context.getString(R.string.phone_number_invalid)
             }
             btn_cancel.setOnClickListener {
                 alertDialog.cancel()
@@ -187,8 +183,14 @@ class MediaReportFragment : ReportFragment() {
                                     file
                             )
                         }
-                        takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takeMediaIntent, requestCode)
+                        if (isVideo) {
+                            val videoIntent = Intent(context, RecordVideoActivity::class.java)
+                            videoIntent.putExtra("url", file.absolutePath)
+                            startActivityForResult(videoIntent, requestCode)
+                        } else {
+                            takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takeMediaIntent, requestCode)
+                        }
                     }
                 }
             }
@@ -273,8 +275,7 @@ class MediaReportFragment : ReportFragment() {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
 //                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-            }
-            else
+            } else
                 layout.setPlayable(false)
 
 
@@ -323,7 +324,7 @@ class MediaReportFragment : ReportFragment() {
 
         (0..2).forEach {
 
-//            val image = SquareImageView(view.context).apply {
+            //            val image = SquareImageView(view.context).apply {
 //                id = View.generateViewId()
 //                scaleType = ImageView.ScaleType.CENTER_CROP
 //            }
@@ -361,6 +362,7 @@ class MediaReportFragment : ReportFragment() {
 
                     setMargins(4, 4, 4, 4)
                 }
+                btn_close.setOnClickListener { deleteImage(getImage()) }
             }
             view.image_layout.addView(infoImage)
 

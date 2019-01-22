@@ -3,6 +3,7 @@ package de.unihannover.se.tauben2.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.AppExecutors
 import de.unihannover.se.tauben2.LiveDataRes
@@ -58,7 +59,18 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     // TODO Maybe insert and delete in one query
     fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
-            database.caseDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<Case>> {
+                    override fun onChanged(t: List<Case>?) {
+                        appExecutors.diskIO().execute {
+                            database.caseDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
+
             Case.setLastAllUpdatedToNow()
             setItemUpdateTimestamps(*item.toTypedArray())
             database.caseDao().insertOrUpdate(item)
@@ -285,13 +297,16 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun sendNews(news: News) = object : AsyncDataRequest<News, News>(appExecutors) {
+    fun sendNews(news: News, updateDatabase: Boolean = true) = object : AsyncDataRequest<News, News>(appExecutors) {
         override fun fetchUpdatedData(resultData: News): LiveDataRes<News> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
         }
 
         override fun saveUpdatedData(updatedData: News) {
-            database.newsDao().insertOrUpdate(updatedData)
+            if(updateDatabase) {
+                setItemUpdateTimestamps(updatedData)
+                database.newsDao().insertOrUpdate(updatedData)
+            }
         }
 
         override fun createCall(requestData: News): LiveDataRes<News> {
@@ -396,7 +411,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param case Case which is sent to the server for creating it. Make sure that all attributes
      * the api doesn't accept are set to null
      */
-    fun sendCase(case: Case, mediaItems: List<ByteArray>) = object : AsyncDataRequest<Case, Case>(appExecutors) {
+    fun sendCase(case: Case, mediaItems: List<ByteArray>, updateDatabase: Boolean = true) = object : AsyncDataRequest<Case, Case>(appExecutors) {
 
         override fun fetchUpdatedData(resultData: Case): LiveDataRes<Case> {
             // amazon upload urls
@@ -416,8 +431,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
         override fun saveUpdatedData(updatedData: Case) {
             sp.edit().putString(GUEST_PHONE, updatedData.phone).apply()
-            setItemUpdateTimestamps(updatedData)
-            database.caseDao().insertOrUpdate(updatedData)
+            if(updateDatabase) {
+                setItemUpdateTimestamps(updatedData)
+                database.caseDao().insertOrUpdate(updatedData)
+            }
         }
 
         override fun createCall(requestData: Case): LiveDataRes<Case> {

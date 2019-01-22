@@ -46,7 +46,6 @@ abstract class CasesFragment: BaseMainFragment(R.string.cases) {
         mCurrentObserver = LoadingObserver(successObserver = recyclerFragment)
         mCurrentMapObserver = LoadingObserver(successObserver = mapsFragment)
 
-
         return v
     }
 
@@ -77,9 +76,6 @@ abstract class CasesFragment: BaseMainFragment(R.string.cases) {
             mCurrentObservedData?.observe(this, mCurrentObserver)
             mCurrentObservedData?.observe(this, mCurrentMapObserver)
 
-            if(mCurrentObservedData?.value?.data?.isEmpty() == true) {
-                view?.layout_main?.visibility = View.GONE
-            }
             activity?.title = getString(filter.titleRes)
         }
     }
