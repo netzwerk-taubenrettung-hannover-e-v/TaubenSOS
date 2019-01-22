@@ -278,6 +278,19 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
         override fun saveCallResult(item: List<News>) {
+
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<News>> {
+                    override fun onChanged(t: List<News>?) {
+                        appExecutors.diskIO().execute {
+                            database.newsDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
+
             database.newsDao().insertOrUpdate(item)
         }
 
