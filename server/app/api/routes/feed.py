@@ -28,7 +28,7 @@ def create_news():
 		["push_new_event_title", feed.title],
 		feed.text,
 		"ic_today",
-		dict(news=feed_schema.dumps(feed)))
+		dict(news=feed_schema.dumps(feed).data))
 	feed.save()
 	return feed_schema.jsonify(feed), 201
 

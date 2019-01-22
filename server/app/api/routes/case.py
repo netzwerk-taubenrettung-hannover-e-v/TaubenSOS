@@ -31,10 +31,10 @@ def create_case():
 		return jsonify(errors), 400
 	fcm.send_to_topic(
 		"/topics/member",
-		["push_new_case_title", case.priority],
+		["push_new_case_title", str(case.priority)],
 		case.additionalInfo,
 		"ic_assignment",
-		dict(case=case_schema.dumps(case)))
+		dict(case=case_schema.dumps(case).data))
 	case.save()
 	return case_schema.jsonify(case), 201
 
