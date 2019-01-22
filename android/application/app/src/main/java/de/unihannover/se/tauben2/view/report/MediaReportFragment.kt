@@ -255,6 +255,9 @@ class MediaReportFragment : ReportFragment() {
                 }
             }
             loadLocalMedia()
+        } else {
+            context?.let { mLocalMediaUrls.last().deleteFile(it) }
+            mLocalMediaUrls.remove(mLocalMediaUrls.last())
         }
     }
 
