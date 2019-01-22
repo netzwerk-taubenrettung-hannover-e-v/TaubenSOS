@@ -111,17 +111,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val index = mNavHostFragment.childFragmentManager.fragments.size - 1
+        val f = mNavHostFragment.childFragmentManager.fragments[index]
+        if (f is CaseInfoFragment) {
+            if (zoomMode) touchView(f.zoomOut())
+        } else if (f is CasesFragment) {
+            if (zoomMode) touchView(f.zoomOut())
+        } else zoomMode = false
+
         if(!zoomMode) mBottomNavigator.onBackPressed()
-        else {
-            val index = mNavHostFragment.childFragmentManager.fragments.size - 1
-            val f = mNavHostFragment.childFragmentManager.fragments[index]
-            if (f is CaseInfoFragment) {
-                touchView(f.zoomOut())
-            }
-            if (f is CasesFragment) {
-                touchView(f.zoomOut())
-            }
-        }
     }
 
     private fun touchView(view : View) {
