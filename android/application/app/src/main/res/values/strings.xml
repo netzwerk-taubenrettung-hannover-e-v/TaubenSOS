@@ -190,6 +190,9 @@
     <string name="record">Record</string>
     <string name="select_location">Please select a location.</string>
     <string name="watch_video">Watch video</string>
+    <string name="case_already_removed">Case already removed from server.</string>
+    <string name="reload">Reload</string>
+    <string name="reload_successful">Reload successful</string>
     <string name="missing_permission">Missing Permission</string>
     <string name="enable_permission_camera">We need to access the camera in order to take photos or videos. Please enable camera access for this app in your phones settings!</string>
 </resources>

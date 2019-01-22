@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.repository
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -35,7 +36,8 @@ import java.util.concurrent.Executors
  */
 class Repository(private val database: LocalDatabase, private val service: NetworkService, private val appExecutors: AppExecutors = AppExecutors.INSTANCE) {
 
-    private val sp = App.context.getSharedPreferences("tauben2", Context.MODE_PRIVATE)
+    private val sp = PreferenceManager.getDefaultSharedPreferences(App.context)
+//    private val sp = App.context.getSharedPreferences("tauben2", Context.MODE_PRIVATE)
 
     companion object {
         private val LOG_TAG = Repository::class.java.simpleName
@@ -57,14 +59,14 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     private inline fun <reified T> getItemsToDelete(newItems: Collection<T>, oldItems: Collection<T>) = oldItems.minus(newItems).toTypedArray()
 
     // TODO Maybe insert and delete in one query
-    fun getCases() = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
+    fun getCases(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<Case>> {
-                    override fun onChanged(t: List<Case>?) {
+                    override fun onChanged(old: List<Case>?) {
                         appExecutors.diskIO().execute {
-                            database.caseDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                            database.caseDao().delete(*getItemsToDelete(item, old ?: listOf()))
                         }
                         oldItems.removeObserver(this)
                     }
@@ -76,7 +78,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             database.caseDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<Case>?) = Case.shouldFetch()
+        override fun shouldFetch(data: List<Case>?) = if(checkCooldown) Case.shouldFetch() else true
 
         override fun loadFromDb() = database.caseDao().getCases()
 
@@ -217,12 +219,23 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
-            database.userDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<User>> {
+                    override fun onChanged(old: List<User>?) {
+                        appExecutors.diskIO().execute {
+                            database.userDao().delete(*getItemsToDelete(item, old
+                                    ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
             setItemUpdateTimestamps(*item.toTypedArray())
             database.userDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<User>?) = User.shouldFetch()
+        override fun shouldFetch(data: List<User>?) = true
 
         override fun loadFromDb() = database.userDao().getUsers()
 
@@ -282,9 +295,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<News>> {
-                    override fun onChanged(t: List<News>?) {
+                    override fun onChanged(old: List<News>?) {
                         appExecutors.diskIO().execute {
-                            database.newsDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                            database.newsDao().delete(*getItemsToDelete(item, old ?: listOf()))
                         }
                         oldItems.removeObserver(this)
                     }

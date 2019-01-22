@@ -1,15 +1,10 @@
 package de.unihannover.se.tauben2.view.main.fragments.cases
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.filter
-import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.main.fragments.BaseMainFragment
@@ -46,7 +41,22 @@ abstract class CasesFragment: BaseMainFragment(R.string.cases) {
         mCurrentObserver = LoadingObserver(successObserver = recyclerFragment)
         mCurrentMapObserver = LoadingObserver(successObserver = mapsFragment)
 
+        setHasOptionsMenu(true)
+
         return v
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.findItem(R.id.toolbar_reload)?.apply {
+            isVisible = true
+            setOnMenuItemClickListener {
+                view?.let { v ->
+                    getViewModel(CaseViewModel::class.java)?.reloadCasesFromServer{ setSnackBar(v, getString(R.string.reload_successful))}
+                    return@setOnMenuItemClickListener true
+                }
+                false
+            }
+        }
     }
 
     override fun onStart() {

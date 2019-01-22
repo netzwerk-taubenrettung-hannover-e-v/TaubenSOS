@@ -17,15 +17,12 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.databinding.FragmentCaseInfoBinding
-import de.unihannover.se.tauben2.getDateTimeString
-import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
 import de.unihannover.se.tauben2.model.database.Media
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.Case
-import de.unihannover.se.tauben2.multiLet
 import de.unihannover.se.tauben2.view.InfoImageView
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.SquareImageView
@@ -49,7 +46,7 @@ class CaseInfoFragment : BaseInfoFragment(R.string.case_info) {
     private lateinit var mBinding: FragmentCaseInfoBinding
     private var mToolbarMenu: Menu? = null
     private lateinit var mPicassoInstance: Picasso
-    private var mCaseId: Int? = null
+    private var mCase: Case? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -63,7 +60,7 @@ class CaseInfoFragment : BaseInfoFragment(R.string.case_info) {
                     .addRequestHandler(PicassoVideoRequestHandler()).build()
         }
 
-        mCaseId = arguments?.getParcelable<Case>("case")?.caseID
+        mCase = arguments?.getParcelable("case")
 
         return v
     }
@@ -77,7 +74,7 @@ class CaseInfoFragment : BaseInfoFragment(R.string.case_info) {
         })
 
         view?.let {v ->
-            multiLet(mCaseId, getViewModel(CaseViewModel::class.java)) { caseID, caseViewModel ->
+            multiLet(mCase?.caseID, getViewModel(CaseViewModel::class.java)) { caseID, caseViewModel ->
 
                 caseViewModel.getCase(caseID).observe(this, LoadingObserver({ case ->
 
@@ -139,6 +136,15 @@ class CaseInfoFragment : BaseInfoFragment(R.string.case_info) {
                         }
                     }
 
+                }, onError = {message ->
+                    multiLet(activity, mCase) { act, case ->
+                        setSnackBar(act.constraintLayout_main, getString(R.string.case_already_removed))
+
+                        getViewModel(CaseViewModel::class.java)?.deleteCase(case)
+                        val controller = Navigation.findNavController(context as Activity, R.id.nav_host)
+                        controller.navigatorProvider.getNavigator(BottomNavigator::class.java).popFromBackStack()
+                        controller.navigate(R.id.casesFragment)
+                    }
                 }))
             }
         }
