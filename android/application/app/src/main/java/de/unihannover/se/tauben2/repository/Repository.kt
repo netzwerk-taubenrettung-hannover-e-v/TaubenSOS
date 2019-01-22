@@ -62,9 +62,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<Case>> {
-                    override fun onChanged(t: List<Case>?) {
+                    override fun onChanged(old: List<Case>?) {
                         appExecutors.diskIO().execute {
-                            database.caseDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                            database.caseDao().delete(*getItemsToDelete(item, old ?: listOf()))
                         }
                         oldItems.removeObserver(this)
                     }
@@ -217,12 +217,23 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
-            database.userDao().delete(*getItemsToDelete(item, loadFromDb().value ?: listOf()))
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<User>> {
+                    override fun onChanged(old: List<User>?) {
+                        appExecutors.diskIO().execute {
+                            database.userDao().delete(*getItemsToDelete(item, old
+                                    ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
             setItemUpdateTimestamps(*item.toTypedArray())
             database.userDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<User>?) = User.shouldFetch()
+        override fun shouldFetch(data: List<User>?) = true
 
         override fun loadFromDb() = database.userDao().getUsers()
 
@@ -282,9 +293,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<News>> {
-                    override fun onChanged(t: List<News>?) {
+                    override fun onChanged(old: List<News>?) {
                         appExecutors.diskIO().execute {
-                            database.newsDao().delete(*getItemsToDelete(item, t ?: listOf()))
+                            database.newsDao().delete(*getItemsToDelete(item, old ?: listOf()))
                         }
                         oldItems.removeObserver(this)
                     }
