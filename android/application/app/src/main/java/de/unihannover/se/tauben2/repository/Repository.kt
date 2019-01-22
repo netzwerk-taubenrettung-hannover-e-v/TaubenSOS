@@ -1,6 +1,5 @@
 package de.unihannover.se.tauben2.repository
 
-import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -78,7 +77,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             database.caseDao().insertOrUpdate(item)
         }
 
-        override fun shouldFetch(data: List<Case>?) = if(checkCooldown) Case.shouldFetch() else true
+        override fun shouldFetch(data: List<Case>?) = if (checkCooldown) Case.shouldFetch() else true
 
         override fun loadFromDb() = database.caseDao().getCases()
 
@@ -372,8 +371,20 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
-            database.populationMarkerDao().delete(*getItemsToDelete(item, loadFromDb().value
-                    ?: listOf()))
+
+            val oldItems = loadFromDb()
+            appExecutors.mainThread().execute {
+                oldItems.observeForever(object : Observer<List<PopulationMarker>> {
+                    override fun onChanged(old: List<PopulationMarker>?) {
+                        appExecutors.diskIO().execute {
+                            database.populationMarkerDao().delete(*getItemsToDelete(item, old
+                                    ?: listOf()))
+                        }
+                        oldItems.removeObserver(this)
+                    }
+                })
+            }
+
             setItemUpdateTimestamps(*item.toTypedArray())
             database.populationMarkerDao().insertOrUpdate(item)
         }
