@@ -291,6 +291,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun saveUpdatedData(updatedData: News) {
+            //Coming from push
             database.newsDao().insertOrUpdate(updatedData)
         }
 
