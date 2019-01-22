@@ -111,7 +111,7 @@ data class Case(@PrimaryKey var caseID: Int?,
             bmD = BitmapDescriptorFactory.defaultMarker(55.06f)
         }
         if(wasFoundDead == true){
-            bmD = BitmapDescriptorFactory.defaultMarker(190.0f)
+            bmD = BitmapDescriptorFactory.defaultMarker(220.0f)
         }
         return MarkerOptions().position(LatLng(latitude, longitude)).title(App.context.getString(R.string.priority, priority.toString())).snippet(additionalInfo).icon(bmD)
     }
