@@ -84,7 +84,7 @@ class MediaReportFragment : ReportFragment() {
         alertBuilder = AlertDialog.Builder(context).apply {
             setTitle(getString(R.string.what_kind_of_media))
             setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))) { _, i ->
-                if (mLocalMediaUrls.size > 3) {
+                if (mLocalMediaUrls.size >= 3) {
                     setSnackBar(getString(R.string.maximum_reached))
                     return@setItems
                 }

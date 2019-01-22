@@ -1,6 +1,7 @@
 package de.unihannover.se.tauben2.view
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,16 +36,6 @@ class RecordVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_video)
-
-        val tb = toolbar as Toolbar
-        setSupportActionBar(tb)
-
-        tb.setNavigationOnClickListener { onBackPressed() }
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        setTitle(R.string.record_video)
 
         backgroundColor()
 
@@ -90,7 +81,7 @@ class RecordVideoActivity : AppCompatActivity() {
         val path = intent.getStringExtra("url")
         cam?.takeVideo(File(path))
         btnRecord.postDelayed({ btnRecord.isEnabled = true }, 3000)
-        btnRecord.text = getString(R.string.stop)
+        btnRecord.setColorFilter(Color.RED)
 
         recording = true
 
@@ -106,7 +97,6 @@ class RecordVideoActivity : AppCompatActivity() {
     // sets the gradient for the status bar
     private fun backgroundColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.setBackgroundDrawableResource(de.unihannover.se.tauben2.R.drawable.gradient)
+        window.statusBarColor = Color.BLACK
     }
 }

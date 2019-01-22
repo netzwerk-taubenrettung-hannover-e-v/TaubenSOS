@@ -8,14 +8,10 @@
     android:background="@drawable/gradient"
     >
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <com.otaliastudios.cameraview.CameraView
         android:id="@+id/cameraView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:keepScreenOn="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,15 +19,18 @@
 
     </com.otaliastudios.cameraview.CameraView>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:onClick="record"
-        android:text="@string/record"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
