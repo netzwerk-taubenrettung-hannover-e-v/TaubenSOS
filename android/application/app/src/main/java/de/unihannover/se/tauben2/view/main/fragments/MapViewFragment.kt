@@ -1,13 +1,19 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,12 +26,14 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
 import de.unihannover.se.tauben2.App
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.main.fragments.cases.CasesAdminFragment
 import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 import de.unihannover.se.tauben2.view.report.LocationReportFragment
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import java.util.*
 
 class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
@@ -38,6 +46,17 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
     private val hanBounds = LatLngBounds(LatLng(52.3050934, 9.4635117), LatLng(52.5386801, 9.9908932))
 
+
+    override fun onStart() {
+        super.onStart()
+        context?.let {
+            val permission = ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
+
+            if (permission == PackageManager.PERMISSION_GRANTED)
+                mMap?.isMyLocationEnabled = true
+
+        }
+    }
 
     override fun onChanged(data: List<MapMarkable>) {
 
@@ -65,7 +84,7 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
     }
 
     // fix that!: googleMap.isMyLocationEnabled = true
-    @SuppressLint("MissingPermission")
+//    @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 //        val view = inflater.inflate(R.layout.fragment_map, container, false)
@@ -89,10 +108,17 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 mMap = map
 
                 // For showing a move to my location button
-                map.isMyLocationEnabled = true
+                context?.let { act ->
+                    val permission = ContextCompat.checkSelfPermission(act, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                    if (permission != PackageManager.PERMISSION_GRANTED)
+                        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    else
+                        map.isMyLocationEnabled = true
+
+                }
 
                 map.setMinZoomPreference(9.5f)
-                // TODO Find best bound coordinates
 
                 map.uiSettings.isRotateGesturesEnabled = false
                 map.uiSettings.isTiltGesturesEnabled = false
@@ -100,8 +126,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(hanBounds, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels, 0))
                 map.clear()
                 setMarkers(mMarkers.keys)
-
-
 
 
                 when (this.parentFragment) {
@@ -137,6 +161,20 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
         }
 
         return view
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        context?.let { cxt ->
+            val permission = ContextCompat.checkSelfPermission(cxt, Manifest.permission.ACCESS_FINE_LOCATION)
+
+            if (permission == PackageManager.PERMISSION_GRANTED)
+                    mMap?.isMyLocationEnabled = true
+//
+//            if (requestCode == 1) {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                }
+//            }
+        }
     }
 
     // add a marker at the middle of the map and save it in 'selectedPosition'

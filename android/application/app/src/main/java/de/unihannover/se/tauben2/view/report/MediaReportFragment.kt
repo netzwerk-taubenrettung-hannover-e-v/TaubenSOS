@@ -133,7 +133,7 @@ class MediaReportFragment : ReportFragment() {
     @SuppressLint("InflateParams")
     private fun requestPhone(cxt: Context) {
         val alert = layoutInflater.inflate(R.layout.phone_alert_dialog, null)
-        val alertDialog = androidx.appcompat.app.AlertDialog.Builder(cxt).setView(alert).show().apply {
+        val alertDialog = AlertDialog.Builder(cxt).setView(alert).show().apply {
             setCanceledOnTouchOutside(false)
             setOnCancelListener {
                 activity?.finish()

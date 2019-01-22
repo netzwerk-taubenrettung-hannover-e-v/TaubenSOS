@@ -179,4 +179,5 @@
     <string name="stop">Stopp</string>
     <string name="phone_number_invalid">Keine gültige Telefonnummer.</string>
     <string name="record">Aufnahme</string>
+    <string name="select_location">Bitte wähle einen Standort aus.</string>
 </resources>

@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
 
         backgroundColor()
 
-        setupPermissions()
-
         // Toolbar Settings
         setSupportActionBar(toolbar as Toolbar)
         //supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -165,36 +163,6 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         window.setBackgroundDrawableResource(de.unihannover.se.tauben2.R.drawable.gradient)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            1 -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_denied))
-                } else {
-                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_granted))
-                }
-            }
-            2 -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_denied))
-                } else {
-                    Log.i(getString(de.unihannover.se.tauben2.R.string.permission), getString(de.unihannover.se.tauben2.R.string.permission_granted))
-                }
-            }
-        }
-    }
-
-    private fun setupPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        }
     }
 
     fun enableBackButton () {

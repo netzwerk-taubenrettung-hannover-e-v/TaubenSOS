@@ -72,7 +72,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
    override fun canGoForward (): Boolean {
         if (saveLocation()) return true
-        else setSnackBar("please select a location")
+        else setSnackBar(getString(R.string.select_location))
         return false
    }
 
