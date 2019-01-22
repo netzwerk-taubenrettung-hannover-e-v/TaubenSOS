@@ -78,6 +78,9 @@ class RecordVideoActivity : AppCompatActivity() {
     }
 
     fun record(view: View) {
+
+        btnRecord.isEnabled = false
+
         if (recording) {
             recording = false
             cam?.stopVideo()
@@ -86,7 +89,9 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val path = intent.getStringExtra("url")
         cam?.takeVideo(File(path))
+        btnRecord.postDelayed({ btnRecord.isEnabled = true }, 3000)
         btnRecord.text = getString(R.string.stop)
+
         recording = true
 
         Log.d(LOG_TAG, "recording...")
