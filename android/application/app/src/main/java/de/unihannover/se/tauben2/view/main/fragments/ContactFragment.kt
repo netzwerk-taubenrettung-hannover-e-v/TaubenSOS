@@ -13,7 +13,7 @@ import de.unihannover.se.tauben2.view.list.ContactItem
 import de.unihannover.se.tauben2.view.list.ContactItemAdapter
 import kotlinx.android.synthetic.main.fragment_contact.view.*
 
-class ContactFragment : Fragment() {
+class ContactFragment : BaseMainFragment(R.string.contact) {
 
     companion object {
         val PHONE: Uri = Uri.parse("tel:05751 918602")
@@ -23,7 +23,7 @@ class ContactFragment : Fragment() {
         val FACEBOOK_APP: Uri = Uri.parse("fb://page/141319162866697")
     }
 
-    private val contactItems = mutableListOf<ContactItem>()
+    private var contactItems = listOf<ContactItem>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,7 +38,7 @@ class ContactFragment : Fragment() {
 
         } catch (ignored: PackageManager.NameNotFoundException) {}
 
-        contactItems.addAll(listOf(ContactItem(getString(R.string.contact_by_phone), getString(R.string.call),
+        contactItems = listOf(ContactItem(getString(R.string.contact_by_phone), getString(R.string.call),
                     R.drawable.ic_phone_primary, R.id.contact_button_call,
                     Intent(Intent.ACTION_DIAL, PHONE), R.id.infoButtonContact),
             ContactItem(getString(R.string.contact_by_mail), getString(R.string.mail),
@@ -49,10 +49,9 @@ class ContactFragment : Fragment() {
                     Intent(Intent.ACTION_VIEW, facebookUri),null),
             ContactItem(getString(R.string.contact_by_website), getString(R.string.website),
                     R.drawable.ic_world, R.id.contact_button_website,
-                    Intent(Intent.ACTION_VIEW, WEBSITE), null)))
+                    Intent(Intent.ACTION_VIEW, WEBSITE), null))
 
-        val contactListAdapter = ContactItemAdapter(view.context, contactItems)
-        view.contact_listview.adapter = contactListAdapter
+        view.contact_listview.adapter = ContactItemAdapter(view.context, contactItems)
 
         return view
     }

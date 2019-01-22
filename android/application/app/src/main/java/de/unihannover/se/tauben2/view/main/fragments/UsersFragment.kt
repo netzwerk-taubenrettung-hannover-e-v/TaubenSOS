@@ -14,7 +14,7 @@ import de.unihannover.se.tauben2.view.Singleton
 import de.unihannover.se.tauben2.view.recycler.UsersRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 
-class UsersFragment : Fragment() {
+class UsersFragment : BaseMainFragment(R.string.users) {
 
     private lateinit var recyclerFragment : UsersRecyclerFragment
 

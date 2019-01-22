@@ -13,10 +13,11 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.main.fragments.BaseMainFragment
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_more.view.*
 
-class MoreFragment : Fragment() {
+class MoreFragment : BaseMainFragment(R.string.more) {
 
     private var menuItems: List<FragmentMenuItem> = listOf()
 

@@ -20,7 +20,7 @@ import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseMainFragment(R.string.register) {
 
     companion object : Singleton<RegisterFragment>() {
         override fun newInstance() = RegisterFragment()

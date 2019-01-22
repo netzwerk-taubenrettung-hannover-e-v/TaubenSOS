@@ -21,12 +21,6 @@ class BottomNavigator(
 
     private val mToRemove = listOf(R.id.casesInfoFragment, R.id.counterInfoFragment, R.id.editNewsFragment)
 
-//    private val mActionsList = listOf(R.id.action_report00Fragment_to_report01Fragment,
-//            R.id.action_report01Fragment_to_report02Fragment,
-//            R.id.action_moreFragment_to_navigation,
-//            R.id.action_casesFragment_to_casesInfoFragment)
-
-
     override fun navigate(destination: Destination, args: Bundle?,
                           navOptions: NavOptions?, navigatorExtras: Navigator.Extras?): NavDestination? {
 
@@ -47,7 +41,12 @@ class BottomNavigator(
             val removed = mBackStack.removeAt(mBackStack.lastIndex)
             val destination = mBackStack[mBackStack.size-1]
             replaceFragment(destination, mToRemove.contains(removed.id))
-            bottomNavigationView.setSelectedItem(destination.id)
+            val selectedItem = if(bottomNavigationView.menu.findItem(destination.id) == null) {
+                DynamicBottomNavigationView.MORE_MENU_ITEM
+            }
+            else
+                destination.id
+            bottomNavigationView.setSelectedItem(selectedItem)
         }
     }
 
@@ -56,8 +55,10 @@ class BottomNavigator(
         val transaction = manager.beginTransaction()
 
         manager.primaryNavigationFragment?.let { current ->
-            if(removeOldFragment)
+            if(removeOldFragment) {
+                mBackStack.removeAt(mBackStack.size-1)
                 transaction.remove(current)
+            }
             else
                 transaction.detach(current)
 //            if(current::class.java != bottomNavigationView.sele)

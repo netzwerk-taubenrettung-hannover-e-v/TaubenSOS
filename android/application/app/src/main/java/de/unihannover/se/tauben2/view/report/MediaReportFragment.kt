@@ -33,6 +33,7 @@ import de.unihannover.se.tauben2.deleteFile
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
+import de.unihannover.se.tauben2.view.InfoImageView
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
@@ -228,7 +229,7 @@ class MediaReportFragment : ReportFragment() {
             if (v.image_layout.childCount <= i + indexShift)
                 return@forEachIndexed
 
-            val layout = (v.image_layout.getChildAt(i + indexShift) as ConstraintLayout)
+            val layout = (v.image_layout.getChildAt(i + indexShift) as InfoImageView)
 
             val image = layout.getChildAt(0) as SquareImageView
             val mediaLink = context?.getFileStreamPath(url)?.absolutePath
@@ -240,8 +241,11 @@ class MediaReportFragment : ReportFragment() {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
                 picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-            } else
+                layout.setPlayable(true)
+            } else {
                 loadMedia(File(mediaLink), null, image, false)
+                layout.setPlayable(false)
+            }
 
 //            image.setImageResource(R.drawable.ic_logo_48dp)
             layout.visibility = View.VISIBLE
@@ -256,7 +260,7 @@ class MediaReportFragment : ReportFragment() {
             if (v.image_layout.childCount <= i + indexShift)
                 return@forEachIndexed
 
-            val layout = (v.image_layout.getChildAt(i + indexShift) as ConstraintLayout)
+            val layout = (v.image_layout.getChildAt(i + indexShift) as InfoImageView)
 //            layout.visibility = View.INVISIBLE
 
             val image = layout.getChildAt(0) as SquareImageView
@@ -264,11 +268,14 @@ class MediaReportFragment : ReportFragment() {
             mCreatedCase.loadMediaFromServerInto(media, image, null, false)
 
             if (media.getType().isVideo()) {
+                layout.setPlayable(true)
 //                    MediaMetadataRetriever().apply {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
 //                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
             }
+            else
+                layout.setPlayable(false)
 
 
             layout.visibility = View.VISIBLE
@@ -277,7 +284,7 @@ class MediaReportFragment : ReportFragment() {
 
     private fun deleteImage(image: SquareImageView) {
         for (i in 0 until v.image_layout.childCount) {
-            val imageView = (v.image_layout.getChildAt(i) as ConstraintLayout).getChildAt(0) as SquareImageView
+            val imageView = (v.image_layout.getChildAt(i) as InfoImageView).getChildAt(0) as SquareImageView
             imageView.setImageDrawable(null)
             if (imageView == image) {
 
@@ -316,42 +323,55 @@ class MediaReportFragment : ReportFragment() {
 
         (0..2).forEach {
 
-            val image = SquareImageView(view.context).apply {
-                id = View.generateViewId()
-                scaleType = ImageView.ScaleType.CENTER_CROP
-            }
+//            val image = SquareImageView(view.context).apply {
+//                id = View.generateViewId()
+//                scaleType = ImageView.ScaleType.CENTER_CROP
+//            }
+//
+//            val button = ImageButton(view.context).apply {
+//                id = View.generateViewId()
+//                setImageResource(R.drawable.ic_close)
+////                setPadding(0,0,0,0)
+//                background = ColorDrawable(Color.TRANSPARENT)
+//                setOnClickListener {
+//                    deleteImage(image)
+//                }
+//            }
+//
+//            val constraintLayout = ConstraintLayout(view.context).apply {
+//                layoutParams = LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        1.0f).apply {
+//
+//                    setMargins(2, 2, 2, 2)
+//                }
+//                addView(image)
+//                addView(button)
+//                visibility = View.INVISIBLE
+//            }
 
-            val button = ImageButton(view.context).apply {
-                id = View.generateViewId()
-                setImageResource(R.drawable.ic_close)
-//                setPadding(0,0,0,0)
-                background = ColorDrawable(Color.TRANSPARENT)
-                setOnClickListener {
-                    deleteImage(image)
-                }
-            }
-
-            val constraintLayout = ConstraintLayout(view.context).apply {
+            val infoImage = InfoImageView(view.context).apply {
+                setClosable(true)
+                visibility = View.INVISIBLE
                 layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         1.0f).apply {
 
-                    setMargins(2, 2, 2, 2)
+                    setMargins(4, 4, 4, 4)
                 }
-                addView(image)
-                addView(button)
-                visibility = View.INVISIBLE
             }
+            view.image_layout.addView(infoImage)
 
-            view.image_layout.addView(constraintLayout)
-
-            ConstraintSet().apply {
-                clone(constraintLayout)
-                connect(button.id, ConstraintSet.TOP, image.id, ConstraintSet.TOP)
-                connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
-                applyTo(constraintLayout)
-            }
+//            view.image_layout.addView(constraintLayout)
+//
+//            ConstraintSet().apply {
+//                clone(constraintLayout)
+//                connect(button.id, ConstraintSet.TOP, image.id, ConstraintSet.TOP)
+//                connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
+//                applyTo(constraintLayout)
+//            }
 
         }
     }

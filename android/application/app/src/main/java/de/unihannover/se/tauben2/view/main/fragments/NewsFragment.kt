@@ -20,7 +20,7 @@ import de.unihannover.se.tauben2.view.recycler.NewsRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_news.view.*
 
-class NewsFragment : Fragment() {
+class NewsFragment : BaseMainFragment(R.string.news_title) {
 
     private lateinit var recyclerFragment: NewsRecyclerFragment
 

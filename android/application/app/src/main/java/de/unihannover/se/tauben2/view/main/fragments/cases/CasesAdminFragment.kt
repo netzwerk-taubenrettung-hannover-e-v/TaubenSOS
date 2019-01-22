@@ -18,12 +18,11 @@ class CasesAdminFragment : CasesFragment() {
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        activity?.title = view?.context?.getString(R.string.all_cases)
-        loadCases(Filter.ALL)
-
         view?.let {
             initFab(it, recyclerFragment, mapsFragment)
         }
+
+        activity?.setTitle(R.string.all_cases)
 
         return view
     }
@@ -75,27 +74,21 @@ class CasesAdminFragment : CasesFragment() {
             setOnActionSelectedListener { speedDialActionItem ->
                 when (speedDialActionItem.id) {
                     R.id.cases_filter_my -> {
-                        activity?.title = context.getString(R.string.my_cases)
-                        loadCases(Filter.MY)
-                        false
+                        mFilter = Filter.MY
                     }
                     R.id.cases_filter_closed -> {
-                        activity?.title = context.getString(R.string.closed_cases)
-                        loadCases(Filter.CLOSED)
-                        false
+                        mFilter = Filter.CLOSED
                     }
                     R.id.cases_filter_open -> {
-                        activity?.title = context.getString(R.string.open_cases)
-                        loadCases(Filter.OPEN)
-                        false
+                        mFilter = Filter.OPEN
                     }
                     R.id.cases_filter_all -> {
-                        activity?.title = context.getString(R.string.all_cases)
-                        loadCases(Filter.ALL)
-                        false // true to keep the Speed Dial open
+                        mFilter = Filter.ALL
                     }
-                    else -> false
                 }
+                loadCases(mFilter)
+                false
+
             }
         }
     }

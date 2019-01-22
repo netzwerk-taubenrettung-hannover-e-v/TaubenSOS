@@ -38,7 +38,7 @@
     <string name="injury_fledgling">Jungtier</string>
     <string name="injury_other">Andere (weitere Angaben später)</string>
     <string name="estimate_condition">Einschätzung des Zustands der Taube:</string>
-    <string name="good">eher gut</string>
+    <string name="good">gut</string>
     <string name="poor">schlecht</string>
     <string name="next">Weiter</string>
     <string name="back">Zurück</string>
@@ -98,7 +98,7 @@
         <item quantity="one">%d Tag</item>
         <item quantity="other">%d Tagen</item>
     </plurals>
-    <string name="priorities">Stufe 1 (gut): leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Küken auf de Boden (diese brauchen drinend HIlfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
+    <string name="priorities">Stufe 1 (gut): Leicht verschnürte Füße, Taube kann noch laufen.\n\nStufe 2: Verschnürte Füße, Taube hat Schmerzen.\n\nStufe 3 (schlecht): Offensichtlich verletzte Taube, die unfähig ist zu fliegen oder laufen/Jungtier auf dem Boden (diese braucht dringend Hilfe), Tauben in der Nacht. Diese Tauben sind einfach zu fangen und benötigen dringend Hilfe (Möglichkeit des Notrufs).</string>
     <string name="report_explanation">Um der verletzten Taube bestmöglich helfen zu können, bitten wir um weitere Informationen in den folgenden Schritten. Nach dem Melden einer verletzten Taube kannst du den Status des Falls jederzeit einsehen und deine bereitgestellten Informationen bearbeiten. Falls du weitere dringende Informationen hast, kannst du uns auch über das Notfalltelefon bei den Kontaktinfos erreichen.</string>
     <string name="permission">Erlaubnis</string>
     <string name="all_cases">Alle Fälle</string>
@@ -161,5 +161,10 @@
     <string name="contact_by_website">Besuche unsere Website:</string>
     <string name="website">Website</string>
     <string name="navigate">Navigieren</string>
-
+    <string name="click_to_add_values">Klicke um Werte hinzuzufügen</string>
+    <string name="average">Durchschnitt: </string>
+    <string name="case_info">Falldetails</string>
+    <string name="counter_info">Markerdetails</string>
+    <string name="news_edit">News bearbeiten</string>
+    <string name="news_title">News</string>
 </resources>
