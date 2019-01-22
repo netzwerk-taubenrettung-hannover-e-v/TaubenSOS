@@ -3,9 +3,9 @@
     <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
     <string name="call_info_title">Give us a call!</string>
-    <string name="contact_info">You can give us a call to get more information or if you found a pigeon which is in urgent need for help.</string>
-    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany with feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their head, sometimes rings on their feet.</string>
-    <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick Not sure.</string>
+    <string name="contact_info">You can give us a call for more information or if you found a pigeon which is in urgent need for help.</string>
+    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies feral pigeons.\n\nCommon wood pigeon: larger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings don\'t have these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a hooded head, sometimes rings on their feet.</string>
+    <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick "Not sure".</string>
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
@@ -79,9 +79,9 @@
     <string name="permission">Permission</string>
     <string name="edit">Edit</string>
     <string name="call_reporter">Call reporter</string>
-    <string name="report_explanation">In order to provide the injured dove with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
+    <string name="report_explanation">In order to provide the injured pigeon with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
     <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
-    <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet, pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk/ fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
+    <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet, pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk / fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urgent need for help (emergency call).</string>
     <string name="no_specification">Not sure</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
@@ -110,7 +110,7 @@
     <string name="login_titel">Member Login</string>
     <string name="passwort_wiederholen">Re-enter your password:</string>
     <string name="registrierung_beantragen">Request sign-up</string>
-    <string name="registrierung_erklaerung">Your sign-up has to get approved by an admin.</string>
+    <string name="registrierung_erklaerung">Your sign-up has to be approved by an admin.</string>
     <string name="tauben_zählen_info">Please select the location, date and count of the observed pigeons.</string>
     <string name="sample" translatable="false">Sample</string>
     <string name="all_cases">All cases</string>
@@ -123,7 +123,7 @@
     <string name="admin" translatable="false">Admin?</string>
     <string name="authorized">Authorized?</string>
     <string name="population" translatable="false">Population:</string>
-    <string name="reported_doves">Reported Doves:</string>
+    <string name="reported_doves">Reported Pigeons:</string>
     <string name="breeds">Breeds:</string>
     <string name="closed_cases">Closed cases</string>
     <string name="my_cases">My cases</string>
@@ -150,22 +150,22 @@
     <string name="alert_user_deleted">Deleted User successfully!</string>
     <string name="title_deleting_user">Deleting User</string>
     <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
-    <string name="is_event">Select for event</string>
+    <string name="is_event">Mark as event</string>
     <string name="event_ends_on">Event ends on</string>
     <string name="more">More</string>
     <string name="injury_other_short">Other</string>
     <string name="population_over_the_last_year">Population over the last year:</string>
     <string name="delete_case_question">Do you want to delete this case?</string>
     <string name="delete_case_info">The case will not be recoverable.</string>
-    <string name="delete_news_question">Do you want to delete this news?</string>
-    <string name="delete_news_info">The news will not be recoverable.</string>
+    <string name="delete_news_question">Do you want to delete this news post?</string>
+    <string name="delete_news_info">The news post will not be recoverable.</string>
     <string name="no_author">past member</string>
     <string name="logout_successful">Logout successful</string>
     <string name="contact_by_phone">Contact us by phone:</string>
     <string name="call">Call</string>
     <string name="contact_by_mail">Contact us by mail:</string>
     <string name="mail">E-Mail</string>
-    <string name="contact_by_facebook">Stay up to day:</string>
+    <string name="contact_by_facebook">Stay up to date:</string>
     <string name="facebook">Facebook</string>
     <string name="contact_by_website">Visit our website</string>
     <string name="website">Website</string>
