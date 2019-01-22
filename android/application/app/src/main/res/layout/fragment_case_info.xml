@@ -52,35 +52,33 @@
                             android:orientation="horizontal"
                             android:layout_marginBottom="16dp"
                             >
-                            <de.unihannover.se.tauben2.view.SquareImageView
+
+                            <de.unihannover.se.tauben2.view.InfoImageView
                                 android:id="@+id/image_media_0"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="16dp"
                                 android:adjustViewBounds="true"
                                 android:layout_weight="1"
-                                android:background="@color/White"
-                                android:scaleType="centerCrop"
                                 />
-                            <de.unihannover.se.tauben2.view.SquareImageView
+
+                            <de.unihannover.se.tauben2.view.InfoImageView
                                 android:id="@+id/image_media_1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="16dp"
                                 android:adjustViewBounds="true"
                                 android:layout_weight="1"
-                                android:background="@color/White"
-                                android:scaleType="centerCrop"
                                 />
-                            <de.unihannover.se.tauben2.view.SquareImageView
+
+                            <de.unihannover.se.tauben2.view.InfoImageView
                                 android:id="@+id/image_media_2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
                                 android:layout_weight="1"
-                                android:background="@color/White"
-                                android:scaleType="centerCrop"
                                 />
+
                         </LinearLayout>
 
                         <TextView android:id="@+id/text_title_injuries"
@@ -127,7 +125,7 @@
                     <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        app:layout_scrollFlags="scroll"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed"
                         >
 
                         <ImageView
@@ -179,19 +177,6 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-            <!--<com.google.android.material.button.MaterialButton-->
-                <!--android:id="@+id/btn_state_take"-->
-                <!--style="@style/Widget.MaterialComponents.Button.TextButton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="8dp"-->
-                <!--android:text="@string/take_case"-->
-                <!--android:textColor="@color/colorPrimaryDark"-->
-                <!--app:layout_constraintEnd_toStartOf="@id/btn_state_prev"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--android:visibility="@{c.rescuer == null ? View.GONE : (c.isClosed() ? View.GONE : View.VISIBLE)}"-->
-                <!--/>-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_state_prev"

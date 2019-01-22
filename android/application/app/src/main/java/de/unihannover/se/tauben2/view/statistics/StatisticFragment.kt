@@ -37,9 +37,10 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import de.unihannover.se.tauben2.view.main.fragments.BaseMainFragment
 
 
-class StatisticFragment : Fragment() {
+class StatisticFragment : BaseMainFragment(R.string.graphs) {
 
     companion object {
         private val LOG_TAG = StatisticFragment::class.java.simpleName

@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
     // Add "Report a Dove"-Btn to the Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(de.unihannover.se.tauben2.R.menu.toolbar_menu, menu)
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 

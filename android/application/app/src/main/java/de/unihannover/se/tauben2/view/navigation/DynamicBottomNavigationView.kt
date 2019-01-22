@@ -17,11 +17,14 @@ import java.util.*
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int): BottomNavigationView(context, attrs, defStyleAttr) {
 
 
+    companion object {
+        const val MORE_MENU_ITEM = R.id.moreFragment
+    }
+
     private var mRootView: View = View.inflate(context, R.layout.dynamic_bottom_navigation_view, this)
 
     private var mSize: Int = 5
 
-    private val MORE_MENU_ITEM = R.id.moreFragment
 
     private var menuSize: Int = menu.size()
 
@@ -80,16 +83,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
     }
 
     private fun addMenuItem(menu: Menu = getMenu(), item: FragmentMenuItem) {
-        menu.add(Menu.NONE, item.itemId, Menu.NONE, item.title).setIcon(item.iconId).setOnMenuItemClickListener {
-            if(context is AppCompatActivity) {
-                (context as AppCompatActivity).apply {
-                    // TODO remove hardcoded part
-                    if(item.itemId != R.id.casesFragment)
-                        title = item.title
-                }
-            }
-            false
-        }
+        menu.add(Menu.NONE, item.itemId, Menu.NONE, item.title).setIcon(item.iconId)
     }
 
     fun hasOverflowMenu() = menuSize > mSize

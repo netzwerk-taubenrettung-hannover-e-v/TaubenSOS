@@ -51,7 +51,7 @@
     <string name="injury_fledgling">Fledgling</string>
     <string name="injury_other">Other (more details later)</string>
     <string name="estimate_condition">Estimate the general condition of the pigeon:</string>
-    <string name="good">rather good</string>
+    <string name="good">good</string>
     <string name="poor">poor</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
@@ -170,4 +170,14 @@
     <string name="contact_by_website">Visit our website</string>
     <string name="website">Website</string>
     <string name="navigate">Navigate</string>
+    <string name="click_to_add_values">Click to add values</string>
+    <string name="average">Average: </string>
+    <string name="case_info">Case details</string>
+    <string name="counter_info">Marker details</string>
+    <string name="news_edit">Edit news</string>
+    <string name="news_title">News</string>
+    <string name="change_state_found">Finally found</string>
+    <string name="change_state_not_found">Not found</string>
+    <string name="push_new_case_title">A new case with priority %d has been added! 🐦</string>
+    <string name="push_new_event_title">A new event \'%s\' has been created! 📆</string>
 </resources>

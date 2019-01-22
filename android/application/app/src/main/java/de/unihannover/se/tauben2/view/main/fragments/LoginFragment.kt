@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.iid.FirebaseInstanceId
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.layout.fragment_login
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.entity.User
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseMainFragment(R.string.login) {
 
     companion object : Singleton<LoginFragment>() {
         override fun newInstance() = LoginFragment()

@@ -30,7 +30,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerDialog.OnDateSetListener {
 
     private var selectedDate: Calendar = Calendar.getInstance()
     private var mPopulationMarker : PopulationMarker? = null

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_edit_news.view.*
 import java.util.*
 
-class EditNewsFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class EditNewsFragment : BaseInfoFragment(R.string.news_edit), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private lateinit var mBinding: FragmentEditNewsBinding
     private var mNewsViewModel: NewsViewModel? = null

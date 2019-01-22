@@ -105,7 +105,6 @@ class MapViewFragment : SupportMapFragment(), Observer<List<MapMarkable>> {
 
 
                 when (this.parentFragment) {
-                    is GraphsFragment -> addHeatMap()
                     is CasesFragment -> {
                         mMap?.setOnInfoWindowClickListener { clickedMarker ->
                             //TODO find MarkerCase

@@ -123,8 +123,10 @@ data class Case(@PrimaryKey var caseID: Int?,
     }
 
     fun getStatusColor(): Int {
+
         var color = App.getColor(R.color.colorGreen)
-        if(wasFoundDead == true)
+
+        if (wasFoundDead == true || wasNotFound == true)
             color = App.getColor(R.color.colorGray)
         else if (isClosed == false)
             color = if (rescuer != null) App.getColor(R.color.colorYellow) else App.getColor(R.color.colorRed)
@@ -132,8 +134,10 @@ data class Case(@PrimaryKey var caseID: Int?,
     }
 
     fun getStatusColorTransparent(): Int {
+
         var color = App.getColor(R.color.colorGreenTransparent)
-        if(wasFoundDead == true)
+
+        if(wasFoundDead == true || wasNotFound == true)
             color = App.getColor(R.color.colorGrayTransparent)
         else if (isClosed == false)
             color = if (rescuer != null) App.getColor(R.color.colorYellowTransparent) else App.getColor(R.color.colorRedTransparent)

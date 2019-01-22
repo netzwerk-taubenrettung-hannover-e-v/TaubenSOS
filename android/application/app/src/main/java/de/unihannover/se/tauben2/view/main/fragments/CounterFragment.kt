@@ -18,9 +18,7 @@ import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.util.*
 
-class CounterFragment : Fragment() {
-
-    private var selectedDate: Calendar = Calendar.getInstance()
+class CounterFragment : BaseMainFragment(R.string.counter) {
 
     private var mCurrentObservedData: LiveDataRes<List<PopulationMarker>>? = null
     private lateinit var mCurrentMapObserver: LoadingObserver<List<PopulationMarker>>

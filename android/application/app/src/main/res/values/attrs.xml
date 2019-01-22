@@ -3,4 +3,8 @@
     <declare-styleable name="DynamicBottomNavigationView">
         <attr name="size" format="integer" />
     </declare-styleable>
+    <declare-styleable name="InfoImageView">
+        <attr name="closable" format="boolean" />
+        <attr name="playable" format="boolean" />
+    </declare-styleable>
 </resources>
