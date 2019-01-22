@@ -38,6 +38,8 @@ def build_android_config(title, body, icon=None, data=None):
             title_loc_key=title[0],
             title_loc_args=title[1:],
             icon=icon)
+    else:
+        notification = None
     return messaging.AndroidConfig(data=data, notification=notification)
 
 def send_to_token(token, title, body, icon=None, data=None):

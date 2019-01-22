@@ -33,8 +33,12 @@ def create_case():
 		"/topics/member",
 		["push_new_case_title", str(case.priority)],
 		case.additionalInfo,
-		"ic_assignment",
-		dict(case=case_schema.dumps(case).data))
+		"ic_assignment")
+	fcm.send_to_topic(
+		"/topics/member",
+		None,
+		None,
+		data=dict(case=case_schema.dumps(case).data))
 	case.save()
 	return case_schema.jsonify(case), 201
 
