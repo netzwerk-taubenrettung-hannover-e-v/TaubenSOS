@@ -42,7 +42,6 @@ class MoreFragment : BaseMainFragment(R.string.more) {
                 if (it.itemId == R.id.button_logout) {
                     getViewModel(UserViewModel::class.java)?.let { vm ->
                         vm.logout()
-                        setSnackBar(v, getString(R.string.logout_successful))
                         activity?.finish()
                         Intent(context, BootingActivity::class.java).apply { startActivity(this) }
                     }
