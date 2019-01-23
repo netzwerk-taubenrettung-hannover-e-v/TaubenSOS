@@ -81,22 +81,6 @@ class StatisticFragment : BaseMainFragment(R.string.graphs) {
         northeast = mapsFragment.getNorthEast()
         southwest = mapsFragment.getNorthEast()
 
-        //northeast = LatLng(54.447689, 16.107250)
-        //southwest = LatLng(48.140436, 4.521094)
-
-
-        // for debugging purposes remove later
-        /*
-        val vm = getViewModel(StatsViewModel::class.java)
-        vm?.let { viewModel ->
-            viewModel.getBreedStat(0, 1547725671, 54.447689, 16.107250,
-                    48.140436, 4.521094).observeForever {
-                if (it.status == Resource.Status.SUCCESS) {
-                    Log.d(LOG_TAG, it.data.toString())
-                }
-            }
-        }*/
-
         // Set DatePicker
         createDateSelectListeners()
         selectedDateFrom.add(Calendar.MONTH, -1)
@@ -254,7 +238,6 @@ class StatisticFragment : BaseMainFragment(R.string.graphs) {
         dataSet1.setCircleColor(color1)
         dataSet1.setDrawFilled(true)
         dataSet1.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-
 
         chart.xAxis.valueFormatter = AxisDateFormatter(selectedDateFrom, selectedDateTo)
         chart.axisLeft.axisMinimum = 0F
