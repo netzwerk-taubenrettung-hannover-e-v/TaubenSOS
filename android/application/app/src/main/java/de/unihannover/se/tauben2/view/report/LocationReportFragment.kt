@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.maps.model.LatLng
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
-import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.view.main.fragments.MapViewFragment
 import de.unihannover.se.tauben2.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_report_location.*
@@ -40,10 +39,6 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
         val view = inflater.inflate(layoutId, container, false)
         mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
-
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-        }
 
         setBtnListener(R.id.fragment_report_injuries, R.id.fragment_report_media)
 
@@ -77,7 +72,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
 
    override fun canGoForward (): Boolean {
         if (saveLocation()) return true
-        else setSnackBar("please select a location")
+        else setSnackBar(getString(R.string.select_location))
         return false
    }
 
@@ -86,7 +81,7 @@ class LocationReportFragment : ReportFragment(), Observer<Location?> {
         // works but is bad
         val crosshair = ImageView(context)
 
-        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_add_white_24dp, null))
+        crosshair.setImageDrawable(resources.getDrawable(R.drawable.ic_location_crosshair, null))
         crosshair.setColorFilter(Color.BLACK)
 
         crosshair.id = View.generateViewId()

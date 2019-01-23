@@ -4,10 +4,15 @@ import de.unihannover.se.tauben2.LiveDataRes
 import de.unihannover.se.tauben2.model.Auth
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.Token
+import de.unihannover.se.tauben2.model.UserRegistrationToken
 import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.model.database.entity.User
+import de.unihannover.se.tauben2.model.database.entity.stat.BreedStat
+import de.unihannover.se.tauben2.model.database.entity.stat.InjuryStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PigeonNumberStat
+import de.unihannover.se.tauben2.model.database.entity.stat.PopulationStat
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -32,11 +37,51 @@ interface NetworkService {
     fun deleteCase(@Header("Authorization") token: String,
                    @Path("id") id: Int): Call<Void>
 
-    @GET("stats")
-    fun getStats(@Header("Authorization") token: String, @Body timeStamp: Long): LiveDataRes<List<Case>>
+
+    @GET("stats/population")
+    fun getPopulationStats(@Header("Authorization") token: String,
+                           @Query("fromTime") fromTime: Long,
+                           @Query("untilTime") untilTime: Long,
+                           @Query("latNE") latNE: Double,
+                           @Query("lonNE") lonNE: Double,
+                           @Query("latSW") latSW: Double,
+                           @Query("lonSW") lonSW: Double): LiveDataRes<List<PopulationStat>>
+
+    @GET("stats/pigeonNumbers")
+    fun getPigeonNumberStats(@Header("Authorization") token: String,
+                             @Query("fromTime") fromTime: Long,
+                             @Query("untilTime") untilTime: Long,
+                             @Query("latNE") latNE: Double,
+                             @Query("lonNE") lonNE: Double,
+                             @Query("latSW") latSW: Double,
+                             @Query("lonSW") lonSW: Double): LiveDataRes<List<PigeonNumberStat>>
+
+    @GET("stats/injury")
+    fun getInjuryStat(@Header("Authorization") token: String,
+                      @Query("fromTime") fromTime: Long,
+                      @Query("untilTime") untilTime: Long,
+                      @Query("latNE") latNE: Double,
+                      @Query("lonNE") lonNE: Double,
+                      @Query("latSW") latSW: Double,
+                      @Query("lonSW") lonSW: Double): LiveDataRes<InjuryStat>
+
+    @GET("stats/breed")
+    fun getBreedStat(@Header("Authorization") token: String,
+                     @Query("fromTime") fromTime: Long,
+                     @Query("untilTime") untilTime: Long,
+                     @Query("latNE") latNE: Double,
+                     @Query("lonNE") lonNE: Double,
+                     @Query("latSW") latSW: Double,
+                     @Query("lonSW") lonSW: Double): LiveDataRes<BreedStat>
+
+    @POST
+    fun uploadCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>
 
     @PUT
-    fun uploadCasePicture(@Url uploadUrl: String, @Body media: RequestBody): Call<Void>
+    fun updateCaseMedia(@Header("Authorization") token: String, @Url uploadUrl: String, @Body media: RequestBody): Call<Void>
+
+    @DELETE
+    fun deleteCaseMedia(@Header("Authorization") token: String, @Url deleteUrl: String): Call<Void>
 
 
     @GET("feed")
@@ -55,11 +100,22 @@ interface NetworkService {
     @DELETE("feed/{feedID}")
     fun deleteNews(@Header("Authorization") token: String, @Path("feedID") feedID: Int): Call<Void>
 
+
     @GET("user")
     fun getUsers(@Header("Authorization") token: String): LiveDataRes<List<User>>
 
     @GET("user/{username}")
     fun getUser(@Header("Authorization") token: String, @Path("username") username: String): LiveDataRes<User>
+
+    @PUT("user/{username}")
+    fun updateUser(@Header("Authorization") token: String, @Path("username") username: String,
+                   @Body user: User): LiveDataRes<User>
+
+    @DELETE("user/{username}")
+    fun deleteUser(@Header("Authorization") token: String, @Path("username") username: String): Call<Void>
+
+    @GET("user/{username}")
+    fun getUserCall(@Header("Authorization") token: String, @Path("username") username: String): Call<User>
 
     @POST("user")
     fun register(@Header("Authorization") token: String, @Body user: User): LiveDataRes<User>
@@ -68,6 +124,9 @@ interface NetworkService {
     fun updatePermissions(@Header("Authorization") token: String, @Body auth: Auth,
                           @Path("username") username: String): LiveDataRes<User>
 
+    @PUT("user/{username}")
+    fun updateRegistrationToken(@Header("Authorization") token: String, @Body registrationToken: UserRegistrationToken,
+                          @Path("username") username: String): LiveDataRes<User>
 
     @POST("auth/login")
     fun login(@Body user: User): Call<Token>

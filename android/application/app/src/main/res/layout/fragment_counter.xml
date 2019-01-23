@@ -31,7 +31,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:elevation="0dp"
-                android:text="Create Marker"
+                android:text="@string/create_marker"
                 android:textColor="#B3000000"
                 app:backgroundTint="#B3FFFFFF"
                 app:cornerRadius="2dp"
@@ -67,7 +67,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_black_16dp" />
+                app:srcCompat="@drawable/ic_location_crosshair" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </fragment>

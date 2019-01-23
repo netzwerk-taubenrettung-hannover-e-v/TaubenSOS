@@ -19,10 +19,8 @@ class InjuriesReportFragment : ReportFragment() {
 
         val binding = DataBindingUtil.inflate<FragmentReportInjuriesBinding>(inflater, layoutId, container, false)
 
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-            binding.createdCase = it
-        }
+        binding.createdCase = mCreatedCase
+
         setBtnListener(R.id.fragment_report_priority, R.id.fragment_report_location)
 
         return binding.root

@@ -6,20 +6,25 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.database.Permission
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 import java.util.*
 
 class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int): BottomNavigationView(context, attrs, defStyleAttr) {
 
 
+    companion object {
+        const val MORE_MENU_ITEM = R.id.moreFragment
+    }
+
     private var mRootView: View = View.inflate(context, R.layout.dynamic_bottom_navigation_view, this)
 
     private var mSize: Int = 5
 
-    private val MORE_MENU_ITEM = R.id.moreFragment
 
     private var menuSize: Int = menu.size()
 
@@ -36,25 +41,6 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
 
             tarr.recycle()
         }
-
-
-//        if (hasOverflowMenu()) {
-//            val overflowItems = mutableListOf<MenuItem>()
-//
-//            for(i in mSize-1 until menu.size()) {
-//                val item = menu.getItem(i)
-//                overflowItems.add(item)
-//                menu.removeItem(item.itemId)
-//            }
-//
-//            val moreItem = menu.add("More")
-//            moreItem.setIcon(R.drawable.ic_more_horiz_white_24dp)
-//
-//            val moreMenu = MoreFragment.newInstance().more_navigation.menu
-//            moreMenu.clear()
-//            overflowItems.forEach { moreMenu.add(it.itemId) }
-//
-//        }
     }
 
     fun setMenuItems(permission: Permission, vararg items: FragmentMenuItem) {
@@ -69,22 +55,6 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
         if(permissibleItems.size > mSize-1) {
             createOverflowMenu(permissibleItems.slice(mSize-1 until permissibleItems.size))
         }
-//        setOnNavigationItemSelectedListener {
-//            if(mMoreMenuItem?.itemId == it.itemId) {
-//                mMoreMenuItem?.let { moreItem ->
-//                    mStartFragmentListener?.onStartFragment(moreItem.getFragment())
-//                    return@setOnNavigationItemSelectedListener true
-//                }
-//            }
-//            for(i in 0 until permissibleItems.size) {
-//                val item = permissibleItems[i]
-//                if (item.itemId == it.itemId) {
-//                    mStartFragmentListener?.onStartFragment(item.getFragment())
-//                    return@setOnNavigationItemSelectedListener true
-//                }
-//            }
-//            return@setOnNavigationItemSelectedListener false
-//        }
     }
 
     fun setSelectedItem(id: Int) {
@@ -103,7 +73,7 @@ class DynamicBottomNavigationView(context: Context, attrs: AttributeSet?, defSty
     private val moreFragmentBundle = Bundle()
 
     private fun createOverflowMenu(items: List<FragmentMenuItem>) {
-        addMenuItem(item = FragmentMenuItem(MORE_MENU_ITEM, "More", R.drawable.ic_more_horiz_white_24dp))
+        addMenuItem(item = FragmentMenuItem(MORE_MENU_ITEM, context?.getString(R.string.more) ?: "More", R.drawable.ic_more_horiz_white_24dp))
 
         moreFragmentBundle.putParcelableArrayList("items", ArrayList(items))
         Navigation.findNavController(context as Activity, R.id.nav_host).addOnDestinationChangedListener { _, destination, _ ->

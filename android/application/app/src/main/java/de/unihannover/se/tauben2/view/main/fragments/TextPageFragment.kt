@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.FragmentTextPageBinding
 import de.unihannover.se.tauben2.model.TextPage
 
-abstract class TextPageFragment: Fragment() {
+abstract class TextPageFragment(@StringRes mTitleRes: Int): BaseMainFragment(mTitleRes) {
 
     private lateinit var mBinding: FragmentTextPageBinding
 

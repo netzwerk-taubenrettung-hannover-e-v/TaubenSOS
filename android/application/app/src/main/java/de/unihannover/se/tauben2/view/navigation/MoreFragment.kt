@@ -13,10 +13,11 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.main.fragments.BaseMainFragment
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_more.view.*
 
-class MoreFragment : Fragment() {
+class MoreFragment : BaseMainFragment(R.string.more) {
 
     private var menuItems: List<FragmentMenuItem> = listOf()
 
@@ -29,13 +30,18 @@ class MoreFragment : Fragment() {
             controller.currentDestination?.defaultArguments?.getParcelableArrayList<FragmentMenuItem>("items")?.let {
                 menuItems = it
             }
-            menuItems.forEach { v.more_navigation.menu.add(Menu.NONE, it.itemId, Menu.NONE, it.title).setIcon(it.iconId) }
+            menuItems.forEach {
+                v.more_navigation.menu.add(Menu.NONE, it.itemId, Menu.NONE, it.title).setIcon(it.iconId).setOnMenuItemClickListener { _ ->
+                    activity?.title = it.title
+                    false
+                }
+
+            }
 
             v.more_navigation.setNavigationItemSelectedListener {
                 if (it.itemId == R.id.button_logout) {
                     getViewModel(UserViewModel::class.java)?.let { vm ->
                         vm.logout()
-                        setSnackBar(v, "Logout Successful")
                         activity?.finish()
                         Intent(context, BootingActivity::class.java).apply { startActivity(this) }
                     }
@@ -46,7 +52,6 @@ class MoreFragment : Fragment() {
                 }
             }
         }
-
 
         return view
     }

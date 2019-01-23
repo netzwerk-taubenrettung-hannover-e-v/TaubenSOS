@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import de.unihannover.se.tauben2.App.Companion.context
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.MapMarkable
 import de.unihannover.se.tauben2.model.database.converter.CounterValueConverter
@@ -30,7 +32,7 @@ data class PopulationMarker(val latitude: Double,
                             @PrimaryKey val populationMarkerID: Int,
                             var radius: Double,
 
-                            var values: List<CounterValue>
+                            var values: MutableList<CounterValue>
 ) : MapMarkable, DatabaseEntity(), Parcelable {
 
     override val refreshCooldown: Long
@@ -41,7 +43,7 @@ data class PopulationMarker(val latitude: Double,
             (values.fold(0) { sum, element -> sum + element.pigeonCount }.toDouble()/values.size*100).roundToInt()/100.0
         else -1.0
         val mo = MarkerOptions().position(LatLng(latitude, longitude))
-        return if(totalPigeonCount == -1.0) mo.title("Click to add values") else mo.title("Average: $totalPigeonCount")
+        return if(totalPigeonCount == -1.0) mo.title(context.getString(R.string.click_to_add_values)) else mo.title("${context.getString(R.string.average)} $totalPigeonCount")
     }
 
     companion object: AllUpdatable {

@@ -10,7 +10,8 @@
         android:id="@+id/population_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Population:"
+        android:text="@string/population"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -18,9 +19,9 @@
         android:id="@+id/population_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="in total: 1234 Doves"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/population_title" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/population_linechart"
@@ -28,14 +29,15 @@
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/population_title" />
+        app:layout_constraintTop_toBottomOf="@+id/population_total" />
 
     <TextView
         android:id="@+id/reported_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Reported Doves:"
+        android:text="@string/reported_doves"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/population_linechart" />
 
@@ -43,10 +45,9 @@
         android:id="@+id/reported_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="in total: 1234 Doves"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/population_linechart" />
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reported_title" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/reported_linechart"
@@ -56,14 +57,15 @@
         android:layout_marginBottom="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reported_title" />
+        app:layout_constraintTop_toBottomOf="@id/reported_total" />
 
     <TextView
         android:id="@+id/injury_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Injuries:"
+        android:text="@string/injuries"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reported_linechart" />
@@ -83,7 +85,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Breeds:"
+        android:text="@string/breeds"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/injury_piechart" />

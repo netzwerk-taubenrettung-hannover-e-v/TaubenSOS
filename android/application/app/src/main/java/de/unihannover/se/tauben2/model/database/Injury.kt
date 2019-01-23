@@ -27,6 +27,7 @@ data class Injury(var strappedFeet: Boolean,
         if (openWound) injuryList.add(App.context.getString(R.string.injury_open_wound))
         if (paralyzedOrFlightless) injuryList.add(App.context.getString(R.string.injury_paralyzed_flightless))
         if (fledgling) injuryList.add(App.context.getString(R.string.injury_fledgling))
+        if (strappedFeet) injuryList.add(App.context.getString(R.string.injury_strings_feet))
         return injuryList
     }
 

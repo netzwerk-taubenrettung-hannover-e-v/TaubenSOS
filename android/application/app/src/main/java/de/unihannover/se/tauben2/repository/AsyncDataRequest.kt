@@ -27,10 +27,11 @@ abstract class AsyncDataRequest<ResultType, RequestType>(private val appExecutor
 
         apiResponse.observeForever(object : Observer<Resource<ResultType>> {
             override fun onChanged(response: Resource<ResultType>?) {
-
+                Log.e(LOG_TAG, "Data changed.")
                 response?.let { resp ->
                     when {
                         resp.status.isSuccessful() -> {
+                            Log.e(LOG_TAG, "Resp is successful.")
                             val result = resp.data
                             result?.let {
                                 if (enableRefetching) {

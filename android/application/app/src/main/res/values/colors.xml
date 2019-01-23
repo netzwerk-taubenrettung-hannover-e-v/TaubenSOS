@@ -8,6 +8,7 @@
 
     <color name="colorLightGray">#eeeeee</color>
     <color name="White">#FFFFFF</color>
+    <color name="WhiteTransparent">#90ffffff</color>
     <color name="Gray">#cacaca</color>
     <color name="errorColor">#b00020</color>
 

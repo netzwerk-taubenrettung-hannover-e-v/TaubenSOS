@@ -30,6 +30,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:fitsSystemWindows="true"
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@drawable/navigation_icon_color"
+            app:itemTextColor="@drawable/navigation_icon_color"
             />
 
         <fragment

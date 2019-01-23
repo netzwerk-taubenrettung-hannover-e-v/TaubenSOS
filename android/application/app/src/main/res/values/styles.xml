@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="colorSecondary">@color/White</item>
+
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
         <item name="android:textColor">#000000</item>
@@ -17,6 +19,13 @@
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
         <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
+    <style name="FabTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/White</item>
     </style>
 
     <style name="ToolbarMainActivity" parent="AppTheme">
@@ -50,6 +59,11 @@
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:padding">32dp</item>
         <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="PickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/White</item>
     </style>
 
 </resources>

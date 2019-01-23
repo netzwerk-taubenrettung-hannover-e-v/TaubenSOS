@@ -32,10 +32,7 @@ class BreedReportFragment : ReportFragment() {
 
         mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
 
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-            mBinding.createdCase = it
-        }
+        mBinding.createdCase = mCreatedCase
 
         setBtnListener(R.id.fragment_report_comment, R.id.fragment_report_priority)
 

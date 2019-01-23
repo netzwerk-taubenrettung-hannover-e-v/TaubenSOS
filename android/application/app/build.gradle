@@ -25,6 +25,9 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 androidExtensions {
@@ -73,6 +76,14 @@ dependencies {
 
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+
+    // exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.9.3'
+
+    // CameraView
+    implementation 'com.otaliastudios:cameraview:2.0.0-beta02'
 
     // Google Play Service
     def gms_version = "16.0.0"
@@ -82,10 +93,15 @@ dependencies {
     // Google Maps Utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
+    // Google Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
     // Chart Library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
-    //Graph library
+    // Graph Library
     implementation 'com.jjoe64:graphview:4.2.2'
-
 }
+
+apply plugin: 'com.google.gms.google-services'

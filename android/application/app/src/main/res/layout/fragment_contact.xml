@@ -6,19 +6,16 @@
     android:layout_height="match_parent"
     android:background="#eee">
 
-
     <ListView
         android:id="@+id/contact_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10sp"
+        android:dividerHeight="3sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

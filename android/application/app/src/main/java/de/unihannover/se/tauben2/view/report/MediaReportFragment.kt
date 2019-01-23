@@ -9,32 +9,32 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.squareup.picasso.Picasso
 import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.deleteFile
 import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.loadMedia
 import de.unihannover.se.tauben2.model.PicassoVideoRequestHandler
+import de.unihannover.se.tauben2.view.InfoImageView
+import de.unihannover.se.tauben2.view.RecordVideoActivity
 import de.unihannover.se.tauben2.view.SquareImageView
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_report.*
 import kotlinx.android.synthetic.main.fragment_report_media.view.*
+import kotlinx.android.synthetic.main.info_image_view.view.*
 import kotlinx.android.synthetic.main.phone_alert_dialog.view.*
 import java.io.File
 import java.io.IOException
@@ -47,6 +47,8 @@ class MediaReportFragment : ReportFragment() {
 
     private lateinit var picassoInstance: Picasso
 
+    private lateinit var alertBuilder: AlertDialog.Builder
+
     init {
         pagePos = PagePos.FIRST
     }
@@ -54,6 +56,7 @@ class MediaReportFragment : ReportFragment() {
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 0
         private const val REQUEST_VIDEO_CAPTURE = 1
+        private val LOG_TAG = MediaReportFragment::class.java.simpleName
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,9 +69,9 @@ class MediaReportFragment : ReportFragment() {
         }
 
         mCreatedCase.apply {
-            phone = getViewModel(UserViewModel::class.java)?.getGuestPhone() ?:""
+            phone = getViewModel(UserViewModel::class.java)?.getGuestPhone() ?: ""
 
-            if(phone.isEmpty())
+            if (phone.isEmpty())
                 setupPhonePermissions()
         }
 
@@ -78,14 +81,14 @@ class MediaReportFragment : ReportFragment() {
             (activity as ReportActivity).finish()
         }
 
-        val alertBuilder = AlertDialog.Builder(context).apply {
+        alertBuilder = AlertDialog.Builder(context).apply {
             setTitle(getString(R.string.what_kind_of_media))
-            setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))){ _, i ->
-                if(mCreatedCase.media.size > 3) {
+            setItems(arrayOf(getString(R.string.take_photo), getString(R.string.record_video))) { _, i ->
+                if (mLocalMediaUrls.size >= 3) {
                     setSnackBar(getString(R.string.maximum_reached))
                     return@setItems
                 }
-                when(i){
+                when (i) {
                     0 -> dispatchTakeMediaIntent()
                     1 -> dispatchTakeMediaIntent(true)
                 }
@@ -93,12 +96,13 @@ class MediaReportFragment : ReportFragment() {
         }
 
         v.report_media_add_button.setOnClickListener {
-            alertBuilder.show()
+            context?.let { cxt -> requestCamera(cxt) }
         }
 
         createBlankImages(v)
 
-        loadMedia()
+        loadServerMedia()
+        loadLocalMedia()
 
         return v
     }
@@ -114,25 +118,45 @@ class MediaReportFragment : ReportFragment() {
 
     @SuppressLint("HardwareIds", "MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        context?.let {cxt ->
-            if(requestCode == 1) {
+        context?.let { cxt ->
+            if (requestCode == 1) {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED)
                     requestPhone(cxt)
                 else {
-                    mCreatedCase.phone = (cxt.applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?:""
-                    if(mCreatedCase.phone.isEmpty())
+                    mCreatedCase.phone = (cxt.applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
+                    if (mCreatedCase.phone.isEmpty())
                         requestPhone(cxt)
                     else
                         getViewModel(UserViewModel::class.java)?.setGuestPhone(mCreatedCase.phone)
                 }
             }
+            if (requestCode == 2) {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    activity?.let {
+                        if (!ActivityCompat.shouldShowRequestPermissionRationale(it, Manifest.permission.CAMERA)) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.apply {
+                                setTitle(getString(R.string.missing_permission))
+                                setMessage(getString(R.string.enable_permission_camera))
+                                setPositiveButton("Ok", null)
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+                        } else {
+                            requestPermissions(arrayOf(Manifest.permission.CAMERA), 2)
+                        }
+                    }
+                } else
+                    alertBuilder.show()
+            }
+            return
         }
     }
 
     @SuppressLint("InflateParams")
     private fun requestPhone(cxt: Context) {
         val alert = layoutInflater.inflate(R.layout.phone_alert_dialog, null)
-        val alertDialog = androidx.appcompat.app.AlertDialog.Builder(cxt).setView(alert).show().apply {
+        val alertDialog = AlertDialog.Builder(cxt).setView(alert).show().apply {
             setCanceledOnTouchOutside(false)
             setOnCancelListener {
                 activity?.finish()
@@ -142,12 +166,11 @@ class MediaReportFragment : ReportFragment() {
         alert.apply {
             btn_okay.setOnClickListener {
                 mCreatedCase.phone = edit_text_phone.text.toString()
-                if(Patterns.PHONE.matcher(mCreatedCase.phone).matches()) {
+                if (Patterns.PHONE.matcher(mCreatedCase.phone).matches()) {
                     getViewModel(UserViewModel::class.java)?.setGuestPhone(mCreatedCase.phone)
                     alertDialog.dismiss()
-                }
-                else
-                    layout_edit_text_phone.error = "Phone number is not valid."
+                } else
+                    layout_edit_text_phone.error = context.getString(R.string.phone_number_invalid)
             }
             btn_cancel.setOnClickListener {
                 alertDialog.cancel()
@@ -156,12 +179,21 @@ class MediaReportFragment : ReportFragment() {
         }
     }
 
+    private fun requestCamera(context: Context) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 2)
+        else
+            alertBuilder.show()
+
+    }
+
     private fun dispatchTakeMediaIntent(isVideo: Boolean = false) {
 
-        val intentAction = if(isVideo) MediaStore.ACTION_VIDEO_CAPTURE else MediaStore.ACTION_IMAGE_CAPTURE
-        val filePrefix = if(isVideo) "VIDEO" else "JPEG"
-        val fileSuffix = if(isVideo) ".mp4" else ".jpg"
-        val requestCode = if(isVideo) REQUEST_VIDEO_CAPTURE else REQUEST_IMAGE_CAPTURE
+        val intentAction = if (isVideo) MediaStore.ACTION_VIDEO_CAPTURE else MediaStore.ACTION_IMAGE_CAPTURE
+        val filePrefix = if (isVideo) "VIDEO" else "JPEG"
+        val fileSuffix = if (isVideo) ".mp4" else ".jpg"
+        val requestCode = if (isVideo) REQUEST_VIDEO_CAPTURE else REQUEST_IMAGE_CAPTURE
 
         Intent(intentAction).also { takeMediaIntent ->
             // Ensure that there's a camera activity to handle the intent
@@ -183,8 +215,14 @@ class MediaReportFragment : ReportFragment() {
                                     file
                             )
                         }
-                        takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takeMediaIntent, requestCode)
+                        if (isVideo) {
+                            val videoIntent = Intent(context, RecordVideoActivity::class.java)
+                            videoIntent.putExtra("url", file.absolutePath)
+                            startActivityForResult(videoIntent, requestCode)
+                        } else {
+                            takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takeMediaIntent, requestCode)
+                        }
                     }
                 }
             }
@@ -201,62 +239,112 @@ class MediaReportFragment : ReportFragment() {
                 suffix, /* suffix */
                 storageDir /* directory */
         ).apply {
-            mCreatedCase.media += absolutePath.getFileName()
+            mLocalMediaUrls.add(absolutePath.getFileName())
         }
     }
 
     // triggered after capturing a photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if(resultCode == RESULT_OK) {
-            when(requestCode) {
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
-                    compressImage(mCreatedCase.media.last(), 80, 1000, 1000)
+                    compressImage(mLocalMediaUrls.last(), 80, 1000, 1000)
+                }
+                REQUEST_VIDEO_CAPTURE -> {
+
                 }
             }
-            loadMedia()
+            loadLocalMedia()
+        } else {
+            context?.let { mLocalMediaUrls.last().deleteFile(it) }
+            mLocalMediaUrls.remove(mLocalMediaUrls.last())
         }
     }
 
-    private fun loadMedia() {
+    private fun loadLocalMedia(indexShift: Int = mCreatedCase.media.filter { !it.toDelete }.size) {
+        mLocalMediaUrls.forEachIndexed { i, url ->
+            if (v.image_layout.childCount <= i + indexShift)
+                return@forEachIndexed
 
-        for (i in 0 until v.image_layout.childCount) {
+            val layout = (v.image_layout.getChildAt(i + indexShift) as InfoImageView)
 
-            val layout = (v.image_layout.getChildAt(i) as ConstraintLayout)
-            val image = layout.getChildAt(0) as ImageView
+            val image = layout.getChildAt(0) as SquareImageView
+            val mediaLink = context?.getFileStreamPath(url)?.absolutePath
 
-            layout.visibility = View.INVISIBLE
+            val suffix = mediaLink?.split(".")?.last()
 
-            if (image is SquareImageView && i < mCreatedCase.media.size) {
-
-                val mediaLink = if (URLUtil.isValidUrl(mCreatedCase.media[i])) mCreatedCase.media[i]
-                else context?.getFileStreamPath(mCreatedCase.media[i])?.absolutePath
-
-                val suffix = mediaLink?.split(".")?.last()
-                if(suffix != "jpg") {
+            if (suffix != "jpg") {
 //                    MediaMetadataRetriever().apply {
 //                        setDataSource(mediaLink, hashMapOf<String, String>())
 //                    }
-                    picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
-                } else {
-                    if (URLUtil.isValidUrl(mediaLink)) Picasso.get().load(mediaLink).into(image)
-                    else Picasso.get().load(File(mediaLink)).into(image)
-                }
-
-
-                layout.visibility = View.VISIBLE
+                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
+                layout.setPlayable(true)
+            } else {
+                loadMedia(File(mediaLink), null, image, false)
+                layout.setPlayable(false)
             }
+
+//            image.setImageResource(R.drawable.ic_logo_48dp)
+            layout.visibility = View.VISIBLE
+
+        }
+    }
+
+
+    private fun loadServerMedia(indexShift: Int = 0) {
+
+        mCreatedCase.media.filter { !it.toDelete }.forEachIndexed { i, media ->
+            if (v.image_layout.childCount <= i + indexShift)
+                return@forEachIndexed
+
+            val layout = (v.image_layout.getChildAt(i + indexShift) as InfoImageView)
+//            layout.visibility = View.INVISIBLE
+
+            val image = layout.getChildAt(0) as SquareImageView
+
+            mCreatedCase.loadMediaFromServerInto(media, image, null, false)
+
+            if (media.getType().isVideo()) {
+                layout.setPlayable(true)
+//                    MediaMetadataRetriever().apply {
+//                        setDataSource(mediaLink, hashMapOf<String, String>())
+//                    }
+//                picassoInstance.load(PicassoVideoRequestHandler.SCHEME_VIDEO + ":" + mediaLink)?.into(image)
+            } else
+                layout.setPlayable(false)
+
+
+            layout.visibility = View.VISIBLE
         }
     }
 
     private fun deleteImage(image: SquareImageView) {
         for (i in 0 until v.image_layout.childCount) {
-            if ((v.image_layout.getChildAt(i) as ConstraintLayout).getChildAt(0) == image) {
-                // TODO remove this and do it properly
-                if (!URLUtil.isValidUrl(mCreatedCase.media[i]))
-                    (mCreatedCase.media as MutableList<String>).removeAt(i)
+            val imageView = (v.image_layout.getChildAt(i) as InfoImageView).getChildAt(0) as SquareImageView
+            imageView.setImageDrawable(null)
+            if (imageView == image) {
+
+                val notDeleteServerMedia = mCreatedCase.media.filter { !it.toDelete }.size
+                if (notDeleteServerMedia > i) {
+                    // Delete from Server
+                    mCreatedCase.media[i].toDelete = true
+                } else {
+                    // Delete from local urls
+
+                    // delete local file
+                    val fileName = mLocalMediaUrls[i + notDeleteServerMedia]
+                    context?.apply {
+                        if (fileName.deleteFile(this))
+                            Log.d(LOG_TAG, "Deleted $fileName successfully")
+                        else Log.d(LOG_TAG, "Error: Couldn't delete $fileName")
+                    }
+
+                    mLocalMediaUrls.removeAt(i + notDeleteServerMedia)
+                }
             }
         }
-        loadMedia()
+        loadServerMedia()
+        loadLocalMedia()
     }
 
     private fun createBlankImages(view: View) {
@@ -271,42 +359,56 @@ class MediaReportFragment : ReportFragment() {
 
         (0..2).forEach {
 
-            val image = SquareImageView(view.context).apply {
-                id = View.generateViewId()
-                scaleType = ImageView.ScaleType.CENTER_CROP
-            }
+            //            val image = SquareImageView(view.context).apply {
+//                id = View.generateViewId()
+//                scaleType = ImageView.ScaleType.CENTER_CROP
+//            }
+//
+//            val button = ImageButton(view.context).apply {
+//                id = View.generateViewId()
+//                setImageResource(R.drawable.ic_close)
+////                setPadding(0,0,0,0)
+//                background = ColorDrawable(Color.TRANSPARENT)
+//                setOnClickListener {
+//                    deleteImage(image)
+//                }
+//            }
+//
+//            val constraintLayout = ConstraintLayout(view.context).apply {
+//                layoutParams = LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        1.0f).apply {
+//
+//                    setMargins(2, 2, 2, 2)
+//                }
+//                addView(image)
+//                addView(button)
+//                visibility = View.INVISIBLE
+//            }
 
-            val button = ImageButton(view.context).apply {
-                id = View.generateViewId()
-                setImageResource(R.drawable.ic_close)
-//                setPadding(0,0,0,0)
-                background = ColorDrawable(Color.TRANSPARENT)
-                setOnClickListener {
-                    deleteImage(image)
-                }
-            }
-
-            val constraintLayout = ConstraintLayout(view.context).apply {
+            val infoImage = InfoImageView(view.context).apply {
+                setClosable(true)
+                visibility = View.INVISIBLE
                 layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         1.0f).apply {
 
-                    setMargins(2,2,2,2)
+                    setMargins(4, 4, 4, 4)
                 }
-                addView(image)
-                addView(button)
-                visibility = View.INVISIBLE
+                btn_close.setOnClickListener { deleteImage(getImage()) }
             }
+            view.image_layout.addView(infoImage)
 
-            view.image_layout.addView(constraintLayout)
-
-            ConstraintSet().apply {
-                clone(constraintLayout)
-                connect(button.id, ConstraintSet.TOP, image.id, ConstraintSet.TOP)
-                connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
-                applyTo(constraintLayout)
-            }
+//            view.image_layout.addView(constraintLayout)
+//
+//            ConstraintSet().apply {
+//                clone(constraintLayout)
+//                connect(button.id, ConstraintSet.TOP, image.id, ConstraintSet.TOP)
+//                connect(button.id, ConstraintSet.END, image.id, ConstraintSet.END)
+//                applyTo(constraintLayout)
+//            }
 
         }
     }

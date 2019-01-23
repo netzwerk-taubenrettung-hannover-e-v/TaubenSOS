@@ -11,7 +11,7 @@ class CasesUserFragment : CasesFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        loadCases(Filter.MY)
+        mFilter = Filter.MY
 
         return view
     }

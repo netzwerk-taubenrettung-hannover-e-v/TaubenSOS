@@ -25,10 +25,9 @@ class CommentReportFragment : ReportFragment() {
         val binding = DataBindingUtil.inflate<FragmentReportCommentBinding>(inflater, layoutId, container, false)
 
         pagePos = PagePos.LAST
-        arguments?.getParcelable<Case>("createdCase")?.let {
-            mCreatedCase = it
-            binding.createdCase = it
-        }
+
+        binding.createdCase = mCreatedCase
+        
         setBtnListener(null, R.id.fragment_report_breed)
 
         (activity as ReportActivity).next_btn.setOnClickListener {

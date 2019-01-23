@@ -1,83 +1,47 @@
 <resources>
-    <string name="app_name">Tauben2</string>
-    <string name="taube_melden">Taube melden</string>
-    <string name="fb_link"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
-    <string name="nutzername">Nutzername:</string>
-    <string name="passwort">Passwort:</string>
+    <string name="app_name">PigeonSOS</string>
+    <string name="fb_link" translatable="false"><a href='https://www.facebook.com/netzwerk.taubenrettung'>facebook</a></string>
     <string name="login">Login</string>
-    <string name="login_titel">Login für Mitglieder</string>
-    <string name="passwort_wiederholen">Passwort wiederholen:</string>
-    <string name="offizielle_registrierung_beantragen">Offizielle Registrierung beantragen</string>
-    <string name="registrierung_beantragen">Registrierung beantragen</string>
-    <string name="registrierung_erklaerung">Die Registrierung ist nur unter Absprache mit dem
-        Verein möglich und muss von einem Vereinsmitglied bestätigt werden.</string>
-    <string name="emergency_phone_text">
-        Erreicht ihr mal niemanden unter der angegebenen Nummer, haben wir noch
-        eine alternative Nummer unter der +49 157 80641268. In Hannover gibt es außerdem die
-        Möglichkeit im Notfall zur Klinik der TiHo <a href="http://www.google.com">Google</a>
-        zu fahren und Stadttauben abzugeben. Wer nicht mobil ist, kann auch über die Feuerwehr (112)
-        die Tierrettung rufen.</string>
-    <string name="tauben_zählen_info">Bitte wähle Standort, Datum, Uhrzeit
-        und Anzahl der Tauben, die du beobachtet hast. Diese Werte werden in die Statistik
-        übernommen.</string>
-    <string name="call">Call us</string>
-    <string name="contact_info">You can call us to get more info or if you found a pigeon which is in urge need for help.</string>
-    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can
-        be differently colored, accompanies with feral pigeons.\n\nCommon wood pigeon: bigger than feral pigeons,
-        adults have a white spot on their neck, yellow beak, blue eyes.
-        Fledglings dont own these attributes yet, but they have a white edge on their wing. Common wood pigeons
-        dont accompany with feral pigeons.\n\nFeral pigeon: can look very differrently, beak is usually dark grey,
-        legs and eyes are orange-red. Fledglings have
-        brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a cover on their
-        head, sometimes rings on their feet. </string>
-
-    <string name="search_location">Search location</string>
-
+    <string name="call_info_title">Give us a call!</string>
+    <string name="contact_info">You can give us a call for more information or if you found a pigeon which is in urgent need for help.</string>
+    <string name="breed_report_info">Carrier pigeon: has a ring on one or both legs, feathering can be colored differently, accompanies feral pigeons.\n\nCommon wood pigeon: larger than feral pigeons, adults have a white spot on their neck, yellow beak, blue eyes.\nFledglings don\'t have these attributes yet, but they have a white edge on their wing. Common wood pigeons don\'t accompany feral pigeons.\n\nFeral pigeon: can look very differently, beak is usually dark grey, legs and eyes are orange-red. Fledglings have brown eyes.\n\nFancy pigeon: often plain-colored or strikingly spotted, long feathers on their feet or a hooded head, sometimes rings on their feet.</string>
+    <string name="breed_report_explanation">For our statistics, we ask you to specify the pigeon breed. If you are not sure how the breeds look like, you can display an example text or tick "Not sure".</string>
     <string name="priority">Priority: %s</string>
     <string name="priority_blank">Priority:</string>
     <string name="before">%s ago</string>
-
     <string name="long_duration">%d days, %02d hours, %02d minutes</string>
     <string name="short_duration">%d hours, %02d minutes, %02d seconds</string>
-
     <plurals name="second">
         <item quantity="one">%02d second</item>
         <item quantity="other">%02d seconds</item>
     </plurals>
-
     <plurals name="minute">
         <item quantity="one">%02d minute</item>
         <item quantity="other">%02d minutes</item>
     </plurals>
-
     <plurals name="hour">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-
     <plurals name="day">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
-
     <string name="no_rescuer">No rescuer</string>
     <string name="take_case">Take case</string>
     <string name="finish_case">Finish case</string>
-    <string name="reopen_case">Reopen case</string>
-    <string name="take_over">Take over</string>
-    <string name="remove_rescuer">Remove rescuer</string>
+    <string name="reopen_case">Re-open case</string>
     <string name="in_progress_by">In progress by</string>
-    <string name="injuries">Injuries</string>
-    <string name="case_id">ID: %s</string>
+    <string name="injuries">Injuries:</string>
+    <string name="case_id" translatable="false">ID: %s</string>
     <string name="submitted_before">Submitted before:</string>
     <string name="distance">Distance:</string>
-    <string name="no_gps">No GPS available</string>
-    <string name="report_injured_pigeon">Report an injured pigeon</string>
-    <string name="report_pigeon">Report pigeon</string>
-    <string name="enter_location">Enter your location:</string>
-    <string name="set_position">SET POSITION</string>
-    <string name="add_media">Include up to three pictures or videos:</string>
-    <string name="specify_injuries">Select up to three injuries:</string>
+    <string name="no_gps">No GPS</string>
+    <string name="report_pigeon">Report a pigeon</string>
+    <string name="enter_location">Select your location:</string>
+    <string name="set_position">Set position</string>
+    <string name="add_media">Include up to three media files:</string>
+    <string name="specify_injuries">Select injuries:</string>
     <string name="injury_foot_leg">Foot or leg</string>
     <string name="injury_wings">Wings</string>
     <string name="injury_head_eye">Head or eye</string>
@@ -93,65 +57,143 @@
     <string name="back">Back</string>
     <string name="kind_of_pigeon">What kind of pigeon?</string>
     <string name="carrier_pigeon">Carrier pigeon</string>
-    <string name="wedding_pigeon">Fancy pigeon</string>
+    <string name="fancy_pigeon">Fancy pigeon</string>
     <string name="common_wood_pigeon">Common wood pigeon</string>
     <string name="feral_pigeon">Feral pigeon</string>
     <string name="additional_information">Additional information</string>
-    <string name="additional_information_help">Do you have any additional information about the
-        exact location or condition of the pigeon?</string>
-    <string name="graphs">Graphs</string>
+    <string name="additional_information_help">Do you have any additional information on the exact location or condition of the pigeon?</string>
+    <string name="graphs">Stats</string>
     <string name="cases">Cases</string>
-    <string name="counter">Counter</string>
-    <string name="news">News</string>
+    <string name="counter">Count</string>
+    <string name="events" translatable="false">Events</string>
+    <plurals name="news">
+        <item quantity="one">News</item>
+        <item quantity="other">News</item>
+    </plurals>
     <string name="users">Users</string>
     <string name="contact">Contact</string>
-    <string name="logout">Logout</string>
-    <string name="register">Register</string>
-    <string name="permission_denied">Permission has been denied by user</string>
-    <string name="permission_granted">Permission has been granted by user</string>
+    <string name="logout">Logout (%s)</string>
+    <string name="register">Sign-up</string>
+    <string name="permission_denied" translatable="false">Permission has been denied by user</string>
+    <string name="permission_granted" translatable="false">Permission has been granted by user</string>
     <string name="permission">Permission</string>
-    <string name="record_permission_denied">Permission to record denied</string>
-    <string name="error">Error</string>
     <string name="edit">Edit</string>
     <string name="call_reporter">Call reporter</string>
-    <string name="report_explanation">In order to provide the injured dove with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
-
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
-    <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet,
-        pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk/
-        fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urge need for help (emergency call).</string>
-    <string name="other">Other</string>
-    <string name="no_specification">No specification</string>
+    <string name="report_explanation">In order to provide the injured pigeon with the best possible help, we ask you to give us some information in the following steps. After reporting an injured animal, you can view the status of the case at any time and edit the given information. If you have any further comments, you can also contact us via our emergency phone at \'Contacts\'.</string>
+    <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="priorities">Level 1 (good): Slightly strapped feet, pigeon is still able to walk.\n\nLevel 2: Strapped feet, pigeon is in pain.\n\nLevel 3 (poor): Obviously hurt pigeon, which is unable to fly or walk / fledgling on the ground (they always need instant help!), pigeons at night. These are pigeons which are easy to catch and in urgent need for help (emergency call).</string>
+    <string name="no_specification">Not sure</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
     <string name="selected_position">Selected position</string>
     <string name="delete">Delete</string>
-    <string name="change_state_dead">Report death</string>
+    <string name="change_state_dead">Report as dead</string>
     <string name="change_state_alive">Report alive</string>
     <string name="take_photo">Take photo</string>
     <string name="record_video">Record video</string>
     <string name="what_kind_of_media">What kind of media would you like to add?</string>
-    <string name="maximum_reached">Maximum amount reached.</string>
-    <string name="written_by_text">Written by: %s</string>
-    <string name="starts_on">Event starts on %s</string>
-    <string name="nav_item1">Edit </string>
-    <string name="nav_item2">Delete </string>
-
-    <string name="nav1_clicked">Edit clicked</string>
-    <string name="nav2_clicked">Delete clicked</string>
+    <string name="maximum_reached">Maximum number reached.</string>
+    <string name="written_by_text">Created by %s</string>
+    <string name="starts_on">Event: %s - %s</string>
     <string name="select_injuries">Please select at least one injury.</string>
-    <string name="could_not_read_phone">I\'m afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
-    <string name="enter_phone">Enter phone number</string>
-    <string name="okay">Okay</string>
-
-    <string name="news_title_input_hint">Please enter the title here.</string>
+    <string name="could_not_read_phone">We\'re afraid we couldn\'t read your phone number. Please enter your phone number manually so that we can reach you.</string>
+    <string name="enter_phone">Please enter your phone number:</string>
+    <string name="okay" translatable="false">Okay</string>
     <string name="news_text_input_hint">Please enter the text here.</string>
     <string name="date">Date:</string>
-    <string name="enter_content">Enter your news content</string>
-    <string name="enter_title">Enter the title</string>
-    <string name="imprint_title">Imprint</string>
-    <string name="imprint_content">Imprint needed</string>
-    <string name="privacy_title">Privacy</string>
-
-
+    <string name="enter_content">Description</string>
+    <string name="enter_title">Title</string>
+    <string name="imprint_title">Legal Notice</string>
+    <string name="privacy_title">Privacy Policy</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="login_titel">Member Login</string>
+    <string name="passwort_wiederholen">Re-enter your password:</string>
+    <string name="registrierung_beantragen">Request sign-up</string>
+    <string name="registrierung_erklaerung">Your sign-up has to be approved by an admin.</string>
+    <string name="pigeon_count_info">Please select the location, date and count of the observed pigeons.</string>
+    <string name="sample" translatable="false">Sample</string>
+    <string name="all_cases">All cases</string>
+    <string name="create_marker">Create Marker</string>
+    <string name="reset">Reset</string>
+    <string name="event_starts_on">Event starts on</string>
+    <string name="show_examples">Show examples</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="admin" translatable="false">Admin?</string>
+    <string name="authorized">Authorized?</string>
+    <string name="population" translatable="false">Population:</string>
+    <string name="reported_doves">Reported Pigeons:</string>
+    <string name="breeds">Breeds:</string>
+    <string name="closed_cases">Closed cases</string>
+    <string name="my_cases">My cases</string>
+    <string name="pigeon_count">Pigeon counting</string>
+    <string name="open_cases">Open cases</string>
+    <string name="step">Step %1$d: %2$s</string>
+    <string name="edit_case">Edit Case #%1$d</string>
+    <string name="report_step_media">Add media</string>
+    <string name="report_step_location">Set your location</string>
+    <string name="report_step_injuries">Specify Injuries</string>
+    <string name="report_step_priority">Estimate the Priority</string>
+    <string name="report_step_breed">Identify the Breed</string>
+    <string name="report_step_additional_info">Share additional information</string>
+    <string name="in_average_population">on average %1$d pigeons</string>
+    <string name="in_average_reports">On average %1$.2f pigeons/day</string>
+    <string name="push_new_sign_up_request_title">New Sign-up Request</string>
+    <string name="push_new_sign_up_request_body">%s has requested to become part of the community! 🐣</string>
+    <string name="push_your_sign_up_request_title">Your Sign-up Request</string>
+    <string name="push_your_sign_up_request_body">Good news %s, your sign-up request has been approved! 🎉</string>
+    <string name="push_your_membership_status_title">Your Membership Status</string>
+    <string name="push_revoked_membership_body">Regrettably, your membership has been revoked. 😭</string>
+    <string name="push_promotion_body">Good news %s, you have been promoted to admin! 🎉</string>
+    <string name="push_demotion_body">Regrettably, you have been demoted to member. 😭</string>
+    <string name="a_delete_button">A delete button.</string>
+    <string name="alert_user_deleted">Deleted User successfully!</string>
+    <string name="title_deleting_user">Deleting User</string>
+    <string name="desc_delete_user">Do you really want to delete this user permanently?</string>
+    <string name="is_event">Mark as event</string>
+    <string name="event_ends_on">Event ends on</string>
+    <string name="more">More</string>
+    <string name="injury_other_short">Other</string>
+    <string name="population_over_the_last_year">Population history:</string>
+    <string name="delete_case_question">Do you want to delete this case?</string>
+    <string name="delete_case_info">The case will not be recoverable.</string>
+    <string name="delete_news_question">Do you want to delete this news post?</string>
+    <string name="delete_news_info">The news post will not be recoverable.</string>
+    <string name="no_author">past member</string>
+    <string name="logout_successful">Logout successful</string>
+    <string name="contact_by_phone">Contact us by phone:</string>
+    <string name="call">Call</string>
+    <string name="contact_by_mail">Contact us by mail:</string>
+    <string name="mail">E-Mail</string>
+    <string name="contact_by_facebook">Stay up to date:</string>
+    <string name="facebook">Facebook</string>
+    <string name="contact_by_website">Visit our website</string>
+    <string name="website">Website</string>
+    <string name="navigate">Navigate</string>
+    <string name="click_to_add_values">Click to add values</string>
+    <string name="average">Average: </string>
+    <string name="case_info">Case details</string>
+    <string name="counter_info">Marker details</string>
+    <string name="news_edit">Edit news</string>
+    <string name="news_title">News</string>
+    <string name="change_state_found">Finally found</string>
+    <string name="change_state_not_found">Not found</string>
+    <string name="push_new_case_title">A new case with priority %s has been added! 🐦</string>
+    <string name="push_new_event_title">The news \'%s\' has been created! 📆</string>
+    <string name="fill_out_all_fields">Please fill out all the fields!</string>
+    <string name="login_successful">Login successful!</string>
+    <string name="wrong_username_password">Wrong username or password or not activated!</string>
+    <string name="passwords_not_match">The passwords don\'t match!</string>
+    <string name="registration_requested">Registration has been requested!</string>
+    <string name="stop">Stop</string>
+    <string name="phone_number_invalid">Phone number is not valid.</string>
+    <string name="record">Record</string>
+    <string name="select_location">Please select a location.</string>
+    <string name="watch_video">Watch video</string>
+    <string name="case_already_removed">Case already removed from server.</string>
+    <string name="reload">Reload</string>
+    <string name="reload_successful">Reload successful</string>
+    <string name="missing_permission">Missing Permission</string>
+    <string name="enable_permission_camera">We need to access the camera in order to take photos or videos. Please enable camera access for this app in your phones settings!</string>
 </resources>

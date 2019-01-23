@@ -1,26 +1,20 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
-import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.R.layout.fragment_counter
-import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.CounterValue
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
-import de.unihannover.se.tauben2.multiLet
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter.view.*
 import java.util.*
 
-class CounterFragment : Fragment() {
-
-    private var selectedDate: Calendar = Calendar.getInstance()
+class CounterFragment : BaseMainFragment(R.string.counter) {
 
     private var mCurrentObservedData: LiveDataRes<List<PopulationMarker>>? = null
     private lateinit var mCurrentMapObserver: LoadingObserver<List<PopulationMarker>>
@@ -33,9 +27,10 @@ class CounterFragment : Fragment() {
         val view = inflater.inflate(fragment_counter, container, false)
         val mapsFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapViewFragment
 
-
-        view.cancel_marker_button.hide()
-        view.confirm_marker_button.hide()
+        if(mapsFragment.circle == null){
+            view.cancel_marker_button.hide()
+            view.confirm_marker_button.hide()
+        }
 
         // OnClickListeners:
         view.set_position_button.setOnClickListener {
@@ -78,8 +73,22 @@ class CounterFragment : Fragment() {
         mCurrentMapObserver = LoadingObserver(successObserver = mapsFragment)
 
         loadCounters()
+        setHasOptionsMenu(true)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.findItem(R.id.toolbar_reload)?.apply {
+            isVisible = true
+            setOnMenuItemClickListener {
+                view?.let { v ->
+                    getViewModel(PopulationMarkerViewModel::class.java)?.reloadMarkerFromServer{ setSnackBar(v, getString(R.string.reload_successful)) }
+                    return@setOnMenuItemClickListener true
+                }
+                false
+            }
+        }
     }
 
     private fun sendMarker(latitude: Double, longitude: Double, radius: Double) {
@@ -93,7 +102,7 @@ class CounterFragment : Fragment() {
             // TODO implement drawing radius, adding description text in ui
 
             it.postNewMarker(PopulationMarker(latitude, longitude, "Placeholder", -1, radius,
-                    listOf()))
+                    mutableListOf()))
 
         }
     }

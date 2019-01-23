@@ -4,6 +4,7 @@
 
     <data>
         <import type="de.unihannover.se.tauben2.ExtensionsKt" />
+        <import type="android.view.View" />
         <variable name="n" type="de.unihannover.se.tauben2.model.database.entity.News"/>
     </data>
 
@@ -39,30 +40,81 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/txt_event_start_hint"
+            <CheckBox
+                android:id="@+id/checkbox_is_Event"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_margin="16dp"
-                android:text="Event starts on "
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="@string/is_event"
+                android:checked="@{n.eventStart != null}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_text_input_title"
                 />
 
-            <TextView
-                android:id="@+id/txt_event_start"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_event_info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_margin="16dp"
-                android:text="@{ExtensionsKt.getDateTimeString(n.eventStart * 1000)}"
-                android:gravity="end"
-                app:layout_constraintStart_toEndOf="@id/txt_event_start_hint"
-                app:layout_constraintTop_toBottomOf="@id/layout_text_input_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_is_Event"
+                android:padding="8dp"
+                android:visibility="@{n.eventStart != null ? View.VISIBLE : View.GONE}"
+                >
+
+                <TextView
+                    android:id="@+id/txt_event_start_hint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="16dp"
+                    android:text="@string/event_starts_on"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_event_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_margin="16dp"
+                    android:text="@{ExtensionsKt.getDateTimeString(n.eventStartMillis)}"
+                    android:gravity="end"
+                    app:layout_constraintStart_toEndOf="@id/txt_event_start_hint"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_event_end_hint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="16dp"
+                    android:text="@string/event_ends_on"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_event_start_hint"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_event_end"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_margin="16dp"
+                    android:text="@{ExtensionsKt.getDateTimeString(n.eventEndMillis)}"
+                    android:gravity="end"
+                    app:layout_constraintStart_toEndOf="@id/txt_event_end_hint"
+                    app:layout_constraintTop_toBottomOf="@id/txt_event_start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_text_input_content"
@@ -74,7 +126,7 @@
                 app:hintEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_event_start_hint"
+                app:layout_constraintTop_toBottomOf="@+id/layout_event_info"
                 app:layout_constraintBottom_toTopOf="@id/btn_send"
                 >
 

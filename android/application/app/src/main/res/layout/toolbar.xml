@@ -5,11 +5,12 @@
     android:layout_height="wrap_content"
     android:background="@drawable/gradient"
     android:elevation="4dp"
-    android:theme="@style/ToolbarMainActivity"
-    >
-    <!--android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"-->
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+    <!--android:theme="@style/ToolbarMainActivity"-->
+
 
     <!-- app_icon_size: 48dp; toolbar height: 56dp -->
+    <!--
     <ImageView
         android:layout_width="@android:dimen/app_icon_size"
         android:layout_height="fill_parent"
@@ -17,7 +18,8 @@
         android:adjustViewBounds="true"
         android:elevation="4dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_logo_48dp" />
+        android:src="@drawable/ic_logo" />
+    -->
 
 </androidx.appcompat.widget.Toolbar>
 

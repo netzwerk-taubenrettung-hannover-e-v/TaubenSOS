@@ -16,8 +16,9 @@ import kotlinx.android.parcel.Parcelize
 data class User(@PrimaryKey val username: String,
                 var isActivated : Boolean,
                 var isAdmin : Boolean,
-                var password : String,
-                var phone : String?
+                var password : String?,
+                var phone : String?,
+                var registrationToken: String?
 
 ) : RecyclerItem, Parcelable, DatabaseEntity() {
 

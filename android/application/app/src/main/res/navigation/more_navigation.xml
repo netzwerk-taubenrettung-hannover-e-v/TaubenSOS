@@ -28,17 +28,13 @@
             app:destination="@+id/casesInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/graphsFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.GraphsFragment"
+        android:id="@+id/statisticFragment"
+        android:name="de.unihannover.se.tauben2.view.statistics.StatisticFragment"
         android:label="GraphsFragment" />
     <fragment
         android:id="@+id/membersFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.UsersFragment"
         android:label="MembersFragment" />
-    <fragment
-        android:id="@+id/emergencyCallFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.EmergencyCallFragment"
-        android:label="EmergencyCallFragment" />
     <fragment
         android:id="@+id/contactFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.ContactFragment"

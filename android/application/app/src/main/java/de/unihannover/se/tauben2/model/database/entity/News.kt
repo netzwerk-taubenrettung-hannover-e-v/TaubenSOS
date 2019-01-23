@@ -3,6 +3,8 @@ package de.unihannover.se.tauben2.model.database.entity
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import de.unihannover.se.tauben2.App
+import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.view.recycler.RecyclerItem
 import kotlinx.android.parcel.Parcelize
 
@@ -10,8 +12,9 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "news")
 data class News(@PrimaryKey
                 val feedID: Int?,
-                var author: String,
-                var eventStart: Long,
+                var author: String?,
+                var eventStart: Long?,
+                var eventEnd: Long?,
                 var text: String,
                 var timestamp: Long,
                 var title: String
@@ -29,6 +32,11 @@ data class News(@PrimaryKey
 
         override val refreshAllCooldown: Long
             get() = 900000 * 2 // 30 min
-
     }
+
+    fun getEventStartMillis() = eventStart?.let { it * 1000 }
+    fun getEventEndMillis() = eventEnd?.let { it * 1000 }
+
+    fun getAuthorString() = author ?: App.context.getString(R.string.no_author)
+
 }

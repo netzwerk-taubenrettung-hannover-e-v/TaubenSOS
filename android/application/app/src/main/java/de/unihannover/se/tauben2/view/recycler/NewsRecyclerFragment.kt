@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -19,6 +20,8 @@ import de.unihannover.se.tauben2.model.database.entity.News
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.main.BootingActivity
 import de.unihannover.se.tauben2.view.navigation.BottomNavigationDrawerFragment
+import de.unihannover.se.tauben2.view.navigation.BottomNavigator
+import de.unihannover.se.tauben2.viewmodel.CaseViewModel
 import de.unihannover.se.tauben2.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.card_news.*
 import kotlinx.android.synthetic.main.card_news.view.*
@@ -28,7 +31,7 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
     override fun getRecyclerItemLayoutId(viewType: Int) = R.layout.card_news
 
     override fun onChanged(t: List<News>?) {
-        super.onChanged(t?.sortedBy { it.eventStart })
+        super.onChanged(t?.sortedByDescending { it.timestamp })
     }
 
     override fun onBindData(binding: ViewDataBinding, data: News) {
@@ -62,7 +65,16 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
                         Navigation.findNavController(context as Activity, R.id.nav_host).navigate(R.id.editNewsFragment, bundle)
                     }
                     v.news_delete_button.setOnClickListener {
-                        vm?.deleteNews(data)
+                        context?.let {cxt ->
+                            AlertDialog.Builder(cxt)
+                                    .setTitle(getString(R.string.delete_news_question))
+                                    .setMessage(getString(R.string.delete_news_info))
+                                    .setPositiveButton(R.string.delete) { _, _ ->
+                                        vm?.deleteNews(data)
+                                    }.setNegativeButton(R.string.cancel) { di, _ ->
+                                        di.cancel()
+                                    }.show()
+                        }
                     }
                 }
 

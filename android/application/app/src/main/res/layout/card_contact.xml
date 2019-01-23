@@ -33,15 +33,33 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_contact"
-                style="@style/Button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_description"
-                android:focusable="true"
-                android:layout_margin="8dp"/>
+                android:layout_margin="8dp"
+                app:iconTint="@android:color/transparent"
+                app:iconTintMode="add"
+                android:textColor="@color/colorPrimaryDark"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:rippleColor="@color/colorPrimaryDark"
+                android:textColorHighlight="@color/colorPrimaryDark"
+                />
+
+            <ImageButton
+                android:id="@+id/infoButtonContact"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_info_24dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:layout_constraintTop_toTopOf="@+id/text_description"
+                app:layout_constraintBottom_toBottomOf="@+id/text_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

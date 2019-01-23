@@ -8,34 +8,58 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
+import de.unihannover.se.tauben2.R
+import de.unihannover.se.tauben2.view.main.MainActivity
 
-class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ImageView(context, attrs, defStyleAttr, defStyleRes){
+class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : ImageView(context, attrs, defStyleAttr, defStyleRes) {
+
+    val thumbView = this
+    val imageRes = drawable
+    lateinit var startBounds : RectF
+    var mScale: Float = 0.0f
 
     private var mCurrentAnimator: Animator? = null
 
     private var mShortAnimationDuration: Int = 0
 
+    private var mImageZoomListeners: MutableSet<ImageZoomListener> = mutableSetOf()
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) = super.onMeasure(widthMeasureSpec, widthMeasureSpec)
 
+    fun addImageZoomListener(imageZoomListener: ImageZoomListener) {
+        mImageZoomListeners.add(imageZoomListener)
+    }
 
-    fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
+    fun addImageZoomListener(onImageZoom: () -> Unit, onImageZoomExit: () -> Unit) {
+        mImageZoomListeners.add(object : ImageZoomListener {
+            override fun onImageZoomExit() {
+                onImageZoomExit()
+            }
+
+            override fun onImageZoom() {
+                onImageZoom()
+            }
+        })
+    }
+
+    fun zoomImage(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup, activity: MainActivity) {
         this.setOnClickListener {
-            if(drawable == null)
-            else zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent)
+            if(resources.getDrawable(R.drawable.ic_logo, null) == this.drawable)
+                return@setOnClickListener
+            activity.zoomMode = true
+            zoomImageFromThumb(expandedImageView, mainLayout, viewGroupContent, activity)
         }
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
-    private fun zoomImageFromThumb(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup) {
-        val thumbView = this
-        val imageRes = drawable
-
+    private fun zoomImageFromThumb(expandedImageView: ImageView, mainLayout: FrameLayout, viewGroupContent: ViewGroup, activity: MainActivity) {
         mCurrentAnimator?.cancel()
 
         expandedImageView.setImageDrawable(imageRes)
@@ -49,7 +73,7 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
         startBoundsInt.offset(-globalOffset.x, -globalOffset.y)
         finalBoundsInt.offset(-globalOffset.x, -globalOffset.y)
 
-        val startBounds = RectF(startBoundsInt)
+        startBounds = RectF(startBoundsInt)
         val finalBounds = RectF(finalBoundsInt)
 
         val startScale: Float
@@ -68,7 +92,7 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
             startBounds.top -= deltaHeight.toInt()
             startBounds.bottom += deltaHeight.toInt()
         }
-
+        mScale = startScale
         // Hide the thumbnail and show the zoomed-in view. When the animation
         // begins, it will position the zoomed-in view in the place of the
         // thumbnail.
@@ -104,8 +128,11 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                     mCurrentAnimator = null
                 }
             })
+            mImageZoomListeners.forEach { it.onImageZoom() }
             start()
         }
+
+
 
         // Upon clicking the zoomed-in image, it should zoom back down
         // to the original bounds and show the thumbnail instead of
@@ -131,16 +158,58 @@ class SquareImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                         thumbView.alpha = 1f
                         expandedImageView.visibility = View.GONE
                         mCurrentAnimator = null
+                        mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
                         thumbView.alpha = 1f
                         expandedImageView.visibility = View.GONE
                         mCurrentAnimator = null
+                        mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
                     }
                 })
                 start()
+                activity.zoomMode = false
             }
         }
+    }
+
+    fun zoomOut(expandedImageView: ImageView, viewGroupContent: ViewGroup, activity: MainActivity) {
+        mCurrentAnimator?.cancel()
+
+        viewGroupContent.visibility = View.VISIBLE
+
+        mCurrentAnimator = AnimatorSet().apply {
+            play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left)).apply {
+                with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
+                with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, mScale))
+                with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, mScale))
+            }
+            duration = mShortAnimationDuration.toLong()
+            interpolator = DecelerateInterpolator()
+            addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator) {
+                    thumbView.alpha = 1f
+                    expandedImageView.visibility = View.GONE
+                    mCurrentAnimator = null
+                    mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    thumbView.alpha = 1f
+                    expandedImageView.visibility = View.GONE
+                    mCurrentAnimator = null
+                    mImageZoomListeners.forEach { listener -> listener.onImageZoomExit() }
+                }
+            })
+            start()
+            activity.zoomMode = false
+        }
+    }
+
+    interface ImageZoomListener {
+        fun onImageZoom()
+        fun onImageZoomExit()
     }
 }

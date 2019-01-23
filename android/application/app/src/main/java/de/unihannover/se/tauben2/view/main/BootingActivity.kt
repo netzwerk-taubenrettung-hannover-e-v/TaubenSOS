@@ -18,7 +18,7 @@ class BootingActivity : AppCompatActivity() {
 
     companion object {
 
-        private var owner: User? = null
+        var owner: User? = null
 
         @JvmStatic
         fun getOwnerPermission() = owner?.getPermission() ?: Permission.GUEST
@@ -55,5 +55,10 @@ class BootingActivity : AppCompatActivity() {
     private fun finishBooting() {
         mUserViewModel.owner.removeObserver(mOwnerObserver)
         Intent(this, MainActivity::class.java).apply { startActivity(this) }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
     }
 }

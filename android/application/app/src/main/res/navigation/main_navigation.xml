@@ -36,10 +36,6 @@
         android:name="de.unihannover.se.tauben2.view.main.fragments.cases.CaseInfoFragment"
         android:label="CasesInfoFragment" />
     <custom_fragment
-        android:id="@+id/graphsFragment"
-        android:name="de.unihannover.se.tauben2.view.statistics.StatisticMenuFragment"
-        android:label="GraphsFragment"/>
-    <custom_fragment
         android:id="@+id/statisticFragment"
         android:name="de.unihannover.se.tauben2.view.statistics.StatisticFragment"
         android:label="StatisticFragment" />
@@ -47,10 +43,6 @@
         android:id="@+id/membersFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.UsersFragment"
         android:label="MembersFragment" />
-    <custom_fragment
-        android:id="@+id/emergencyCallFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.EmergencyCallFragment"
-        android:label="EmergencyCallFragment" />
     <custom_fragment
         android:id="@+id/contactFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.ContactFragment"
@@ -71,10 +63,6 @@
         android:id="@+id/privacyFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.PrivacyFragment"
         android:label="PrivacyFragment" />
-    <custom_fragment
-        android:id="@+id/createNewsFragment"
-        android:name="de.unihannover.se.tauben2.view.main.fragments.CreateNewsFragment"
-        android:label="CreateNewsFragment" />
     <custom_fragment
         android:id="@+id/editNewsFragment"
         android:name="de.unihannover.se.tauben2.view.main.fragments.EditNewsFragment"

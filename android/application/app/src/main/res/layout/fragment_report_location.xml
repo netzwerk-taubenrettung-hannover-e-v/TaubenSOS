@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:elevation="0dp"
-                android:text="SET POSITION"
+                android:text="@string/set_position"
                 android:textColor="#B3000000"
                 app:backgroundTint="#B3FFFFFF"
                 app:cornerRadius="2dp"
@@ -46,70 +46,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_black_16dp" />
+                app:srcCompat="@drawable/ic_location_crosshair" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </fragment>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_fragment">
-
-        <TextView
-            android:id="@+id/selected_position_title"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/selected_position"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/selected_position_street_title"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Street:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selected_position_title" />
-
-        <TextView
-            android:id="@+id/selected_position_street_value"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Example Street 42"
-            app:layout_constraintBottom_toBottomOf="@id/selected_position_street_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/selected_position_street_title" />
-
-        <TextView
-            android:id="@+id/selected_position_district_and_postcode_title"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="District:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selected_position_street_title" />
-
-        <TextView
-            android:id="@+id/selected_position_district_and_postcode_value"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Exampledistrict, 30171"
-            app:layout_constraintBottom_toBottomOf="@id/selected_position_district_and_postcode_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/selected_position_district_and_postcode_title" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

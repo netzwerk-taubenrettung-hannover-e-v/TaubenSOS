@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/toolbar_navigate"
+        android:icon="@drawable/ic_navigation"
+        android:title="@string/navigate"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/toolbar_call_button"
         android:icon="@drawable/ic_phone"
         android:title="@string/call_reporter"
@@ -14,7 +22,21 @@
         android:id="@+id/toolbar_edit"
         android:title="@string/edit"
         android:icon="@drawable/ic_edit"
-        app:showAsAction="ifRoom"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/toolbar_report_not_found"
+        android:title="@string/change_state_not_found"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/toolbar_report_found"
+        android:title="@string/change_state_found"
+        app:showAsAction="collapseActionView"
         android:visible="false"
         />
 
@@ -36,6 +58,14 @@
         android:id="@+id/toolbar_delete"
         android:title="@string/delete"
         app:showAsAction="collapseActionView"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/toolbar_reload"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/reload"
+        app:showAsAction="always"
         android:visible="false"
         />
 

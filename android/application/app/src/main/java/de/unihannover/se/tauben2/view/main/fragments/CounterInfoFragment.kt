@@ -1,22 +1,14 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
-
-//import de.unihannover.se.tauben2.model.database.entity.PigeonCounter
-//import de.unihannover.se.tauben2.viewmodel.PigeonCounterViewModel
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
-import android.util.TimeUtils
 import android.view.*
 import android.widget.DatePicker
-import android.widget.TimePicker
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -27,24 +19,16 @@ import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.model.database.entity.PopulationMarker
 import de.unihannover.se.tauben2.view.input.InputFilterMinMax
 import de.unihannover.se.tauben2.view.main.BootingActivity
+import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.statistics.AxisDateFormatter
 import de.unihannover.se.tauben2.viewmodel.PopulationMarkerViewModel
 import kotlinx.android.synthetic.main.fragment_counter_info.*
 import kotlinx.android.synthetic.main.fragment_counter_info.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-/**
- * A simple [Fragment] subclass.
- */
-
-class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerDialog.OnDateSetListener {
 
     private var selectedDate: Calendar = Calendar.getInstance()
     private var mPopulationMarker : PopulationMarker? = null
@@ -56,11 +40,18 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_counter_info, container, false)
         setHasOptionsMenu(true)
+        (activity as MainActivity).enableBackButton()
 
         val datePickerDialog = context?.let {
-            DatePickerDialog(it, this,
+            DatePickerDialog(it,
+                    R.style.PickerTheme,
+                    this,
                     selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH),
                     selectedDate.get(Calendar.DAY_OF_MONTH))
+        }
+
+        datePickerDialog?.let {
+            it.datePicker.maxDate = System.currentTimeMillis()
         }
 
         view.counter_value.filters = arrayOf<InputFilter>(InputFilterMinMax(0, 9999))
@@ -73,6 +64,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     }
 
                     val dataList : MutableList<Entry> = mutableListOf()
+
 
                     val first = mPopulationMarker?.values?.sortedBy { value -> value.timestamp }?.firstOrNull()?.let {value ->
                         Calendar.getInstance().apply {
@@ -95,10 +87,14 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                     val dataSet = LineDataSet(dataList, "")
                     dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+                    dataSet.setDrawValues(false)
+                    dataSet.setDrawFilled(true)
+
                     val lineData = LineData(dataSet)
                     view.chart.apply {
                         xAxis.position = XAxis.XAxisPosition.BOTTOM
                         xAxis.labelRotationAngle = -60f
+                        xAxis.setLabelCount(5, false)
 
                         multiLet(first, last) {f, l ->
                             xAxis.valueFormatter = AxisDateFormatter(f, l)
@@ -109,6 +105,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                         legend.isEnabled = false
 
                         data = lineData
+
                         invalidate()
                     }
                 }
@@ -128,6 +125,8 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         view.current_timestamp_value.setOnClickListener {
             datePickerDialog?.show()
+            datePickerDialog?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimaryDark))
+            datePickerDialog?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimaryDark))
         }
 
         view.resetdate_button.setOnClickListener {
@@ -139,10 +138,10 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val alertDialogBuilder = AlertDialog.Builder(
                     context)
 
-            alertDialogBuilder.setTitle("Tauben zählen")
+            alertDialogBuilder.setTitle(getString(R.string.pigeon_count))
 
             alertDialogBuilder
-                    .setMessage(R.string.tauben_zählen_info)
+                    .setMessage(R.string.pigeon_count_info)
 
             val alertDialog = alertDialogBuilder.create()
 
@@ -206,6 +205,7 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             }
         }
+
         return result
     }
 
@@ -226,6 +226,11 @@ class CounterInfoFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
         selectedDate.set(year, month, day)
         refreshTextView()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).disableBackButton()
     }
 
 }
