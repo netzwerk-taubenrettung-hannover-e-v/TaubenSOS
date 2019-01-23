@@ -127,6 +127,7 @@
     <string name="breeds">Breeds:</string>
     <string name="closed_cases">Closed cases</string>
     <string name="my_cases">My cases</string>
+    <string name="tauben_zählen">Pigeon counting</string>
     <string name="open_cases">Open cases</string>
     <string name="step">Step %1$d: %2$s</string>
     <string name="edit_case">Edit Case #%1$d</string>
