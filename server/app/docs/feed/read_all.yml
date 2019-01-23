@@ -1,14 +1,8 @@
-Retrieve all existing news of the feed or only newly posted news
+Retrieve all existing news respectively recent events
 ---
 tags:
   - feed
-parameters: 
-  - in: body
-    name: lastUpdate
-    description: request all news that have been updated since this (unix)time. When you leave out this parameter all news will be returned
-    required: false
-    type: string
-    format: date-time
+parameters: []
 responses:
   200:
     description: OK

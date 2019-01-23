@@ -1,0 +1,74 @@
+Retrieve number of pigeon injuries of closed cases. Closed cases will be searched in the square of the coordinates specified. Usage - /api/stats/injury?fromTime=1545412850&untilTime=1548091250&latNE=52.55&lonNE=11.7&latSW=52.4&lonSW=9.4
+
+---
+tags:
+  - stats
+parameters:
+  - in: query
+    name: fromTime
+    description: "time from which the numbers of the closed cases will be returned"
+    required: false
+    type: integer
+    format: int32
+  - in: query
+    name: untilTime
+    description: "time until which the numbers of the closed cases will be returned"
+    required: false
+    type: integer
+    format: int32
+  - in: query
+    name: latNE
+    description: "latitude of the north east corner"
+    required: true
+    type: number
+    format: float
+  - in: query
+    name: lonNE
+    description: "longitude of the north east corner"
+    required: true
+    type: number
+    format: float
+  - in: query
+    name: latSW
+    description: "latitude of the south west corner"
+    required: true
+    type: number
+    format: float
+  - in: query
+    name: lonSW
+    description: "longitude of the south west corner"
+    required: true
+    type: number
+    format: float
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        sumFledgling:
+          type: integer
+          format: int32
+        sumFootOrLeg:
+          type: integer
+          format: int32
+        sumHeadOrEye:
+          type: integer
+          format: int32
+        sumOpenWound:
+          type: integer
+          format: int32
+        sumOther:
+          type: integer
+          format: int32
+        sumParalyzedOrFlightless:
+          type: integer
+          format: int32
+        sumStrappedFeet:
+          type: integer
+          format: int32
+        sumWing:
+          type: integer
+          format: int32
+  400:
+    description: Unix timestamp out of range or coordinates not specified correctly

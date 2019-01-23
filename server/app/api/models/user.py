@@ -9,17 +9,19 @@ class User(db.Model):
 	phone = db.Column(db.String(30))
 	isAdmin = db.Column(db.Boolean)
 	isActivated = db.Column(db.Boolean)
+	registrationToken = db.Column(db.String(255))
 	asReporter = db.relationship("Case", foreign_keys="Case.reporter")
 	asRescuer = db.relationship("Case", foreign_keys="Case.rescuer")
 	asAuthor = db.relationship("Feed", foreign_keys="Feed.author")
-	asUsername = db.relationship("Token", foreign_keys="Token.username")
+	asUsername = db.relationship("Token", foreign_keys="Token.username", cascade="all, delete-orphan")
 
-	def __init__(self, username, password, phone, isAdmin, isActivated):
+	def __init__(self, username, password, phone, isAdmin, isActivated, registrationToken=None):
 		self.username = username
 		self.password = password
 		self.phone = phone
 		self.isAdmin = isAdmin
 		self.isActivated = isActivated
+		self.registrationToken = registrationToken
 
 	def save(self):
 		db.session.add(self)
@@ -39,7 +41,7 @@ class User(db.Model):
 
 	@staticmethod
 	def all():
-		return User.query.all()
+		return User.query.order_by(User.username)
 
 	@staticmethod
 	def get(username):
@@ -50,11 +52,12 @@ class User(db.Model):
 		return db.session.query(User.query.filter(User.username == username).exists()).scalar()
 
 class UserSchema(ma.Schema):
-	username = ma.String(required=True)
+	username = ma.String(required=True, validate=lambda x: not User.exists(x))
 	phone = ma.String(required=True)
 	isActivated = ma.Boolean(missing=False)
 	isAdmin = ma.Boolean(missing=False)
-	password = ma.String(required=True)
+	password = ma.String(required=True, load_only=True)
+	registrationToken = ma.String(missing=None, load_only=True)
 
 	@pre_load
 	def process_input(self, data):

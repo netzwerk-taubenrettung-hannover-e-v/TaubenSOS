@@ -35,7 +35,6 @@ class Medium(db.Model):
 
     @staticmethod
     def get(caseID, mediaID):
-        # return Medium.query.get(caseID)
         return Medium.query.filter_by(caseID=caseID, mediaID=mediaID).first()
 
 class MediumSchema(ma.Schema):

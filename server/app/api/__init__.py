@@ -23,7 +23,7 @@ swag = Swagger(config={
     "specs_route": "/api/ui/"
 })
 spec = APISpec(
-    title="Tauben2 API Documentation",
+    title="TaubenSOS API Documentation",
     version="1.0.0",
     openapi_version="2.0",
     plugins=[FlaskPlugin(), MarshmallowPlugin()]

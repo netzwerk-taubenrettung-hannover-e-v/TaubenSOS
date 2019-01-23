@@ -1,0 +1,18 @@
+Find population marker by ID
+---
+tags:
+  - populationMarker
+parameters:
+  - in: path
+    name: populationMarkerID
+    description: The ID of the marker to be retrieved
+    required: true
+    type: integer
+    format: int32
+responses:
+  200:
+    description: OK
+    schema:
+      $ref: "#/definitions/PopulationMarker"
+  404:
+    description: The marker to be shown could not be found

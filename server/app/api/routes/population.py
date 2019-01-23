@@ -8,21 +8,33 @@ from api.models.populationValue import (PopulationValue, populationValue_schema,
 bp = Blueprint("population", __name__, url_prefix="/api")
 
 @bp.route("/population", methods=["GET"], strict_slashes=False)
-def get_Markers():
+def get_markers():
 	"""
 	file: ../../docs/population/read_all.yml
 	"""
 	if request.method == "GET":
-		if request.get_data():
-			data = request.get_json()
-			if data.get("lastUpdate") is not None:
-				populationMarkers = PopulationMarker.get_newly_updated_markers(convert_timestamp(int(data.get("lastUpdate"))))
-			else:
-				populationMarkers = PopulationMarker.all()
+		data = request.args.get("lastUpdate")
+		if data is not None:
+			try:
+				lastUpdate = convert_timestamp(int(data))
+			except ValueError:
+				return jsonify(message="Unix timestamp out of range"), 400
+			populationMarkers = PopulationMarker.get_newly_updated_markers(lastUpdate)
 		else:
 			populationMarkers = PopulationMarker.all()
-		result = [make_json_marker(populationMarker = p) for p in populationMarkers]
-		return jsonify(result)
+		return populationMarkers_schema.jsonify(populationMarkers), 200
+
+@bp.route("population/<int:populationMarkerID>", methods=["GET"], strict_slashes=False)
+def get_marker(populationMarkerID):
+	"""
+	file: ../../docs/population/read_marker.yml
+	"""
+	if request.method == "GET":
+		populationMarker = PopulationMarker.get(populationMarkerID)
+		if populationMarker is None:
+			return jsonify(message="The marker to be shown could not be found"), 404
+		return populationMarker_schema.jsonify(populationMarker), 200
+
 
 @bp.route("/population", methods=["POST"], strict_slashes=False)
 def create_marker():
@@ -36,10 +48,9 @@ def create_marker():
 			return jsonify(errors), 400
 		else:
 			populationMarker.save()
-			result = make_json_marker(populationMarker=populationMarker)
-			return jsonify(result), 201
+			return populationMarker_schema.jsonify(populationMarker), 201
 
-@bp.route("/population/<populationMarkerID>", methods=["POST"], strict_slashes=False)
+@bp.route("/population/<int:populationMarkerID>", methods=["POST"], strict_slashes=False)
 def create_value_for_marker(populationMarkerID):
 	"""
 	file: ../../docs/population/create_value.yml
@@ -47,23 +58,27 @@ def create_value_for_marker(populationMarkerID):
 	if request.method == "POST":
 		populationMarker = PopulationMarker.get(populationMarkerID)
 		if populationMarker is None:
-			return jsonify({"message": "The population marker to be added a value could not be found"}), 404
+			return jsonify(message="The population marker to be added a value could not be found"), 404
 		json = request.get_json()
-		json["populationMarkerID"] = int(populationMarkerID)
-		populationValue, errors = populationValue_schema.load(data=json)
+		val = PopulationValue.get_value(populationMarkerID=populationMarkerID, timestamp=convert_timestamp_date(int(json["timestamp"])))
+		if val is not None:
+			json["timestamp"] = convert_timestamp_date(int(json["timestamp"]))
+			PopulationValue.update(val, **json)
+		else:
+			json["populationMarkerID"] = int(populationMarkerID)
+			val, errors = populationValue_schema.load(data=json)
+			if errors:
+				return jsonify(errors), 400
+			else:
+				val.save()
 		lastUpdate = datetime.utcnow()
 		lastUpdateDict = {
 			"lastUpdate": lastUpdate
 		}
 		PopulationMarker.update(populationMarker, **lastUpdateDict)
-		if errors:
-			return jsonify(errors), 400
-		else:
-			populationValue.save()
-			result = make_json_value(populationValue=populationValue)
-			return jsonify(result), 201
+		return populationValue_schema.jsonify(val), 201
 
-@bp.route("/population/<populationMarkerID>", methods=["DELETE"], strict_slashes=False)
+@bp.route("/population/<int:populationMarkerID>", methods=["DELETE"], strict_slashes=False)
 def delete_marker(populationMarkerID):
 	"""
 	file: ../../docs/population/delete_marker.yml
@@ -71,11 +86,11 @@ def delete_marker(populationMarkerID):
 	if request.method == "DELETE":
 		populationMarker = PopulationMarker.get(populationMarkerID)
 		if populationMarker is None:
-			return jsonify({"message": "The population marker to be deleted could not be found"}), 404
+			return jsonify(message="The population marker to be deleted could not be found"), 404
 		populationMarker.delete()
 		return "", 204, {"Content-Type": "application/json"}
 
-@bp.route("/population/<populationMarkerID>", methods=["PUT"], strict_slashes=False)
+@bp.route("/population/<int:populationMarkerID>", methods=["PUT"], strict_slashes=False)
 def change_marker(populationMarkerID):
 	"""
 	file: ../../docs/population/update_marker.yml
@@ -83,23 +98,18 @@ def change_marker(populationMarkerID):
 	if request.method == "PUT":
 		populationMarker = PopulationMarker.get(populationMarkerID)
 		if populationMarker is None:
-			return jsonify({"message": "The population marker to be changed could not be found"}), 404
+			return jsonify(message="The population marker to be changed could not be found"), 404
 		json = request.get_json()
 		errors = populationMarker_schema.validate(json, partial=True)
 		if errors:
 			return jsonify(errors), 400
 		json["lastUpdate"] = datetime.utcnow()
 		PopulationMarker.update(populationMarker, **json)
-		result = make_json_marker(populationMarker=populationMarker)
-		return jsonify(result), 200
+		return populationMarker_schema.jsonify(populationMarker), 200
 
 def convert_timestamp(unix):
 	return utils.rfcformat(datetime.fromtimestamp(unix))
 
-def make_json_marker(populationMarker):
-	result = populationMarker_schema.dump(populationMarker).data
-	return result
-
-def make_json_value(populationValue):
-	result = populationValue_schema.dump(populationValue).data
-	return result
+def convert_timestamp_date(unix):
+	d = datetime.fromtimestamp(unix).date()
+	return utils.rfcformat(datetime(year=d.year, month=d.month, day=d.day))

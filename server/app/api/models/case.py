@@ -1,12 +1,16 @@
 from api import db, ma, spec
 from api.models import injury, medium, user, breed
-from datetime import datetime
+from api.models.breed import Breed
+from api.models.injury import Injury
+from datetime import datetime, timedelta
+from sqlalchemy import text, bindparam
 from marshmallow import post_dump, pre_load, post_load, utils, validate
 
 class Case(db.Model):
     __tablename__ = "case"
     caseID = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    lastEdited = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     priority = db.Column(db.Integer, nullable=False)
     reporter = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
     rescuer = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
@@ -21,7 +25,7 @@ class Case(db.Model):
     injury = db.relationship("Injury", cascade="all, delete-orphan", backref="case", lazy=True, uselist=False)
     media = db.relationship("Medium", cascade="all, delete-orphan", backref="case", lazy=True, uselist=True)
 
-    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury, media=[]):
+    def __init__(self, timestamp, priority, reporter, rescuer, breed, additionalInfo, phone, latitude, longitude, wasFoundDead, wasNotFound, isClosed, injury):
         self.timestamp = timestamp
         self.priority = priority
         self.reporter = reporter
@@ -35,17 +39,19 @@ class Case(db.Model):
         self.wasNotFound = wasNotFound
         self.isClosed = isClosed
         self.injury = injury
-        self.media = media
 
     def save(self):
         db.session.add(self)
         db.session.commit()
 
     def update(self, **kwargs):
+        kwargs.pop("caseID", None)
+        kwargs.pop("media", None)
         for key, value in kwargs.items():
             if key == "injury":
                 value = injury.injury_schema.load(value).data
             setattr(self, key, value)
+        self.lastEdited = datetime.utcnow()
         db.session.commit()
 
     def delete(self):
@@ -57,31 +63,91 @@ class Case(db.Model):
 
     @staticmethod
     def all():
-        return Case.query.all()
+        return Case.query.order_by(Case.timestamp.desc())
+
+    @staticmethod
+    def recents():
+        since = datetime.utcnow() - timedelta(hours=24)
+        except_query = Case.query.filter(Case.isClosed == True, Case.lastEdited < since)
+        return Case.query.except_(except_query).order_by(Case.timestamp.desc())
 
     @staticmethod
     def get(caseID):
         return Case.query.get(caseID)
 
     @staticmethod
-    def get_newly_closed_cases(lastUpdate):
-        return db.session.query(Case).filter(db.and_(Case.timestamp > lastUpdate, Case.isClosed == True))
+    def get_closed_cases(fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp > fromTime, Case.timestamp < untilTime, Case.isClosed == True))
+        elif fromTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp > fromTime, Case.isClosed == True))
+        elif untilTime is not None:
+            return db.session.query(Case).filter(db.and_(Case.timestamp < untilTime, Case.isClosed == True))
+        else:
+            return db.session.query(Case).filter(Case.isClosed == True)
 
     @staticmethod
-    def get_all_closed_cases():
-        return db.session.query(Case).filter(Case.isClosed == True)
-    
-    @staticmethod
-    def get_pigeons_saved_stat(startTime, untilTime):
-        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == False)).count()
+    def get_pigeon_numbers(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" between :fromTime and :untilTime group by "day" order by "day"')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime)
+        elif fromTime is not None:
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" > :fromTime group by "day" order by "day"')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime)
+        elif untilTime is not None:
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" < :untilTime group by "day" order by "day"')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, untilTime=untilTime)
+        else:
+            sql = text('select date("timestamp") as "day", sum(case when "wasFoundDead" = TRUE then 1 else 0 end) as "sumFoundDead", sum(case when "wasNotFound" = TRUE then 1 else 0 end) as "sumNotFound", count("caseID") from "case" where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE group by "day" order by "day"')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE)
+        result = db.engine.execute(sql)
+        res = result.fetchall()
+        x = []
+        for i in res:
+            x.append(dict(i.items()))
+        for i in x:
+            i['day'] = utils.from_rfc(str(i['day'])).strftime("%s")
+        return x
 
     @staticmethod
-    def get_pigeons_not_found_stat(startTime, untilTime):
-        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == False, Case.wasNotFound == True)).count()
+    def get_breed(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as "feralPigeon", sum(case when breed = :fancyPigeon then 1 else 0 end) as "fancyPigeon", sum(case when breed = :carrierPigeon then 1 else 0 end) as "carrierPigeon", sum(case when breed = :commonWoodPigeon then 1 else 0 end) as "commonWoodPigeon", sum(case when breed is Null then 1 else 0 end) as "undefined" from "case" where "isClosed" = TRUE and latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp between :fromTime and :untilTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
+        elif fromTime is not None:
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as "feralPigeon", sum(case when breed = :fancyPigeon then 1 else 0 end) as "fancyPigeon", sum(case when breed = :carrierPigeon then 1 else 0 end) as "carrierPigeon", sum(case when breed = :commonWoodPigeon then 1 else 0 end) as "commonWoodPigeon", sum(case when breed is Null then 1 else 0 end) as "undefined" from "case" where "isClosed" = TRUE and latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp > :fromTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
+        elif untilTime is not None:
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as "feralPigeon", sum(case when breed = :fancyPigeon then 1 else 0 end) as "fancyPigeon", sum(case when breed = :carrierPigeon then 1 else 0 end) as "carrierPigeon", sum(case when breed = :commonWoodPigeon then 1 else 0 end) as "commonWoodPigeon", sum(case when breed is Null then 1 else 0 end) as "undefined" from "case" where "isClosed" = TRUE and latitude between :latSW and :latNE and longitude between :lonSW and :lonNE and timestamp < :untilTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
+        else:
+            sql = text('select sum(case when breed = :feralPigeon then 1 else 0 end) as "feralPigeon", sum(case when breed = :fancyPigeon then 1 else 0 end) as "fancyPigeon", sum(case when breed = :carrierPigeon then 1 else 0 end) as "carrierPigeon", sum(case when breed = :commonWoodPigeon then 1 else 0 end) as "commonWoodPigeon", sum(case when breed is Null then 1 else 0 end) as "undefined" from "case" where "isClosed" = TRUE and latitude between :latSW and :latNE and longitude between :lonSW and :lonNE')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, feralPigeon="Feral Pigeon", fancyPigeon="Fancy Pigeon", commonWoodPigeon="Common Wood Pigeon", carrierPigeon="Carrier Pigeon")
+        result = db.engine.execute(sql)
+        res = result.fetchall()
+        for i in res:
+            x =dict(i.items())
+        return x
 
     @staticmethod
-    def get_pigeons_found_dead_stat(startTime, untilTime):
-        return db.session.query(Case).filter(db.and_(db.between(Case.timestamp, startTime, untilTime), Case.isClosed == True, Case.wasFoundDead == True, Case.wasNotFound == False)).count()
+    def get_injury(latNE, lonNE, latSW, lonSW, fromTime=None, untilTime=None):
+        if fromTime is not None and untilTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" between :fromTime and :untilTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime, untilTime=untilTime)
+        elif fromTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" > :fromTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, fromTime=fromTime)
+        elif untilTime is not None:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE and "timestamp" < :untilTime')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE, untilTime=untilTime)
+        else:
+            sql = text('select sum(case when "footOrLeg" = TRUE then 1 else 0 end) as "sumFootOrLeg", sum(case when "strappedFeet" = TRUE then 1 else 0 end) as "sumStrappedFeet", sum(case when "wing" = TRUE then 1 else 0 end) as "sumWing", sum(case when "headOrEye" = TRUE then 1 else 0 end) as "sumHeadOrEye", sum(case when "openWound" = TRUE then 1 else 0 end) as "sumOpenWound", sum(case when "paralyzedOrFlightless" = TRUE then 1 else 0 end) as "sumParalyzedOrFlightless", sum(case when "fledgling" = TRUE then 1 else 0 end) as "sumFledgling", sum(case when "other" = TRUE then 1 else 0 end) as "sumOther" from "injury" join "case" using ("caseID") where "isClosed" = TRUE and "latitude" between :latSW and :latNE and "longitude" between :lonSW and :lonNE')
+            sql = sql.bindparams(latSW=latSW, latNE=latNE, lonSW=lonSW, lonNE=lonNE)
+        result = db.engine.execute(sql)
+        res = result.fetchall()
+        for i in res:
+            x = dict(i.items())
+        return x
 
 
 class CaseSchema(ma.Schema):

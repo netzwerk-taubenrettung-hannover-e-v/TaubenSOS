@@ -7,17 +7,19 @@ class Feed(db.Model):
 	__tablename__ = "feed"
 	feedID = db.Column(db.Integer, primary_key=True)
 	author = db.Column(db.String(20), db.ForeignKey("user.username"), nullable=True)
-	title = db.Column(db.String(50), nullable=False)
+	title = db.Column(db.String(128), nullable=False)
 	text = db.Column(db.String, nullable=False)
 	timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	eventStart = db.Column(db.DateTime, nullable=True)
+	eventEnd = db.Column(db.DateTime, nullable=True)
 
-	def __init__(self, author, title, text, timestamp, eventStart):
+	def __init__(self, author, title, text, timestamp, eventStart, eventEnd):
 		self.author = author
 		self.title = title
 		self.text = text
 		self.timestamp = timestamp
 		self.eventStart = eventStart
+		self.eventEnd = eventEnd
 
 	def save(self):
 		db.session.add(self)
@@ -37,23 +39,25 @@ class Feed(db.Model):
 
 	@staticmethod
 	def all():
-		return Feed.query.all()
+		return Feed.query.order_by(Feed.timestamp.desc())
 
 	@staticmethod
 	def get(feedID):
 		return Feed.query.get(feedID)
 
 	@staticmethod
-	def get_newly_posted_news(lastUpdate):
-		return db.session.query(Feed).filter(Feed.timestamp > lastUpdate)
+	def recents():
+		except_query = Feed.query.filter(Feed.eventEnd < datetime.utcnow())
+		return Feed.query.except_(except_query).order_by(Feed.timestamp.desc())
 
 class FeedSchema(ma.Schema):
 	feedID = ma.Integer(dump_only=True)
 	author = ma.String(required=True, validate=user.User.exists)
-	title = ma.String(required=True)
+	title = ma.String(required=True, validate=validate.Length(max=128))
 	text = ma.String(missing=None)
 	timestamp = ma.DateTime("rfc", missing=None)
 	eventStart = ma.DateTime("rfc", missing=None)
+	eventEnd = ma.DateTime("rfc", missing=None)
 
 	@post_dump
 	def wrap(self, data):
@@ -62,6 +66,9 @@ class FeedSchema(ma.Schema):
 		if data.get("eventStart") is not None:
 			eventStart = utils.from_rfc(data["eventStart"])
 			data["eventStart"] = eventStart.strftime("%s")
+		if data.get("eventEnd") is not None:
+			eventEnd = utils.from_rfc(data["eventEnd"])
+			data["eventEnd"] = eventEnd.strftime("%s")
 		return data
 
 	@pre_load
@@ -72,6 +79,9 @@ class FeedSchema(ma.Schema):
 		if data.get("eventStart") is not None:
 			e = datetime.fromtimestamp(int(data["eventStart"]))
 			data["eventStart"] = utils.rfcformat(e)
+		if data.get("eventEnd") is not None:
+			e = datetime.fromtimestamp(int(data["eventEnd"]))
+			data["eventEnd"] = utils.rfcformat(e)
 		return data
 
 	@post_load
