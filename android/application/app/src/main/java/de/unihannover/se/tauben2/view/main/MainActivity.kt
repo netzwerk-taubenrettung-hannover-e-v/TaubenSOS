@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
+import de.unihannover.se.tauben2.R.id.zoom
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.view.main.fragments.cases.CaseInfoFragment
@@ -113,11 +114,12 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val index = mNavHostFragment.childFragmentManager.fragments.size - 1
         val f = mNavHostFragment.childFragmentManager.fragments[index]
-        if (f is CaseInfoFragment) {
-            if (zoomMode) touchView(f.zoomOut())
-        } else if (f is CasesFragment) {
-            if (zoomMode) touchView(f.zoomOut())
-        } else zoomMode = false
+
+        when (f) {
+            is CaseInfoFragment -> if (zoomMode) touchView(f.zoomOut())
+            is CasesFragment -> if (zoomMode) touchView(f.zoomOut())
+            else -> zoomMode = false
+        }
 
         if(!zoomMode) mBottomNavigator.onBackPressed()
     }
