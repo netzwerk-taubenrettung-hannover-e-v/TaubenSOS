@@ -51,7 +51,7 @@
     <string name="cases">Fälle</string>
     <string name="users">Nutzer</string>
     <string name="contact">Kontakt</string>
-    <string name="logout">Ausloggen</string>
+    <string name="logout">Abmelden (%s)</string>
     <string name="login">Einloggen</string>
     <string name="register">Registrieren</string>
     <string name="edit">Bearbeiten</string>
@@ -145,7 +145,7 @@
     </plurals>
     <string name="more">Mehr</string>
     <string name="injury_other_short">Andere</string>
-    <string name="population_over_the_last_year">Populationverlauf:</string>
+    <string name="population_over_the_last_year">Populationsverlauf:</string>
     <string name="delete_case_question">Möchtest du diesen Fall löschen?</string>
     <string name="delete_case_info">Der Fall ist danach nicht wiederherstellbar.</string>
     <string name="delete_news_question">Möchtest du diese News löschen?</string>

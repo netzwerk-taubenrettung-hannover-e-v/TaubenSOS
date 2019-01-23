@@ -1,16 +1,12 @@
 package de.unihannover.se.tauben2.view.main
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
@@ -19,15 +15,16 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.maps.MapView
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.R.id.toolbar_report_button
-import de.unihannover.se.tauben2.R.id.zoom
 import de.unihannover.se.tauben2.databinding.ActivityMainBinding
+import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.database.Permission
 import de.unihannover.se.tauben2.view.main.fragments.cases.CaseInfoFragment
+import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 import de.unihannover.se.tauben2.view.navigation.BottomNavigator
 import de.unihannover.se.tauben2.view.navigation.FragmentMenuItem
 import de.unihannover.se.tauben2.view.report.ReportActivity
+import de.unihannover.se.tauben2.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import de.unihannover.se.tauben2.view.main.fragments.cases.CasesFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -84,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 FragmentMenuItem(R.id.statisticFragment, getString(R.string.graphs), R.drawable.ic_chart, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.membersFragment, getString(R.string.users), R.drawable.ic_group_white_24dp, Permission.ADMIN),
                 FragmentMenuItem(R.id.contactFragment, getString(R.string.contact), R.drawable.ic_contact_mail_white_24dp),
-                FragmentMenuItem(R.id.button_logout, getString(R.string.logout), R.drawable.ic_exit_to_app_white_24dp, Permission.AUTHORISED),
+                FragmentMenuItem(R.id.button_logout, getString(R.string.logout, getViewModel(UserViewModel::class.java).getOwnerUsername()), R.drawable.ic_exit_to_app_white_24dp, Permission.AUTHORISED),
                 FragmentMenuItem(R.id.loginFragment, getString(R.string.login), R.drawable.ic_person_black_24dp, onlyThatPermission = true),
                 FragmentMenuItem(R.id.registerFragment, getString(R.string.register), R.drawable.ic_person_add_black_24dp, onlyThatPermission = true),
                 FragmentMenuItem(R.id.imprintFragment, getString(R.string.imprint_title), R.drawable.ic_building),

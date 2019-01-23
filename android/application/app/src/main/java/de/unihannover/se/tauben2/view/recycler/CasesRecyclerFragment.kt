@@ -22,7 +22,7 @@ class CasesRecyclerFragment : RecyclerFragment<Case>() {
     private var mLocation: Location? = null
 
     //TODO remove workaround
-    var alreadyLoaded: Boolean = false
+    private var alreadyLoaded: Boolean = false
 
     override fun onChanged(t: List<Case>?) {
         super.onChanged(t?.sortedByDescending { it.timestamp })

@@ -14,7 +14,7 @@ class PopulationMarkerViewModel(context: Context) : BaseViewModel(context) {
     fun deleteMarker(marker: PopulationMarker) = repository.deleteMarker(marker)
 
     fun reloadMarkerFromServer(successFunction : () -> Any) {
-        val result = repository.getPigeonCounters()
+        val result = repository.getPigeonCounters(false)
         result.observeForever(object : Observer<Resource<List<PopulationMarker>>> {
             override fun onChanged(t: Resource<List<PopulationMarker>>?) {
                 if(t?.status?.isSuccessful() == true) {

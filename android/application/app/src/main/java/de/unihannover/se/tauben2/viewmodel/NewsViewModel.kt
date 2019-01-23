@@ -17,7 +17,7 @@ class NewsViewModel(context: Context) : BaseViewModel(context) {
     fun deleteNews(news: News) = repository.deleteNews(news)
 
     fun reloadNewsFromServer(successFunction : () -> Any) {
-        val result = repository.getNews()
+        val result = repository.getNews(false)
         result.observeForever(object : Observer<Resource<List<News>>> {
             override fun onChanged(t: Resource<List<News>>?) {
                 if(t?.status?.isSuccessful() == true) {

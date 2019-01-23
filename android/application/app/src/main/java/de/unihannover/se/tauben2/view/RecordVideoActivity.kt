@@ -22,11 +22,11 @@ class RecordVideoActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val maxDurationSeconds = 15
+        private const val maxDurationSeconds = 30
         private const val maxWidth = 640
         private const val maxHeight = 480
-        private const val videoKbps = 1000
-        private const val audioKbps = 24
+        private const val videoKbps = 1500
+        private const val audioKbps = 128
 
         private const val kilo = 1000
 
@@ -71,6 +71,7 @@ class RecordVideoActivity : AppCompatActivity() {
     fun record(view: View) {
 
         btnRecord.isEnabled = false
+        btnRecord.setColorFilter(Color.GRAY)
 
         if (recording) {
             recording = false
@@ -80,8 +81,10 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val path = intent.getStringExtra("url")
         cam?.takeVideo(File(path))
-        btnRecord.postDelayed({ btnRecord.isEnabled = true }, 3000)
-        btnRecord.setColorFilter(Color.RED)
+        btnRecord.postDelayed({
+            btnRecord.isEnabled = true
+            btnRecord.setColorFilter(Color.RED)
+        }, 3000)
 
         recording = true
 

@@ -1,5 +1,6 @@
 package de.unihannover.se.tauben2.repository
 
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -22,8 +23,10 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
+import kotlin.concurrent.schedule
 
 /**
  * Interface between data and view model. Should only be accessed from any view model class.
@@ -217,7 +220,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
+    fun getUsers(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
 
             setItemUpdateTimestamps(*item.toTypedArray())
@@ -291,7 +294,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     }.getAsLiveData()
 
-    fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
+    fun getNews(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
         override fun saveCallResult(item: List<News>) {
 
             database.newsDao().insertOrUpdate(item)
@@ -310,7 +313,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
 
         override fun shouldFetch(data: List<News>?): Boolean {
-            return News.shouldFetch()
+            return if(checkCooldown) News.shouldFetch() else true
         }
 
         override fun loadFromDb(): LiveData<List<News>> {
@@ -372,7 +375,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
         }
     }.send(news)
 
-    fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
+    fun getPigeonCounters(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
 
             setItemUpdateTimestamps(*item.toTypedArray())
@@ -392,7 +395,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             }
         }
 
-        override fun shouldFetch(data: List<PopulationMarker>?) = PopulationMarker.shouldFetch()
+        override fun shouldFetch(data: List<PopulationMarker>?) = if(checkCooldown) PopulationMarker.shouldFetch() else true
 
         override fun loadFromDb() = database.populationMarkerDao().getAllPigeonCounters()
 
@@ -464,7 +467,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             }
 
             appExecutors.networkIO().execute {
-                uploadPictures(mediaItems, urls)
+                resultData.caseID?.let { caseID ->
+                    uploadPictures(mediaItems, urls, caseID)
+                }
             }
 
             resultData.caseID?.let { return getCase(it) }
@@ -523,8 +528,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
             }
 
             if (urls.isNotEmpty()) {
-                appExecutors.networkIO().execute {
-                    uploadPictures(mediaItems, urls)
+                resultData.caseID?.let { caseId ->
+                    appExecutors.networkIO().execute {
+                        uploadPictures(mediaItems, urls, caseId)
+                    }
                 }
             }
             resultData.caseID?.let { return getCase(it) }
@@ -691,7 +698,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
      * @param mediaItems List of mediaItems items
      * @param urls  List of urls for upload request
      */
-    fun uploadPictures(mediaItems: List<ByteArray>, urls: List<String>) {
+    fun uploadPictures(mediaItems: List<ByteArray>, urls: List<String>, caseId: Int) {
         if (mediaItems.size != urls.size)
             throw Exception("The number of upload urls and media items is different!")
 
@@ -714,6 +721,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                 }
 
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    getCase(caseId)
                     Log.d(LOG_TAG, "File upload request successful!")
                 }
 

@@ -8,6 +8,7 @@ import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.databinding.CardUserBinding
 import de.unihannover.se.tauben2.getViewModel
 import de.unihannover.se.tauben2.model.Auth
+import de.unihannover.se.tauben2.model.database.entity.Case
 import de.unihannover.se.tauben2.model.database.entity.User
 import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
@@ -18,6 +19,10 @@ class UsersRecyclerFragment : RecyclerFragment<User>() {
 
     private lateinit var user: User
 
+    override fun onChanged(t: List<User>?) {
+        super.onChanged(t?.sortedBy { it.username })
+    }
+
     override fun onBindData(binding: ViewDataBinding, data: User) {
 
         val vm = getViewModel(UserViewModel::class.java)
@@ -27,40 +32,32 @@ class UsersRecyclerFragment : RecyclerFragment<User>() {
 
             binding.c = data
 
-            if (data.username != vm?.getOwnerUsername()) {
+            // bug without:
+            binding.cardBtnUserDelete.visibility = VISIBLE
 
-                // bug without:
-                binding.cardBtnUserDelete.visibility = VISIBLE
+            binding.cardUserIsAuthorized.setOnClickListener {
+                vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
+            }
+            binding.cardUserIsAdmin.setOnClickListener {
+                vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
+            }
+            binding.cardBtnUserDelete.setOnClickListener {
+                context?.run {
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.title_deleting_user))
+                        setMessage(getString(R.string.desc_delete_user))
 
-                binding.cardUserIsAuthorized.setOnClickListener {
-                    vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
+                        setPositiveButton(R.string.delete) { _, _ ->
+                            vm?.deleteUser(data)
+                            setSnackBar(binding.root, getString(R.string.alert_user_deleted))
+                        }
+
+                        setNegativeButton(R.string.cancel) { dialogInterface, _ ->
+                            dialogInterface.cancel()
+                        }
+
+                    }.show()
                 }
-                binding.cardUserIsAdmin.setOnClickListener {
-                    vm?.updatePermissions(data.username, Auth(data.isActivated, data.isAdmin))
-                }
-                binding.cardBtnUserDelete.setOnClickListener {
-                    context?.run {
-                        AlertDialog.Builder(this).apply {
-                            setTitle(getString(R.string.title_deleting_user))
-                            setMessage(getString(R.string.desc_delete_user))
-
-                            setPositiveButton(R.string.delete) { _, _ ->
-                                vm?.deleteUser(data)
-                                setSnackBar(binding.root, getString(R.string.alert_user_deleted))
-                            }
-
-                            setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                                dialogInterface.cancel()
-                            }
-
-                        }.show()
-                    }
-                }
-
-            } else {
-                binding.cardUserIsAuthorized.isEnabled = false
-                binding.cardUserIsAdmin.isEnabled = false
-                binding.cardBtnUserDelete.visibility = INVISIBLE
             }
         }
     }

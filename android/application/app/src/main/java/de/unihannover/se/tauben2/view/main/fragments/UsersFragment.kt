@@ -3,13 +3,11 @@ package de.unihannover.se.tauben2.view.main.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import de.unihannover.se.tauben2.LiveDataRes
-import de.unihannover.se.tauben2.R
-import de.unihannover.se.tauben2.getViewModel
+import de.unihannover.se.tauben2.*
 import de.unihannover.se.tauben2.model.database.entity.User
-import de.unihannover.se.tauben2.setSnackBar
 import de.unihannover.se.tauben2.view.LoadingObserver
 import de.unihannover.se.tauben2.view.Singleton
+import de.unihannover.se.tauben2.view.main.MainActivity
 import de.unihannover.se.tauben2.view.recycler.UsersRecyclerFragment
 import de.unihannover.se.tauben2.viewmodel.UserViewModel
 
@@ -55,7 +53,7 @@ class UsersFragment : BaseMainFragment(R.string.users) {
             // Remove old Observers
             mCurrentObservedData?.removeObserver(mCurrentObserver)
 
-            mCurrentObservedData = viewModel.users
+            mCurrentObservedData = viewModel.users.filter { it.username != getViewModel(UserViewModel::class.java)?.getOwnerUsername() }
 
             mCurrentObservedData?.observe(this, mCurrentObserver)
         }
