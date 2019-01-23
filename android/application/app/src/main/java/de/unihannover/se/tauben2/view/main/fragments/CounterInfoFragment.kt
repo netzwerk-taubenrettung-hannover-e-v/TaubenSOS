@@ -138,10 +138,10 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
             val alertDialogBuilder = AlertDialog.Builder(
                     context)
 
-            alertDialogBuilder.setTitle(getString(R.string.tauben_zählen))
+            alertDialogBuilder.setTitle(getString(R.string.pigeon_count))
 
             alertDialogBuilder
-                    .setMessage(R.string.tauben_zählen_info)
+                    .setMessage(R.string.pigeon_count_info)
 
             val alertDialog = alertDialogBuilder.create()
 

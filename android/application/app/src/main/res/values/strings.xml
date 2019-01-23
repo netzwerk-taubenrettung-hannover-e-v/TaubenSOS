@@ -111,7 +111,7 @@
     <string name="passwort_wiederholen">Re-enter your password:</string>
     <string name="registrierung_beantragen">Request sign-up</string>
     <string name="registrierung_erklaerung">Your sign-up has to be approved by an admin.</string>
-    <string name="tauben_zählen_info">Please select the location, date and count of the observed pigeons.</string>
+    <string name="pigeon_count_info">Please select the location, date and count of the observed pigeons.</string>
     <string name="sample" translatable="false">Sample</string>
     <string name="all_cases">All cases</string>
     <string name="create_marker">Create Marker</string>
@@ -127,7 +127,7 @@
     <string name="breeds">Breeds:</string>
     <string name="closed_cases">Closed cases</string>
     <string name="my_cases">My cases</string>
-    <string name="tauben_zählen">Pigeon counting</string>
+    <string name="pigeon_count">Pigeon counting</string>
     <string name="open_cases">Open cases</string>
     <string name="step">Step %1$d: %2$s</string>
     <string name="edit_case">Edit Case #%1$d</string>
