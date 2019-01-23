@@ -60,6 +60,11 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     // TODO Maybe insert and delete in one query
     fun getCases(checkCooldown: Boolean = true) = object : NetworkBoundResource<List<Case>, List<Case>>(appExecutors) {
         override fun saveCallResult(item: List<Case>) {
+
+            Case.setLastAllUpdatedToNow()
+            setItemUpdateTimestamps(*item.toTypedArray())
+            database.caseDao().insertOrUpdate(item)
+
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<Case>> {
@@ -71,10 +76,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     }
                 })
             }
-
-            Case.setLastAllUpdatedToNow()
-            setItemUpdateTimestamps(*item.toTypedArray())
-            database.caseDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<Case>?) = if (checkCooldown) Case.shouldFetch() else true
@@ -218,6 +219,10 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
 
     fun getUsers() = object : NetworkBoundResource<List<User>, List<User>>(appExecutors) {
         override fun saveCallResult(item: List<User>) {
+
+            setItemUpdateTimestamps(*item.toTypedArray())
+            database.userDao().insertOrUpdate(item)
+
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<User>> {
@@ -230,8 +235,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     }
                 })
             }
-            setItemUpdateTimestamps(*item.toTypedArray())
-            database.userDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<User>?) = true
@@ -291,6 +294,8 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun getNews() = object : NetworkBoundResource<List<News>, List<News>>(appExecutors) {
         override fun saveCallResult(item: List<News>) {
 
+            database.newsDao().insertOrUpdate(item)
+
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<News>> {
@@ -302,8 +307,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     }
                 })
             }
-
-            database.newsDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<News>?): Boolean {
@@ -372,6 +375,9 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun getPigeonCounters() = object : NetworkBoundResource<List<PopulationMarker>, List<PopulationMarker>>(appExecutors) {
         override fun saveCallResult(item: List<PopulationMarker>) {
 
+            setItemUpdateTimestamps(*item.toTypedArray())
+            database.populationMarkerDao().insertOrUpdate(item)
+
             val oldItems = loadFromDb()
             appExecutors.mainThread().execute {
                 oldItems.observeForever(object : Observer<List<PopulationMarker>> {
@@ -384,9 +390,6 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
                     }
                 })
             }
-
-            setItemUpdateTimestamps(*item.toTypedArray())
-            database.populationMarkerDao().insertOrUpdate(item)
         }
 
         override fun shouldFetch(data: List<PopulationMarker>?) = PopulationMarker.shouldFetch()
@@ -401,6 +404,7 @@ class Repository(private val database: LocalDatabase, private val service: Netwo
     fun postNewMarker(marker: PopulationMarker) = object : AsyncDataRequest<PopulationMarker, PopulationMarker>(appExecutors) {
         override fun fetchUpdatedData(resultData: PopulationMarker): LiveDataRes<PopulationMarker> {
             throw Exception("Re-fetching is disabled, don't try to force it!")
+
         }
 
         override fun saveUpdatedData(updatedData: PopulationMarker) {
