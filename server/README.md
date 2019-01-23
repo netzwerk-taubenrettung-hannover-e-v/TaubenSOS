@@ -19,6 +19,23 @@ The Connexion framework doesn't serve our purposes as it lacks in terms of OAuth
 5. Deactivate the virtual environment by typing `deactivate`
 6. Now you're set up to run the project: `env/bin/python run.py`
 
+## Deploying to AWS Elastic Beanstalk
+
+Deploying to AWS Elastic Beanstalk requires you to set up the following environment variables:
+
+* `AWS_DATABASE_URL`: The URL to the PostgreSQL DB
+* `AWS_S3_MEDIA_BUCKET_NAME`: The name of the S3 bucket in which the media files shall be stored
+
+For the following environment variables, you have to provide the key to the respective file in your elasticbeanstalk-*region*-*account*-*id* S3 bucket (created automatically):
+
+* `AWS_S3_EB_BUCKET_CERT_KEY`: Your TLS configuration's public key
+* `AWS_S3_EB_BUCKET_PRIVKEY_KEY`: Your TLS configuration's private key
+* `AWS_S3_EB_BUCKET_CABUNDLE_KEY`: Your certificate authority's root and intermediate certificates
+* `AWS_S3_EB_BUCKET_FIREBASECERT_KEY`: Your Firebase service account's credentials
+
+You may then create a deployable ZIP archive using the  
+`git archive --format=zip --output=archive.zip HEAD:server/app/` command.
+
 ## Other helpful stuff
 
 * [OpenAPI Specification ver. 2 (fka Swagger)](https://swagger.io/docs/specification/2-0/basic-structure/)
