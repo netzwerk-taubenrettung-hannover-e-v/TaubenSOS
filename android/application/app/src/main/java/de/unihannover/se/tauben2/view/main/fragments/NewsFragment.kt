@@ -26,7 +26,7 @@ class NewsFragment : BaseMainFragment(R.string.news_title) {
 
         val view = inflater.inflate(R.layout.fragment_news, container, false)
 
-        if(BootingActivity.getOwnerPermission() == Permission.GUEST)
+        if(BootingActivity.getOwnerPermission() != Permission.ADMIN)
             view.create_news_button.hide()
 
         recyclerFragment = childFragmentManager.findFragmentById(R.id.recycler_fragment_news) as NewsRecyclerFragment

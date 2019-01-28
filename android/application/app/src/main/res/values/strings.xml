@@ -196,4 +196,6 @@
     <string name="reload_successful">Reload successful</string>
     <string name="missing_permission">Missing Permission</string>
     <string name="enable_permission_camera">We need to access the camera in order to take photos or videos. Please enable camera access for this app in your phones settings!</string>
+    <string name="delete_marker_title">Do you want to delete this marker?</string>
+    <string name="delete_marker">There is no point of return.</string>
 </resources>

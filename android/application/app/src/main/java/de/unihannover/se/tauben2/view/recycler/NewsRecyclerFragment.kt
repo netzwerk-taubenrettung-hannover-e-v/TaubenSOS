@@ -39,19 +39,9 @@ class NewsRecyclerFragment : RecyclerFragment<News>() {
 
         if (binding is CardNewsBinding) {
             binding.n = data
-            /*binding.root.news_more_button.setOnClickListener {
-                if(data.feedID!=null){
-                    vm?.setNewsPost(data.feedID)
-                    val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
-                    bottomNavDrawerFragment.show(activity!!.supportFragmentManager, bottomNavDrawerFragment.tag)
-                }
-                else{
-                    setSnackBar(it, "Error: news post data is broken", null)
-                }*/
-
 
             binding.root.let{ v->
-                if(BootingActivity.getOwnerPermission() == Permission.GUEST){
+                if(BootingActivity.getOwnerPermission() != Permission.ADMIN){
                     v.news_edit_button.visibility = GONE
                     v.news_delete_button.visibility = GONE
                 }
