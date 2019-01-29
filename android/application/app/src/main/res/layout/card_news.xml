@@ -49,13 +49,12 @@
                 style="@style/TextAppearance.MaterialComponents.Overline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
+                android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:text="@{n.eventStart == null ? @plurals/news(1) : @string/starts_on(ExtensionsKt.getDateTimeString(n.eventStartMillis), ExtensionsKt.getDateTimeString(n.eventEndMillis))}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/news_delete_button"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/news_title"
