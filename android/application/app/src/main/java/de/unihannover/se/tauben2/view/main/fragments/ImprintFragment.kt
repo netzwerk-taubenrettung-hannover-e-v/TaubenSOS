@@ -1,6 +1,5 @@
 package de.unihannover.se.tauben2.view.main.fragments
 
-import android.text.Html
 import de.unihannover.se.tauben2.R
 import de.unihannover.se.tauben2.model.TextPage
 
