@@ -186,8 +186,8 @@ class CounterInfoFragment : BaseInfoFragment(R.string.counter_info), DatePickerD
             R.id.toolbar_delete -> {
                 context?.let { cxt ->
                     androidx.appcompat.app.AlertDialog.Builder(cxt)
-                            .setTitle("Do you want to delete this marker?")
-                            .setMessage("There is no point of return.")
+                            .setTitle(getString(R.string.delete_marker_title))
+                            .setMessage(R.string.delete_marker)
                             .setPositiveButton(R.string.delete) { _, _ ->
                                 //TODO Delete Marker
                                 val vm = getViewModel(PopulationMarkerViewModel::class.java)

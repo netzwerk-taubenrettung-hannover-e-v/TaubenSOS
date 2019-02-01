@@ -23,7 +23,7 @@ The Connexion framework doesn't serve our purposes as it lacks in terms of OAuth
 
 Deploying to AWS Elastic Beanstalk requires you to set up the following environment variables:
 
-* `AWS_DATABASE_URL`: The URL to the PostgreSQL DB
+* `AWS_RDS_DATABASE_URL`: The URL to the PostgreSQL DB
 * `AWS_S3_MEDIA_BUCKET_NAME`: The name of the S3 bucket in which the media files shall be stored
 
 For the following environment variables, you have to provide the key to the respective file in your elasticbeanstalk-*region*-*account*-*id* S3 bucket (created automatically):

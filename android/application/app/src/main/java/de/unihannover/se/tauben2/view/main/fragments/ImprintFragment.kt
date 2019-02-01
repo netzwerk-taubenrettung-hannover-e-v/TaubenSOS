@@ -7,7 +7,7 @@ class ImprintFragment: TextPageFragment(R.string.imprint_title) {
 
     override fun getTextPage(): TextPage {
         return context?.let { cxt ->
-            TextPage(cxt.getString(R.string.imprint_title), cxt.getString(R.string.lorem_ipsum))
+            TextPage(cxt.getString(R.string.imprint_title), cxt.getString(R.string.imprint))
         } ?: TextPage("", "")
     }
 

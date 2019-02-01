@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
 
 from api.models.user import User, user_schema, users_schema
-from . import fcm
+from . import fcm, auth
 
 bp = Blueprint("user", __name__, url_prefix="/api")
 
 @bp.route("/user", methods=["GET"], strict_slashes=False)
+@auth.only("admin")
 def read_all():
 	"""
 	file: ../../docs/user/read_all.yml
@@ -19,6 +20,9 @@ def create_user():
 	file: ../../docs/user/create_user.yml
 	"""
 	json = request.get_json()
+	# prevent users from assigning themselves any access privileges
+	json.pop("isActivated", None)
+	json.pop("isAdmin", None)
 	user, errors = user_schema.load(json)
 	if errors:
 		return jsonify(errors), 400
@@ -31,6 +35,7 @@ def create_user():
 	return user_schema.jsonify(user), 201
 
 @bp.route("/user/<username>", methods=["DELETE"], strict_slashes=False)
+@auth.only("me", "admin")
 def delete_user(username):
 	"""
 	file: ../../docs/user/delete_user.yml
@@ -42,6 +47,7 @@ def delete_user(username):
 	return "", 204, {"Content-Type": "application/json"}
 
 @bp.route("/user/<username>", methods=["PUT"], strict_slashes=False)
+@auth.only("me", "admin")
 def update_user(username):
 	"""
 	file: ../../docs/user/update_user.yml
@@ -50,9 +56,8 @@ def update_user(username):
 	user = User.get(username)
 	if user is None:
 		return jsonify(message="The user to be updated could not be found"), 404
-	# ignore 'username' field if a change has not been requested
-	if username == json.get("username"):
-		json.pop("username", None)
+	# the username cannot be changed
+	json.pop("username", None)
 	errors = user_schema.validate(json, partial=True)
 	if errors:
 		return jsonify(errors), 400
@@ -104,6 +109,7 @@ def update_user(username):
 	return user_schema.jsonify(user), 200
 
 @bp.route("user/<username>", methods=["GET"], strict_slashes=False)
+@auth.only("me", "admin")
 def read_user(username):
 	"""
 	file: ../../docs/user/read_user.yml
