@@ -14,7 +14,7 @@ import com.squareup.picasso.OkHttp3Downloader
 
 
 
-private const val BASE_AMAZON_URL = "https://tauben2.eu-central-1.elasticbeanstalk.com/api/"
+private const val BASE_AMAZON_URL = "https://tauben-sos.eu-central-1.elasticbeanstalk.com/api/"
 private const val BASE_HEROKU_URL = "https://tauben2.herokuapp.com/api/"
 private const val USE_AMAZON = true
 

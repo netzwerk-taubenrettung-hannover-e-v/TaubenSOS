@@ -71,7 +71,7 @@
 
     <item
         android:id="@+id/toolbar_report_button"
-        android:icon="@drawable/ic_healing"
+        android:icon="@drawable/ic_local_hospital"
         android:title="@string/report_pigeon"
         app:showAsAction="always" />
 
