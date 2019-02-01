@@ -130,14 +130,17 @@ class StatisticFragment : BaseMainFragment(R.string.graphs) {
             createPieChart(fragmentView.breed_piechart, getBreedData(it))
         })
 
-       // loadCases()
-
         return fragmentView
     }
 
     override fun onStart() {
         super.onStart()
         refreshButtonLabel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (appbar as AppBarLayout).setExpanded(true)
     }
 
     private fun loadCases() {

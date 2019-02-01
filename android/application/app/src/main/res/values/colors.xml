@@ -20,5 +20,8 @@
     <color name="colorRedTransparent">#80d50000</color>
     <color name="colorGray">#9e9e9e</color>
     <color name="colorGrayTransparent">#809e9e9e</color>
+    <color name="colorBlue">#0055ff</color>
+    <color name="colorBlueTransparent">#800055ff</color>
+
 
 </resources>

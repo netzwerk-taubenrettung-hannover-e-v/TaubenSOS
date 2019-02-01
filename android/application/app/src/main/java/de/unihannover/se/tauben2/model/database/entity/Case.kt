@@ -129,7 +129,7 @@ data class Case(@PrimaryKey var caseID: Int?,
         var color = App.getColor(R.color.colorGreen)
 
         if (wasFoundDead == true || wasNotFound == true)
-            color = App.getColor(R.color.colorGray)
+            color = App.getColor(R.color.colorBlue)
         else if (isClosed == false)
             color = if (rescuer != null) App.getColor(R.color.colorYellow) else App.getColor(R.color.colorRed)
         return color
@@ -140,7 +140,7 @@ data class Case(@PrimaryKey var caseID: Int?,
         var color = App.getColor(R.color.colorGreenTransparent)
 
         if(wasFoundDead == true || wasNotFound == true)
-            color = App.getColor(R.color.colorGrayTransparent)
+            color = App.getColor(R.color.colorBlueTransparent)
         else if (isClosed == false)
             color = if (rescuer != null) App.getColor(R.color.colorYellowTransparent) else App.getColor(R.color.colorRedTransparent)
         return color
