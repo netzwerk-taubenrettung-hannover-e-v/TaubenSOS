@@ -1,5 +1,7 @@
-Retrieve number of pigeons that were found dead, not found and the number of closed cases. The number of succesfully saved pigeons can be calculated out of these values. Closed cases will be searched in the square of the coordinates specified. Usage - /api/stats/pigeonNumbers?fromTime=1545412850&untilTime=1548091250&latNE=52.55&lonNE=11.7&latSW=52.4&lonSW=9.4
-
+Retrieve number of pigeons that were not found or found dead and the number of closed cases
+The number of successfully saved pigeons can be calculated out of these values.
+Closed cases will be searched in the square of the coordinates specified,
+e.g. /api/stats/pigeonNumbers?fromTime=1545412850&untilTime=1548091250&latNE=52.55&lonNE=11.7&latSW=52.4&lonSW=9.4
 ---
 tags:
   - stats

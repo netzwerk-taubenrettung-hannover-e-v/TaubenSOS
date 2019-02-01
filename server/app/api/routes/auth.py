@@ -3,48 +3,44 @@ import jwt
 import uuid
 import hashlib
 from datetime import datetime
-from flask import Blueprint, request
-from flask import jsonify
+from flask import Blueprint, request, jsonify
+from functools import wraps
 from api.models.user import User
 from api.models.token import Token
 from . import fcm
 
 bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
-def only(scope):
+def only(*scopes):
 	def onlyAdmin(func):
-		def func_wrapper(**kwargs):
+		@wraps(func)
+		def func_wrapper(*args, **kwargs):
 			access_token = request.headers.get("Authorization")
 			if access_token is None:
 				return jsonify(message="Access Token is missing"), 401
+
 			token_data = decode_access_token(access_token)
 			if token_data is None:
 				return jsonify(message="Invalid token"), 401
-			dbToken = Token.get(token_data['jti'])
 
+			dbToken = Token.get(token_data['jti'])
 			if dbToken is None:
 				return jsonify(message="Invalid access token"), 401
-			values = list(kwargs.values())
 
-			if not kwargs:
-				f = func()
-			else:
-				f = func(values[0])
+			if 'member' in scopes:
+				return func(*args, **kwargs)
 
-			if 'member' in scope:
-				return f
-
-			if 'admin' in scope:
+			if 'admin' in scopes:
 				user = User.get(token_data['username'])
 				if user.isAdmin:
-					return f
+					return func(*args, **kwargs)
 
-			if 'me' in scope:
+			if 'me' in scopes:
 				if "username" not in kwargs:
 					return jsonify(message="No permission"), 403
 
 				if kwargs['username'] == token_data['username']:
-					return f
+					return func(*args, **kwargs)
 
 			return jsonify(message="No permission"), 403
 		return func_wrapper
@@ -75,7 +71,7 @@ def login():
 	return jsonify({"token": access_token})
 
 @bp.route('/logout', methods=["DELETE"], strict_slashes=False)
-@only({'member'})
+@only('member')
 def logout():
 	access_token = request.headers.get("Authorization")
 	token_data = decode_access_token(access_token)

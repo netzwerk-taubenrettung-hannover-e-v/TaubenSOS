@@ -1,4 +1,4 @@
-Retrieve all existing markers or only retrieve newly updated ones
+Retrieve all existing markers or only the ones that were updated recently
 ---
 tags:
   - populationMarker

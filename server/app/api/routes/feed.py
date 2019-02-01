@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import utils
 from api.models.feed import Feed, feed_schema, feeds_schema
-from . import fcm
+from . import fcm, auth
 
 bp = Blueprint("feed", __name__, url_prefix="/api")
 
@@ -15,6 +15,7 @@ def read_all():
 	return feeds_schema.jsonify(news), 200
 
 @bp.route("/feed", methods=["POST"], strict_slashes=False)
+@auth.only("admin")
 def create_news():
 	"""
 	file: ../../docs/feed/create_news.yml
@@ -37,6 +38,7 @@ def create_news():
 	return feed_schema.jsonify(feed), 201
 
 @bp.route("/feed/<int:feedID>", methods=["PUT"], strict_slashes=False)
+@auth.only("admin")
 def update_news(feedID):
 	"""
 	file: ../../docs/feed/update_news.yml
@@ -52,6 +54,7 @@ def update_news(feedID):
 	return feed_schema.jsonify(feed), 200
 
 @bp.route("/feed/<int:feedID>", methods=["DELETE"], strict_slashes=False)
+@auth.only("admin")
 def delete_news(feedID):
 	"""
 	file: ../../docs/feed/delete_news.yml
